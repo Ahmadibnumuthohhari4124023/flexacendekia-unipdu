@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ScholarsLedger | Friday Checkpoint</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&amp;family=Libre+Franklin:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .paper-stack {
+            box-shadow: 4px 4px 0px 0px #17223b;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c6c6ce;
+        }
+        .zebra-stripe:nth-child(even) {
+            background-color: rgba(253, 194, 101, 0.05);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#002822",
+                        "surface-container": "#f0edf0",
+                        "inverse-primary": "#bbc6e7",
+                        "on-secondary-fixed-variant": "#614000",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#754e00",
+                        "on-primary-fixed-variant": "#3c4661",
+                        "tertiary-fixed": "#adefe1",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#17223b",
+                        "secondary": "#805600",
+                        "secondary-fixed-dim": "#f7bc60",
+                        "outline": "#76777e",
+                        "on-tertiary-fixed": "#00201b",
+                        "on-surface-variant": "#45464d",
+                        "on-tertiary-container": "#549589",
+                        "outline-variant": "#c6c6ce",
+                        "primary": "#020b24",
+                        "on-background": "#1b1b1d",
+                        "secondary-container": "#fdc265",
+                        "tertiary": "#000f0c",
+                        "on-tertiary-fixed-variant": "#005046",
+                        "surface-variant": "#e4e2e4",
+                        "secondary-fixed": "#ffddaf",
+                        "surface-container-low": "#f5f3f5",
+                        "on-primary-container": "#7f89a8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1b1b1d",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#dcd9dc",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "background": "#fbf8fb",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#101b34",
+                        "surface-container-high": "#eae7ea",
+                        "inverse-on-surface": "#f3f0f2",
+                        "primary-fixed": "#d9e2ff",
+                        "surface-tint": "#535e7a",
+                        "surface": "#fbf8fb",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#91d3c5",
+                        "surface-container-highest": "#e4e2e4",
+                        "inverse-surface": "#303032",
+                        "surface-bright": "#fbf8fb",
+                        "on-secondary-fixed": "#281800",
+                        "primary-fixed-dim": "#bbc6e7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "unit": "4px",
+                        "margin-desktop": "32px",
+                        "gutter": "16px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "stats-sm": ["JetBrains Mono"],
+                        "display-lg": ["\"Source Serif 4\""],
+                        "body-md": ["Libre Franklin"],
+                        "label-caps": ["Libre Franklin"],
+                        "headline-md": ["\"Source Serif 4\""],
+                        "stats-lg": ["JetBrains Mono"],
+                        "body-sm": ["Libre Franklin"]
+                    },
+                    "fontSize": {
+                        "stats-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "stats-lg": ["20px", {"lineHeight": "24px", "fontWeight": "500"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-[#EAEDE2] min-h-screen font-body-md text-on-surface selection:bg-secondary-container">
+<div style="background:#17223B;color:#EAEDE2;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+<span>2. Siklus siswa &middot; 11/18 &middot; Checkpoint Jumat</span>
+<span><a href="../10_detail-roadmap/code.html" style="color:#EAEDE2;">&larr; Detail roadmap 6 tahun</a> <a href="../index.html" style="color:#EAEDE2;margin:0 10px;">Peta alur</a> <a href="../12_ganti-cita-cita/code.html" style="color:#EAEDE2;">Ajukan ganti cita-cita &rarr;</a></span>
+</div>
+
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest dark:bg-primary border-b border-outline-variant/20 flex justify-between items-center w-full px-margin-desktop h-16 fixed top-0 z-50">
+<div class="flex items-center gap-8">
+<h1 class="font-display-lg text-display-lg text-primary dark:text-primary-fixed">ScholarsLedger</h1>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant dark:text-on-primary-container font-label-caps text-label-caps hover:bg-surface-container-low dark:hover:bg-primary-container transition-colors px-2 py-1" href="#">Dashboard</a>
+<a class="text-secondary dark:text-secondary-fixed font-bold border-b-2 border-secondary font-label-caps text-label-caps px-2 py-1" href="#">Study Plans</a>
+<a class="text-on-surface-variant dark:text-on-primary-container font-label-caps text-label-caps hover:bg-surface-container-low dark:hover:bg-primary-container transition-colors px-2 py-1" href="#">Grades</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-primary" data-icon="help">help</span>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center border border-outline-variant/20 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A focused close-up of a student in a university library, warm morning sunlight streaming through large windows, captured in a clean academic photography style. The colors are dominated by warm paper tones and dark navy uniforms, emphasizing a scholarly atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTfIjRr8a2ExyStOc_hOmhCR2CvrWIeV0SjqEcxJOk7ifDTlaXoOwRmt39JNg6RN2g8ABqTv2S2g2RsSjocTKE_p_i8AP58cLybBCqfV_GRhPop6jeoXKC_LIUWlTqZArk71nH-fx2M3pUQ887gcKIHnAaeSX6HG5h0t4Z0MwfuBjNb4pToCRSCCtEXRvY-FFAWdZp7aKaysXHWt7gGZ-GNnB9ORBeSZwEElBGXwTgBAV6N6FRy40CzC4ZnguJllRkLR6Mj5riB1M"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-16 px-4 md:px-margin-desktop max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
+<!-- Checkpoint Content Area -->
+<div class="flex-grow space-y-8">
+<!-- Header/Progress Section -->
+<div class="bg-[#FBFAF5] border border-outline-variant/20 p-8 paper-stack">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
+<div>
+<span class="font-label-caps text-label-caps text-secondary tracking-widest block mb-2">KERJAKAN CHECKPOINT JUMAT</span>
+<h2 class="font-headline-md text-headline-md text-primary">Week 14: Historical Methodology &amp; Analysis</h2>
+</div>
+<div class="text-right">
+<span class="font-stats-sm text-stats-sm text-on-surface-variant uppercase">Time Remaining</span>
+<div class="font-stats-lg text-stats-lg text-primary tabular-nums" id="timer">42:15</div>
+</div>
+</div>
+<div class="w-full h-1 bg-surface-container mb-2 relative">
+<div class="absolute left-0 top-0 h-full bg-secondary transition-all duration-500" style="width: 60%;"></div>
+</div>
+<div class="flex justify-between font-stats-sm text-stats-sm text-outline">
+<span>Progress: 3 of 5 Sections</span>
+<span>60% Complete</span>
+</div>
+</div>
+<!-- Quiz Section (The Ledger Page) -->
+<div class="bg-[#FBFAF5] border border-outline-variant/20 overflow-hidden paper-stack">
+<div class="p-8 border-b border-outline-variant/10">
+<span class="font-label-caps text-label-caps text-on-surface-variant">SECTION III: CRITICAL EVALUATION</span>
+</div>
+<div class="p-8 space-y-12">
+<!-- Question 1 -->
+<div class="space-y-6">
+<div class="flex gap-4">
+<span class="font-stats-lg text-stats-lg text-secondary">07.</span>
+<p class="font-body-md text-body-md text-primary max-w-2xl leading-relaxed">
+                                In the context of the provided primary source regarding the 19th-century industrial expansion, which analytical framework best accounts for the discrepancy between merchant ledgers and official state reports?
+                            </p>
+</div>
+<div class="grid grid-cols-1 gap-3 pl-12">
+<label class="group cursor-pointer">
+<input class="hidden peer" name="q7" type="radio"/>
+<div class="p-4 border border-outline-variant/20 flex items-center gap-4 transition-all group-hover:bg-secondary/5 peer-checked:border-secondary peer-checked:bg-secondary/10">
+<div class="w-5 h-5 border border-outline-variant flex items-center justify-center peer-checked:border-secondary group-hover:border-secondary">
+<div class="w-2.5 h-2.5 bg-secondary opacity-0 transition-opacity" style="opacity: var(--tw-peer-checked-opacity, 0);"></div>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">The Cliometric approach to statistical inconsistencies</span>
+</div>
+</label>
+<label class="group cursor-pointer">
+<input class="hidden peer" name="q7" type="radio"/>
+<div class="p-4 border border-outline-variant/20 flex items-center gap-4 transition-all group-hover:bg-secondary/5 peer-checked:border-secondary peer-checked:bg-secondary/10">
+<div class="w-5 h-5 border border-outline-variant flex items-center justify-center"></div>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Dialectical Materialism regarding production relations</span>
+</div>
+</label>
+<label class="group cursor-pointer">
+<input checked="" class="hidden peer" name="q7" type="radio"/>
+<div class="p-4 border border-secondary bg-secondary/5 flex items-center gap-4 transition-all">
+<div class="w-5 h-5 border border-secondary flex items-center justify-center">
+<div class="w-2.5 h-2.5 bg-secondary"></div>
+</div>
+<span class="font-body-sm text-body-sm text-primary font-bold">The Annales School's focus on 'longue durée' structures</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Question 2 (Open Reflection) -->
+<div class="space-y-6">
+<div class="flex gap-4">
+<span class="font-stats-lg text-stats-lg text-secondary">08.</span>
+<p class="font-body-md text-body-md text-primary max-w-2xl leading-relaxed">
+                                Reflect on your research progress this week. Identify one significant evidentiary challenge you encountered and how it has shaped your revised thesis statement.
+                            </p>
+</div>
+<div class="pl-12">
+<textarea class="w-full border border-outline-variant/20 p-4 font-body-md text-body-md focus:ring-1 focus:ring-secondary focus:border-secondary outline-none bg-surface-container-lowest" placeholder="Begin typing your reflection here..." rows="6"></textarea>
+<div class="mt-2 flex justify-between items-center">
+<span class="font-stats-sm text-stats-sm text-outline">Words: 0 / 250</span>
+<span class="font-label-caps text-label-caps text-secondary">REQUIRED ENTRY</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-8 bg-surface-container-lowest border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-6">
+<button class="font-label-caps text-label-caps px-6 py-3 border border-primary text-primary hover:bg-primary/5 transition-all w-full md:w-auto">
+                        PREVIOUS SECTION
+                    </button>
+<div class="flex gap-4 w-full md:w-auto">
+<button class="font-label-caps text-label-caps px-6 py-3 border border-outline-variant text-outline-variant hover:bg-surface-container-low transition-all flex-grow md:flex-grow-0">
+                            SAVE PROGRESS
+                        </button>
+<button class="font-label-caps text-label-caps px-8 py-3 bg-primary text-white hover:bg-primary/90 transition-all flex-grow md:flex-grow-0">
+                            NEXT SECTION
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar (Asymmetric Ledger Details) -->
+<aside class="w-full md:w-80 space-y-6">
+<!-- Institutional Badge -->
+<div class="bg-primary text-white p-6 border border-primary paper-stack">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 border border-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white" data-icon="account_balance">account_balance</span>
+</div>
+<div>
+<div class="font-label-caps text-[10px] tracking-widest text-secondary-fixed">INSTITUTIONAL PORTAL</div>
+<div class="font-headline-md text-body-md font-bold">Academic Year 2024</div>
+</div>
+</div>
+<div class="space-y-3 pt-4 border-t border-white/10">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-[11px] text-white/60">CHECKPOINT TYPE</span>
+<span class="font-label-caps text-[11px] text-secondary-fixed">SUMMATIVE</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-[11px] text-white/60">WEIGHTING</span>
+<span class="font-label-caps text-[11px] text-secondary-fixed">15% TOTAL</span>
+</div>
+</div>
+</div>
+<!-- Week Summary Card -->
+<div class="bg-[#FBFAF5] border border-outline-variant/20 p-6 paper-stack">
+<h3 class="font-label-caps text-label-caps text-primary border-b border-outline-variant/20 pb-3 mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="auto_stories">auto_stories</span>
+                    WEEKLY OVERVIEW
+                </h3>
+<ul class="space-y-4">
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-secondary mt-0.5" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="font-body-sm text-body-sm text-primary font-bold">Readings Completed</p>
+<p class="font-stats-sm text-stats-sm text-on-surface-variant">4/4 Articles</p>
+</div>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-secondary mt-0.5" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="font-body-sm text-body-sm text-primary font-bold">Lecture Participation</p>
+<p class="font-stats-sm text-stats-sm text-on-surface-variant">100% Attendance</p>
+</div>
+</li>
+<li class="flex gap-3">
+<span class="material-symbols-outlined text-outline mt-0.5" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+<div class="opacity-60">
+<p class="font-body-sm text-body-sm text-primary font-bold">Self-Reflection</p>
+<p class="font-stats-sm text-stats-sm text-on-surface-variant">Pending...</p>
+</div>
+</li>
+</ul>
+</div>
+<!-- Aesthetic Illustration/Quote -->
+<div class="relative overflow-hidden group">
+<div class="aspect-[3/4] bg-surface-container relative">
+<img class="w-full h-full object-cover" data-alt="A vintage close-up of a 19th-century academic ledger book with intricate handwriting and faded ink stamps. The paper is slightly yellowed with aged texture, and the background is a dark mahogany study desk with a faint brass lamp reflection. Cinematic lighting with a focused depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvhqEPMZfkoFizwwLapAecUxfvTBqxXjveUuYEF9IZ8p21_Msc0gN7Favw5hXoVmuV1eew4d76NVsj2OpnRLFrdrpETkPHMW33fakHMApK852pNbBCpFHVv2TMkFPS_wzsmuvEG-VRrIAcjtnf5V1rzKWOqzUE8KIVUe4dDdbRndxzRIxGtINkFILLUSv7VFqiPBCz1BMU3yL3DW1GTmsSjTiUQ6J8u2-7-_FXyWh1Oy0oixpVSSMSf8sJFweYaBjHE9xRkz5knXs"/>
+<div class="absolute inset-0 bg-primary/40 group-hover:bg-primary/20 transition-all"></div>
+<div class="absolute bottom-0 left-0 p-6 text-white">
+<p class="font-display-lg italic text-[18px] leading-tight mb-2">"The past is a foreign country; they do things differently there."</p>
+<p class="font-label-caps text-[10px] tracking-widest text-secondary-fixed">— L.P. HARTLEY</p>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-primary border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center w-full px-margin-desktop py-4 mt-auto">
+<div class="font-stats-sm text-stats-sm text-on-surface-variant mb-4 md:mb-0">
+            © 2024 ScholarsLedger Academic Systems
+        </div>
+<nav class="flex gap-8">
+<a class="text-on-surface-variant dark:text-on-primary-container font-label-caps text-label-caps hover:text-primary dark:hover:text-primary-fixed-dim transition-colors hover:underline decoration-secondary" href="#">Academic Integrity</a>
+<a class="text-on-surface-variant dark:text-on-primary-container font-label-caps text-label-caps hover:text-primary dark:hover:text-primary-fixed-dim transition-colors hover:underline decoration-secondary" href="#">Support Center</a>
+<a class="text-on-surface-variant dark:text-on-primary-container font-label-caps text-label-caps hover:text-primary dark:hover:text-primary-fixed-dim transition-colors hover:underline decoration-secondary" href="#">Privacy Ledger</a>
+</nav>
+</footer>
+<!-- Interactive Layer -->
+<script>
+        // Simple timer logic
+        let time = 42 * 60 + 15;
+        const timerElement = document.getElementById('timer');
+        
+        setInterval(() => {
+            time--;
+            const mins = Math.floor(time / 60);
+            const secs = time % 60;
+            timerElement.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        }, 1000);
+
+        // Micro-interaction for inputs
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                // Update parent style for the checked state
+                const allContainers = radio.closest('.grid').querySelectorAll('label > div');
+                allContainers.forEach(div => {
+                    div.classList.remove('border-secondary', 'bg-secondary/10');
+                    div.classList.add('border-outline-variant/20');
+                });
+                
+                if (radio.checked) {
+                    const container = radio.nextElementSibling;
+                    container.classList.remove('border-outline-variant/20');
+                    container.classList.add('border-secondary', 'bg-secondary/10');
+                }
+            });
+        });
+    </script>
+</body></html>
