@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Architectural Path | ScholarsLedger</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#002822",
+                        "surface-container": "#f0edf0",
+                        "inverse-primary": "#bbc6e7",
+                        "on-secondary-fixed-variant": "#614000",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#754e00",
+                        "on-primary-fixed-variant": "#3c4661",
+                        "tertiary-fixed": "#adefe1",
+                        "on-tertiary": "#ffffff",
+                        "primary-container": "#17223b",
+                        "secondary": "#805600",
+                        "secondary-fixed-dim": "#f7bc60",
+                        "outline": "#76777e",
+                        "on-tertiary-fixed": "#00201b",
+                        "on-surface-variant": "#45464d",
+                        "on-tertiary-container": "#549589",
+                        "outline-variant": "#c6c6ce",
+                        "primary": "#020b24",
+                        "on-background": "#1b1b1d",
+                        "secondary-container": "#fdc265",
+                        "tertiary": "#000f0c",
+                        "on-tertiary-fixed-variant": "#005046",
+                        "surface-variant": "#e4e2e4",
+                        "secondary-fixed": "#ffddaf",
+                        "surface-container-low": "#f5f3f5",
+                        "on-primary-container": "#7f89a8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#1b1b1d",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#dcd9dc",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "background": "#fbf8fb",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#101b34",
+                        "surface-container-high": "#eae7ea",
+                        "inverse-on-surface": "#f3f0f2",
+                        "primary-fixed": "#d9e2ff",
+                        "surface-tint": "#535e7a",
+                        "surface": "#fbf8fb",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#91d3c5",
+                        "surface-container-highest": "#e4e2e4",
+                        "inverse-surface": "#303032",
+                        "surface-bright": "#fbf8fb",
+                        "on-secondary-fixed": "#281800",
+                        "primary-fixed-dim": "#bbc6e7",
+                        "ledger-ivory": "#FBFAF5",
+                        "ledger-cream": "#EAEDE2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "unit": "4px",
+                        "margin-desktop": "32px",
+                        "gutter": "16px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "stats-sm": ["JetBrains Mono"],
+                        "display-lg": ["\"Source Serif 4\""],
+                        "body-md": ["Libre Franklin"],
+                        "label-caps": ["Libre Franklin"],
+                        "headline-md": ["\"Source Serif 4\""],
+                        "stats-lg": ["JetBrains Mono"],
+                        "body-sm": ["Libre Franklin"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #EAEDE2;
+            color: #1b1b1d;
+            font-family: 'Libre Franklin', sans-serif;
+        }
+        .ledger-line {
+            background-image: linear-gradient(to bottom, transparent 95%, rgba(23, 34, 59, 0.1) 95%);
+            background-size: 100% 24px;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .hard-shadow {
+            box-shadow: 4px 4px 0px 0px #17223b;
+        }
+        .paper-stack {
+            position: relative;
+        }
+        .paper-stack::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 100%;
+            height: 100%;
+            background: #FBFAF5;
+            border: 1px solid rgba(23, 34, 59, 0.2);
+            z-index: -1;
+        }
+        .active-tab-indicator {
+            border-bottom: 2px solid #805600;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+<!-- Top Navigation -->
+<header class="bg-surface-container-lowest dark:bg-primary border-b border-outline-variant/20 flex justify-between items-center w-full px-margin-desktop h-16 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<h1 class="font-display-lg text-display-lg text-primary dark:text-primary-fixed">ScholarsLedger</h1>
+<nav class="hidden md:flex gap-6 h-full items-center">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-low transition-colors px-2 py-1" href="#">Dashboard</a>
+<a class="font-label-caps text-label-caps text-secondary font-bold border-b-2 border-secondary px-2 py-1" href="#">Study Plans</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-low transition-colors px-2 py-1" href="#">Grades</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface-container-low border border-outline-variant/30 rounded-none focus:ring-1 focus:ring-primary font-body-sm text-body-sm w-64" placeholder="Search milestones..." type="text"/>
+</div>
+<span class="material-symbols-outlined text-primary cursor-pointer">notifications</span>
+<div class="w-8 h-8 bg-primary rounded-full overflow-hidden border border-outline-variant/50">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a young student with a scholarly and focused expression, set against a neutral, high-key studio background. The lighting is soft and even, highlighting a modern, clean look with a subtle cool color temperature. The student is wearing a neat, dark navy academic blazer that contrasts with the pristine white background, reinforcing the academic ledger aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjerfRAYi1BiDkVosKSr9JE4y6g6VXPG1U-8gvpdOvq62p5_5ShWU-EgFA0t_kuFptYbPgQ7zzsa_FPyY1vlrKOXJhVnfhmP3KBJSDdm9rmZj1GqudIH9xFhDjPXHDnrPWsSV1V-Bzj_vpjN7GwTxriO6OwdP9uRci1r-CLC1o6Iz2RJopR0idgvo_IF4NDtPpIi_xBErVm_625QO2ohVWEYG5HGlTL3cru3ngiTzZxTbTAURTECAlFesHpsPd_RhncoMeg8lAbN8"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Sidebar -->
+<aside class="hidden md:flex flex-col h-full py-margin-desktop bg-surface-container-low dark:bg-tertiary-container border-r border-outline-variant/20 w-64">
+<div class="px-6 mb-8">
+<h2 class="font-headline-md text-headline-md text-primary dark:text-primary-fixed">Homeschool Portal</h2>
+<p class="font-label-caps text-[10px] text-on-surface-variant tracking-widest mt-1 uppercase">Academic Year 2024</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 bg-secondary/10 text-secondary border-r-4 border-secondary translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-caps text-label-caps">Study Plans</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">grade</span>
+<span class="font-label-caps text-label-caps">Grades</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</nav>
+<div class="px-6 mt-auto space-y-4">
+<button class="w-full bg-primary text-on-primary py-3 font-label-caps text-label-caps hover:opacity-90 transition-opacity">
+                    Add New Lesson
+                </button>
+<div class="pt-4 border-t border-outline-variant/20">
+<a class="flex items-center gap-3 py-2 text-on-surface-variant hover:text-primary font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined text-sm">contact_support</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 py-2 text-on-surface-variant hover:text-primary font-body-sm text-body-sm" href="#">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+<span>Archive</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop">
+<div class="max-w-container-max mx-auto">
+<!-- Header & Stats -->
+<div class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+<div>
+<nav class="flex gap-2 mb-2">
+<span class="font-label-caps text-[10px] text-on-surface-variant">PLANNER</span>
+<span class="font-label-caps text-[10px] text-outline">/</span>
+<span class="font-label-caps text-[10px] text-primary">ARCHITECTURAL ROADMAP</span>
+</nav>
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary">6-Year Strategic Path</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-2xl">A comprehensive academic ledger detailing the transition from secondary education to professional architectural studies.</p>
+</div>
+<div class="flex gap-4">
+<div class="bg-ledger-ivory border border-primary/20 p-4 min-w-[140px]">
+<p class="font-label-caps text-[10px] text-outline mb-1">COMPLETION</p>
+<p class="font-stats-lg text-stats-lg text-secondary">38%</p>
+<div class="w-full h-1 bg-surface-container mt-2">
+<div class="bg-secondary h-full" style="width: 38%"></div>
+</div>
+</div>
+<div class="bg-ledger-ivory border border-primary/20 p-4 min-w-[140px]">
+<p class="font-label-caps text-[10px] text-outline mb-1">CREDITS</p>
+<p class="font-stats-lg text-stats-lg text-primary">42/144</p>
+</div>
+</div>
+</div>
+<!-- Roadmap Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+<!-- Phase 1: SMA (Left Side) -->
+<div class="xl:col-span-4 space-y-6">
+<div class="flex items-center gap-3 mb-4">
+<div class="bg-primary text-on-primary px-3 py-1 font-stats-sm text-stats-sm">PHASE 01</div>
+<h3 class="font-headline-md text-headline-md">SMA Foundation</h3>
+</div>
+<!-- Year 10 -->
+<div class="bg-ledger-ivory border border-outline-variant/30 p-6 hard-shadow relative">
+<div class="absolute top-4 right-4 flex gap-1">
+<span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h4 class="font-label-caps text-label-caps text-secondary mb-4">YEAR 10: EXPLORATION</h4>
+<ul class="space-y-4 ledger-line">
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Geometri Ruang I</span>
+<span class="font-stats-sm text-stats-sm text-secondary">DONE</span>
+</li>
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Sketsa Dasar</span>
+<span class="font-stats-sm text-stats-sm text-secondary">DONE</span>
+</li>
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Sejarah Seni Rupa</span>
+<span class="font-stats-sm text-stats-sm text-secondary">DONE</span>
+</li>
+</ul>
+</div>
+<!-- Year 11 -->
+<div class="bg-ledger-ivory border border-outline-variant/30 p-6 relative">
+<div class="absolute top-4 right-4 text-outline">
+<span class="material-symbols-outlined text-lg">pending</span>
+</div>
+<h4 class="font-label-caps text-label-caps text-primary mb-4">YEAR 11: CORE SKILLS</h4>
+<ul class="space-y-4 ledger-line">
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Fisika Bangunan</span>
+<span class="font-stats-sm text-stats-sm text-outline">70%</span>
+</li>
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Perspektif 2 Titik Hilang</span>
+<span class="font-stats-sm text-stats-sm text-secondary">DONE</span>
+</li>
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Matematika Kalkulus</span>
+<span class="font-stats-sm text-stats-sm text-outline">45%</span>
+</li>
+</ul>
+</div>
+<!-- Year 12 -->
+<div class="bg-ledger-ivory border border-outline-variant/30 p-6 opacity-60">
+<h4 class="font-label-caps text-label-caps text-outline mb-4">YEAR 12: PORTFOLIO PREP</h4>
+<ul class="space-y-4 ledger-line">
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Maket Studi I</span>
+<span class="font-stats-sm text-stats-sm text-outline">LOCK</span>
+</li>
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Komposisi Warna</span>
+<span class="font-stats-sm text-stats-sm text-outline">LOCK</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Phase 2: Gap Year (Middle Column) -->
+<div class="xl:col-span-3 space-y-6">
+<div class="flex items-center gap-3 mb-4">
+<div class="bg-secondary text-on-secondary px-3 py-1 font-stats-sm text-stats-sm">PHASE 02</div>
+<h3 class="font-headline-md text-headline-md">The Gap Year</h3>
+</div>
+<div class="bg-secondary-container/10 border-2 border-secondary p-1">
+<div class="bg-ledger-ivory border border-secondary p-6">
+<p class="font-body-sm text-body-sm italic text-on-surface-variant mb-6">"A dedicated interval for intensive portfolio curation and professional internship."</p>
+<div class="space-y-8">
+<div>
+<h5 class="font-label-caps text-[10px] text-secondary mb-3">MILESTONES</h5>
+<div class="space-y-4">
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-8 h-8 rounded-full border border-secondary flex items-center justify-center text-secondary font-stats-sm">01</div>
+<div>
+<p class="font-label-caps text-label-caps">Portfolio Review</p>
+<p class="font-body-sm text-body-sm text-outline">12 Selected Works</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-8 h-8 rounded-full border border-outline flex items-center justify-center text-outline font-stats-sm">02</div>
+<div>
+<p class="font-label-caps text-label-caps text-outline">Studio Internship</p>
+<p class="font-body-sm text-body-sm text-outline">3 Months Duration</p>
+</div>
+</div>
+</div>
+</div>
+<div class="border-t border-secondary/20 pt-6">
+<h5 class="font-label-caps text-[10px] text-secondary mb-3">TOOLS MASTERY</h5>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-surface-container text-primary font-stats-sm text-[10px] border border-outline-variant">AUTOCAD</span>
+<span class="px-2 py-1 bg-surface-container text-primary font-stats-sm text-[10px] border border-outline-variant">SKETCHUP</span>
+<span class="px-2 py-1 bg-surface-container text-primary font-stats-sm text-[10px] border border-outline-variant opacity-50">REVIT</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Vision Image -->
+<div class="relative group cursor-pointer overflow-hidden border border-outline-variant/30">
+<img class="w-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A sophisticated architectural sketch of a modern pavilion, drawn in a professional technical style with fine black ink lines on textured ivory paper. The composition includes hand-drawn annotations, scale figures, and a minimalist landscaping plan. The lighting is bright and airy, reflecting a studio environment with warm wooden drafting tables visible in the soft-focus background, maintaining the academic and studious tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlUwJvYGIgQmdjJkSHSyPtvQJiduTZSzGL6ZrqNWfkwiCdMEIiaxEM_ulEA4byNi0aCMmEq7EUJoT-xLerVk02PIoEanHwvgkUPTu3oNkLgjqtCwQbPYWIDdl_SrfZhqGTFzSSTvQJb0sH7c_AUC8diSqkwWfehUcKLunxXTVIk9CQ2SCsgHlDfbARfiacTZgKzLVRaHOpRfj51M40aK91rjDrT3n1OLTBfnxfxjAz9KCLb5boFRn86g2hCkY7dRZ9N8m3E_nSv6A"/>
+<div class="absolute bottom-0 left-0 right-0 bg-primary/90 p-4 translate-y-full group-hover:translate-y-0 transition-transform">
+<p class="font-label-caps text-[10px] text-on-primary">CURATED VISION</p>
+<p class="font-body-sm text-body-sm text-on-primary-container">Residential Pavilion Study 2024</p>
+</div>
+</div>
+</div>
+<!-- Phase 3: Higher Ed (Right Column) -->
+<div class="xl:col-span-5 space-y-6">
+<div class="flex items-center gap-3 mb-4">
+<div class="bg-tertiary text-on-tertiary px-3 py-1 font-stats-sm text-stats-sm">PHASE 03</div>
+<h3 class="font-headline-md text-headline-md">S1 Architecture</h3>
+</div>
+<div class="bg-ledger-ivory border border-outline-variant/30 overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-primary text-on-primary">
+<th class="p-4 font-label-caps text-label-caps">SEMESTER</th>
+<th class="p-4 font-label-caps text-label-caps">CORE MODULES</th>
+<th class="p-4 font-label-caps text-label-caps text-right">STATUS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 align-top">
+<p class="font-stats-lg text-stats-lg">01</p>
+</td>
+<td class="p-4">
+<p class="font-body-md text-body-md font-bold mb-1">Studio Perancangan I</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Dasar-dasar komposisi dan organisasi ruang.</p>
+</td>
+<td class="p-4 text-right">
+<span class="inline-block px-2 py-1 bg-secondary/10 text-secondary font-stats-sm text-[10px] border border-secondary/20">UPCOMING</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 align-top">
+<p class="font-stats-lg text-stats-lg">02</p>
+</td>
+<td class="p-4">
+<p class="font-body-md text-body-md font-bold mb-1">Sains Bangunan</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Penghawaan alami dan pencahayaan.</p>
+</td>
+<td class="p-4 text-right">
+<span class="material-symbols-outlined text-outline">lock</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors bg-surface-container-lowest">
+<td class="p-4 align-top">
+<p class="font-stats-lg text-stats-lg">03</p>
+</td>
+<td class="p-4">
+<p class="font-body-md text-body-md font-bold mb-1">Struktur &amp; Konstruksi II</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Sistem bentang lebar dan material komposit.</p>
+</td>
+<td class="p-4 text-right">
+<span class="material-symbols-outlined text-outline">lock</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 align-top">
+<p class="font-stats-lg text-stats-lg">04</p>
+</td>
+<td class="p-4">
+<p class="font-body-md text-body-md font-bold mb-1">Teori Arsitektur</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Kritik arsitektur dan perkembangan desain modern.</p>
+</td>
+<td class="p-4 text-right">
+<span class="material-symbols-outlined text-outline">lock</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="bg-primary p-6 text-on-primary relative overflow-hidden">
+<div class="relative z-10">
+<h4 class="font-label-caps text-label-caps mb-4 text-primary-fixed">CAREER PROJECTION</h4>
+<div class="flex items-center gap-6">
+<div class="text-center">
+<p class="font-stats-lg text-stats-lg">2027</p>
+<p class="font-label-caps text-[10px] opacity-70">GRADUATION</p>
+</div>
+<div class="h-8 w-px bg-on-primary/20"></div>
+<div class="text-center">
+<p class="font-stats-lg text-stats-lg">2029</p>
+<p class="font-label-caps text-[10px] opacity-70">PROFESSIONAL (PPAr)</p>
+</div>
+</div>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'wght' 200;">architecture</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Action -->
+<div class="mt-12 py-8 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary">verified</span>
+<p class="font-body-sm text-body-sm">Last verified by Academic Counselor on Oct 24, 2023</p>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-2 border border-primary font-label-caps text-label-caps hover:bg-surface-container transition-all">Download PDF</button>
+<button class="px-6 py-2 bg-primary text-on-primary font-label-caps text-label-caps hover:opacity-90 shadow-sm">Sync with Calendar</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Global Footer -->
+<footer class="bg-surface-container-lowest dark:bg-primary border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center w-full px-margin-desktop py-4 z-40">
+<p class="font-stats-sm text-stats-sm text-on-surface-variant">© 2024 ScholarsLedger Academic Systems</p>
+<div class="flex gap-8 mt-4 md:mt-0">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Academic Integrity</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Support Center</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Ledger</a>
+</div>
+</footer>
+<script>
+        // Micro-interactions for hover effects on ledger cards
+        document.querySelectorAll('.bg-ledger-ivory').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                if (card.classList.contains('hard-shadow')) {
+                    card.style.transform = 'translate(-2px, -2px)';
+                }
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translate(0, 0)';
+            });
+        });
+    </script>
+
+<script>
+(function(){
+  function bindClick(selectors, handler) {
+    document.querySelectorAll(selectors).forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
+            return;
+        }
+        e.preventDefault();
+        handler(e, el);
+      });
+    });
+  }
+
+  // 1. Top Navbar Role Tabs
+  bindClick('header nav a', function(e, a) {
+    var text = a.textContent.trim().toLowerCase();
+    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
+    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
+  });
+
+  // 2. Header Icons & Avatar
+  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
+    var iconText = '';
+    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
+    else {
+      var icon = b.querySelector('.material-symbols-outlined');
+      if (icon) iconText = icon.textContent.trim();
+    }
+    
+    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
+      window.location.href = '/?page=18_profil';
+    }
+  });
+
+  // 3. Sidebar, Bottom Nav, and generic # links
+  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
+    var text = el.textContent.trim().toLowerCase();
+    if (!text) {
+        var icon = el.querySelector('.material-symbols-outlined');
+        if (icon) text = icon.textContent.trim().toLowerCase();
+    }
+    
+    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
+    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
+    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
+    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
+    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
+    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
+    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
+    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
+    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
+  });
+  
+  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
+})();
+</script>
+
+</body></html>

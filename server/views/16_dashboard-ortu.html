@@ -1,0 +1,347 @@
+<!DOCTYPE html><html lang="id" class="light" style=""><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&amp;family=Libre+Franklin:wght@400;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-container": "#549589",
+                    "background": "#fbf8fb",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#f7bc60",
+                    "on-background": "#1b1b1d",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed-variant": "#614000",
+                    "on-surface": "#1b1b1d",
+                    "on-surface-variant": "#45464d",
+                    "on-primary-container": "#7f89a8",
+                    "surface-container-low": "#f5f3f5",
+                    "inverse-surface": "#303032",
+                    "on-tertiary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#fdc265",
+                    "secondary-fixed": "#ffddaf",
+                    "error-container": "#ffdad6",
+                    "on-primary-fixed": "#101b34",
+                    "error": "#ba1a1a",
+                    "inverse-on-surface": "#f3f0f2",
+                    "surface-variant": "#e4e2e4",
+                    "surface-dim": "#dcd9dc",
+                    "surface-container-highest": "#e4e2e4",
+                    "secondary": "#805600",
+                    "surface-container-high": "#eae7ea",
+                    "surface-tint": "#535e7a",
+                    "primary-fixed-dim": "#bbc6e7",
+                    "primary-container": "#17223b",
+                    "tertiary-container": "#002822",
+                    "on-primary-fixed-variant": "#3c4661",
+                    "on-secondary-fixed": "#281800",
+                    "on-tertiary-fixed": "#00201b",
+                    "primary": "#020b24",
+                    "surface-container": "#f0edf0",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed": "#adefe1",
+                    "surface": "#fbf8fb",
+                    "on-tertiary-fixed-variant": "#005046",
+                    "surface-bright": "#fbf8fb",
+                    "on-error-container": "#93000a",
+                    "outline-variant": "#c6c6ce",
+                    "outline": "#76777e",
+                    "tertiary-fixed-dim": "#91d3c5",
+                    "primary-fixed": "#d9e2ff",
+                    "inverse-primary": "#bbc6e7",
+                    "on-secondary-container": "#754e00",
+                    "tertiary": "#000f0c",
+                    "role-parent": "#A65C4B"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "margin-desktop": "32px",
+                    "container-max": "1280px",
+                    "gutter": "16px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "display-lg": ["\"Source Serif 4\""],
+                    "body-sm": ["Libre Franklin"],
+                    "label-caps": ["Libre Franklin"],
+                    "stats-lg": ["JetBrains Mono"],
+                    "stats-sm": ["JetBrains Mono"],
+                    "body-md": ["Libre Franklin"],
+                    "display-lg-mobile": ["\"Source Serif 4\""],
+                    "headline-md": ["\"Source Serif 4\""]
+            },
+            "fontSize": {
+                    "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "stats-lg": ["20px", {"lineHeight": "24px", "fontWeight": "500"}],
+                    "stats-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    }catch(_e){}</script><meta charset="utf-8"></head><body class="min-h-screen">
+<!-- Top Navigation (The Binder Tabs) -->
+<nav class="bg-background w-full border-b border-on-surface/20 sticky top-0 z-50">
+<div class="max-w-container-max mx-auto px-margin-desktop h-16 flex justify-between items-center">
+<div class="flex items-center space-x-8 h-full">
+<span class="font-display-lg text-display-lg font-bold text-primary">Flexa Cendekia x UNIPDU</span>
+<div class="hidden md:flex h-full items-end">
+<!-- Nav Item: Siswa -->
+<a href="#" class="text-on-surface-variant hover:text-primary px-6 py-2 transition-colors font-label-caps text-label-caps border-b-2 border-transparent">Siswa</a>
+<!-- Nav Item: Guru -->
+<a href="#" class="text-on-surface-variant hover:text-primary px-6 py-2 transition-colors font-label-caps text-label-caps border-b-2 border-transparent">Guru</a>
+<!-- Nav Item: Orang Tua (ACTIVE) -->
+<a href="#" class="text-white border-b-2 bg-role-parent px-6 py-2 rounded-t-lg transition-colors font-label-caps text-label-caps font-bold">Orang Tua</a>
+</div>
+</div>
+<div class="flex items-center space-x-6">
+<div class="relative group">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-original-icon="notifications">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">settings</span>
+<div class="flex items-center space-x-3 border-l pl-6 border-on-surface/10">
+<img class="w-8 h-8 rounded-full border border-on-surface/20 object-cover" data-alt="A portrait of a middle-aged Indonesian father with a kind and professional demeanor, wearing a simple collared shirt. The style is a clean, academic digital portrait with soft studio lighting and a neutral, warm background that aligns with the cream and ivory aesthetic of the ledger-style UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjmfn8Oohy461hHurqJW_tx7EO1KK_GsCSLNrvIcAjKQqi6thr-qSWyJo2sMZ2LBeImPB29S45uRu0KELXi8rGxxp60pAn-66EpAYo6w1wN8gm48FdVEw1gg6jHPzDZGTL5iM5Lz7pvMkq6RVTd1hXNrFgtREMnYu-k_wdAzBPsIBatMo9O-U75DE3BjBRGhm8UmCvfFLfkIqjGKSZOdN7runhNXzE_hV46TOa6NfoYHGtn5BUbPVMX28bXUwuWIseVlnpnFgldTE">
+<span class="font-body-md text-body-md font-bold text-primary">Bpk. Heru</span>
+</div>
+</div>
+</div>
+</nav>
+<main class="max-w-container-max mx-auto px-margin-desktop py-8 grid grid-cols-12 gap-gutter">
+<!-- Header & Profile Info -->
+<header class="col-span-12 paper-card hairline-border p-8 mb-4 flex flex-col md:flex-row justify-between items-start md:items-center">
+<div>
+<h1 class="font-headline-md text-headline-md text-primary mb-2">Selamat Datang, <?= (typeof userData !== 'undefined' && userData) ? userData.nama : 'Bpk. Heru' ?></h1>
+<div class="flex items-center space-x-4">
+<span class="bg-[#A65C4B1A] text-role-parent font-label-caps text-label-caps px-3 py-1 rounded-full hairline-border border-role-parent/20">Akses Lihat Saja</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic">
+<span class="material-symbols-outlined text-sm mr-1">info</span> Tampilan read-only
+                    </p>
+</div>
+</div>
+<div class="mt-4 md:mt-0 text-right">
+<p class="font-label-caps text-label-caps text-on-surface-variant">Update Terakhir</p>
+<p class="font-stats-sm text-stats-sm font-medium">14 Okt 2023, 09:45 WIB</p>
+</div>
+</header>
+<!-- Anak Selector (Pill Tabs) -->
+<section class="col-span-12 mb-6">
+<div class="flex space-x-2">
+<button class="bg-role-parent text-white px-6 py-2 rounded-full font-label-caps text-label-caps hard-shadow flex items-center">
+<span class="material-symbols-outlined mr-2" style="font-variation-settings: 'FILL' 1;">face</span>
+                    Ahmad Fauzi
+                </button>
+<button class="bg-white text-on-surface-variant hairline-border px-6 py-2 rounded-full font-label-caps text-label-caps hover:bg-surface-container-low transition-colors flex items-center">
+<span class="material-symbols-outlined mr-2">face_2</span>
+                    Siti Aminah
+                </button>
+<button class="bg-white text-on-surface-variant hairline-border px-6 py-2 rounded-full font-label-caps text-label-caps hover:bg-surface-container-low transition-colors flex items-center border-dashed border-2">
+<span class="material-symbols-outlined mr-2">add_circle</span>
+Hubungkan Anak Lain
+</button></div>
+</section>
+<!-- Left Column: Student Summary & Progress -->
+<div class="col-span-12 lg:col-span-8 space-y-gutter">
+<!-- Ringkasan Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Card: Jenjang -->
+<div class="paper-card hairline-border p-6 flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-4">Jenjang</span>
+<div>
+<p class="font-display-lg text-display-lg-mobile text-primary">SMA 11</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Tahun Ajaran 2023/2024</p>
+</div>
+</div>
+<!-- Card: Progres -->
+<div class="paper-card hairline-border p-6 flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-4">Progres Minggu Ini</span>
+<div>
+<div class="flex items-baseline space-x-1">
+<span class="font-stats-lg text-stats-lg text-role-parent">80</span>
+<span class="font-stats-sm text-stats-sm text-on-surface-variant">%</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 mt-2 overflow-hidden">
+<div class="bg-role-parent h-full" style="width: 80%"></div>
+</div>
+</div>
+</div>
+<!-- Card: Poin -->
+<div class="paper-card hairline-border p-6 flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-4">Poin Akademik</span>
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-role-parent text-3xl" style="font-variation-settings: 'FILL' 1;">stars</span>
+<p class="font-stats-lg text-stats-lg text-primary tracking-tighter">1,250</p>
+</div>
+</div>
+</div>
+<!-- Ledger: Akademik Detail -->
+
+</div>
+<!-- Right Column: Notifications & Activity -->
+<div class="col-span-12 lg:col-span-4 space-y-gutter">
+<!-- Notifikasi Center -->
+<div class="paper-card hairline-border p-6 bg-surface-container-lowest">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline-md text-headline-md text-primary">Notifikasi</h3>
+<span class="font-stats-sm text-stats-sm bg-error text-white px-2 py-0.5 rounded-full">3</span>
+</div>
+<div class="space-y-4">
+<!-- Notif 1 -->
+<div class="p-4 hairline-border border-l-4 border-l-error bg-error-container/5 relative group">
+<span class="bg-error text-white font-label-caps text-[10px] px-2 py-0.5 rounded mb-2 inline-block uppercase tracking-wider">Alert Keterlambatan</span><p class="font-body-md text-body-md font-bold text-primary mb-1">Terlambat target: Matematika Dasar</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Ahmad belum mengumpulkan tugas 'Logaritma' yang jatuh tempo kemarin.</p>
+<p class="font-stats-sm text-stats-sm text-error mt-2">24 jam yang lalu</p>
+</div>
+<!-- Notif 2 -->
+<div class="p-4 hairline-border border-l-4 border-l-secondary bg-secondary-container/5">
+<span class="bg-secondary-container text-on-secondary-container font-label-caps text-[10px] px-2 py-0.5 rounded mb-2 inline-block uppercase tracking-wider">Alert Pengajuan</span><p class="font-body-md text-body-md font-bold text-primary mb-1">Perubahan cita-cita dalam peninjauan</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Draft perubahan minat karier menjadi Arsitek sedang ditinjau oleh konselor akademik.</p>
+<p class="font-stats-sm text-stats-sm text-on-surface-variant mt-2">6 jam yang lalu</p>
+</div>
+<!-- Notif 3 -->
+<div class="p-4 hairline-border border-l-4 border-l-on-tertiary-container bg-tertiary-container/5">
+<p class="font-body-md text-body-md font-bold text-primary mb-1">KRS Semester Ganjil Disetujui</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Rencana studi untuk semester mendatang telah divalidasi oleh sistem.</p>
+<p class="font-stats-sm text-stats-sm text-on-surface-variant mt-2">2 hari yang lalu</p>
+</div>
+</div>
+<button class="w-full mt-6 py-3 border border-on-surface/10 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-low transition-colors uppercase tracking-widest">Lihat Semua Arsip</button>
+</div>
+<!-- Visualization: Goal Monitoring -->
+
+</div>
+</main><footer class="max-w-container-max mx-auto px-margin-desktop pb-8 text-center">
+<p class="font-body-sm text-body-sm text-on-surface-variant opacity-60">
+Data disinkronkan via SSO Flexa Cendekia
+</p>
+</footer>
+<!-- Side Decoration (The Ledger Binder Holes) -->
+<div class="fixed left-4 top-1/2 -translate-y-1/2 hidden xl:flex flex-col space-y-8 opacity-20 pointer-events-none">
+<div class="w-6 h-6 rounded-full border-2 border-primary"></div>
+<div class="w-6 h-6 rounded-full border-2 border-primary"></div>
+<div class="w-6 h-6 rounded-full border-2 border-primary"></div>
+<div class="w-6 h-6 rounded-full border-2 border-primary"></div>
+</div>
+<!-- Mobile Navigation Suppressed as per Task-Focused/Detail Context logic, but BottomNav provided as fallback if needed by Shared Components logic -->
+<div class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest border-t border-on-surface/10 h-16 flex justify-around items-center px-4">
+<div class="flex flex-col items-center text-role-parent">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-[10px] font-label-caps">Beranda</span>
+</div>
+<div class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-[10px] font-label-caps">Jadwal</span>
+</div>
+<div class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-[10px] font-label-caps">Laporan</span>
+</div>
+<div class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-label-caps">Profil</span>
+</div>
+</div>
+<script>
+        // Simple micro-interaction for notification hover
+        document.querySelectorAll('.group').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.classList.add('translate-x-1');
+                item.style.transition = 'transform 0.2s ease-out';
+            });
+            item.addEventListener('mouseleave', () => {
+                item.classList.remove('translate-x-1');
+            });
+        });
+
+        // Child Selector Logic
+        const childButtons = document.querySelectorAll('.col-span-12.mb-6 button');
+        childButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                childButtons.forEach(b => {
+                    b.classList.remove('bg-role-parent', 'text-white', 'hard-shadow');
+                    b.classList.add('bg-white', 'text-on-surface-variant', 'hairline-border');
+                    const icon = b.querySelector('.material-symbols-outlined');
+                    if(icon) icon.style.fontVariationSettings = "'FILL' 0";
+                });
+                btn.classList.remove('bg-white', 'text-on-surface-variant', 'hairline-border');
+                btn.classList.add('bg-role-parent', 'text-white', 'hard-shadow');
+                const activeIcon = btn.querySelector('.material-symbols-outlined');
+                if(activeIcon) activeIcon.style.fontVariationSettings = "'FILL' 1";
+            });
+        });
+    </script>
+
+
+<script>
+(function(){
+  function bindClick(selectors, handler) {
+    document.querySelectorAll(selectors).forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
+            return;
+        }
+        e.preventDefault();
+        handler(e, el);
+      });
+    });
+  }
+
+  // 1. Top Navbar Role Tabs
+  bindClick('header nav a', function(e, a) {
+    var text = a.textContent.trim().toLowerCase();
+    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
+    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
+  });
+
+  // 2. Header Icons & Avatar
+  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
+    var iconText = '';
+    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
+    else {
+      var icon = b.querySelector('.material-symbols-outlined');
+      if (icon) iconText = icon.textContent.trim();
+    }
+    
+    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
+      window.location.href = '/?page=18_profil';
+    }
+  });
+
+  // 3. Sidebar, Bottom Nav, and generic # links
+  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
+    var text = el.textContent.trim().toLowerCase();
+    if (!text) {
+        var icon = el.querySelector('.material-symbols-outlined');
+        if (icon) text = icon.textContent.trim().toLowerCase();
+    }
+    
+    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
+    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
+    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
+    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
+    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
+    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
+    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
+    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
+    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
+  });
+  
+  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
+})();
+</script>
+
+</body></html>

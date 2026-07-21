@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#000f0c",
+                    "on-surface": "#1b1b1d",
+                    "on-primary-fixed-variant": "#3c4661",
+                    "on-primary-fixed": "#101b34",
+                    "background": "#fbf8fb",
+                    "tertiary-fixed": "#adefe1",
+                    "secondary-container": "#fdc265",
+                    "error": "#ba1a1a",
+                    "secondary-fixed-dim": "#f7bc60",
+                    "tertiary-container": "#002822",
+                    "inverse-on-surface": "#f3f0f2",
+                    "surface-variant": "#e4e2e4",
+                    "surface-tint": "#535e7a",
+                    "secondary": "#805600",
+                    "on-tertiary-fixed": "#00201b",
+                    "on-tertiary-fixed-variant": "#005046",
+                    "surface-container-low": "#f5f3f5",
+                    "secondary-fixed": "#ffddaf",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed-variant": "#614000",
+                    "surface-container": "#f0edf0",
+                    "on-error-container": "#93000a",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "primary-fixed": "#d9e2ff",
+                    "on-secondary-container": "#754e00",
+                    "on-secondary-fixed": "#281800",
+                    "surface-dim": "#dcd9dc",
+                    "primary-container": "#17223b",
+                    "on-surface-variant": "#45464d",
+                    "on-background": "#1b1b1d",
+                    "on-secondary": "#ffffff",
+                    "inverse-primary": "#bbc6e7",
+                    "surface-container-highest": "#e4e2e4",
+                    "tertiary-fixed-dim": "#91d3c5",
+                    "surface": "#fbf8fb",
+                    "on-tertiary-container": "#549589",
+                    "primary-fixed-dim": "#bbc6e7",
+                    "outline": "#76777e",
+                    "inverse-surface": "#303032",
+                    "surface-container-high": "#eae7ea",
+                    "on-primary-container": "#7f89a8",
+                    "on-primary": "#ffffff",
+                    "primary": "#020b24",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#fbf8fb",
+                    "outline-variant": "#c6c6ce",
+                    "brand-ivory": "#FBFAF5",
+                    "brand-cream": "#EAEDE2",
+                    "brand-navy": "#17223B"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "32px",
+                    "container-max": "1280px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "display-lg-mobile": ["\"Source Serif 4\""],
+                    "body-md": ["Libre Franklin"],
+                    "stats-lg": ["JetBrains Mono"],
+                    "headline-md": ["\"Source Serif 4\""],
+                    "display-lg": ["\"Source Serif 4\""],
+                    "stats-sm": ["JetBrains Mono"],
+                    "label-caps": ["Libre Franklin"],
+                    "body-sm": ["Libre Franklin"]
+            },
+            "fontSize": {
+                    "display-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "stats-lg": ["20px", {"lineHeight": "24px", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "stats-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .blueprint-animation {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 5s linear forwards infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        .pen-cursor {
+            animation: pen-move 5s linear infinite;
+        }
+
+        @keyframes pen-move {
+            0% { transform: translate(0, 0); }
+            20% { transform: translate(40px, 20px); }
+            40% { transform: translate(80px, -10px); }
+            60% { transform: translate(120px, 40px); }
+            80% { transform: translate(160px, 10px); }
+            100% { transform: translate(200px, 30px); }
+        }
+
+        .hard-shadow {
+            box-shadow: 4px 4px 0px 0px rgba(23, 34, 59, 1);
+        }
+
+        .hairline-border {
+            border: 1px solid rgba(23, 34, 59, 0.2);
+        }
+
+        body {
+            background-color: #EAEDE2; /* brand-cream fallback */
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-brand-cream text-on-surface font-body-md">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-on-surface/20 flex justify-between items-center h-16 px-margin-mobile md:px-margin-desktop">
+<div class="flex items-center gap-2">
+<span class="font-display-lg text-headline-md font-bold text-primary">Flexa Cendekia</span>
+</div>
+<nav class="hidden md:flex items-center space-x-8 h-full">
+<a class="text-on-surface-variant hover:bg-on-surface/5 transition-colors px-2 h-full flex items-center cursor-pointer active:scale-95 transition-transform font-body-md" href="#">Dashboard</a>
+<a class="text-on-surface-variant hover:bg-on-surface/5 transition-colors px-2 h-full flex items-center cursor-pointer active:scale-95 transition-transform font-body-md" href="#">Kurikulum</a>
+<a class="text-on-surface-variant hover:bg-on-surface/5 transition-colors px-2 h-full flex items-center cursor-pointer active:scale-95 transition-transform font-body-md" href="#">Pencapaian</a>
+</nav>
+<div class="flex items-center space-x-4">
+<button class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform p-2 rounded-full hover:bg-on-surface/5">notifications</button>
+<button class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform p-2 rounded-full hover:bg-on-surface/5">account_circle</button>
+</div>
+</header>
+<!-- Main Content: Loading Screen -->
+<main class="min-h-screen flex flex-col items-center justify-center p-margin-mobile md:p-margin-desktop pt-24">
+<!-- Center Loading Area -->
+<div class="w-full max-w-2xl text-center space-y-12">
+<!-- Title -->
+<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary tracking-tight">
+                Menyusun Masa Depanmu...
+            </h1>
+<!-- Architect Blueprint Illustration (SVG Animation) -->
+<div class="relative bg-brand-ivory hairline-border hard-shadow p-8 md:p-12 aspect-[16/9] flex items-center justify-center overflow-hidden">
+<svg class="w-full h-full text-brand-navy/30" fill="none" viewbox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+<!-- Blueprint Grid lines -->
+<path d="M0 20H400M0 60H400M0 100H400M0 140H400M0 180H400M40 0V220M80 0V220M120 0V220M160 0V220M200 0V220M240 0V220M280 0V220M320 0V220M360 0V220" stroke="currentColor" stroke-width="0.5"></path>
+<!-- The Building Drawing -->
+<g class="blueprint-animation text-brand-navy" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+<path d="M100 180V80L200 40L300 80V180H100Z"></path>
+<path d="M150 180V140H180V180"></path>
+<path d="M220 100H260V130H220V100Z"></path>
+<path d="M100 80H300"></path>
+<path d="M200 40V80"></path>
+</g>
+<!-- Pen/Architect Tool Icon -->
+<g class="pen-cursor">
+<path d="M0 0L10 30L20 25L0 0Z" fill="#805600"></path>
+<circle cx="0" cy="0" fill="#805600" r="2"></circle>
+</g>
+</svg>
+<!-- Background Decoration -->
+<div class="absolute top-4 right-4 font-stats-sm text-on-surface-variant/40">
+                    PROJECT_ID: ARS-2024-UNIPDU
+                </div>
+<div class="absolute bottom-4 left-4 font-stats-sm text-on-surface-variant/40">
+                    SCALE: 1:100 / CAREER_MAPPING
+                </div>
+</div>
+<!-- Progress & Status Section -->
+<div class="space-y-6 max-w-md mx-auto">
+<!-- Progress Bar -->
+<div class="h-2 w-full bg-brand-navy/10 rounded-full overflow-hidden hairline-border">
+<div class="h-full bg-secondary w-0 transition-all duration-500 ease-out" id="progress-bar"></div>
+</div>
+<!-- Status Messages -->
+<div class="h-8 relative overflow-hidden">
+<p class="font-body-md text-on-surface-variant italic transition-opacity duration-300" id="status-text">
+                        Memulai inisialisasi...
+                    </p>
+</div>
+<!-- Detail Badges -->
+<div class="flex flex-wrap justify-center gap-3">
+<span class="px-3 py-1 bg-secondary/10 text-secondary hairline-border text-label-caps font-label-caps">Student: Jalur Arsitek</span>
+<span class="px-3 py-1 bg-primary/5 text-primary hairline-border text-label-caps font-label-caps">Target: 6 Tahun</span>
+<span class="px-3 py-1 bg-primary/5 text-primary hairline-border text-label-caps font-label-caps">Source: Kurikulum UNIPDU</span>
+</div>
+</div>
+</div>
+</main>
+<!-- UI Interaction Script -->
+<script>
+        const statusText = document.getElementById('status-text');
+        const progressBar = document.getElementById('progress-bar');
+        
+        const phases = [
+            { text: "Menganalisis kompetensi awal...", progress: 15 },
+            { text: "Memetakan kurikulum UNIPDU...", progress: 42 },
+            { text: "Menghubungkan standar industri...", progress: 68 },
+            { text: "Menyiapkan modul belajar 6 tahun...", progress: 89 },
+            { text: "Hampir selesai...", progress: 98 }
+        ];
+
+        let currentPhase = 0;
+
+        function updateLoading() {
+            if (currentPhase < phases.length) {
+                const phase = phases[currentPhase];
+                
+                // Fade out
+                statusText.style.opacity = '0';
+                
+                setTimeout(() => {
+                    statusText.innerText = phase.text;
+                    progressBar.style.width = phase.progress + '%';
+                    // Fade in
+                    statusText.style.opacity = '1';
+                    currentPhase++;
+                }, 300);
+
+                // Schedule next phase with random delay
+                const delay = 1500 + Math.random() * 2000;
+                setTimeout(updateLoading, delay);
+            }
+        }
+
+        // Initialize animation
+        window.onload = () => {
+            setTimeout(updateLoading, 1000);
+        };
+    </script>
+
+<script>
+(function(){
+  function bindClick(selectors, handler) {
+    document.querySelectorAll(selectors).forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
+            return;
+        }
+        e.preventDefault();
+        handler(e, el);
+      });
+    });
+  }
+
+  // 1. Top Navbar Role Tabs
+  bindClick('header nav a', function(e, a) {
+    var text = a.textContent.trim().toLowerCase();
+    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
+    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
+  });
+
+  // 2. Header Icons & Avatar
+  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
+    var iconText = '';
+    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
+    else {
+      var icon = b.querySelector('.material-symbols-outlined');
+      if (icon) iconText = icon.textContent.trim();
+    }
+    
+    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
+      window.location.href = '/?page=18_profil';
+    }
+  });
+
+  // 3. Sidebar, Bottom Nav, and generic # links
+  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
+    var text = el.textContent.trim().toLowerCase();
+    if (!text) {
+        var icon = el.querySelector('.material-symbols-outlined');
+        if (icon) text = icon.textContent.trim().toLowerCase();
+    }
+    
+    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
+    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
+    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
+    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
+    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
+    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
+    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
+    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
+    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
+  });
+  
+  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
+})();
+</script>
+
+    <script>
+    (function(){
+      document.querySelectorAll('button, a').forEach(function(el){
+        var text = el.textContent.trim().toLowerCase();
+        if(text.includes('lihat') || text.includes('roadmap') || text.includes('lanjut') || text.includes('selesai')) {
+          el.addEventListener('click', function(e){ e.preventDefault(); window.location.href = '/?page=07_hasil-roadmap'; });
+        }
+      });
+      setTimeout(function(){
+        var btns = document.querySelectorAll('button');
+        if(btns.length === 0){
+          window.location.href = '/?page=07_hasil-roadmap';
+        }
+      }, 5000);
+    })();
+    </script>
+</body></html>
