@@ -155,8 +155,8 @@
     <div
         style="background:#17223B;color:#EAEDE2;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
         <span>1. Onboarding &middot; 01/18 &middot; Login (SSO)</span>
-        <span>&larr; sebelumnya <a href="../index.html" style="color:#EAEDE2;margin:0 10px;">Peta alur</a> <a
-                href="../02_intro-diagnosis/code.html" style="color:#EAEDE2;">Intro tes diagnosis &rarr;</a></span>
+        <span>&larr; sebelumnya <a target="_top" href="<?= getWebAppUrl() ?>?page=01_login" style="color:#EAEDE2;margin:0 10px;">Peta alur</a> <a
+                target="_top" href="<?= getWebAppUrl() ?>?page=02_intro-diagnosis" style="color:#EAEDE2;">Intro tes diagnosis &rarr;</a></span>
     </div>
 
     <!-- Subtle Background Pattern (Simulating Grid Paper) -->
@@ -171,11 +171,11 @@
             </div>
             <div class="hidden md:flex gap-8">
                 <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
-                    href="panduan.html">Panduan</a>
+                    target="_top" href="<?= getWebAppUrl() ?>?page=01_login_panduan">Panduan</a>
                 <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
-                    href="bantuan.html">Bantuan</a>
+                    target="_top" href="<?= getWebAppUrl() ?>?page=01_login_bantuan">Bantuan</a>
                 <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
-                    href="kontak.html">Kontak</a>
+                    target="_top" href="<?= getWebAppUrl() ?>?page=01_login_kontak">Kontak</a>
             </div>
             <!-- Mobile menu button -->
             <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center p-2 text-primary">
@@ -186,11 +186,11 @@
         <div id="mobile-menu" class="hidden md:hidden border-t border-primary/10 bg-surface">
             <div class="flex flex-col px-margin-mobile py-4 gap-4">
                 <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
-                    href="panduan.html">Panduan</a>
+                    target="_top" href="<?= getWebAppUrl() ?>?page=01_login_panduan">Panduan</a>
                 <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
-                    href="bantuan.html">Bantuan</a>
+                    target="_top" href="<?= getWebAppUrl() ?>?page=01_login_bantuan">Bantuan</a>
                 <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
-                    href="kontak.html">Kontak</a>
+                    target="_top" href="<?= getWebAppUrl() ?>?page=01_login_kontak">Kontak</a>
             </div>
         </div>
     </header>
@@ -337,6 +337,82 @@
         menuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
+    </script>
+
+<script>
+(function(){
+  var BASE = '<?= getWebAppUrl() ?>';
+  
+  function bindClick(selectors, handler) {
+    document.querySelectorAll(selectors).forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
+            return;
+        }
+        e.preventDefault();
+        handler(e, el);
+      });
+    });
+  }
+
+  // 1. Top Navbar Role Tabs
+  bindClick('header nav a', function(e, a) {
+    var text = a.textContent.trim().toLowerCase();
+    if (text === 'siswa') window.top.location.href = BASE + '?page=08_dashboard-siswa';
+    else if (text === 'guru') window.top.location.href = BASE + '?page=14_dashboard-guru';
+    else if (text === 'orang tua') window.top.location.href = BASE + '?page=16_dashboard-ortu';
+  });
+
+  // 2. Header Icons & Avatar
+  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
+    var iconText = '';
+    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
+    else {
+      var icon = b.querySelector('.material-symbols-outlined');
+      if (icon) iconText = icon.textContent.trim();
+    }
+    
+    if (iconText === 'notifications') window.top.location.href = BASE + '?page=17_notifikasi';
+    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
+      window.top.location.href = BASE + '?page=18_profil';
+    }
+  });
+
+  // 3. Sidebar, Bottom Nav, and generic # links
+  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
+    var text = el.textContent.trim().toLowerCase();
+    if (!text) {
+        var icon = el.querySelector('.material-symbols-outlined');
+        if (icon) text = icon.textContent.trim().toLowerCase();
+    }
+    
+    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.top.location.href = BASE + '?page=08_dashboard-siswa';
+    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.top.location.href = BASE + '?page=09_krs-siswa';
+    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.top.location.href = BASE + '?page=10_detail-roadmap';
+    else if (text.includes('checkpoint') || text.includes('jumat')) window.top.location.href = BASE + '?page=11_checkpoint-jumat';
+    else if (text.includes('riwayat') || text === 'grades') window.top.location.href = BASE + '?page=13_riwayat-semester';
+    else if (text.includes('ganti cita')) window.top.location.href = BASE + '?page=12_ganti-cita-cita';
+    else if (text.includes('profil') || text === 'settings' || text === 'person') window.top.location.href = BASE + '?page=18_profil';
+    else if (text.includes('notifikasi') || text === 'notifications') window.top.location.href = BASE + '?page=17_notifikasi';
+    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.top.location.href = BASE + '?page=15_tinjauan-guru';
+    else if (text.includes('keluar') || text.includes('logout')) window.top.location.href = BASE + '?page=01_login';
+    else if (text.includes('tes diagnostik')) window.top.location.href = BASE + '?page=02_intro-diagnosis';
+  });
+  
+  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
+})();
+</script>
+
+    <script>
+    (function(){
+      var BASE = '<?= getWebAppUrl() ?>';
+      var ssoBtn = document.querySelector('button.bg-primary');
+      if(ssoBtn) ssoBtn.addEventListener('click', function(){ window.top.location.href = BASE + '?page=02_intro-diagnosis'; });
+      var roleChips = document.querySelectorAll('.role-chip');
+      if(roleChips[0]) roleChips[0].addEventListener('click', function(){ window.top.location.href = BASE + '?page=02_intro-diagnosis'; });
+      if(roleChips[1]) roleChips[1].addEventListener('click', function(){ window.top.location.href = BASE + '?page=14_dashboard-guru'; });
+      if(roleChips[2]) roleChips[2].addEventListener('click', function(){ window.top.location.href = BASE + '?page=16_dashboard-ortu'; });
+    })();
     </script>
 </body>
 

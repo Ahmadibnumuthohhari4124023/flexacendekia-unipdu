@@ -112,11 +112,6 @@
     </style>
 </head>
 <body class="min-h-screen font-body-md text-on-surface bg-background selection:bg-role-teacher/20">
-<div style="background:#17223B;color:#EAEDE2;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-<span>3. Guru &middot; 14/18 &middot; Dashboard guru</span>
-<span><a href="../13_riwayat-semester/code.html" style="color:#EAEDE2;">&larr; Riwayat semester</a> <a href="../index.html" style="color:#EAEDE2;margin:0 10px;">Peta alur</a> <a href="../15_tinjauan-guru/code.html" style="color:#EAEDE2;">Tinjauan akademik (review) &rarr;</a></span>
-</div>
-
 <!-- Top Navigation (Unified Style) -->
 <nav class="bg-surface-container-lowest border-b border-on-surface/10 sticky top-0 z-50">
 <div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-16">
@@ -347,4 +342,69 @@
 <p class="text-label-caps text-on-surface-variant font-bold">Panel Pembimbing Akademik • Flexa Cendekia x UNIPDU</p>
 <p class="text-xs text-on-surface-variant mt-2">© 2024 Arsitektur Kurikulum Masa Depan.</p>
 </footer>
+
+<script>
+(function(){
+  var BASE = '<?= getWebAppUrl() ?>';
+  
+  function bindClick(selectors, handler) {
+    document.querySelectorAll(selectors).forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
+            return;
+        }
+        e.preventDefault();
+        handler(e, el);
+      });
+    });
+  }
+
+  // 1. Top Navbar Role Tabs
+  bindClick('header nav a', function(e, a) {
+    var text = a.textContent.trim().toLowerCase();
+    if (text === 'siswa') window.top.location.href = BASE + '?page=08_dashboard-siswa';
+    else if (text === 'guru') window.top.location.href = BASE + '?page=14_dashboard-guru';
+    else if (text === 'orang tua') window.top.location.href = BASE + '?page=16_dashboard-ortu';
+  });
+
+  // 2. Header Icons & Avatar
+  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
+    var iconText = '';
+    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
+    else {
+      var icon = b.querySelector('.material-symbols-outlined');
+      if (icon) iconText = icon.textContent.trim();
+    }
+    
+    if (iconText === 'notifications') window.top.location.href = BASE + '?page=17_notifikasi';
+    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
+      window.top.location.href = BASE + '?page=18_profil';
+    }
+  });
+
+  // 3. Sidebar, Bottom Nav, and generic # links
+  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
+    var text = el.textContent.trim().toLowerCase();
+    if (!text) {
+        var icon = el.querySelector('.material-symbols-outlined');
+        if (icon) text = icon.textContent.trim().toLowerCase();
+    }
+    
+    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.top.location.href = BASE + '?page=08_dashboard-siswa';
+    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.top.location.href = BASE + '?page=09_krs-siswa';
+    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.top.location.href = BASE + '?page=10_detail-roadmap';
+    else if (text.includes('checkpoint') || text.includes('jumat')) window.top.location.href = BASE + '?page=11_checkpoint-jumat';
+    else if (text.includes('riwayat') || text === 'grades') window.top.location.href = BASE + '?page=13_riwayat-semester';
+    else if (text.includes('ganti cita')) window.top.location.href = BASE + '?page=12_ganti-cita-cita';
+    else if (text.includes('profil') || text === 'settings' || text === 'person') window.top.location.href = BASE + '?page=18_profil';
+    else if (text.includes('notifikasi') || text === 'notifications') window.top.location.href = BASE + '?page=17_notifikasi';
+    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.top.location.href = BASE + '?page=15_tinjauan-guru';
+    else if (text.includes('keluar') || text.includes('logout')) window.top.location.href = BASE + '?page=01_login';
+    else if (text.includes('tes diagnostik')) window.top.location.href = BASE + '?page=02_intro-diagnosis';
+  });
+  
+  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
+})();
+</script>
+
 </body></html>
