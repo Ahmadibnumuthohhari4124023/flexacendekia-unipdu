@@ -161,7 +161,7 @@
 </a>
 </nav>
 <div class="mt-auto pt-6 border-t border-primary/5 space-y-1">
-<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=01_login_bantuan">
 <span class="material-symbols-outlined">help</span>
 <span class="font-label-caps text-label-caps">Bantuan</span>
 </a>
@@ -171,165 +171,203 @@
 </a>
 </div>
 </aside>
+
+
 <!-- Main Content Canvas -->
 <main class="flex-1 p-6 md:p-margin-desktop bg-[#FBFAF5] min-h-[calc(100vh-64px)]">
-<div class="max-w-4xl mx-auto">
-<!-- Progress Header -->
-<div class="mb-10">
-<div class="flex justify-between items-end mb-4">
-<div>
-<h1 class="font-headline-md text-headline-md text-primary mb-1">Tes Diagnostik SMA - Penalaran Literasi</h1>
-<p class="font-body-sm text-on-surface-variant">Tingkat Lanjut (Grade 10-12)</p>
-</div>
-<div class="text-right">
-<div class="font-stats-lg text-stats-lg text-secondary mb-1" id="timer">24:58</div>
-<p class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest">Sisa Waktu</p>
-</div>
-</div>
-<div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden border border-primary/10">
-<div class="h-full bg-secondary-container transition-all duration-500" style="width: 30%;"></div>
-</div>
-<div class="flex justify-between mt-2">
-<span class="font-stats-sm text-stats-sm text-on-surface-variant">Soal <span class="text-primary font-bold">12</span> dari 40</span>
-<span class="font-stats-sm text-stats-sm text-on-surface-variant">30% Selesai</span>
-</div>
-</div>
-<!-- Question Card -->
-<div class="bg-surface-container-lowest ledger-border p-8 rounded-none relative overflow-hidden mb-8">
-<!-- Paper Decoration -->
-<div class="absolute top-0 right-0 w-24 h-24 pointer-events-none opacity-10">
-<span class="material-symbols-outlined text-[120px] -rotate-12 translate-x-8 -translate-y-8">description</span>
-</div>
-<article class="relative z-10">
-<span class="font-label-caps text-label-caps text-secondary mb-6 block">Analisis Situasi &amp; Logika</span>
-<div class="space-y-6">
-<p class="font-headline-md text-xl text-primary leading-relaxed">
-                                "Seorang peneliti lingkungan mengamati bahwa populasi burung endemik di sebuah pulau menurun drastis setelah introduksi spesies predator baru. Namun, data menunjukkan bahwa ketersediaan sumber pangan utama burung tersebut tetap melimpah. Berdasarkan premis ini, hipotesis manakah yang paling logis untuk menjelaskan penurunan populasi tersebut?"
-                            </p>
-<div class="bg-background/50 border-l-4 border-secondary p-4 italic text-on-surface-variant font-body-sm">
-                                Catatan: Pertimbangkan interaksi ekologis antara spesies invasif dan perilaku bersarang burung endemik dalam analisis Anda.
-                            </div>
-</div>
-<!-- Options List -->
-<div class="mt-10 space-y-4">
-<div class="group">
-<input class="hidden" id="opt1" name="diagnostic_option" type="radio"/>
-<label class="flex items-start gap-4 p-5 border border-primary/10 hover:bg-surface-container transition-all cursor-pointer group-active:translate-x-1" for="opt1">
-<span class="w-6 h-6 rounded-full border-2 border-primary/20 flex items-center justify-center flex-shrink-0 group-hover:border-secondary transition-colors">
-<span class="font-stats-sm text-xs font-bold text-on-surface-variant">A</span>
-</span>
-<span class="font-body-md text-on-surface">Predator baru mengonsumsi sumber pangan yang sama dengan burung endemik, menyebabkan kelaparan masal.</span>
-</label>
-</div>
-<div class="group">
-<input class="hidden" id="opt2" name="diagnostic_option" type="radio"/>
-<label class="flex items-start gap-4 p-5 border border-primary/10 hover:bg-surface-container transition-all cursor-pointer group-active:translate-x-1" for="opt2">
-<span class="w-6 h-6 rounded-full border-2 border-primary/20 flex items-center justify-center flex-shrink-0 group-hover:border-secondary transition-colors">
-<span class="font-stats-sm text-xs font-bold text-on-surface-variant">B</span>
-</span>
-<span class="font-body-md text-on-surface">Burung endemik bermigrasi ke pulau tetangga karena merasa terancam oleh keberadaan predator baru.</span>
-</label>
-</div>
-<div class="group">
-<input class="hidden" id="opt3" name="diagnostic_option" type="radio"/>
-<label class="flex items-start gap-4 p-5 border border-primary/10 hover:bg-surface-container transition-all cursor-pointer group-active:translate-x-1" for="opt3">
-<span class="w-6 h-6 rounded-full border-2 border-primary/20 flex items-center justify-center flex-shrink-0 group-hover:border-secondary transition-colors">
-<span class="font-stats-sm text-xs font-bold text-on-surface-variant">C</span>
-</span>
-<span class="font-body-md text-on-surface">Predator baru secara langsung memangsa telur dan anak burung pada musim bersarang, memutus siklus regenerasi.</span>
-</label>
-</div>
-<div class="group">
-<input class="hidden" id="opt4" name="diagnostic_option" type="radio"/>
-<label class="flex items-start gap-4 p-5 border border-primary/10 hover:bg-surface-container transition-all cursor-pointer group-active:translate-x-1" for="opt4">
-<span class="w-6 h-6 rounded-full border-2 border-primary/20 flex items-center justify-center flex-shrink-0 group-hover:border-secondary transition-colors">
-<span class="font-stats-sm text-xs font-bold text-on-surface-variant">D</span>
-</span>
-<span class="font-body-md text-on-surface">Ketersediaan pangan yang melimpah justru membuat burung menjadi malas mencari makan dan mudah dimangsa.</span>
-</label>
-</div>
-</div>
-</article>
-</div>
-<!-- Footer Navigation -->
-<div class="flex flex-col sm:flex-row justify-between items-center gap-4 py-8 border-t border-primary/10">
-<button class="w-full sm:w-auto px-8 py-3 border border-primary text-primary font-label-caps text-label-caps hover:bg-surface-container transition-all flex items-center justify-center gap-2">
-<span class="material-symbols-outlined text-sm">arrow_back</span>
-                        Sebelumnya
-                    </button>
-<div class="flex gap-2 order-3 sm:order-2">
-<button class="w-8 h-8 flex items-center justify-center border border-primary/20 text-xs font-stats-sm hover:bg-secondary/10">10</button>
-<button class="w-8 h-8 flex items-center justify-center border border-primary/20 text-xs font-stats-sm hover:bg-secondary/10">11</button>
-<button class="w-8 h-8 flex items-center justify-center bg-secondary text-white text-xs font-stats-sm">12</button>
-<button class="w-8 h-8 flex items-center justify-center border border-primary/20 text-xs font-stats-sm hover:bg-secondary/10">13</button>
-<button class="w-8 h-8 flex items-center justify-center border border-primary/20 text-xs font-stats-sm hover:bg-secondary/10">...</button>
-</div>
-<button class="w-full sm:w-auto px-10 py-3 bg-primary text-white font-label-caps text-label-caps ledger-shadow hover:translate-y-[-2px] hover:translate-x-[-2px] active:translate-y-0 active:translate-x-0 transition-all flex items-center justify-center gap-2 order-2 sm:order-3">
-                        Lanjutkan
-                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
-</button>
-</div>
-<!-- Shortcut Legend -->
-<div class="mt-12 flex justify-center gap-8 opacity-40">
-<div class="flex items-center gap-2">
-<span class="px-1.5 py-0.5 border border-primary rounded text-[10px] font-stats-sm">ALT + N</span>
-<span class="font-label-caps text-[10px]">Next</span>
-</div>
-<div class="flex items-center gap-2">
-<span class="px-1.5 py-0.5 border border-primary rounded text-[10px] font-stats-sm">ALT + P</span>
-<span class="font-label-caps text-[10px]">Prev</span>
-</div>
-<div class="flex items-center gap-2">
-<span class="px-1.5 py-0.5 border border-primary rounded text-[10px] font-stats-sm">1-4</span>
-<span class="font-label-caps text-[10px]">Pilih Opsi</span>
-</div>
-</div>
+<div class="max-w-4xl mx-auto" id="app-container">
+<!-- UI will be rendered here via JS -->
 </div>
 </main>
 </div>
 <script>
-        // Simple Timer Interaction
-        let timeInSeconds = 25 * 60;
-        const timerElement = document.getElementById('timer');
+    const questions = [{"id":1,"category":"Minat & Ketertarikan","text":"Manakah dari aktivitas berikut yang paling Anda nikmati di waktu luang?","options":["Membaca buku fiksi atau menulis cerita.","Mengotak-atik alat elektronik atau membuat program komputer.","Berolahraga atau melakukan aktivitas fisik di luar ruangan.","Menggambar, melukis, atau mendesain sesuatu secara visual."]},{"id":2,"category":"Minat & Ketertarikan","text":"Ketika dihadapkan pada sebuah proyek kelompok, peran apa yang biasanya Anda ambil?","options":["Pemimpin yang membagi tugas dan mengoordinir.","Pengonsep yang mencari ide-ide kreatif.","Analis yang meneliti data dan fakta.","Pelaksana yang fokus menyelesaikan detail tugas."]},{"id":3,"category":"Minat & Ketertarikan","text":"Topik dokumenter apa yang paling mungkin Anda tonton secara sukarela?","options":["Evolusi teknologi dan penemuan mesin baru.","Sejarah dunia dan peradaban manusia kuno.","Psikologi perilaku dan interaksi sosial manusia.","Keajaiban alam semesta dan fenomena luar angkasa."]},{"id":4,"category":"Minat & Ketertarikan","text":"Apa yang Anda rasakan ketika harus berbicara di depan orang banyak?","options":["Sangat antusias, saya suka berbagi ide dengan orang lain.","Biasa saja, asalkan materinya saya kuasai dengan baik.","Gugup pada awalnya, namun bisa menyesuaikan diri.","Sangat menghindari, saya lebih suka bekerja di balik layar."]},{"id":5,"category":"Minat & Ketertarikan","text":"Jika Anda memiliki modal tak terbatas untuk membuat sebuah bisnis, bisnis apa yang Anda bangun?","options":["Perusahaan teknologi yang mengembangkan kecerdasan buatan.","Lembaga non-profit yang membantu pendidikan anak terpencil.","Firma arsitektur atau studio desain grafis.","Klinik kesehatan atau pusat riset medis mutakhir."]},{"id":6,"category":"Minat & Ketertarikan","text":"Saat memecahkan masalah, pendekatan mana yang Anda senangi?","options":["Mengikuti prosedur dan langkah-langkah yang sudah pasti.","Mencari solusi inovatif yang belum pernah dicoba sebelumnya.","Berdiskusi dengan teman untuk mendapatkan banyak perspektif.","Melakukan eksperimen langsung melalui trial-and-error."]},{"id":7,"category":"Minat & Ketertarikan","text":"Manakah jenis buku yang paling membuat Anda penasaran?","options":["Biografi tokoh inspiratif dan revolusioner.","Buku panduan teknis (how-to) atau coding.","Buku tentang filosofi atau sastra klasik.","Buku tentang strategi bisnis dan keuangan."]},{"id":8,"category":"Minat & Ketertarikan","text":"Apakah Anda tertarik untuk mengelola keuangan atau menghitung estimasi anggaran?","options":["Sangat tertarik, saya suka melihat angka yang terstruktur.","Lumayan tertarik jika ada kaitannya dengan proyek besar.","Tidak tertarik, saya lebih suka fokus pada konsepnya saja.","Sangat tidak suka, saya menyerahkannya pada orang lain."]},{"id":9,"category":"Minat & Ketertarikan","text":"Dalam memandang sebuah konflik sosial, fokus pertama Anda adalah...","options":["Dampak psikologis yang dirasakan para korban.","Hukum dan peraturan yang dilanggar.","Akar sejarah yang menyebabkan konflik tersebut.","Bagaimana media mengabarkan konflik itu ke publik."]},{"id":10,"category":"Minat & Ketertarikan","text":"Di lingkungan baru, Anda cenderung untuk...","options":["Langsung berkenalan dan mendominasi pembicaraan.","Mengamati sekeliling dan mencari pola interaksi.","Mencari satu atau dua teman dekat lalu mengobrol dalam.","Fokus pada tujuan utama saya tanpa banyak basa-basi."]},{"id":11,"category":"Bakat Alami","text":"Seberapa cepat Anda menyadari adanya kesalahan penulisan (typo) dalam sebuah artikel?","options":["Sangat cepat, mata saya otomatis menangkap hal tersebut.","Cukup cepat jika saya membaca dengan perlahan.","Saya kadang melewatkannya karena fokus pada inti kalimat.","Sangat jarang, saya hampir tidak pernah menyadarinya."]},{"id":12,"category":"Bakat Alami","text":"Saat mendengarkan lagu baru, elemen apa yang pertama kali paling menonjol bagi Anda?","options":["Melodi dan harmoni nadanya.","Lirik dan makna kata-katanya.","Ketukan (beat) dan ritmenya.","Kualitas instrumen atau teknik vokal."]},{"id":13,"category":"Bakat Alami","text":"Jika seseorang menjelaskan arah jalan yang rumit, apakah Anda bisa membayangkannya dalam pikiran?","options":["Sangat jelas, seolah saya memiliki peta 3D di kepala.","Bisa, asalkan ada petunjuk patokan jalan yang ikonik.","Sulit, saya butuh orang tersebut menggambarkannya di kertas.","Sangat sulit, saya lebih mengandalkan aplikasi peta."]},{"id":14,"category":"Bakat Alami","text":"Berapa lama Anda bisa memusatkan perhatian penuh pada tugas yang repetitif dan detail?","options":["Berjam-jam tanpa merasa bosan.","Bisa cukup lama, namun butuh istirahat singkat di sela-sela.","Cepat bosan dan mudah terdistraksi.","Sangat tidak bisa, saya butuh dinamika dan variasi."]},{"id":15,"category":"Bakat Alami","text":"Bagaimana respon alami Anda saat terjadi situasi darurat (misal: ada yang kecelakaan)?","options":["Tetap tenang dan langsung mengambil tindakan rasional.","Panik sesaat namun segera mencoba mencari bantuan.","Merasakan empati yang sangat mendalam hingga ikut syok.","Mencoba memandu orang-orang di sekitar agar tidak kacau."]},{"id":16,"category":"Bakat Alami","text":"Seberapa baik Anda dalam merangkai barang rakitan (misal furnitur IKEA)?","options":["Sangat baik, bahkan kadang tanpa melihat instruksi.","Cukup baik asalkan mengikuti buku panduan perlahan.","Butuh waktu lama dan sering membongkar ulang.","Lebih memilih meminta bantuan orang lain."]},{"id":17,"category":"Bakat Alami","text":"Saat mendengarkan keluhan teman, Anda secara alami akan...","options":["Memberikan analisis logis dan solusi praktis.","Mendengarkan dengan penuh simpati tanpa menghakimi.","Berusaha mengalihkan perhatiannya ke hal yang positif.","Membandingkan dengan pengalaman pribadi saya."]},{"id":18,"category":"Bakat Alami","text":"Bagaimana kecepatan Anda dalam menyerap bahasa asing yang baru?","options":["Sangat cepat menangkap kosakata dan aksen.","Cepat mengerti jika melalui membaca dan menulis.","Butuh waktu yang cukup lama dan praktek konsisten.","Kesulitan luar biasa meskipun sudah belajar keras."]},{"id":19,"category":"Bakat Alami","text":"Dalam memahami konsep matematika rumit, apakah Anda butuh visualisasi?","options":["Tidak, saya bisa memahaminya dalam bentuk rumus abstrak.","Terkadang, visualisasi grafik sangat membantu.","Selalu, saya tidak mengerti tanpa digambarkan.","Matematika selalu sulit bagi saya bagaimanapun caranya."]},{"id":20,"category":"Bakat Alami","text":"Jika diminta menebak suasana hati seseorang hanya dari ekspresinya, seberapa akurat tebakan Anda?","options":["Hampir selalu akurat, saya peka pada mikrokspresi.","Cukup akurat pada teman yang sudah saya kenal.","Hanya bisa menebak emosi besar (marah, senang, sedih).","Sering salah menebak."]},{"id":21,"category":"Gaya Belajar","text":"Metode mana yang paling membuat Anda cepat hafal suatu materi?","options":["Membaca ulang catatan atau buku cetak.","Mendengarkan penjelasan guru atau rekaman audio.","Mencatat ulang sambil menggarisbawahi hal penting.","Mempraktikkan langsung teori tersebut (roleplay/eksperimen)."]},{"id":22,"category":"Gaya Belajar","text":"Saat mempelajari software/aplikasi baru, apa yang Anda lakukan pertama kali?","options":["Membaca buku panduan atau artikel dokumentasinya.","Menonton video tutorial di YouTube.","Langsung mencoba mengklik berbagai fitur yang ada.","Bertanya pada teman yang sudah ahli."]},{"id":23,"category":"Gaya Belajar","text":"Bentuk tes ujian mana yang menurut Anda paling menonjolkan kemampuan Anda?","options":["Ujian tulis dengan esai panjang.","Ujian lisan atau wawancara langsung.","Proyek presentasi visual dengan slide.","Ujian praktikum di laboratorium/lapangan."]},{"id":24,"category":"Gaya Belajar","text":"Apa hal yang paling mengganggu konsentrasi Anda saat belajar?","options":["Ruangan yang berantakan atau pencahayaan buruk.","Suara bising yang tidak beraturan dari luar.","Harus duduk diam terlalu lama di satu tempat.","Memori tentang masalah pribadi atau perasaan cemas."]},{"id":25,"category":"Gaya Belajar","text":"Bagaimana cara Anda mempresentasikan ide kepada kelompok?","options":["Menggunakan diagram, grafik, atau mind-map.","Menjelaskannya secara verbal dengan artikulasi jelas.","Menuliskan poin-poin utama di papan tulis.","Mengajak kelompok melakukan simulasi atau demo."]},{"id":26,"category":"Gaya Belajar","text":"Jika Anda ingin mengingat nomor telepon baru, Anda akan...","options":["Membayangkannya tertulis di udara atau kertas.","Menggumamkan atau menyebutkan angkanya berkali-kali.","Mengingat pola ketukan jari saat menekan tombol angka.","Langsung menyimpannya di ponsel."]},{"id":27,"category":"Gaya Belajar","text":"Saat membaca novel, apakah Anda bisa membayangkan adegannya?","options":["Ya, bagaikan menonton film berwarna di dalam pikiran.","Bisa, namun lebih dominan terdengar dialognya.","Bisa, namun lebih terasa emosi dan suasana suhunya.","Sulit membayangkannya, saya hanya fokus pada alurnya."]},{"id":28,"category":"Gaya Belajar","text":"Saat mendapat tugas merangkai puzzle rumit, Anda...","options":["Melihat gambar referensi di kotak kemasan terus menerus.","Bicara pada diri sendiri mencari kepingan yang pas.","Langsung mencoba menyambungkan kepingan tanpa henti.","Mencari pola warna/bentuk sebelum mulai."]},{"id":29,"category":"Gaya Belajar","text":"Apa warna highlighter (stabilo) yang paling sering Anda gunakan?","options":["Saya menggunakan banyak warna untuk mengkategorikan.","Satu warna saja cukup untuk poin utama.","Saya jarang menggunakan stabilo, lebih suka pensil.","Saya tidak pernah menandai buku."]},{"id":30,"category":"Gaya Belajar","text":"Ketika bosan di dalam kelas, kebiasaan apa yang Anda lakukan?","options":["Mencoret-coret pinggiran buku (doodling).","Mengobrol dengan teman sebelah atau memutar pena.","Menggoyang-goyangkan kaki atau mengubah posisi duduk.","Melamun membayangkan hal lain."]},{"id":31,"category":"Kompetensi Dasar","note":"Catatan: Gunakan logika deduktif Anda.","text":"Jika semua X adalah Y, dan beberapa Y adalah Z, maka...","options":["Semua X pasti Z.","Beberapa X mungkin Z.","Tidak ada X yang Z.","Semua Z adalah X."]},{"id":32,"category":"Kompetensi Dasar","text":"Sebuah kereta berangkat pukul 08:00 dengan kecepatan 60 km/jam. Kereta kedua menyusul dari stasiun yang sama pukul 09:00 dengan kecepatan 80 km/jam. Pukul berapa kereta kedua menyusul kereta pertama?","options":["10:30","11:00","12:00","12:30"]},{"id":33,"category":"Kompetensi Dasar","note":"Catatan: Pertimbangkan makna kiasan dalam teks sastra.","text":"Dalam kalimat 'Mentari pagi tersenyum menyapa bumi', majas yang digunakan adalah...","options":["Personifikasi","Metafora","Hiperbola","Simile"]},{"id":34,"category":"Kompetensi Dasar","text":"Manakah dari barisan angka berikut yang memiliki pola berbeda?","options":["2, 4, 8, 16","3, 9, 27, 81","4, 16, 64, 256","5, 10, 20, 30"]},{"id":35,"category":"Kompetensi Dasar","text":"Jika HARI INI adalah Selasa, maka 100 hari dari sekarang adalah hari...","options":["Senin","Rabu","Kamis","Jumat"]},{"id":36,"category":"Kompetensi Dasar","note":"Catatan: Baca perlahan untuk menangkap premisnya.","text":"Seorang peneliti lingkungan mengamati bahwa populasi burung endemik di sebuah pulau menurun drastis setelah introduksi spesies predator baru. Namun, ketersediaan sumber pangan utama burung tersebut tetap melimpah. Hipotesis manakah yang paling logis?","options":["Predator baru mengonsumsi sumber pangan yang sama.","Burung endemik bermigrasi ke pulau tetangga.","Predator baru memangsa telur dan anak burung pada musim bersarang.","Ketersediaan pangan membuat burung malas dan mudah dimangsa."]},{"id":37,"category":"Kompetensi Dasar","text":"Sebuah tangki air memiliki dua keran. Keran A dapat mengisi penuh tangki dalam 4 jam, keran B dalam 6 jam. Jika keduanya dibuka bersamaan, berapa lama tangki penuh?","options":["2.4 Jam","3 Jam","5 Jam","10 Jam"]},{"id":38,"category":"Kompetensi Dasar","text":"Sinonim dari kata 'EKSKAVASI' adalah...","options":["Penggalian","Penemuan","Pembangunan","Pemusnahan"]},{"id":39,"category":"Kompetensi Dasar","text":"Dalam struktur sel eukariotik, organel manakah yang berfungsi sebagai pusat produksi energi (ATP)?","options":["Nukleus","Ribosom","Mitokondria","Lisosom"]},{"id":40,"category":"Kompetensi Dasar","text":"Sebuah perusahaan startup mengalami kerugian sebesar 15% dari modal awal di tahun pertama. Jika modal awal adalah Rp 200.000.000, berapakah sisa modal mereka?","options":["Rp 185.000.000","Rp 170.000.000","Rp 165.000.000","Rp 150.000.000"]}];
+    let currentQuestion = 1;
+    let answers = {};
+    let timeInSeconds = 30 * 60; // 30 minutes
+    let timerInterval = null;
 
-        function updateTimer() {
-            const minutes = Math.floor(timeInSeconds / 60);
-            const seconds = timeInSeconds % 60;
-            timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            if (timeInSeconds > 0) {
-                timeInSeconds--;
-            } else {
-                clearInterval(timerInterval);
-                alert('Waktu ujian telah berakhir!');
-            }
+    const container = document.getElementById('app-container');
+
+    function render() {
+        const q = questions[currentQuestion - 1];
+        const answeredCount = Object.keys(answers).length;
+        const progressPercent = Math.round((answeredCount / 40) * 100);
+        
+        let optionsHtml = '';
+        const labels = ['A', 'B', 'C', 'D'];
+        q.options.forEach((opt, idx) => {
+            const isChecked = answers[currentQuestion] === idx ? 'checked' : '';
+            const activeClass = isChecked ? 'bg-secondary/10 border-secondary' : '';
+            optionsHtml += `
+            <div class="group">
+                <input class="hidden" id="opt${idx}" name="diagnostic_option" type="radio" ${isChecked} onchange="selectOption(${idx})"/>
+                <label class="flex items-start gap-4 p-5 border border-primary/10 hover:bg-surface-container transition-all cursor-pointer group-active:translate-x-1 ${activeClass}" for="opt${idx}">
+                <span class="w-6 h-6 rounded-full border-2 border-primary/20 flex items-center justify-center flex-shrink-0 group-hover:border-secondary transition-colors">
+                <span class="font-stats-sm text-xs font-bold text-on-surface-variant">${labels[idx]}</span>
+                </span>
+                <span class="font-body-md text-on-surface">${opt}</span>
+                </label>
+            </div>
+            `;
+        });
+
+        let paginationHtml = '';
+        // Smart pagination logic (showing surrounding pages)
+        let startPage = Math.max(1, currentQuestion - 2);
+        let endPage = Math.min(40, currentQuestion + 2);
+        if (startPage > 1) {
+            paginationHtml += `<button onclick="goTo(1)" class="w-8 h-8 flex items-center justify-center border border-primary/20 text-xs font-stats-sm hover:bg-secondary/10 ${answers[1]!==undefined?'bg-green-100':''}">1</button>`;
+            if (startPage > 2) paginationHtml += `<div class="w-8 h-8 flex items-center justify-center text-xs font-stats-sm">...</div>`;
+        }
+        for (let i = startPage; i <= endPage; i++) {
+            const btnClass = (i === currentQuestion) 
+                ? 'bg-secondary text-white' 
+                : `border border-primary/20 hover:bg-secondary/10 ${answers[i]!==undefined?'bg-green-100':''}`;
+            paginationHtml += `<button onclick="goTo(${i})" class="w-8 h-8 flex items-center justify-center text-xs font-stats-sm ${btnClass}">${i}</button>`;
+        }
+        if (endPage < 40) {
+            if (endPage < 39) paginationHtml += `<div class="w-8 h-8 flex items-center justify-center text-xs font-stats-sm">...</div>`;
+            paginationHtml += `<button onclick="goTo(40)" class="w-8 h-8 flex items-center justify-center border border-primary/20 text-xs font-stats-sm hover:bg-secondary/10 ${answers[40]!==undefined?'bg-green-100':''}">40</button>`;
         }
 
-        const timerInterval = setInterval(updateTimer, 1000);
-        updateTimer();
+        const noteHtml = q.note ? `<div class="bg-background/50 border-l-4 border-secondary p-4 italic text-on-surface-variant font-body-sm">${q.note}</div>` : '';
 
-        // Radio button visual selection logic
-        document.querySelectorAll('input[type="radio"]').forEach(radio => {
-            radio.addEventListener('change', (e) => {
-                // Clear all labels in the same group
-                document.querySelectorAll('label').forEach(label => {
-                    label.classList.remove('bg-secondary/10', 'border-secondary');
-                });
-                // Find parent group or just the label
-                if (e.target.checked) {
-                    const targetLabel = document.querySelector(`label[for="${e.target.id}"]`);
-                    targetLabel.classList.add('bg-secondary/10', 'border-secondary');
-                }
-            });
-        });
+        const minutes = Math.floor(timeInSeconds / 60);
+        const seconds = timeInSeconds % 60;
+        const timeStr = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
-        // Key bindings for navigation simulation
-        document.addEventListener('keydown', (e) => {
-            if (e.key >= '1' && e.key <= '4') {
-                const radio = document.getElementById(`opt${e.key}`);
-                if (radio) radio.click();
+        container.innerHTML = `
+        <!-- Progress Header -->
+        <div class="mb-10">
+        <div class="flex justify-between items-end mb-4">
+        <div>
+        <h1 class="font-headline-md text-headline-md text-primary mb-1">Tes Diagnostik SMA - ${q.category}</h1>
+        <p class="font-body-sm text-on-surface-variant">Soal ${currentQuestion} dari 40</p>
+        </div>
+        <div class="text-right">
+        <div class="font-stats-lg text-stats-lg text-secondary mb-1" id="timer">${timeStr}</div>
+        <p class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest">Sisa Waktu</p>
+        </div>
+        </div>
+        <div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden border border-primary/10">
+        <div class="h-full bg-secondary-container transition-all duration-500" style="width: ${progressPercent}%;"></div>
+        </div>
+        <div class="flex justify-between mt-2">
+        <span class="font-stats-sm text-stats-sm text-on-surface-variant">Status <span class="text-primary font-bold">${answeredCount}</span> terjawab</span>
+        <span class="font-stats-sm text-stats-sm text-on-surface-variant">${progressPercent}% Selesai</span>
+        </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="bg-surface-container-lowest ledger-border p-8 rounded-none relative overflow-hidden mb-8">
+        <div class="absolute top-0 right-0 w-24 h-24 pointer-events-none opacity-10">
+        <span class="material-symbols-outlined text-[120px] -rotate-12 translate-x-8 -translate-y-8">description</span>
+        </div>
+        <article class="relative z-10">
+        <span class="font-label-caps text-label-caps text-secondary mb-6 block">${q.category}</span>
+        <div class="space-y-6">
+        <p class="font-headline-md text-xl text-primary leading-relaxed">${q.text}</p>
+        ${noteHtml}
+        </div>
+        <div class="mt-10 space-y-4">
+        ${optionsHtml}
+        </div>
+        </article>
+        </div>
+
+        <!-- Footer Navigation -->
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 py-8 border-t border-primary/10">
+        <button onclick="prev()" class="w-full sm:w-auto px-8 py-3 border border-primary text-primary font-label-caps text-label-caps hover:bg-surface-container transition-all flex items-center justify-center gap-2 ${currentQuestion === 1 ? 'opacity-50 cursor-not-allowed' : ''}">
+        <span class="material-symbols-outlined text-sm">arrow_back</span> Sebelumnya
+        </button>
+        <div class="flex gap-2 order-3 sm:order-2">${paginationHtml}</div>
+        <button onclick="${currentQuestion === 40 ? 'finish()' : 'next()'}" class="w-full sm:w-auto px-10 py-3 bg-primary text-white font-label-caps text-label-caps ledger-shadow hover:translate-y-[-2px] hover:translate-x-[-2px] active:translate-y-0 active:translate-x-0 transition-all flex items-center justify-center gap-2 order-2 sm:order-3">
+        ${currentQuestion === 40 ? 'Selesai' : 'Lanjutkan'}
+        <span class="material-symbols-outlined text-sm">${currentQuestion === 40 ? 'check' : 'arrow_forward'}</span>
+        </button>
+        </div>
+
+        <!-- Shortcut Legend -->
+        <div class="mt-12 flex justify-center gap-8 opacity-40">
+        <div class="flex items-center gap-2">
+        <span class="px-1.5 py-0.5 border border-primary rounded text-[10px] font-stats-sm">ALT + N</span>
+        <span class="font-label-caps text-[10px]">Next</span>
+        </div>
+        <div class="flex items-center gap-2">
+        <span class="px-1.5 py-0.5 border border-primary rounded text-[10px] font-stats-sm">ALT + P</span>
+        <span class="font-label-caps text-[10px]">Prev</span>
+        </div>
+        <div class="flex items-center gap-2">
+        <span class="px-1.5 py-0.5 border border-primary rounded text-[10px] font-stats-sm">1-4</span>
+        <span class="font-label-caps text-[10px]">Pilih Opsi</span>
+        </div>
+        </div>
+        `;
+    }
+
+    function selectOption(idx) {
+        answers[currentQuestion] = idx;
+        render();
+    }
+
+    function prev() {
+        if (currentQuestion > 1) {
+            currentQuestion--;
+            render();
+        }
+    }
+
+    function next() {
+        if (currentQuestion < 40) {
+            currentQuestion++;
+            render();
+        }
+    }
+
+    function goTo(page) {
+        currentQuestion = page;
+        render();
+    }
+    
+    function finish() {
+        localStorage.setItem('diagnosisAnswers', JSON.stringify(answers));
+        window.location.href = '../04_hasil-diagnosis/code.html';
+    }
+
+    function updateTimer() {
+        if (timeInSeconds > 0) {
+            timeInSeconds--;
+            const timerElement = document.getElementById('timer');
+            if (timerElement) {
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             }
-        });
-    </script>
+        } else {
+            clearInterval(timerInterval);
+            alert('Waktu ujian telah berakhir!');
+            finish();
+        }
+    }
+
+    // Key bindings for navigation simulation
+    document.addEventListener('keydown', (e) => {
+        if (e.altKey && e.key.toLowerCase() === 'n') {
+            e.preventDefault();
+            next();
+        } else if (e.altKey && e.key.toLowerCase() === 'p') {
+            e.preventDefault();
+            prev();
+        } else if (e.key >= '1' && e.key <= '4') {
+            const idx = parseInt(e.key) - 1;
+            selectOption(idx);
+        }
+    });
+
+    render();
+    timerInterval = setInterval(updateTimer, 1000);
+</script>
 
 <script>
 (function(){
@@ -428,3 +466,4 @@
     })();
     </script>
 </body></html>
+

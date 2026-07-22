@@ -143,8 +143,8 @@
 <span class="font-label-caps text-[10px] text-secondary tracking-widest uppercase">Hasil Diagnostik Tersedia</span>
 </div>
 <h1 class="font-display-lg text-display-lg text-primary mb-4">Langkah Terakhir: Pilih Cita-cita Profesimu</h1>
-<p class="font-body-md text-on-surface-variant leading-relaxed">
-                Berdasarkan hasil asesmen RIASEC, profilmu sangat kuat pada area <strong class="text-primary italic">Investigative</strong> dan <strong class="text-primary italic">Artistic</strong>. 
+<p class="font-body-md text-on-surface-variant leading-relaxed" id="dynamic-riasec-text">
+                Berdasarkan hasil asesmen RIASEC, profilmu sangat kuat pada area <strong class="text-primary italic">Investigatif</strong> dan <strong class="text-primary italic">Artistik</strong>. 
                 Pilihan profesi di bawah ini akan menentukan peta jalan pendidikan (Roadmap) selama 6 tahun ke depan, mulai dari tingkat SMA hingga Perguruan Tinggi.
             </p>
 </header>
@@ -239,7 +239,7 @@
 </div>
 </div>
 <div class="mt-10">
-<button class="w-full bg-student-gold text-white h-16 font-label-caps text-sm tracking-widest hover:brightness-90 transition-all flex items-center justify-center gap-3">
+<button class="w-full bg-student-gold text-white h-16 font-label-caps text-sm tracking-widest hover:brightness-90 transition-all flex items-center justify-center gap-3" onclick="window.location.href='../06_roadmap-disusun/code.html'">
                             KONFIRMASI &amp; SUSUN ROADMAP SAYA
                             <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
 </button>
@@ -285,9 +285,44 @@
             const data = details[careerId];
             if (data) {
                 document.getElementById('detail-title').innerText = data.title;
-                // Interaction logic could expand here to change icons and specific roadmap items
+                // Highlight the selected card
+                document.querySelectorAll('.cursor-pointer').forEach(el => {
+                    el.classList.remove('border-2', 'border-student-gold');
+                    el.classList.add('ledger-border');
+                    const badge = el.querySelector('.bg-student-gold.text-white');
+                    if (badge) badge.remove();
+                });
+                const selectedEl = document.querySelector(`[onclick="selectCareer('${careerId}')"]`);
+                if (selectedEl) {
+                    selectedEl.classList.remove('ledger-border');
+                    selectedEl.classList.add('border-2', 'border-student-gold');
+                    selectedEl.innerHTML = `<div class="absolute top-0 right-0 bg-student-gold text-white px-2 py-1 text-[10px] font-bold">TERPILIH</div>` + selectedEl.innerHTML;
+                }
             }
         }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const answersStr = localStorage.getItem('diagnosisAnswers');
+            let answers = {};
+            if (answersStr) {
+                try { answers = JSON.parse(answersStr); } catch (e) {}
+            }
+            if (Object.keys(answers).length > 0) {
+                let riasecScores = { 'Investigatif': 0, 'Artistik': 0, 'Sosial': 0, 'Realistik': 0, 'Konvensional': 0, 'Enterprising': 0 };
+                for (let i = 1; i <= 10; i++) {
+                    let ans = answers[i];
+                    if (ans === 0) { riasecScores['Investigatif'] += 20; riasecScores['Realistik'] += 5; }
+                    else if (ans === 1) { riasecScores['Artistik'] += 20; riasecScores['Sosial'] += 5; }
+                    else if (ans === 2) { riasecScores['Realistik'] += 20; riasecScores['Enterprising'] += 5; }
+                    else if (ans === 3) { riasecScores['Konvensional'] += 20; riasecScores['Sosial'] += 10; }
+                }
+                const sortedRiasec = Object.entries(riasecScores).sort((a,b) => b[1] - a[1]);
+                const top1 = sortedRiasec[0][0];
+                const top2 = sortedRiasec[1][0];
+
+                document.getElementById('dynamic-riasec-text').innerHTML = \`Berdasarkan hasil asesmen RIASEC, profilmu sangat kuat pada area <strong class="text-primary italic">\${top1}</strong> dan <strong class="text-primary italic">\${top2}</strong>. Pilihan profesi di bawah ini akan menentukan peta jalan pendidikan (Roadmap) selama 6 tahun ke depan, mulai dari tingkat SMA hingga Perguruan Tinggi.\`;
+            }
+        });
     </script>
 
 <script>

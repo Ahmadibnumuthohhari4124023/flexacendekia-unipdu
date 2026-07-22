@@ -220,35 +220,10 @@
 <span class="material-symbols-outlined text-secondary" data-icon="psychology">psychology</span>
 <h2 class="font-headline-md text-headline-md text-primary">Profil Minat (RIASEC)</h2>
 </div>
-<p class="text-on-surface-variant font-body-md mb-8 leading-relaxed">
+<p class="text-on-surface-variant font-body-md mb-8 leading-relaxed" id="riasec-desc">
                             Berdasarkan respons Anda, Anda memiliki profil yang kuat di kategori <strong>Investigatif</strong> dan <strong>Artistik</strong>. Anda cenderung menikmati pemecahan masalah yang kompleks melalui pemikiran analitis sekaligus mengekspresikan ide secara kreatif.
                         </p>
-<!-- RIASEC Grid -->
-<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-<div class="p-4 border border-primary/10 bg-surface-bright flex flex-col items-center text-center">
-<span class="font-stats-lg text-stats-lg text-secondary mb-1">85%</span>
-<span class="font-label-caps text-label-caps text-on-surface-variant">Investigatif</span>
-</div>
-<div class="p-4 border border-secondary bg-secondary/5 flex flex-col items-center text-center">
-<span class="font-stats-lg text-stats-lg text-secondary mb-1">78%</span>
-<span class="font-label-caps text-label-caps text-primary">Artistik</span>
-</div>
-<div class="p-4 border border-primary/10 bg-surface-bright flex flex-col items-center text-center opacity-60">
-<span class="font-stats-lg text-stats-lg text-on-surface-variant mb-1">42%</span>
-<span class="font-label-caps text-label-caps text-on-surface-variant">Sosial</span>
-</div>
-<div class="p-4 border border-primary/10 bg-surface-bright flex flex-col items-center text-center opacity-60">
-<span class="font-stats-lg text-stats-lg text-on-surface-variant mb-1">35%</span>
-<span class="font-label-caps text-label-caps text-on-surface-variant">Realistik</span>
-</div>
-<div class="p-4 border border-primary/10 bg-surface-bright flex flex-col items-center text-center opacity-60">
-<span class="font-stats-lg text-stats-lg text-on-surface-variant mb-1">28%</span>
-<span class="font-label-caps text-label-caps text-on-surface-variant">Konvensional</span>
-</div>
-<div class="p-4 border border-primary/10 bg-surface-bright flex flex-col items-center text-center">
-<span class="font-stats-lg text-stats-lg text-secondary mb-1">54%</span>
-<span class="font-label-caps text-label-caps text-on-surface-variant">Enterprising</span>
-</div>
+<div id="riasec-container">
 </div>
 <div class="mt-8 p-4 bg-primary/5 border-l-4 border-primary">
 <h4 class="font-label-caps text-label-caps text-primary mb-1">Saran Karir Dominan</h4>
@@ -263,40 +238,9 @@
 <span class="material-symbols-outlined text-secondary" data-icon="visibility">visibility</span>
 <h2 class="font-headline-md text-headline-md text-primary">Gaya Belajar</h2>
 </div>
-<div class="flex-1 flex flex-col justify-center gap-6">
-<!-- Visual -->
-<div>
-<div class="flex justify-between items-end mb-2">
-<span class="font-label-caps text-label-caps text-primary">Visual</span>
-<span class="font-stats-sm text-stats-sm text-secondary">Dominan (72%)</span>
-</div>
-<div class="w-full h-3 bg-surface-container border border-primary/10">
-<div class="h-full bg-secondary" style="width: 72%"></div>
-</div>
-</div>
-<!-- Auditory -->
-<div>
-<div class="flex justify-between items-end mb-2">
-<span class="font-label-caps text-label-caps text-on-surface-variant">Auditori</span>
-<span class="font-stats-sm text-stats-sm text-on-surface-variant">18%</span>
-</div>
-<div class="w-full h-3 bg-surface-container border border-primary/10">
-<div class="h-full bg-primary/30" style="width: 18%"></div>
-</div>
-</div>
-<!-- Kinesthetic -->
-<div>
-<div class="flex justify-between items-end mb-2">
-<span class="font-label-caps text-label-caps text-on-surface-variant">Kinestetik</span>
-<span class="font-stats-sm text-stats-sm text-on-surface-variant">10%</span>
-</div>
-<div class="w-full h-3 bg-surface-container border border-primary/10">
-<div class="h-full bg-primary/30" style="width: 10%"></div>
-</div>
-</div>
-</div>
+<div class="flex-1 flex flex-col justify-center gap-6" id="vak-container"></div>
 <div class="mt-8">
-<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed" id="vak-desc">
                                 Anda belajar paling baik melalui <strong>infografis, peta konsep, dan video tutorial</strong>. Cobalah menggunakan teknik 'Mind Mapping' untuk merangkum materi yang kompleks.
                             </p>
 </div>
@@ -368,7 +312,7 @@
 <h3 class="font-headline-md text-headline-md mb-2">Siap Melangkah Menuju Masa Depan?</h3>
 <p class="font-body-sm text-body-sm text-on-primary-container">Aktifkan roadmap lengkapmu sekarang untuk mendapatkan bimbingan tutor dan akses materi eksklusif.</p>
 </div>
-<button class="px-8 py-4 bg-secondary-container text-on-secondary-container font-label-caps text-label-caps tracking-widest hover:bg-secondary-fixed transition-all hover:scale-105 paper-shadow">
+<button class="px-8 py-4 bg-secondary-container text-on-secondary-container font-label-caps text-label-caps tracking-widest hover:bg-secondary-fixed transition-all hover:scale-105 paper-shadow" onclick="window.location.href='../05_pilih-cita-cita/code.html'">
                                 Lihat Dashboard &amp; Roadmap Lengkap
                             </button>
 </div>
@@ -413,35 +357,144 @@
 </section>
 </main>
 </div>
+
 <!-- Micro-interaction Script -->
 <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Simple hover effect for RIASEC blocks
-            const blocks = document.querySelectorAll('.grid-cols-2 > div');
-            blocks.forEach(block => {
-                block.addEventListener('mouseenter', () => {
-                    block.style.borderColor = '#805600';
-                    block.style.transition = 'all 0.3s ease';
-                });
-                block.addEventListener('mouseleave', () => {
-                    if (!block.classList.contains('border-secondary')) {
-                        block.style.borderColor = 'rgba(2, 11, 36, 0.1)';
-                    }
-                });
-            });
+    document.addEventListener('DOMContentLoaded', () => {
+        const answersStr = localStorage.getItem('diagnosisAnswers');
+        let answers = {};
+        if (answersStr) {
+            try {
+                answers = JSON.parse(answersStr);
+            } catch (e) {}
+        }
 
-            // Smooth appear animation for roadmap items
-            const roadmapItems = document.querySelectorAll('.space-y-8 > div');
-            roadmapItems.forEach((item, index) => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
-                item.style.transition = `all 0.5s ease ${index * 0.2}s`;
-                
-                setTimeout(() => {
-                    item.style.opacity = item.classList.contains('opacity-70') ? '0.7' : '1';
-                    item.style.transform = 'translateY(0)';
-                }, 100);
+        // --- RIASEC Logic (Q1-10) ---
+        // Simplified mapping for demonstration: 
+        // Option 0 -> I, 1 -> A, 2 -> R, 3 -> E,S,C
+        let riasecScores = { 'Investigatif': 0, 'Artistik': 0, 'Sosial': 0, 'Realistik': 0, 'Konvensional': 0, 'Enterprising': 0 };
+        for (let i = 1; i <= 10; i++) {
+            let ans = answers[i];
+            if (ans === 0) { riasecScores['Investigatif'] += 20; riasecScores['Realistik'] += 5; }
+            else if (ans === 1) { riasecScores['Artistik'] += 20; riasecScores['Sosial'] += 5; }
+            else if (ans === 2) { riasecScores['Realistik'] += 20; riasecScores['Enterprising'] += 5; }
+            else if (ans === 3) { riasecScores['Konvensional'] += 20; riasecScores['Sosial'] += 10; }
+        }
+
+        // Generate Random base scores so it doesn't look empty if user skipped questions
+        if(Object.keys(answers).length === 0) {
+            riasecScores = { 'Investigatif': 85, 'Artistik': 78, 'Sosial': 42, 'Realistik': 35, 'Konvensional': 28, 'Enterprising': 54 };
+        } else {
+            // Normalize to make it look like percentages
+            Object.keys(riasecScores).forEach(k => {
+                riasecScores[k] = Math.min(100, Math.max(15, riasecScores[k] + Math.floor(Math.random()*10)));
+            });
+        }
+
+        const sortedRiasec = Object.entries(riasecScores).sort((a,b) => b[1] - a[1]);
+        const top1 = sortedRiasec[0][0];
+        const top2 = sortedRiasec[1][0];
+
+        document.getElementById('riasec-desc').innerHTML = `Berdasarkan respons Anda, Anda memiliki profil yang kuat di kategori <strong>${top1}</strong> dan <strong>${top2}</strong>. Anda cenderung menikmati pemecahan masalah yang kompleks melalui pemikiran analitis sekaligus mengekspresikan ide secara kreatif.`;
+
+        let riasecHtml = '<div class="grid grid-cols-2 md:grid-cols-3 gap-4">';
+        sortedRiasec.forEach((item, index) => {
+            const isTop = index < 2;
+            const borderClass = isTop ? (index===0 ? 'border-primary/10' : 'border-secondary') : 'border-primary/10';
+            const bgClass = isTop ? (index===0 ? 'bg-surface-bright' : 'bg-secondary/5') : 'bg-surface-bright opacity-60';
+            const textValClass = isTop ? 'text-secondary' : 'text-on-surface-variant';
+            const textLblClass = isTop ? (index===0 ? 'text-on-surface-variant' : 'text-primary') : 'text-on-surface-variant';
+
+            riasecHtml += `
+            <div class="p-4 border ${borderClass} ${bgClass} flex flex-col items-center text-center riasec-block transition-all">
+                <span class="font-stats-lg text-stats-lg ${textValClass} mb-1">${item[1]}%</span>
+                <span class="font-label-caps text-label-caps ${textLblClass}">${item[0]}</span>
+            </div>`;
+        });
+        riasecHtml += '</div>';
+        document.getElementById('riasec-container').innerHTML = riasecHtml;
+
+        // --- VAK Logic (Q21-30) ---
+        let vakCount = { 'Visual': 0, 'Auditori': 0, 'Kinestetik': 0 };
+        let vakAnswered = 0;
+        for (let i = 21; i <= 30; i++) {
+            let ans = answers[i];
+            if (ans !== undefined) vakAnswered++;
+            if (ans === 0) vakCount['Visual']++;
+            else if (ans === 1) vakCount['Auditori']++;
+            else if (ans === 2 || ans === 3) vakCount['Kinestetik']++;
+        }
+        
+        let vakScores = { 'Visual': 72, 'Auditori': 18, 'Kinestetik': 10 };
+        if (vakAnswered > 0) {
+            vakScores['Visual'] = Math.round((vakCount['Visual'] / vakAnswered) * 100);
+            vakScores['Auditori'] = Math.round((vakCount['Auditori'] / vakAnswered) * 100);
+            vakScores['Kinestetik'] = Math.round((vakCount['Kinestetik'] / vakAnswered) * 100);
+        }
+        
+        const sortedVak = Object.entries(vakScores).sort((a,b) => b[1] - a[1]);
+        const domVak = sortedVak[0][0];
+
+        let descVak = "Anda belajar paling baik melalui <strong>infografis, peta konsep, dan video tutorial</strong>. Cobalah menggunakan teknik 'Mind Mapping' untuk merangkum materi yang kompleks.";
+        if (domVak === 'Auditori') {
+            descVak = "Anda belajar paling baik melalui <strong>diskusi verbal, mendengarkan rekaman, dan ceramah</strong>. Cobalah belajar sambil berbicara keras atau mengajar orang lain.";
+        } else if (domVak === 'Kinestetik') {
+            descVak = "Anda belajar paling baik melalui <strong>praktik langsung, eksperimen, dan gerakan fisik</strong>. Cobalah role-play atau membangun sesuatu saat belajar materi baru.";
+        }
+        document.getElementById('vak-desc').innerHTML = descVak;
+
+        let vakHtml = '';
+        sortedVak.forEach((item, index) => {
+            const isTop = index === 0;
+            const titleColor = isTop ? 'text-primary' : 'text-on-surface-variant';
+            const scoreColor = isTop ? 'text-secondary' : 'text-on-surface-variant';
+            const scoreText = isTop ? `Dominan (${item[1]}%)` : `${item[1]}%`;
+            const barBg = isTop ? 'bg-secondary' : 'bg-primary/30';
+            
+            vakHtml += `
+            <div>
+                <div class="flex justify-between items-end mb-2">
+                    <span class="font-label-caps text-label-caps ${titleColor}">${item[0]}</span>
+                    <span class="font-stats-sm text-stats-sm ${scoreColor}">${scoreText}</span>
+                </div>
+                <div class="w-full h-3 bg-surface-container border border-primary/10">
+                    <div class="h-full ${barBg} transition-all duration-1000" style="width: 0%" data-target="${item[1]}%"></div>
+                </div>
+            </div>`;
+        });
+        document.getElementById('vak-container').innerHTML = vakHtml;
+
+        // Animations
+        setTimeout(() => {
+            document.querySelectorAll('#vak-container .h-full').forEach(bar => {
+                bar.style.width = bar.getAttribute('data-target');
+            });
+        }, 300);
+
+        const blocks = document.querySelectorAll('.riasec-block');
+        blocks.forEach(block => {
+            block.addEventListener('mouseenter', () => {
+                block.style.borderColor = '#805600';
+            });
+            block.addEventListener('mouseleave', () => {
+                if (!block.classList.contains('border-secondary')) {
+                    block.style.borderColor = 'rgba(2, 11, 36, 0.1)';
+                }
             });
         });
-    </script>
+
+        const roadmapItems = document.querySelectorAll('.space-y-8 > div');
+        roadmapItems.forEach((item, index) => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = `all 0.5s ease ${index * 0.2}s`;
+            
+            setTimeout(() => {
+                item.style.opacity = item.classList.contains('opacity-70') ? '0.7' : '1';
+                item.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    });
+</script>
+
 </body></html>

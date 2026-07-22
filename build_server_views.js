@@ -284,6 +284,9 @@ folders.forEach(folder => {
         content = content.replace(/href="panduan\.html"/g, 'href="/?page=01_login_panduan"');
         content = content.replace(/href="bantuan\.html"/g, 'href="/?page=01_login_bantuan"');
         content = content.replace(/href="kontak\.html"/g, 'href="/?page=01_login_kontak"');
+        content = content.replace(/href="\.\.\/01_login\/panduan\.html"/g, 'href="/?page=01_login_panduan"');
+        content = content.replace(/href="\.\.\/01_login\/bantuan\.html"/g, 'href="/?page=01_login_bantuan"');
+        content = content.replace(/href="\.\.\/01_login\/kontak\.html"/g, 'href="/?page=01_login_kontak"');
 
         // 3. Remove Apps Script template tags (<?= ... ?>)
         content = content.replace(/<\?=\s*getWebAppUrl\(\)\s*\?>/g, '');
