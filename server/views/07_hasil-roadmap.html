@@ -534,14 +534,4 @@
 })();
 </script>
 
-    <script>
-    (function(){
-      document.querySelectorAll('button, a').forEach(function(el){
-        var text = el.textContent.trim().toLowerCase();
-        if(text.includes('dashboard') || text.includes('mulai belajar') || text.includes('lanjut') || text.includes('beranda')) {
-          el.addEventListener('click', function(e){ e.preventDefault(); window.location.href = '/?page=08_dashboard-siswa'; });
-        }
-      });
-    })();
-    </script>
 </body></html>

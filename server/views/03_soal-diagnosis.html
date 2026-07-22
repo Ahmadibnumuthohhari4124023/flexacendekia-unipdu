@@ -431,39 +431,5 @@
 })();
 </script>
 
-    <script>
-    (function(){
-      document.querySelectorAll('button').forEach(function(b){
-        var text = b.textContent.trim().toLowerCase();
-        if(text.includes('selanjutnya') || text.includes('kirim') || text.includes('selesai') || text.includes('lanjut')) {
-          b.addEventListener('click', function(e){ 
-            e.preventDefault();
-            b.innerHTML = 'Menyimpan...';
-            b.disabled = true;
-            
-            fetch('/api/diagnosis', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                userId: 'mock-id',
-                skorMinat: 85,
-                skorBakat: 90,
-                gayaBelajar: 'Visual',
-                kompetensi: 'Sains'
-              })
-            })
-            .then(function(res) { return res.json(); })
-            .then(function(data) {
-              window.location.href = '/?page=04_hasil-diagnosis';
-            })
-            .catch(function(err) {
-              console.error(err);
-              window.location.href = '/?page=04_hasil-diagnosis';
-            });
-          });
-        }
-      });
-    })();
-    </script>
 </body></html>
 

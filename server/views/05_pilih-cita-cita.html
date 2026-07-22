@@ -387,31 +387,4 @@
 })();
 </script>
 
-    <script>
-    (function(){
-      document.querySelectorAll('button, a').forEach(function(el){
-        var text = el.textContent.trim().toLowerCase();
-        if(text.includes('konfirmasi') || text.includes('simpan') || text.includes('lanjut') || text.includes('pilih') || text.includes('selanjutnya') || text.includes('generate')) {
-          el.addEventListener('click', function(e){ 
-            e.preventDefault();
-            el.innerHTML = 'Membuat Roadmap...';
-            
-            fetch('/api/roadmap', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ userId: 'mock-id', profesi: 'Arsitek' })
-            })
-            .then(function(res) { return res.json(); })
-            .then(function(data) {
-              window.location.href = '/?page=06_roadmap-disusun';
-            })
-            .catch(function(err) {
-              console.error(err);
-              window.location.href = '/?page=06_roadmap-disusun';
-            });
-          });
-        }
-      });
-    })();
-    </script>
 </body></html>
