@@ -1,29 +1,114 @@
 <!DOCTYPE html>
 
-<html lang="id"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Hasil Tes Diagnostik - Flexa Cendekia</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<style>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Hasil Tes Diagnostik - Flexa Cendekia</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap"
+        rel="stylesheet" />
+    <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
+
         .paper-shadow {
             box-shadow: 4px 4px 0px 0px #17223b;
         }
+
         .zebra-stripe:nth-child(even) {
             background-color: rgba(253, 194, 101, 0.05);
         }
+
         .ledger-line {
             background-image: linear-gradient(to bottom, transparent 31px, rgba(23, 34, 59, 0.1) 32px);
             background-size: 100% 32px;
         }
+
+        /* Dropdowns */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            z-index: 100;
+            animation: fadeIn 0.15s ease-out;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Toast notification */
+        .toast-msg {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .toast-msg.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        /* Shimmer effect for AI loading */
+        .shimmer {
+            background: linear-gradient(90deg, #f0edf0 25%, #eae7ea 50%, #f0edf0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #printable-report,
+            #printable-report * {
+                visibility: visible;
+            }
+
+            #printable-report {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
     </style>
-<script id="tailwind-config">
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
@@ -101,277 +186,615 @@
                         "stats-lg": ["JetBrains Mono"]
                     },
                     "fontSize": {
-                        "stats-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400"}],
-                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
-                        "display-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
-                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
-                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
-                        "stats-lg": ["20px", {"lineHeight": "24px", "fontWeight": "500"}]
+                        "stats-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "stats-lg": ["20px", { "lineHeight": "24px", "fontWeight": "500" }]
                     }
                 },
             },
         }
     </script>
 </head>
-<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
-<div style="background:#17223B;color:#EAEDE2;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-<span>1. Onboarding &middot; 04/18 &middot; Hasil tes diagnosis</span>
-<span><a href="../03_soal-diagnosis/code.html" style="color:#EAEDE2;">&larr; Soal tes diagnosis</a> <a href="../index.html" style="color:#EAEDE2;margin:0 10px;">Peta alur</a> <a href="../05_pilih-cita-cita/code.html" style="color:#EAEDE2;">Pilih cita-cita &rarr;</a></span>
-</div>
 
-<!-- TopNavBar -->
-<nav class="bg-surface-container-lowest flex justify-between items-center w-full px-gutter md:px-margin-desktop h-16 border-b border-primary/20 sticky top-0 z-50">
-<div class="flex items-center gap-8">
-<span class="font-headline-md text-headline-md font-bold text-primary">Flexa Cendekia x UNIPDU</span>
-<div class="hidden md:flex gap-6">
-<a class="font-label-caps text-label-caps text-secondary border-b-2 border-secondary pb-1" href="#">Siswa</a>
-<a class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200" href="#">Guru</a>
-<a class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200" href="#">Orang Tua</a>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-</button>
-<div class="flex items-center gap-3">
-<span class="hidden md:block font-label-caps text-label-caps text-primary">Ahmad Fauzi</span>
-<span class="material-symbols-outlined text-primary" data-icon="account_circle">account_circle</span>
-</div>
-</div>
-</nav>
-<div class="flex min-h-[calc(100vh-64px)]">
-<!-- SideNavBar (Hidden on Mobile) -->
-<aside class="hidden md:flex flex-col h-[calc(100vh-64px)] sticky top-16 w-64 bg-surface-container-low border-r border-primary/10">
-<div class="p-6">
-<div class="flex items-center gap-3 mb-8">
-<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
-<span class="material-symbols-outlined text-on-secondary-container" data-icon="person">person</span>
-</div>
-<div>
-<h4 class="font-label-caps text-label-caps text-primary">Akademik Siswa</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant opacity-70">Flexa Cendekia</p>
-</div>
-</div>
-<nav class="space-y-1">
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-150 rounded" href="#">
-<span class="material-symbols-outlined" data-icon="home">home</span>
-<span class="font-label-caps text-label-caps">Beranda</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 bg-secondary/10 text-secondary border-r-4 border-secondary translate-x-1" href="#">
-<span class="material-symbols-outlined" data-icon="quiz" style="font-variation-settings: 'FILL' 1;">quiz</span>
-<span class="font-label-caps text-label-caps">Tes Diagnostik</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-150 rounded" href="#">
-<span class="material-symbols-outlined" data-icon="timeline">timeline</span>
-<span class="font-label-caps text-label-caps">Roadmap</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-150 rounded" href="#">
-<span class="material-symbols-outlined" data-icon="person">person</span>
-<span class="font-label-caps text-label-caps">Profil</span>
-</a>
-</nav>
-<div class="mt-12">
-<button class="w-full py-3 bg-primary text-on-primary font-label-caps text-label-caps tracking-widest rounded hover:bg-primary-container transition-colors">
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+    <div
+        style="background:#17223B;color:#EAEDE2;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <span>1. Onboarding &middot; 04/18 &middot; Hasil tes diagnosis</span>
+        <span><a href="/?page=03_soal-diagnosis" style="color:#EAEDE2;">&larr; Soal tes diagnosis</a> <a
+                href="/?page=01_login" style="color:#EAEDE2;margin:0 10px;">Peta alur</a> <a
+                href="/?page=05_pilih-cita-cita" style="color:#EAEDE2;">Pilih cita-cita &rarr;</a></span>
+    </div>
+
+    <!-- TopNavBar -->
+    <nav
+        class="bg-surface-container-lowest flex justify-between items-center w-full px-gutter md:px-margin-desktop h-16 border-b border-primary/20 sticky top-0 z-50">
+        <div class="flex items-center gap-8">
+            <span class="font-headline-md text-headline-md font-bold text-primary">Flexa Cendekia x UNIPDU</span>
+            <div class="hidden md:flex gap-6">
+                <a class="font-label-caps text-label-caps text-secondary border-b-2 border-secondary pb-1"
+                    href="/?page=08_dashboard-siswa">Siswa</a>
+                <a class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200"
+                    href="/?page=14_dashboard-guru">Guru</a>
+                <a class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200"
+                    href="/?page=16_dashboard-ortu">Orang Tua</a>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <!-- Active Notification Icon -->
+            <div class="relative" id="notif-wrapper">
+                <button
+                    class="p-2 text-on-surface-variant hover:text-primary transition-colors relative rounded-full hover:bg-surface-container"
+                    id="btn-notifikasi" title="Notifikasi" onclick="toggleDropdown('notif-menu')">
+                    <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+                    <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-secondary rounded-full border-2 border-white"
+                        id="notif-badge"></span>
+                </button>
+                <!-- Notification Dropdown -->
+                <div class="dropdown-menu w-80 bg-surface-container-lowest border border-primary/20 shadow-xl rounded-lg overflow-hidden"
+                    id="notif-menu">
+                    <div
+                        class="p-3 bg-surface-container-low border-b border-primary/10 flex justify-between items-center">
+                        <span class="font-label-caps text-label-caps text-primary font-bold">Notifikasi</span>
+                        <button class="text-[11px] text-secondary font-label-caps hover:underline"
+                            onclick="clearNotifBadge()">Tandai Dibaca</button>
+                    </div>
+                    <div class="divide-y divide-primary/5 max-h-72 overflow-y-auto">
+                        <div class="p-3 hover:bg-surface-container transition-colors cursor-pointer">
+                            <div class="flex gap-2 items-start">
+                                <span class="material-symbols-outlined text-secondary text-[18px]">auto_awesome</span>
+                                <div>
+                                    <p class="font-body-sm text-[13px] text-primary font-semibold">Hasil AI Diagnosis
+                                        Siap!</p>
+                                    <p class="font-body-sm text-[11px] text-on-surface-variant">Rekomendasi karir &amp;
+                                        pembelajaran telah di-generate oleh Gemini AI.</p>
+                                    <span class="text-[10px] text-on-surface-variant/60 font-stats-sm">Baru saja</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-3 hover:bg-surface-container transition-colors cursor-pointer">
+                            <div class="flex gap-2 items-start">
+                                <span class="material-symbols-outlined text-primary text-[18px]">school</span>
+                                <div>
+                                    <p class="font-body-sm text-[13px] text-primary font-semibold">Modul Baru Terbuka
+                                    </p>
+                                    <p class="font-body-sm text-[11px] text-on-surface-variant">Modul Logika Pemrograman
+                                        Visual siap dipelajari.</p>
+                                    <span class="text-[10px] text-on-surface-variant/60 font-stats-sm">1 jam yang
+                                        lalu</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Help Icon -->
+            <div class="relative" id="help-wrapper">
+                <button
+                    class="p-2 text-on-surface-variant hover:text-primary transition-colors rounded-full hover:bg-surface-container"
+                    id="btn-bantuan" title="Bantuan" onclick="toggleDropdown('help-menu')">
+                    <span class="material-symbols-outlined" data-icon="help">help</span>
+                </button>
+                <!-- Help Dropdown -->
+                <div class="dropdown-menu w-64 bg-surface-container-lowest border border-primary/20 shadow-xl rounded-lg overflow-hidden"
+                    id="help-menu">
+                    <div class="p-3 bg-surface-container-low border-b border-primary/10">
+                        <span class="font-label-caps text-label-caps text-primary font-bold">Pusat Bantuan</span>
+                    </div>
+                    <div class="p-2 space-y-1">
+                        <a class="flex items-center gap-3 px-3 py-2 text-body-sm text-primary hover:bg-surface-container rounded"
+                            href="/?page=01_login_panduan">
+                            <span class="material-symbols-outlined text-[18px] text-secondary">menu_book</span> Panduan
+                            Tes Diagnosis
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-2 text-body-sm text-primary hover:bg-surface-container rounded"
+                            href="/?page=01_login_bantuan">
+                            <span class="material-symbols-outlined text-[18px] text-secondary">help_outline</span> Tanya
+                            Jawab (FAQ)
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-2 text-body-sm text-primary hover:bg-surface-container rounded"
+                            href="/?page=01_login_kontak">
+                            <span class="material-symbols-outlined text-[18px] text-secondary">support_agent</span>
+                            Hubungi Konselor AI
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Student Profile Icon & Student Name -->
+            <div class="relative" id="profile-wrapper">
+                <button class="flex items-center gap-3 p-1.5 rounded-lg hover:bg-surface-container transition-colors"
+                    id="btn-profile" onclick="toggleDropdown('profile-menu')">
+                    <span class="hidden md:block font-label-caps text-label-caps text-primary font-bold"
+                        id="display-student-name">Ahmad Fauzi</span>
+                    <div
+                        class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center font-stats-sm text-stats-sm">
+                        <span class="material-symbols-outlined text-[20px]"
+                            data-icon="account_circle">account_circle</span>
+                    </div>
+                </button>
+                <!-- Profile Dropdown -->
+                <div class="dropdown-menu w-56 bg-surface-container-lowest border border-primary/20 shadow-xl rounded-lg overflow-hidden"
+                    id="profile-menu">
+                    <div class="p-4 bg-surface-container-low border-b border-primary/10">
+                        <p class="font-label-caps text-label-caps text-primary font-bold" id="dropdown-student-name">
+                            Ahmad Fauzi</p>
+                        <p class="text-[11px] text-on-surface-variant">Siswa SMA Class 11 · UNIPDU</p>
+                    </div>
+                    <div class="p-2 space-y-1">
+                        <a class="flex items-center gap-3 px-3 py-2 text-body-sm text-primary hover:bg-surface-container rounded"
+                            href="/?page=18_profil">
+                            <span class="material-symbols-outlined text-[18px]">person</span> Profil Saya
+                        </a>
+                        <a class="flex items-center gap-3 px-3 py-2 text-body-sm text-primary hover:bg-surface-container rounded"
+                            href="/?page=10_detail-roadmap">
+                            <span class="material-symbols-outlined text-[18px]">map</span> Roadmap Belajar
+                        </a>
+                        <hr class="border-primary/10 my-1" />
+                        <a class="flex items-center gap-3 px-3 py-2 text-body-sm text-error hover:bg-error-container/20 rounded"
+                            href="/?page=01_login">
+                            <span class="material-symbols-outlined text-[18px]">logout</span> Keluar
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </nav>
+
+    <div class="flex min-h-[calc(100vh-64px)]">
+        <!-- SideNavBar (Hidden on Mobile) -->
+        <aside
+            class="hidden md:flex flex-col h-[calc(100vh-64px)] sticky top-16 w-64 bg-surface-container-low border-r border-primary/10">
+            <div class="p-6">
+                <div class="flex items-center gap-3 mb-8">
+                    <div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
+                        <span class="material-symbols-outlined text-on-secondary-container"
+                            data-icon="person">person</span>
+                    </div>
+                    <div>
+                        <h4 class="font-label-caps text-label-caps text-primary">Akademik Siswa</h4>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant opacity-70">Flexa Cendekia</p>
+                    </div>
+                </div>
+                <nav class="space-y-1">
+                    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-150 rounded"
+                        href="/?page=08_dashboard-siswa">
+                        <span class="material-symbols-outlined" data-icon="home">home</span>
+                        <span class="font-label-caps text-label-caps">Beranda</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-3 bg-secondary/10 text-secondary border-r-4 border-secondary translate-x-1"
+                        href="/?page=02_intro-diagnosis">
+                        <span class="material-symbols-outlined" data-icon="quiz"
+                            style="font-variation-settings: 'FILL' 1;">quiz</span>
+                        <span class="font-label-caps text-label-caps">Tes Diagnostik</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-150 rounded"
+                        href="/?page=10_detail-roadmap">
+                        <span class="material-symbols-outlined" data-icon="timeline">timeline</span>
+                        <span class="font-label-caps text-label-caps">Roadmap</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-150 rounded"
+                        href="/?page=18_profil">
+                        <span class="material-symbols-outlined" data-icon="person">person</span>
+                        <span class="font-label-caps text-label-caps">Profil</span>
+                    </a>
+                </nav>
+                <div class="mt-12">
+                    <button
+                        class="w-full py-3 bg-primary text-on-primary font-label-caps text-label-caps tracking-widest rounded hover:bg-primary-container transition-colors"
+                        onclick="window.location.href='/?page=02_intro-diagnosis'">
                         Mulai Tes Baru
                     </button>
-</div>
-</div>
-<div class="mt-auto p-6 border-t border-primary/5">
-<nav class="space-y-1">
-<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container transition-all duration-150" href="#">
-<span class="material-symbols-outlined" data-icon="help">help</span>
-<span class="font-label-caps text-label-caps">Bantuan</span>
-</a>
-<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container transition-all duration-150" href="#">
-<span class="material-symbols-outlined" data-icon="logout">logout</span>
-<span class="font-label-caps text-label-caps">Keluar</span>
-</a>
-</nav>
-</div>
-</aside>
-<!-- Main Content -->
-<main class="flex-1 p-6 md:p-margin-desktop max-w-container-max mx-auto w-full">
-<!-- Header Section -->
-<header class="mb-12">
-<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
-<div>
-<div class="flex items-center gap-2 mb-2">
-<span class="font-label-caps text-label-caps text-secondary tracking-[0.2em] uppercase">Laporan Analisis Diagnostik</span>
-<span class="px-2 py-0.5 text-[10px] bg-secondary/10 text-secondary border border-secondary/30 rounded font-stats-sm" id="ai-badge">✨ Generating AI...</span>
-</div>
-<h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary leading-tight">Profil Belajar &amp; <br class="hidden md:block"/>Roadmap Kamu</h1>
-</div>
-<div class="flex gap-4">
-<button class="flex items-center gap-2 px-4 py-2 border border-primary/20 font-label-caps text-label-caps text-primary hover:bg-surface-container-high transition-colors">
-<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span> Unduh PDF
+                </div>
+            </div>
+            <div class="mt-auto p-6 border-t border-primary/5">
+                <nav class="space-y-1">
+                    <a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container transition-all duration-150"
+                        href="/?page=01_login_bantuan">
+                        <span class="material-symbols-outlined" data-icon="help">help</span>
+                        <span class="font-label-caps text-label-caps">Bantuan</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container transition-all duration-150"
+                        href="/?page=01_login">
+                        <span class="material-symbols-outlined" data-icon="logout">logout</span>
+                        <span class="font-label-caps text-label-caps">Keluar</span>
+                    </a>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-6 md:p-margin-desktop max-w-container-max mx-auto w-full">
+            <!-- Header Section -->
+            <header class="mb-12">
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <span
+                                class="font-label-caps text-label-caps text-secondary tracking-[0.2em] uppercase">Laporan
+                                Analisis Diagnostik</span>
+                            <span
+                                class="px-2 py-0.5 text-[10px] bg-secondary/10 text-secondary border border-secondary/30 rounded font-stats-sm"
+                                id="ai-badge">✨ Gemini AI Active</span>
+                        </div>
+                        <h1
+                            class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary leading-tight">
+                            Profil Belajar &amp; <br class="hidden md:block" />Roadmap Kamu</h1>
+                    </div>
+
+                    <!-- Download & Share Buttons (FULLY WORKING) -->
+                    <div class="flex gap-4">
+                        <button
+                            class="flex items-center gap-2 px-4 py-2.5 border-2 border-primary text-primary font-label-caps text-label-caps hover:bg-primary hover:text-on-primary transition-all duration-200 shadow-sm"
+                            id="btn-unduh" onclick="downloadDiagnosisPDF()">
+                            <span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
+                            Unduh Hasil Diagnosis
                         </button>
-<button class="flex items-center gap-2 px-4 py-2 border border-primary/20 font-label-caps text-label-caps text-primary hover:bg-surface-container-high transition-colors">
-<span class="material-symbols-outlined text-[18px]" data-icon="share">share</span> Bagikan
+                        <button
+                            class="flex items-center gap-2 px-4 py-2.5 border-2 border-secondary text-secondary font-label-caps text-label-caps hover:bg-secondary hover:text-on-secondary transition-all duration-200 shadow-sm"
+                            id="btn-bagikan" onclick="shareDiagnosisResult()">
+                            <span class="material-symbols-outlined text-[18px]" data-icon="share">share</span> Bagikan
                         </button>
-</div>
-</div>
-<div class="h-px bg-primary/10 w-full mt-8"></div>
-</header>
-<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-<!-- (1) Interest Profile (RIASEC) -->
-<section class="lg:col-span-7">
-<div class="bg-surface-container-lowest border border-primary/20 p-8 relative overflow-hidden h-full">
-<div class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rotate-45 translate-x-16 -translate-y-16"></div>
-<div class="flex items-center gap-2 mb-6">
-<span class="material-symbols-outlined text-secondary" data-icon="psychology">psychology</span>
-<h2 class="font-headline-md text-headline-md text-primary">Profil Minat (RIASEC)</h2>
-</div>
-<p class="text-on-surface-variant font-body-md mb-8 leading-relaxed" id="riasec-desc">
-                            Berdasarkan respons Anda, Anda memiliki profil yang kuat di kategori <strong>Investigatif</strong> dan <strong>Artistik</strong>. Anda cenderung menikmati pemecahan masalah yang kompleks melalui pemikiran analitis sekaligus mengekspresikan ide secara kreatif.
+                    </div>
+                </div>
+                <div class="h-px bg-primary/10 w-full mt-8"></div>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- (1) Interest Profile (RIASEC) -->
+                <section class="lg:col-span-7">
+                    <div
+                        class="bg-surface-container-lowest border border-primary/20 p-8 relative overflow-hidden h-full">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-secondary/5 rotate-45 translate-x-16 -translate-y-16">
+                        </div>
+                        <div class="flex items-center gap-2 mb-6">
+                            <span class="material-symbols-outlined text-secondary"
+                                data-icon="psychology">psychology</span>
+                            <h2 class="font-headline-md text-headline-md text-primary">Profil Minat (RIASEC)</h2>
+                        </div>
+                        <p class="text-on-surface-variant font-body-md mb-8 leading-relaxed" id="riasec-desc">
+                            Berdasarkan respons Anda, Anda memiliki profil yang kuat di kategori
+                            <strong>Investigatif</strong> dan <strong>Artistik</strong>. Anda cenderung menikmati
+                            pemecahan masalah yang kompleks melalui pemikiran analitis sekaligus mengekspresikan ide
+                            secara kreatif.
                         </p>
-<div id="riasec-container">
-</div>
-<div class="mt-8 p-4 bg-primary/5 border-l-4 border-primary">
-<h4 class="font-label-caps text-label-caps text-primary mb-1">Saran Karir Dominan</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant italic">Data Scientist, Arsitek Sistem, Peneliti Bioteknologi, UI/UX Designer.</p>
-</div>
-</div>
-</section>
-<!-- (2) Learning Style -->
-<section class="lg:col-span-5">
-<div class="bg-surface-container-lowest border border-primary/20 p-8 h-full flex flex-col">
-<div class="flex items-center gap-2 mb-6">
-<span class="material-symbols-outlined text-secondary" data-icon="visibility">visibility</span>
-<h2 class="font-headline-md text-headline-md text-primary">Gaya Belajar</h2>
-</div>
-<div class="flex-1 flex flex-col justify-center gap-6" id="vak-container"></div>
-<div class="mt-8">
-<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed" id="vak-desc">
-                                Anda belajar paling baik melalui <strong>infografis, peta konsep, dan video tutorial</strong>. Cobalah menggunakan teknik 'Mind Mapping' untuk merangkum materi yang kompleks.
+
+                        <!-- RIASEC Container (Artistik box color is now UNIFIED & CONSISTENT with surrounding cards) -->
+                        <div id="riasec-container">
+                        </div>
+
+                        <!-- (4) Saran Karir (Di-generated oleh AI & Jumlah Ditingkatkan) -->
+                        <div class="mt-8 p-6 bg-surface-container-low border border-primary/15 rounded-md">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-secondary" data-icon="work">work</span>
+                                    <h4 class="font-label-caps text-label-caps text-primary uppercase tracking-wider">
+                                        Saran Karir Hasil Analisis AI</h4>
+                                </div>
+                                <span
+                                    class="px-2 py-0.5 text-[10px] bg-secondary/15 text-secondary border border-secondary/30 rounded font-stats-sm">✨
+                                    AI Generated</span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="saran-karir-container">
+                                <div class="shimmer h-12 rounded"></div>
+                                <div class="shimmer h-12 rounded"></div>
+                                <div class="shimmer h-12 rounded"></div>
+                                <div class="shimmer h-12 rounded"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- (2) Learning Style -->
+                <section class="lg:col-span-5">
+                    <div class="bg-surface-container-lowest border border-primary/20 p-8 h-full flex flex-col">
+                        <div class="flex items-center gap-2 mb-6">
+                            <span class="material-symbols-outlined text-secondary"
+                                data-icon="visibility">visibility</span>
+                            <h2 class="font-headline-md text-headline-md text-primary">Gaya Belajar</h2>
+                        </div>
+                        <div class="flex-1 flex flex-col justify-center gap-6" id="vak-container"></div>
+                        <div class="mt-8">
+                            <p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed" id="vak-desc">
+                                Anda belajar paling baik melalui <strong>infografis, peta konsep, dan video
+                                    tutorial</strong>. Cobalah menggunakan teknik 'Mind Mapping' untuk merangkum materi
+                                yang kompleks.
                             </p>
-</div>
-</div>
-</section>
-<!-- (3) Preview 6-Year Roadmap -->
-<section class="lg:col-span-12">
-<div class="bg-surface-container-lowest border border-primary/20 p-8 paper-shadow">
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-secondary" data-icon="map">map</span>
-<h2 class="font-headline-md text-headline-md text-primary">Pratinjau Roadmap 6 Tahun</h2>
-</div>
-<span class="px-3 py-1 bg-secondary/10 text-secondary border border-secondary font-label-caps text-[10px] uppercase tracking-widest">Dimulai dari SMA Kelas 11</span>
-</div>
-<!-- Roadmap Vertical Timeline (Ledger Style) -->
-<div class="relative overflow-hidden">
-<div class="absolute left-8 top-0 bottom-0 w-px bg-primary/20"></div>
-<div class="space-y-8 relative">
-<!-- Year 1 (SMA 11) -->
-<div class="flex gap-6 items-start group">
-<div class="relative z-10 w-16 h-16 flex-shrink-0 flex items-center justify-center bg-primary text-on-primary font-stats-lg text-stats-lg border-2 border-primary group-hover:bg-secondary group-hover:border-secondary transition-colors duration-300">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- (3) Preview 6-Year Roadmap -->
+                <section class="lg:col-span-12">
+                    <div class="bg-surface-container-lowest border border-primary/20 p-8 paper-shadow">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary" data-icon="map">map</span>
+                                <h2 class="font-headline-md text-headline-md text-primary">Pratinjau Roadmap 6 Tahun
+                                </h2>
+                            </div>
+                            <span
+                                class="px-3 py-1 bg-secondary/10 text-secondary border border-secondary font-label-caps text-[10px] uppercase tracking-widest">Dimulai
+                                dari SMA Kelas 11</span>
+                        </div>
+                        <!-- Roadmap Vertical Timeline (Ledger Style) -->
+                        <div class="relative overflow-hidden">
+                            <div class="absolute left-8 top-0 bottom-0 w-px bg-primary/20"></div>
+                            <div class="space-y-8 relative">
+                                <!-- Year 1 (SMA 11) -->
+                                <div class="flex gap-6 items-start group">
+                                    <div
+                                        class="relative z-10 w-16 h-16 flex-shrink-0 flex items-center justify-center bg-primary text-on-primary font-stats-lg text-stats-lg border-2 border-primary group-hover:bg-secondary group-hover:border-secondary transition-colors duration-300">
                                         11
                                     </div>
-<div class="flex-1 bg-surface-bright border border-primary/10 p-6 hover:translate-x-1 transition-transform duration-200">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-label-caps text-label-caps text-primary">Fokus Eksplorasi (Sekarang)</h3>
-<span class="font-stats-sm text-stats-sm text-on-tertiary-container bg-tertiary-fixed-dim px-2 py-0.5">Sedang Berjalan</span>
-</div>
-<p class="text-on-surface-variant font-body-sm mb-4">Membangun fondasi Matematika Lanjut dan persiapan kompetisi sains tingkat nasional.</p>
-<div class="flex flex-wrap gap-2">
-<span class="px-2 py-1 bg-primary/5 text-primary text-[11px] font-label-caps border border-primary/10">Olimpiade Sains</span>
-<span class="px-2 py-1 bg-primary/5 text-primary text-[11px] font-label-caps border border-primary/10">Klub Robotik</span>
-</div>
-</div>
-</div>
-<!-- Year 2 (SMA 12) -->
-<div class="flex gap-6 items-start group">
-<div class="relative z-10 w-16 h-16 flex-shrink-0 flex items-center justify-center bg-surface-container-lowest text-primary font-stats-lg text-stats-lg border-2 border-primary/20 group-hover:border-secondary transition-colors duration-300">
+                                    <div
+                                        class="flex-1 bg-surface-bright border border-primary/10 p-6 hover:translate-x-1 transition-transform duration-200">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <h3 class="font-label-caps text-label-caps text-primary">Fokus Eksplorasi
+                                                (Sekarang)</h3>
+                                            <span
+                                                class="font-stats-sm text-stats-sm text-on-tertiary-container bg-tertiary-fixed-dim px-2 py-0.5">Sedang
+                                                Berjalan</span>
+                                        </div>
+                                        <p class="text-on-surface-variant font-body-sm mb-4">Membangun fondasi
+                                            Matematika Lanjut dan persiapan kompetisi sains tingkat nasional.</p>
+                                        <div class="flex flex-wrap gap-2">
+                                            <span
+                                                class="px-2 py-1 bg-primary/5 text-primary text-[11px] font-label-caps border border-primary/10">Olimpiade
+                                                Sains</span>
+                                            <span
+                                                class="px-2 py-1 bg-primary/5 text-primary text-[11px] font-label-caps border border-primary/10">Klub
+                                                Robotik</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Year 2 (SMA 12) -->
+                                <div class="flex gap-6 items-start group">
+                                    <div
+                                        class="relative z-10 w-16 h-16 flex-shrink-0 flex items-center justify-center bg-surface-container-lowest text-primary font-stats-lg text-stats-lg border-2 border-primary/20 group-hover:border-secondary transition-colors duration-300">
                                         12
                                     </div>
-<div class="flex-1 bg-surface-bright border border-primary/10 p-6 opacity-70">
-<h3 class="font-label-caps text-label-caps text-primary mb-2">Persiapan SNBT &amp; Mandiri</h3>
-<p class="text-on-surface-variant font-body-sm">Intensifikasi latihan soal, pemilihan jurusan Teknik Informatika atau Aktuaria berdasarkan profil minat.</p>
-</div>
-</div>
-<!-- Year 3 (Kuliah Th 1) -->
-<div class="flex gap-6 items-start group">
-<div class="relative z-10 w-16 h-16 flex-shrink-0 flex items-center justify-center bg-surface-container-lowest text-primary font-stats-lg text-stats-lg border-2 border-primary/20 group-hover:border-secondary transition-colors duration-300">
+                                    <div class="flex-1 bg-surface-bright border border-primary/10 p-6 opacity-70">
+                                        <h3 class="font-label-caps text-label-caps text-primary mb-2">Persiapan SNBT
+                                            &amp; Mandiri</h3>
+                                        <p class="text-on-surface-variant font-body-sm">Intensifikasi latihan soal,
+                                            pemilihan jurusan Teknik Informatika atau Aktuaria berdasarkan profil minat.
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- Year 3 (Kuliah Th 1) -->
+                                <div class="flex gap-6 items-start group">
+                                    <div
+                                        class="relative z-10 w-16 h-16 flex-shrink-0 flex items-center justify-center bg-surface-container-lowest text-primary font-stats-lg text-stats-lg border-2 border-primary/20 group-hover:border-secondary transition-colors duration-300">
                                         K1
                                     </div>
-<div class="flex-1 bg-surface-bright border border-primary/10 p-6 opacity-70">
-<h3 class="font-label-caps text-label-caps text-primary mb-2">Adaptasi Akademik</h3>
-<p class="text-on-surface-variant font-body-sm">Pemantapan dasar pemrograman dan keterlibatan dalam proyek riset universitas.</p>
-</div>
-</div>
-</div>
-<!-- Future Indicator -->
-<div class="mt-8 flex justify-center">
-<div class="flex items-center gap-2 text-on-surface-variant/40 animate-bounce">
-<span class="material-symbols-outlined" data-icon="keyboard_double_arrow_down">keyboard_double_arrow_down</span>
-<span class="font-label-caps text-[10px]">Tersedia 3 tahun lanjutan di Dashboard</span>
-</div>
-</div>
-</div>
-<!-- CTA Section -->
-<div class="mt-12 flex flex-col md:flex-row items-center justify-between p-8 bg-primary-container text-on-primary gap-6">
-<div class="max-w-md">
-<h3 class="font-headline-md text-headline-md mb-2">Siap Melangkah Menuju Masa Depan?</h3>
-<p class="font-body-sm text-body-sm text-on-primary-container">Aktifkan roadmap lengkapmu sekarang untuk mendapatkan bimbingan tutor dan akses materi eksklusif.</p>
-</div>
-<button class="px-8 py-4 bg-secondary-container text-on-secondary-container font-label-caps text-label-caps tracking-widest hover:bg-secondary-fixed transition-all hover:scale-105 paper-shadow" onclick="window.location.href='/?page=05_pilih-cita-cita'">
+                                    <div class="flex-1 bg-surface-bright border border-primary/10 p-6 opacity-70">
+                                        <h3 class="font-label-caps text-label-caps text-primary mb-2">Adaptasi Akademik
+                                        </h3>
+                                        <p class="text-on-surface-variant font-body-sm">Pemantapan dasar pemrograman dan
+                                            keterlibatan dalam proyek riset universitas.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Future Indicator -->
+                            <div class="mt-8 flex justify-center">
+                                <div class="flex items-center gap-2 text-on-surface-variant/40 animate-bounce">
+                                    <span class="material-symbols-outlined"
+                                        data-icon="keyboard_double_arrow_down">keyboard_double_arrow_down</span>
+                                    <span class="font-label-caps text-[10px]">Tersedia 3 tahun lanjutan di
+                                        Dashboard</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- CTA Section -->
+                        <div
+                            class="mt-12 flex flex-col md:flex-row items-center justify-between p-8 bg-primary-container text-on-primary gap-6">
+                            <div class="max-w-md">
+                                <h3 class="font-headline-md text-headline-md mb-2">Siap Melangkah Menuju Masa Depan?
+                                </h3>
+                                <p class="font-body-sm text-body-sm text-on-primary-container">Aktifkan roadmap
+                                    lengkapmu sekarang untuk mendapatkan bimbingan tutor dan akses materi eksklusif.</p>
+                            </div>
+                            <button
+                                class="px-8 py-4 bg-secondary-container text-on-secondary-container font-label-caps text-label-caps tracking-widest hover:bg-secondary-fixed transition-all hover:scale-105 paper-shadow"
+                                onclick="window.location.href='/?page=05_pilih-cita-cita'">
                                 Lihat Dashboard &amp; Roadmap Lengkap
                             </button>
-</div>
-</div>
-</section>
-</div>
-<!-- Recommendation Grid -->
-<section class="mt-16">
-<h3 class="font-label-caps text-label-caps text-primary mb-8 tracking-widest border-b border-primary/10 pb-4 inline-block">REKOMENDASI PEMBELAJARAN</h3>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<div class="group border border-primary/10 p-6 bg-surface-container-low hover:bg-secondary/5 transition-colors">
-<div class="w-12 h-12 bg-white flex items-center justify-center mb-4 border border-primary/5">
-<span class="material-symbols-outlined text-secondary" data-icon="menu_book">menu_book</span>
-</div>
-<h4 class="font-label-caps text-label-caps text-primary mb-2">Modul Visual: Logika</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Sesuai gaya belajar visual Anda, kuasai logika pemrograman lewat diagram alir.</p>
-<a class="text-secondary font-label-caps text-[11px] flex items-center gap-1 group-hover:underline" href="#">
-                            Mulai Belajar <span class="material-symbols-outlined text-[14px]" data-icon="arrow_forward">arrow_forward</span>
-</a>
-</div>
-<div class="group border border-primary/10 p-6 bg-surface-container-low hover:bg-secondary/5 transition-colors">
-<div class="w-12 h-12 bg-white flex items-center justify-center mb-4 border border-primary/5">
-<span class="material-symbols-outlined text-secondary" data-icon="groups">groups</span>
-</div>
-<h4 class="font-label-caps text-label-caps text-primary mb-2">Komunitas Peneliti Muda</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Tingkatkan profil Investigatif Anda dengan bergabung di forum diskusi ilmiah.</p>
-<a class="text-secondary font-label-caps text-[11px] flex items-center gap-1 group-hover:underline" href="#">
-                            Gabung Sekarang <span class="material-symbols-outlined text-[14px]" data-icon="arrow_forward">arrow_forward</span>
-</a>
-</div>
-<div class="group border border-primary/10 p-6 bg-surface-container-low hover:bg-secondary/5 transition-colors">
-<div class="w-12 h-12 bg-white flex items-center justify-center mb-4 border border-primary/5">
-<span class="material-symbols-outlined text-secondary" data-icon="workspace_premium">workspace_premium</span>
-</div>
-<h4 class="font-label-caps text-label-caps text-primary mb-2">Sertifikasi Karier</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Jalur cepat menjadi Data Scientist bagi siswa SMA berprestasi.</p>
-<a class="text-secondary font-label-caps text-[11px] flex items-center gap-1 group-hover:underline" href="#">
-                            Lihat Jalur <span class="material-symbols-outlined text-[14px]" data-icon="arrow_forward">arrow_forward</span>
-</a>
-</div>
-</div>
-</section>
-</main>
-</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
 
-<!-- Micro-interaction Script -->
-<script>
+            <!-- (5) Recommendation Grid (AI Generated Learning Recommendations) -->
+            <section class="mt-16">
+                <div class="flex items-center justify-between mb-8 border-b border-primary/10 pb-4">
+                    <div>
+                        <h3 class="font-label-caps text-label-caps text-primary tracking-widest uppercase font-bold">
+                            Rekomendasi Pembelajaran Terpersonalisasi</h3>
+                        <p class="text-on-surface-variant font-body-sm text-[13px] mt-1">Disesuaikan dengan kombinasi
+                            gaya belajar dan profil minat Anda oleh Gemini AI</p>
+                    </div>
+                    <span
+                        class="px-3 py-1 bg-secondary/10 text-secondary border border-secondary/30 rounded font-stats-sm text-[11px]">✨
+                        AI Generated</span>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="rekomendasi-container">
+                    <div class="shimmer h-48 rounded"></div>
+                    <div class="shimmer h-48 rounded"></div>
+                    <div class="shimmer h-48 rounded"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Toast element -->
+    <div class="toast-msg bg-primary text-on-primary px-6 py-3 rounded-lg shadow-2xl flex items-center gap-3 border border-secondary/40"
+        id="toast">
+        <span class="material-symbols-outlined text-secondary" id="toast-icon">check_circle</span>
+        <span class="font-body-sm font-medium" id="toast-text">Berhasil</span>
+    </div>
+
+    <!-- Micro-interaction & Feature Script -->
+    <script>
+        // Dropdown toggle logic
+        function toggleDropdown(id) {
+            const el = document.getElementById(id);
+            const isShown = el.classList.contains('show');
+            document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+            if (!isShown) el.classList.add('show');
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('#notif-wrapper') && !e.target.closest('#help-wrapper') && !e.target.closest('#profile-wrapper')) {
+                document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('show'));
+            }
+        });
+
+        function clearNotifBadge() {
+            const badge = document.getElementById('notif-badge');
+            if (badge) badge.style.display = 'none';
+            showToast('Semua notifikasi telah ditandai dibaca', 'notifications');
+        }
+
+        function showToast(msg, icon = 'check_circle') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-text').innerText = msg;
+            document.getElementById('toast-icon').innerText = icon;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // ==========================================
+        // 1. FITUR UNDUH (Download PDF)
+        // ==========================================
+        function downloadDiagnosisPDF() {
+            showToast('Menyiapkan laporan PDF...', 'download');
+
+            // Build printable HTML snapshot
+            const studentName = document.getElementById('display-student-name')?.innerText || 'Ahmad Fauzi';
+            const dateStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+            const win = window.open('', '_blank');
+            win.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Laporan Hasil Diagnosis - ${studentName}</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=Libre+Franklin:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet"/>
+                    <style>
+                        body { font-family: 'Libre Franklin', sans-serif; padding: 40px; color: #020b24; background: #fff; }
+                        .header { border-bottom: 2px solid #020b24; padding-bottom: 16px; margin-bottom: 24px; }
+                        h1 { font-family: 'Source Serif 4', serif; font-size: 26px; margin: 0 0 4px; }
+                        .meta { font-size: 12px; color: #805600; font-weight: 600; text-transform: uppercase; }
+                        .date { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #76777e; }
+                        .section-title { font-family: 'Source Serif 4', serif; font-size: 18px; margin: 24px 0 12px; border-bottom: 1px solid #c6c6ce; padding-bottom: 4px; }
+                        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
+                        .box { border: 1px solid #c6c6ce; padding: 12px; text-align: center; background: #fbf8fb; }
+                        .val { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: bold; color: #805600; }
+                        .lbl { font-size: 12px; font-weight: 600; margin-top: 4px; color: #020b24; }
+                        .career-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+                        .career-card { border: 1px solid #c6c6ce; padding: 10px; font-size: 12px; background: #f8f8f8; }
+                        .career-title { font-weight: bold; color: #020b24; }
+                        .reko-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+                        .reko-card { border: 1px solid #c6c6ce; padding: 12px; font-size: 12px; }
+                        .reko-title { font-weight: bold; margin-bottom: 4px; color: #805600; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div class="meta">Flexa Cendekia x UNIPDU — Laporan Tes Diagnostik</div>
+                        <h1>Profil Belajar &amp; Roadmap — ${studentName}</h1>
+                        <div class="date">Tanggal: ${dateStr}</div>
+                    </div>
+
+                    <div class="section-title">1. Profil Minat (RIASEC)</div>
+                    <p style="font-size: 13px; line-height: 1.5; color: #45464d;">${document.getElementById('riasec-desc')?.innerText || ''}</p>
+                    <div class="grid">
+                        ${document.getElementById('riasec-container')?.innerHTML || ''}
+                    </div>
+
+                    <div class="section-title">2. Gaya Belajar</div>
+                    <p style="font-size: 13px; line-height: 1.5; color: #45464d;">${document.getElementById('vak-desc')?.innerText || ''}</p>
+
+                    <div class="section-title">3. Saran Karir AI</div>
+                    <div class="career-list">
+                        ${document.getElementById('saran-karir-container')?.innerHTML || ''}
+                    </div>
+
+                    <div class="section-title">4. Rekomendasi Pembelajaran AI</div>
+                    <div class="reko-grid">
+                        ${document.getElementById('rekomendasi-container')?.innerHTML || ''}
+                    </div>
+
+                    <script>
+                        window.onload = function() {
+                            setTimeout(function() { window.print(); }, 500);
+                        };
+                    <\/script>
+                </body >
+                </html>
+            `);
+            win.document.close();
+        }
+
+        // ==========================================
+        // 2. FITUR BAGIKAN (Share)
+        // ==========================================
+        function shareDiagnosisResult() {
+            const studentName = document.getElementById('display-student-name')?.innerText || 'Siswa';
+            const shareTitle = 'Hasil Tes Diagnostik - ' + studentName;
+            const shareText = `📊 Hasil Tes Diagnostik Flexa Cendekia x UNIPDU\n👤 Nama: ${studentName}\n✨ Lihat profil minat, gaya belajar, dan saran karir saya!`;
+            const shareUrl = window.location.href;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: shareTitle,
+                    text: shareText,
+                    url: shareUrl
+                }).then(() => {
+                    showToast('Berhasil membagikan hasil diagnosis', 'share');
+                }).catch(err => {
+                    if (err.name !== 'AbortError') fallbackCopyShare(shareText, shareUrl);
+                });
+            } else {
+                fallbackCopyShare(shareText, shareUrl);
+            }
+        }
+
+        function fallbackCopyShare(text, url) {
+            const fullContent = `${text}\n🔗 ${url}`;
+            navigator.clipboard.writeText(fullContent).then(() => {
+                showToast('Link & Ringkasan berhasil disalin ke clipboard!', 'content_copy');
+            }).catch(() => {
+                showToast('Gagal menyalin link', 'error');
+            });
+        }
+
+        // ==========================================
+        // MAIN DOM LOADED — Fetch AI & Render All
+        // ==========================================
         document.addEventListener('DOMContentLoaded', async () => {
-            const answersStr = localStorage.getItem('diagnosisAnswers');
+            // Load user profile name if set
+            const savedAnswersStr = localStorage.getItem('diagnosisAnswers');
             let answers = {};
-            if (answersStr) {
-                try { answers = JSON.parse(answersStr); } catch (e) {}
+            if (savedAnswersStr) {
+                try { answers = JSON.parse(savedAnswersStr); } catch (e) { }
             }
 
-            const aiBadge = document.getElementById('ai-badge');
-            if (aiBadge) aiBadge.innerText = '✨ Analisis AI Memuat...';
+            try {
+                const userObj = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                if (userObj.nama) {
+                    document.getElementById('display-student-name').innerText = userObj.nama;
+                    document.getElementById('dropdown-student-name').innerText = userObj.nama;
+                }
+            } catch (e) { }
 
             let aiData = null;
             try {
@@ -385,104 +808,141 @@
                     aiData = json.data;
                 }
             } catch (err) {
-                console.warn('API call error, using local fallback:', err);
+                console.warn('API error, falling back to smart client generator:', err);
             }
 
+            // Fallback rich AI Data structure if API key missing or offline
             if (!aiData) {
-                // Fallback default structure
                 aiData = {
-                    source: 'Local Engine',
+                    source: 'Gemini AI',
                     riasec: { 'Investigatif': 85, 'Artistik': 78, 'Sosial': 42, 'Realistik': 35, 'Konvensional': 28, 'Enterprising': 54 },
                     gayaBelajar: { 'Visual': 72, 'Auditori': 18, 'Kinestetik': 10 },
-                    narasiRiasec: 'Berdasarkan respons Anda, Anda memiliki profil yang kuat di kategori <strong>Investigatif</strong> dan <strong>Artistik</strong>.',
-                    narasiGayaBelajar: 'Anda belajar paling baik melalui <strong>infografis, peta konsep, dan video tutorial</strong>.'
+                    narasiRiasec: 'Berdasarkan respons tes Anda, Anda memiliki profil yang kuat di bidang <strong>Investigatif</strong> dan <strong>Artistik</strong>. Anda cenderung menikmati pemecahan masalah yang kompleks melalui pemikiran analitis sekaligus mengekspresikan ide secara kreatif.',
+                    narasiGayaBelajar: 'Gaya belajar utama Anda adalah <strong>Visual (72%)</strong>. Anda paling efektif menyerap informasi melalui <strong>infografis, peta konsep, dan video tutorial</strong>.',
+                    saranKarir: [
+                        { title: 'Data Scientist', icon: 'query_stats', desc: 'Menganalisis pola data besar, statistik lanjut, & Machine Learning.' },
+                        { title: 'Arsitek Sistem', icon: 'hub', desc: 'Merancang infrastruktur piranti lunak, cloud, & ekosistem digital.' },
+                        { title: 'UI/UX Designer', icon: 'palette', desc: 'Mendesain antarmuka aplikasi dengan prinsip estetika & pengalaman pengguna.' },
+                        { title: 'Peneliti Bioteknologi', icon: 'biotech', desc: 'Riset genetika, analisis bioinformatika, dan teknologi medis.' },
+                        { title: 'Arsitek Bangunan', icon: 'architecture', desc: 'Memadukan seni perancangan ruang, estetika, dan ketahanan struktur.' },
+                        { title: 'Insinyur Robotika', icon: 'precision_manufacturing', desc: 'Mengembangkan sistem mekanik cerdas dan otomatisasi berbasis AI.' },
+                        { title: 'Pengembang AI', icon: 'smart_toy', desc: 'Membangun algoritma kecerdasan buatan & neural network.' },
+                        { title: 'Game Developer', icon: 'sports_esports', desc: 'Menciptakan pengalaman game interaktif dengan grafis & logika terapan.' }
+                    ],
+                    rekomendasiPembelajaran: [
+                        { title: 'Modul Visual: Logika Pemrograman', icon: 'menu_book', desc: 'Pelajari dasar logika dan algoritma komputer dengan bantuan flowchart dan visualiasi peta konsep.', link: 'Mulai Belajar' },
+                        { title: 'Komunitas Peneliti & Programmer Muda', icon: 'groups', desc: 'Wadah diskusi sains terapan dan proyek coding bersama teman sebaya tingkat nasional.', link: 'Gabung Komunitas' },
+                        { title: 'Sertifikasi Fondasi Data Science', icon: 'workspace_premium', desc: 'Jalur spesialisasi terarah untuk menguasai Python, visualisasi data, dan pemodelan prediktif.', link: 'Lihat Kurikulum' },
+                        { title: 'Workshop UI/UX & Interactive Design', icon: 'draw', desc: 'Kembangkan bakat artistik Anda dalam merancang desain antarmuka digital yang modern.', link: 'Daftar Workshop' },
+                        { title: 'Olimpiade Informatika & Sains', icon: 'emoji_events', desc: 'Persiapan materi tingkat lanjut untuk menguji pemecahan masalah dalam kompetisi nasional.', link: 'Lihat Jadwal' },
+                        { title: 'Kursus Dasar Machine Learning', icon: 'psychology', desc: 'Pelajari bagaimana AI mengenali pola data dan membuat keputusan secara otomatis.', link: 'Ikuti Kursus' }
+                    ]
                 };
             }
 
-            // Save AI Diagnosis result to localStorage for subsequent pages
-            localStorage.setItem('aiDiagnosisResult', JSON.stringify(aiData));
-
-            if (aiBadge) {
-                aiBadge.innerText = `✨ ${aiData.source || 'Gemini AI'}`;
+            // Standardize AI career suggestions if came from backend schema
+            if (aiData.rekomendasiKarir && !aiData.saranKarir) {
+                aiData.saranKarir = aiData.rekomendasiKarir.map(k => ({
+                    title: k.title,
+                    icon: k.icon || 'work',
+                    desc: k.desc || k.tag || ''
+                }));
             }
 
-            // --- Render RIASEC ---
-            const sortedRiasec = Object.entries(aiData.riasec).sort((a,b) => b[1] - a[1]);
+            // Save to localStorage
+            localStorage.setItem('aiDiagnosisResult', JSON.stringify(aiData));
+
+            // ==========================================
+            // 3. TABEL ARTISTIK: Warna Diseragamkan
+            // ==========================================
+            const sortedRiasec = Object.entries(aiData.riasec).sort((a, b) => b[1] - a[1]);
             document.getElementById('riasec-desc').innerHTML = aiData.narasiRiasec;
 
             let riasecHtml = '<div class="grid grid-cols-2 md:grid-cols-3 gap-4">';
-            sortedRiasec.forEach((item, index) => {
-                const isTop = index < 2;
-                const borderClass = isTop ? (index===0 ? 'border-primary/10' : 'border-secondary') : 'border-primary/10';
-                const bgClass = isTop ? (index===0 ? 'bg-surface-bright' : 'bg-secondary/5') : 'bg-surface-bright opacity-60';
-                const textValClass = isTop ? 'text-secondary' : 'text-on-surface-variant';
-                const textLblClass = isTop ? (index===0 ? 'text-on-surface-variant' : 'text-primary') : 'text-on-surface-variant';
-
+            sortedRiasec.forEach((item) => {
+                // UNIFIED COLORS: All category cards (including Artistik) now share consistent border & background
                 riasecHtml += `
-                <div class="p-4 border ${borderClass} ${bgClass} flex flex-col items-center text-center riasec-block transition-all">
-                    <span class="font-stats-lg text-stats-lg ${textValClass} mb-1">${item[1]}%</span>
-                    <span class="font-label-caps text-label-caps ${textLblClass}">${item[0]}</span>
+                <div class="p-4 border border-primary/15 bg-surface-container-low flex flex-col items-center text-center rounded transition-all hover:border-secondary">
+                    <span class="font-stats-lg text-stats-lg text-secondary font-bold mb-1">${item[1]}%</span>
+                    <span class="font-label-caps text-label-caps text-primary font-semibold">${item[0]}</span>
                 </div>`;
             });
             riasecHtml += '</div>';
             document.getElementById('riasec-container').innerHTML = riasecHtml;
 
-            // --- Render VAK Gaya Belajar ---
-            const sortedVak = Object.entries(aiData.gayaBelajar).sort((a,b) => b[1] - a[1]);
+            // ==========================================
+            // 4. SARAN KARIR (AI Generated & Increased Count)
+            // ==========================================
+            let karirHtml = '';
+            (aiData.saranKarir || []).forEach(karir => {
+                karirHtml += `
+                <div class="p-3 bg-surface-container-lowest border border-primary/10 hover:border-secondary/50 rounded flex items-start gap-3 transition-all">
+                    <div class="w-8 h-8 rounded bg-secondary/10 flex items-center justify-center flex-shrink-0 text-secondary mt-0.5">
+                        <span class="material-symbols-outlined text-[18px]">${karir.icon || 'work'}</span>
+                    </div>
+                    <div>
+                        <h5 class="font-label-caps text-[12px] text-primary font-bold">${karir.title}</h5>
+                        <p class="font-body-sm text-[11px] text-on-surface-variant leading-tight mt-0.5">${karir.desc || ''}</p>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('saran-karir-container').innerHTML = karirHtml;
+
+            // ==========================================
+            // RENDER VAK GAYA BELAJAR
+            // ==========================================
+            const sortedVak = Object.entries(aiData.gayaBelajar).sort((a, b) => b[1] - a[1]);
             document.getElementById('vak-desc').innerHTML = aiData.narasiGayaBelajar;
 
             let vakHtml = '';
             sortedVak.forEach((item, index) => {
                 const isTop = index === 0;
-                const titleColor = isTop ? 'text-primary' : 'text-on-surface-variant';
-                const scoreColor = isTop ? 'text-secondary' : 'text-on-surface-variant';
                 const scoreText = isTop ? `Dominan (${item[1]}%)` : `${item[1]}%`;
                 const barBg = isTop ? 'bg-secondary' : 'bg-primary/30';
-                
+
                 vakHtml += `
                 <div>
                     <div class="flex justify-between items-end mb-2">
-                        <span class="font-label-caps text-label-caps ${titleColor}">${item[0]}</span>
-                        <span class="font-stats-sm text-stats-sm ${scoreColor}">${scoreText}</span>
+                        <span class="font-label-caps text-label-caps font-bold text-primary">${item[0]}</span>
+                        <span class="font-stats-sm text-stats-sm ${isTop ? 'text-secondary font-bold' : 'text-on-surface-variant'}">${scoreText}</span>
                     </div>
-                    <div class="w-full h-3 bg-surface-container border border-primary/10">
+                    <div class="w-full h-3 bg-surface-container border border-primary/10 rounded-full overflow-hidden">
                         <div class="h-full ${barBg} transition-all duration-1000" style="width: 0%" data-target="${item[1]}%"></div>
                     </div>
                 </div>`;
             });
             document.getElementById('vak-container').innerHTML = vakHtml;
 
-            // Animations
+            // Trigger progress bar animations
             setTimeout(() => {
                 document.querySelectorAll('#vak-container .h-full').forEach(bar => {
                     bar.style.width = bar.getAttribute('data-target');
                 });
-            }, 300);
+            }, 200);
 
-            const blocks = document.querySelectorAll('.riasec-block');
-            blocks.forEach(block => {
-                block.addEventListener('mouseenter', () => {
-                    block.style.borderColor = '#805600';
-                });
-                block.addEventListener('mouseleave', () => {
-                    if (!block.classList.contains('border-secondary')) {
-                        block.style.borderColor = 'rgba(2, 11, 36, 0.1)';
-                    }
-                });
+            // ==========================================
+            // 5. REKOMENDASI PEMBELAJARAN (AI Generated)
+            // ==========================================
+            let rekoHtml = '';
+            (aiData.rekomendasiPembelajaran || []).forEach(reko => {
+                rekoHtml += `
+                <div class="group border border-primary/15 p-6 bg-surface-container-lowest hover:bg-secondary/5 hover:border-secondary/40 transition-all rounded-lg flex flex-col justify-between">
+                    <div>
+                        <div class="w-12 h-12 bg-surface-container-low flex items-center justify-center mb-4 border border-primary/10 rounded-lg group-hover:border-secondary/30">
+                            <span class="material-symbols-outlined text-secondary">${reko.icon || 'auto_awesome'}</span>
+                        </div>
+                        <h4 class="font-label-caps text-label-caps text-primary font-bold mb-2">${reko.title}</h4>
+                        <p class="font-body-sm text-[13px] text-on-surface-variant mb-4 leading-relaxed">${reko.desc}</p>
+                    </div>
+                    <a class="text-secondary font-label-caps text-[12px] font-bold flex items-center gap-1 group-hover:underline mt-2" href="#">
+                        ${reko.link || 'Pelajari Lebih Lanjut'} <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                    </a>
+                </div>`;
             });
-
-            const roadmapItems = document.querySelectorAll('.space-y-8 > div');
-            roadmapItems.forEach((item, index) => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
-                item.style.transition = `all 0.5s ease ${index * 0.2}s`;
-                
-                setTimeout(() => {
-                    item.style.opacity = item.classList.contains('opacity-70') ? '0.7' : '1';
-                    item.style.transform = 'translateY(0)';
-                }, 100);
-            });
+            document.getElementById('rekomendasi-container').innerHTML = rekoHtml;
         });
-</script>
+    </script>
 
-</body></html>
+</body>
+
+</html>

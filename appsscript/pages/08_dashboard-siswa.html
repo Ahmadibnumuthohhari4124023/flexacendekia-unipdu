@@ -1,325 +1,365 @@
-<!DOCTYPE html><html lang="id" class="light" style=""><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&amp;family=Libre+Franklin:wght@400;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">try{
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "on-tertiary-container": "#549589",
-                    "background": "#fbf8fb",
-                    "on-primary": "#ffffff",
-                    "secondary-fixed-dim": "#f7bc60",
-                    "on-background": "#1b1b1d",
-                    "surface-container-lowest": "#ffffff",
-                    "on-secondary-fixed-variant": "#614000",
-                    "on-surface": "#1b1b1d",
-                    "on-surface-variant": "#45464d",
-                    "on-primary-container": "#7f89a8",
-                    "surface-container-low": "#f5f3f5",
-                    "inverse-surface": "#303032",
-                    "on-tertiary": "#ffffff",
-                    "on-error": "#ffffff",
-                    "secondary-container": "#fdc265",
-                    "secondary-fixed": "#ffddaf",
-                    "error-container": "#ffdad6",
-                    "on-primary-fixed": "#101b34",
-                    "error": "#ba1a1a",
-                    "inverse-on-surface": "#f3f0f2",
-                    "surface-variant": "#e4e2e4",
-                    "surface-dim": "#dcd9dc",
-                    "surface-container-highest": "#e4e2e4",
-                    "secondary": "#805600",
-                    "surface-container-high": "#eae7ea",
-                    "surface-tint": "#535e7a",
-                    "primary-fixed-dim": "#bbc6e7",
-                    "primary-container": "#17223b",
-                    "tertiary-container": "#002822",
-                    "on-primary-fixed-variant": "#3c4661",
-                    "on-secondary-fixed": "#281800",
-                    "on-tertiary-fixed": "#00201b",
-                    "primary": "#020b24",
-                    "surface-container": "#f0edf0",
-                    "on-secondary": "#ffffff",
-                    "tertiary-fixed": "#adefe1",
-                    "surface": "#fbf8fb",
-                    "on-tertiary-fixed-variant": "#005046",
-                    "surface-bright": "#fbf8fb",
-                    "on-error-container": "#93000a",
-                    "outline-variant": "#c6c6ce",
-                    "outline": "#76777e",
-                    "tertiary-fixed-dim": "#91d3c5",
-                    "primary-fixed": "#d9e2ff",
-                    "inverse-primary": "#bbc6e7",
-                    "on-secondary-container": "#754e00",
-                    "tertiary": "#000f0c",
-                    "brand-gold": "#B9862F"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-            },
-            "spacing": {
-                    "unit": "4px",
-                    "margin-desktop": "32px",
-                    "container-max": "1280px",
-                    "gutter": "16px",
-                    "margin-mobile": "16px"
-            },
-            "fontFamily": {
-                    "display-lg": ["\"Source Serif 4\""],
-                    "body-sm": ["Libre Franklin"],
-                    "label-caps": ["Libre Franklin"],
-                    "stats-lg": ["JetBrains Mono"],
-                    "stats-sm": ["JetBrains Mono"],
-                    "body-md": ["Libre Franklin"],
-                    "display-lg-mobile": ["\"Source Serif 4\""],
-                    "headline-md": ["\"Source Serif 4\""]
-            },
-            "fontSize": {
-                    "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
-                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
-                    "stats-lg": ["20px", {"lineHeight": "24px", "fontWeight": "500"}],
-                    "stats-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400"}],
-                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                    "display-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
-                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+<!DOCTYPE html>
+<html lang="id" class="light">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Siswa - Flexa Cendekia x UNIPDU</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Libre+Franklin:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=block" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        try {
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        "colors": {
+                            "primary": "#17223B",
+                            "primary-dark": "#020B24",
+                            "brand-gold": "#B9862F",
+                            "brand-gold-dark": "#805600",
+                            "background": "#EAEDE2",
+                            "surface": "#FBFAF5",
+                            "on-surface": "#1B1B1D",
+                            "on-surface-variant": "#45464D",
+                            "outline-variant": "#C6C6CE"
+                        },
+                        "fontFamily": {
+                            "serif": ["'Source Serif 4'", "serif"],
+                            "sans": ["'Libre Franklin'", "sans-serif"],
+                            "mono": ["'JetBrains Mono'", "monospace"],
+                            "display-lg": ["'Source Serif 4'", "serif"],
+                            "headline-md": ["'Source Serif 4'", "serif"],
+                            "body-md": ["'Libre Franklin'", "sans-serif"],
+                            "label-caps": ["'Libre Franklin'", "sans-serif"],
+                            "stats-lg": ["'JetBrains Mono'", "monospace"],
+                            "stats-sm": ["'JetBrains Mono'", "monospace"]
+                        }
+                    }
+                }
             }
-          },
-        },
-      }
-    }catch(_e){}</script></head><body class="min-h-screen font-body-md text-body-md selection:bg-brand-gold/30">
-<!-- TopNavBar -->
-    <header class="bg-background border-b border-on-surface/20 sticky top-0 z-50">
-        <div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-16">
-            <div class="font-display-lg text-display-lg font-bold text-primary">
+        } catch (_e) {}
+    </script>
+    <style>
+        body {
+            background-color: #EAEDE2;
+            font-family: 'Libre Franklin', sans-serif;
+            color: #1B1B1D;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .ledger-card {
+            background-color: #FBFAF5;
+            border: 1px solid rgba(23, 34, 59, 0.20);
+            box-shadow: none;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .filled-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen font-sans selection:bg-brand-gold/30 flex flex-col justify-between relative overflow-x-hidden">
+
+    <!-- Binder Rings Decoration (Left edge desktop) -->
+    <div class="hidden xl:flex fixed left-3 top-1/2 -translate-y-1/2 flex-col gap-12 z-10 pointer-events-none opacity-40">
+        <div class="w-5 h-8 border-2 border-primary/40 rounded-full bg-[#EAEDE2] shadow-inner"></div>
+        <div class="w-5 h-8 border-2 border-primary/40 rounded-full bg-[#EAEDE2] shadow-inner"></div>
+        <div class="w-5 h-8 border-2 border-primary/40 rounded-full bg-[#EAEDE2] shadow-inner"></div>
+        <div class="w-5 h-8 border-2 border-primary/40 rounded-full bg-[#EAEDE2] shadow-inner"></div>
+    </div>
+
+    <!-- Top Navbar -->
+    <header class="w-full bg-[#FBFAF5] border-b border-primary/20 sticky top-0 z-50">
+        <div class="flex justify-between items-center max-w-[1280px] mx-auto px-4 md:px-8 h-16">
+            <!-- Brand Title -->
+            <div class="font-serif text-2xl md:text-3xl font-bold text-primary">
                 Flexa Cendekia x UNIPDU
             </div>
-            
+
+            <!-- Middle Navigation Tabs -->
             <nav class="hidden md:flex items-center self-end h-full">
-                <a href="#" class="text-white border-b-2 border-brand-gold bg-brand-gold px-6 py-2 rounded-t-lg transition-colors font-bold h-[calc(100%-4px)] flex items-center mt-auto">
+                <a href="/?page=08_dashboard-siswa" class="bg-brand-gold text-white px-6 py-2 rounded-t-md font-bold text-sm h-[calc(100%-8px)] flex items-center mt-auto">
                     Siswa
                 </a>
-                <a href="#" class="text-on-surface-variant hover:text-primary px-6 py-2 transition-colors hover:bg-primary/10 h-[calc(100%-4px)] flex items-center mt-auto">
+                <a href="/?page=14_dashboard-guru" class="text-on-surface-variant hover:text-primary px-6 py-2 text-sm font-medium h-[calc(100%-8px)] flex items-center mt-auto transition-colors">
                     Guru
                 </a>
-                <a href="#" class="text-on-surface-variant hover:text-primary px-6 py-2 transition-colors hover:bg-primary/10 h-[calc(100%-4px)] flex items-center mt-auto">
+                <a href="/?page=16_dashboard-ortu" class="text-on-surface-variant hover:text-primary px-6 py-2 text-sm font-medium h-[calc(100%-8px)] flex items-center mt-auto transition-colors">
                     Orang Tua
                 </a>
             </nav>
 
-            <div class="flex items-center gap-4">
-                <button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-primary/10 rounded-full transition-all" data-original-icon="notifications">notifications</button>
-                <button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-primary/10 rounded-full transition-all">settings</button>
-                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold border border-on-surface/20">
-                    <?= (typeof userData !== 'undefined' && userData && userData.nama) ? userData.nama.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase() : 'AF' ?>
+            <!-- Right Icons -->
+            <div class="flex items-center gap-3">
+                <button class="p-2 text-on-surface-variant hover:text-primary rounded-full transition-colors">
+                    <span class="material-symbols-outlined">notifications</span>
+                </button>
+                <button class="p-2 text-on-surface-variant hover:text-primary rounded-full transition-colors">
+                    <span class="material-symbols-outlined">settings</span>
+                </button>
+                <div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-mono text-sm font-bold border border-primary/30">
+                    AF
                 </div>
             </div>
         </div>
     </header>
 
-    <main class="max-w-container-max mx-auto px-margin-desktop py-8 grid grid-cols-12 gap-gutter">
-        
-        <!-- Header Identitas Section (Level 1 Ledger Card) -->
-        <section class="col-span-12 ledger-card p-8 flex flex-col md:flex-row justify-between items-start md:items-center">
+    <!-- Main Content Grid -->
+    <main class="max-w-[1280px] w-full mx-auto px-4 md:px-8 py-8 grid grid-cols-12 gap-6 flex-grow">
+
+        <!-- 1. Header Identitas Section -->
+        <section class="col-span-12 ledger-card p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <!-- Left: Avatar + Details -->
             <div class="flex items-center gap-6">
-                <div class="w-24 h-24 bg-primary-container text-white flex items-center justify-center rounded-none border border-on-surface/30 relative">
-                    <span class="font-display-lg text-display-lg"><?= (typeof userData !== 'undefined' && userData && userData.nama) ? userData.nama.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase() : 'AF' ?></span>
-                    
+                <!-- Avatar with PRO badge -->
+                <div class="relative flex-shrink-0">
+                    <div class="w-20 h-20 md:w-24 md:h-24 bg-primary text-white flex items-center justify-center font-serif text-3xl md:text-4xl font-bold">
+                        AF
+                    </div>
+                    <span class="absolute -bottom-1 -right-2 bg-brand-gold text-white font-mono text-[10px] font-bold px-1.5 py-0.5 rounded-none tracking-wider border border-white">
+                        PRO
+                    </span>
                 </div>
+                <!-- Details -->
                 <div>
-                    <h1 class="font-headline-md text-headline-md text-primary mb-1"><?= (typeof userData !== 'undefined' && userData) ? userData.nama : 'Ahmad Fauzi' ?></h1>
-                    <div class="flex flex-wrap gap-x-4 gap-y-2 text-on-surface-variant font-label-caps text-label-caps">
-                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">school</span> <?= (typeof userData !== 'undefined' && userData) ? userData.jenjang + ' Kelas ' + userData.kelas : 'SMA Kelas 11' ?></span>
-                        <span class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]" data-original-icon="architecture">architecture</span> Cita-cita: Arsitek</span>
-                        <a href="#" class="text-brand-gold underline decoration-brand-gold/40 hover:text-secondary transition-colors">Ajukan Ganti Cita-cita</a>
+                    <h1 class="font-serif text-2xl md:text-3xl font-bold text-primary mb-2">Ahmad Fauzi</h1>
+                    <div class="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-on-surface-variant text-xs md:text-sm font-medium">
+                        <span class="flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px]">school</span> SMA Kelas 11
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px]">architecture</span> Cita-cita: Arsitek
+                        </span>
+                        <a href="/?page=12_ganti-cita-cita" class="text-brand-gold font-bold hover:underline">
+                            Ajukan Ganti Cita-cita
+                        </a>
                     </div>
                 </div>
             </div>
-            <div class="mt-6 md:mt-0 flex flex-col items-end">
-                <span class="inline-block bg-brand-gold/10 text-brand-gold border border-brand-gold/30 px-3 py-1 font-label-caps text-label-caps mb-4">
+
+            <!-- Right: Semester Badge + Action Button -->
+            <div class="flex flex-col items-start md:items-end gap-3 w-full md:w-auto">
+                <span class="inline-block bg-[#FDC265]/25 text-brand-dark border border-brand-gold/40 px-3.5 py-1 font-mono text-xs font-bold uppercase tracking-wider">
                     Semester Ganjil 2023/2024
                 </span>
-                <button class="bg-primary text-white px-6 py-2 hover:bg-primary/90 transition-all text-label-caps font-bold mb-2 w-full md:w-auto">
-                    AMBIL TES DIAGNOSIS
-                </button><button class="border border-primary text-primary px-6 py-2 hover:bg-primary/5 transition-all text-label-caps font-bold">
+                <a href="/?page=10_detail-roadmap" class="w-full md:w-auto border border-primary text-primary px-6 py-2.5 hover:bg-primary/5 transition-all font-mono text-xs font-bold tracking-wider text-center">
                     LIHAT DETAIL ROADMAP
-                </button>
+                </a>
             </div>
         </section>
 
-        <!-- Baris Statistik (Quick Stats in Mono Font) -->
-        <section class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-gutter">
-            <div class="ledger-card p-6 flex flex-col justify-center items-center">
-                <span class="font-label-caps text-label-caps text-on-surface-variant mb-2">STREAK HARIAN</span>
+        <!-- 2. Baris Statistik (3 Cards) -->
+        <section class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Streak Harian -->
+            <div class="ledger-card p-6 flex flex-col justify-center items-center text-center">
+                <span class="font-mono text-xs font-bold tracking-widest text-on-surface-variant mb-2">STREAK HARIAN</span>
                 <div class="flex items-baseline gap-2">
-                    <span class="font-stats-lg text-display-lg text-brand-gold">14</span>
-                    <span class="font-stats-sm text-stats-sm text-on-surface-variant">HARI</span>
+                    <span class="font-mono text-4xl md:text-5xl font-bold text-brand-gold">14</span>
+                    <span class="font-mono text-xs text-on-surface-variant font-medium">HARI</span>
                 </div>
             </div>
-            <div class="ledger-card p-6 flex flex-col justify-center items-center">
-                <span class="font-label-caps text-label-caps text-on-surface-variant mb-2">POIN TERKUMPUL</span>
+
+            <!-- Poin Terkumpul -->
+            <div class="ledger-card p-6 flex flex-col justify-center items-center text-center">
+                <span class="font-mono text-xs font-bold tracking-widest text-on-surface-variant mb-2">POIN TERKUMPUL</span>
                 <div class="flex items-baseline gap-2">
-                    <span class="font-stats-lg text-display-lg text-primary"><?= (typeof dashboardData !== 'undefined' && dashboardData) ? dashboardData.poin.toLocaleString('id-ID') : '1.250' ?></span>
-                    <span class="font-stats-sm text-stats-sm text-on-surface-variant">XP</span>
+                    <span class="font-mono text-4xl md:text-5xl font-bold text-primary">1.250</span>
+                    <span class="font-mono text-xs text-on-surface-variant font-medium">XP</span>
                 </div>
             </div>
-            <div class="ledger-card p-6 flex flex-col justify-center items-center">
-                <span class="font-label-caps text-label-caps text-on-surface-variant mb-2">LEVEL</span>
+
+            <!-- Level -->
+            <div class="ledger-card p-6 flex flex-col justify-center items-center text-center">
+                <span class="font-mono text-xs font-bold tracking-widest text-on-surface-variant mb-2">LEVEL</span>
                 <div class="flex flex-col items-center">
-                    <span class="font-headline-md text-headline-md text-primary">Penjelajah</span>
-                    <div class="w-32 h-1 bg-surface-variant mt-2 overflow-hidden">
-                        <div class="h-full bg-brand-gold w-[65%]"></div>
-                    </div>
+                    <span class="font-serif text-2xl md:text-3xl font-bold text-primary mb-1">Penjelajah</span>
+                    <div class="w-24 h-1.5 bg-brand-gold mt-1"></div>
                 </div>
             </div>
         </section>
 
-        <!-- Roadmap 6 Tahun Section -->
-        <section class="col-span-12 md:col-span-8 ledger-card p-8">
-            <div class="flex justify-between items-center mb-10">
-                <h3 class="font-headline-md text-headline-md text-primary">Roadmap &amp; Pacing Belajar 6 Tahun</h3>
-                <span class="material-symbols-outlined text-on-surface-variant">timeline</span>
-            </div>
-            
-            <div class="relative pt-12 pb-8">
-                <!-- Timeline Line -->
-                <div class="absolute top-1/2 left-0 w-full h-[1px] bg-outline-variant"></div>
-                
-                <div class="flex justify-between relative z-10">
-                    <!-- Year 1 -->
-                    <div class="flex flex-col items-center group cursor-help">
-                        <div class="w-4 h-4 rounded-full bg-primary-container mb-4"></div>
-                        <span class="font-stats-sm text-stats-sm text-on-surface-variant">Thn 1</span>
-                    </div>
-                    <!-- Year 2 -->
-                    <div class="flex flex-col items-center group cursor-help">
-                        <div class="w-4 h-4 rounded-full bg-primary-container mb-4"></div>
-                        <span class="font-stats-sm text-stats-sm text-on-surface-variant">Thn 2</span>
-                    </div>
-                    <!-- Year 3 -->
-                    <div class="flex flex-col items-center group cursor-help">
-                        <div class="w-4 h-4 rounded-full bg-primary-container mb-4"></div>
-                        <span class="font-stats-sm text-stats-sm text-on-surface-variant">Thn 3</span>
-                    </div>
-                    <!-- Year 4 -->
-                    <div class="flex flex-col items-center group cursor-help">
-                        <div class="w-4 h-4 rounded-full bg-primary-container mb-4"></div>
-                        <span class="font-stats-sm text-stats-sm text-on-surface-variant">Thn 4</span>
-                    </div>
-                    <!-- Year 5 (Highlight SMA 11) -->
-                    <div class="flex flex-col items-center relative">
-                        <div class="absolute -top-16 bg-brand-gold text-white px-4 py-2 text-xs font-bold whitespace-nowrap shadow-[4px_4px_0px_#17223b]">
-                            Siswa Saat Ini: SMA 11
-                            <div class="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-brand-gold rotate-45"></div>
+        <!-- 3. Roadmap 6 Tahun Section (Left 8 cols) -->
+        <section class="col-span-12 md:col-span-8 ledger-card p-6 md:p-8 flex flex-col justify-between">
+            <div>
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-10">
+                    <h2 class="font-serif text-xl md:text-2xl font-bold text-primary">Roadmap Akademik 6 Tahun</h2>
+                    <span class="material-symbols-outlined text-primary text-2xl">show_chart</span>
+                </div>
+
+                <!-- Interactive Timeline Graphics -->
+                <div class="relative pt-14 pb-8 px-4">
+                    <!-- Line track -->
+                    <div class="absolute top-1/2 left-4 right-4 h-[2px] bg-outline-variant/60 -translate-y-1/2"></div>
+
+                    <div class="flex justify-between items-center relative z-10">
+                        <!-- Year 1 -->
+                        <div class="flex flex-col items-center">
+                            <div class="w-4 h-4 rounded-full bg-primary"></div>
+                            <span class="font-mono text-xs text-on-surface-variant mt-3 font-medium">Thn 1</span>
                         </div>
-                        <div class="w-6 h-6 rounded-none bg-brand-gold border-2 border-primary-container mb-4 flex items-center justify-center">
-                            <span class="material-symbols-outlined text-[14px] text-white" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <!-- Year 2 -->
+                        <div class="flex flex-col items-center">
+                            <div class="w-4 h-4 rounded-full bg-primary"></div>
+                            <span class="font-mono text-xs text-on-surface-variant mt-3 font-medium">Thn 2</span>
                         </div>
-                        <span class="font-stats-sm text-stats-sm text-brand-gold font-bold">Thn 5</span>
-                    </div>
-                    <!-- Year 6 -->
-                    <div class="flex flex-col items-center group cursor-help">
-                        <div class="w-4 h-4 rounded-full bg-outline-variant mb-4"></div>
-                        <span class="font-stats-sm text-stats-sm text-on-surface-variant">Thn 6</span>
+                        <!-- Year 3 -->
+                        <div class="flex flex-col items-center">
+                            <div class="w-4 h-4 rounded-full bg-primary"></div>
+                            <span class="font-mono text-xs text-on-surface-variant mt-3 font-medium">Thn 3</span>
+                        </div>
+                        <!-- Year 4 -->
+                        <div class="flex flex-col items-center">
+                            <div class="w-4 h-4 rounded-full bg-primary"></div>
+                            <span class="font-mono text-xs text-on-surface-variant mt-3 font-medium">Thn 4</span>
+                        </div>
+                        <!-- Year 5 (Active Highlighted) -->
+                        <div class="flex flex-col items-center relative">
+                            <!-- Tooltip Banner Above -->
+                            <div class="absolute -top-14 bg-brand-gold text-white px-3 py-1.5 text-xs font-bold whitespace-nowrap shadow-[3px_3px_0px_#17223B] z-20">
+                                Siswa Saat Ini: SMA 11
+                                <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-brand-gold rotate-45"></div>
+                            </div>
+                            <!-- Star Marker -->
+                            <div class="w-6 h-6 bg-brand-gold border-2 border-primary flex items-center justify-center text-white z-10">
+                                <span class="material-symbols-outlined text-[14px] filled-icon">star</span>
+                            </div>
+                            <span class="font-mono text-xs text-brand-gold font-bold mt-2">Thn 5</span>
+                        </div>
+                        <!-- Year 6 -->
+                        <div class="flex flex-col items-center">
+                            <div class="w-4 h-4 rounded-full bg-[#C6C6CE]"></div>
+                            <span class="font-mono text-xs text-on-surface-variant mt-3 font-medium">Thn 6</span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-8 p-4 bg-surface-container-lowest border-l-4 border-brand-gold">
-                <span class="font-label-caps text-label-caps text-on-surface-variant block mb-1">MILESTONE TAHUN INI</span>
-                <p class="font-display-lg text-headline-md text-primary">Penyelesaian Portofolio Desain</p>
-                <p class="text-body-sm text-on-surface-variant mt-2 italic">Fokus pada sketsa struktur dasar dan pengenalan alat CAD.</p>
+            <!-- Milestone Details Card -->
+            <div class="mt-6 p-5 bg-white border-l-4 border-brand-gold border-t border-r border-b border-primary/10">
+                <span class="font-mono text-xs font-bold text-on-surface-variant uppercase tracking-wider block mb-1">MILESTONE TAHUN INI</span>
+                <h3 class="font-serif text-xl font-bold text-primary">Penyelesaian Portofolio Desain</h3>
+                <p class="text-sm text-on-surface-variant italic mt-1">Fokus pada sketsa struktur dasar dan pengenalan alat CAD.</p>
             </div>
         </section>
 
-        <!-- Target Minggu Ini Section -->
-        <section class="col-span-12 md:col-span-4 ledger-card flex flex-col">
-            <div class="p-6 hairline-x order-first md:order-none">
-                <div class="flex justify-between items-center mb-6">
-                    <h3 class="font-headline-md text-headline-md text-primary">Target Minggu Ini</h3>
-                    <div class="text-right">
-                        <span class="font-stats-lg text-stats-lg text-brand-gold">75%</span>
-                    </div>
-                </div>
-                
-                <div class="w-full h-3 bg-surface-variant rounded-none mb-8 overflow-hidden">
-                    <div class="h-full bg-brand-gold transition-all duration-1000" style="width: 75%"></div>
+        <!-- 4. Target Minggu Ini Section (Right 4 cols) -->
+        <section class="col-span-12 md:col-span-4 ledger-card p-6 flex flex-col justify-between">
+            <div>
+                <!-- Header -->
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="font-serif text-xl md:text-2xl font-bold text-primary">Target Minggu Ini</h2>
+                    <span class="font-mono text-lg font-bold text-brand-gold">75%</span>
                 </div>
 
-                <ul class="space-y-0">
-                    <li class="flex items-center justify-between py-3 hairline-x">
+                <!-- Progress Bar -->
+                <div class="w-full h-3 bg-[#E4E2E4] mb-6 overflow-hidden">
+                    <div class="h-full bg-brand-gold" style="width: 75%;"></div>
+                </div>
+
+                <!-- Weekly Task List -->
+                <ul class="divide-y divide-primary/10 border-t border-b border-primary/10">
+                    <!-- Senin -->
+                    <li class="flex items-center justify-between py-3">
                         <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-tertiary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-                            <span class="font-label-caps text-label-caps">Senin</span>
+                            <span class="material-symbols-outlined text-primary filled-icon text-xl">check_circle</span>
+                            <span class="font-bold text-sm text-primary">Senin</span>
                         </div>
-                        <span class="text-body-sm text-on-surface-variant">Selesai</span>
+                        <span class="text-xs text-on-surface-variant font-medium">Selesai</span>
                     </li>
-                    <li class="flex items-center justify-between py-3 hairline-x">
+                    <!-- Selasa -->
+                    <li class="flex items-center justify-between py-3">
                         <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-tertiary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-                            <span class="font-label-caps text-label-caps">Selasa</span>
+                            <span class="material-symbols-outlined text-primary filled-icon text-xl">check_circle</span>
+                            <span class="font-bold text-sm text-primary">Selasa</span>
                         </div>
-                        <span class="text-body-sm text-on-surface-variant">Selesai</span>
+                        <span class="text-xs text-on-surface-variant font-medium">Selesai</span>
                     </li>
-                    <li class="flex items-center justify-between py-3 hairline-x">
+                    <!-- Rabu -->
+                    <li class="flex items-center justify-between py-3">
                         <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-tertiary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-                            <span class="font-label-caps text-label-caps">Rabu</span>
+                            <span class="material-symbols-outlined text-primary filled-icon text-xl">check_circle</span>
+                            <span class="font-bold text-sm text-primary">Rabu</span>
                         </div>
-                        <span class="text-body-sm text-on-surface-variant">Selesai</span>
+                        <span class="text-xs text-on-surface-variant font-medium">Selesai</span>
                     </li>
-                    <li class="flex items-center justify-between py-3 hairline-x bg-brand-gold/5">
+                    <!-- Kamis (Active) -->
+                    <li class="flex items-center justify-between py-3 -mx-6 px-6 bg-[#FDC265]/15">
                         <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-brand-gold animate-pulse">pending</span>
-                            <span class="font-label-caps text-label-caps font-bold">Kamis</span>
+                            <span class="material-symbols-outlined text-brand-gold text-xl">more_horiz</span>
+                            <span class="font-bold text-sm text-primary">Kamis</span>
                         </div>
-                        <span class="text-body-sm text-brand-gold font-bold">Berjalan</span>
+                        <span class="text-xs font-bold text-brand-gold">Berjalan</span>
                     </li>
-                    <li class="flex items-center justify-between py-3 hairline-x">
+                    <!-- Jumat -->
+                    <li class="flex items-center justify-between py-3">
                         <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-outline">circle</span>
-                            <span class="font-label-caps text-label-caps">Jumat: Checkpoint Mingguan</span>
+                            <span class="material-symbols-outlined text-outline-variant text-xl">circle</span>
+                            <span class="font-bold text-sm text-primary">Jumat</span>
                         </div>
-                        <div class="flex items-center gap-1 bg-brand-gold text-white px-2 py-0.5 text-[10px] font-bold">
-                            <span class="material-symbols-outlined text-[12px]">flag</span> CHECKPOINT
-                        </div>
+                        <a href="/?page=11_checkpoint-jumat" class="bg-brand-gold text-white px-2.5 py-1 text-[11px] font-mono font-bold flex items-center gap-1 hover:bg-brand-gold-dark transition-colors">
+                            <span class="material-symbols-outlined text-[13px]">flag</span> CHECKPOINT
+                        </a>
                     </li>
                 </ul>
             </div>
         </section>
 
-        <!-- Visual Elements: Academic Ledger Decoration -->
-        <div class="col-span-12 mt-12 grid grid-cols-1 md:grid-cols-2 gap-gutter opacity-40">
-            <div class="border-t border-brand-gold/30 pt-4">
-                <p class="font-stats-sm text-stats-sm uppercase tracking-widest text-on-surface-variant mb-2">Digital Ledger Verification</p>
-                <div class="h-12 w-full flex gap-1 items-end">
-                    <div class="h-4 w-1 bg-brand-gold/20"></div>
-                    <div class="h-8 w-1 bg-brand-gold/20"></div>
-                    <div class="h-6 w-1 bg-brand-gold/20"></div>
-                    <div class="h-10 w-1 bg-brand-gold/20"></div>
-                    <div class="h-2 w-1 bg-brand-gold/20"></div>
-                    <div class="h-9 w-1 bg-brand-gold/20"></div>
-                    <div class="h-5 w-1 bg-brand-gold/20"></div>
+        <!-- 5. Verification & Archive Footer Section -->
+        <div class="col-span-12 mt-6 pt-6 border-t border-primary/20 flex flex-col md:flex-row justify-between items-center gap-4 text-on-surface-variant/70">
+            <!-- Left: Verification Barcode/Chart -->
+            <div class="flex flex-col items-start gap-1">
+                <span class="font-mono text-[10px] uppercase tracking-widest font-bold">DIGITAL LEDGER VERIFICATION</span>
+                <div class="flex items-end gap-1 h-6 pt-1">
+                    <div class="w-1 h-3 bg-primary/20"></div>
+                    <div class="w-1 h-5 bg-primary/20"></div>
+                    <div class="w-1 h-4 bg-primary/20"></div>
+                    <div class="w-1 h-6 bg-primary/20"></div>
+                    <div class="w-1 h-2 bg-primary/20"></div>
+                    <div class="w-1 h-5 bg-primary/20"></div>
                 </div>
             </div>
-            <div class="border-t border-brand-gold/30 pt-4 text-right">
-                <p class="font-stats-sm text-stats-sm uppercase tracking-widest text-on-surface-variant mb-2">Archive Reference ID</p>
-                <p class="font-stats-lg text-stats-lg text-brand-gold">FCX-UN-2023-A00421</p>
+
+            <!-- Right: Archive Ref ID -->
+            <div class="flex flex-col items-end gap-0.5">
+                <span class="font-mono text-[10px] uppercase tracking-widest font-bold">ARCHIVE REFERENCE ID</span>
+                <span class="font-mono text-sm font-bold text-brand-gold tracking-wider">FCX-UN-2023-A00421</span>
             </div>
-        <div class="col-span-12 md:col-span-2 border-t border-brand-gold/30 pt-4 flex justify-center items-center gap-2">
-                <span class="material-symbols-outlined text-primary text-[16px]">verified_user</span>
-                <p class="font-label-caps text-[10px] uppercase tracking-widest text-on-surface-variant">SSO Integrated: Flexa Cendekia</p>
-            </div></div>
+        </div>
     </main>
 
-    <!-- Side Decoration (Fixed to simulate binder rings on larger screens) -->
-    <div class="hidden xl:flex fixed left-4 top-1/2 -translate-y-1/2 flex-col gap-12 z-0 opacity-20">
-        <div class="w-8 h-8 rounded-full border-4 border-on-primary-container"></div>
-        <div class="w-8 h-8 rounded-full border-4 border-on-primary-container"></div>
-        <div class="w-8 h-8 rounded-full border-4 border-on-primary-container"></div>
-        <div class="w-8 h-8 rounded-full border-4 border-on-primary-container"></div></div>
+    <!-- Global Navigation Script for Express -->
+    <script>
+        (function() {
+            function bindClick(selectors, handler) {
+                document.querySelectorAll(selectors).forEach(function(el) {
+                    el.addEventListener('click', function(e) {
+                        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#' && el.getAttribute('href')) {
+                            return;
+                        }
+                        e.preventDefault();
+                        handler(e, el);
+                    });
+                });
+            }
+
+            bindClick('header nav a', function(e, a) {
+                var text = a.textContent.trim().toLowerCase();
+                if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
+                else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
+                else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
+            });
+        })();
+    </script>
+
 <script>
 (function(){
   var BASE = '<?= getWebAppUrl() ?>';
@@ -395,4 +435,6 @@
       });
     })();
     </script>
-</body></html>
+</body>
+
+</html>

@@ -338,6 +338,9 @@
   function bindClick(selectors, handler) {
     document.querySelectorAll(selectors).forEach(function(el) {
       el.addEventListener('click', function(e) {
+        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
+            return;
+        }
         if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
             return;
         }
