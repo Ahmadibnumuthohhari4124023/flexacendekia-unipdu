@@ -155,28 +155,10 @@
 <section>
 <div class="flex items-center justify-between mb-6">
 <h2 class="font-headline-md text-headline-md text-primary">Rekomendasi Berdasarkan Profilmu</h2>
-<span class="font-stats-sm text-stats-sm text-on-surface-variant bg-surface-container px-2 py-1 border border-outline-variant/30">RIASEC: I &amp; A</span>
+<span class="font-stats-sm text-stats-sm text-on-surface-variant bg-surface-container px-2 py-1 border border-outline-variant/30" id="riasec-badge">✨ Gemini AI</span>
 </div>
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-<!-- Arsitek Card (Active Default) -->
-<div class="bg-surface-container-lowest border-2 border-student-gold p-5 cursor-pointer relative group transition-all" onclick="selectCareer('arsitek')">
-<div class="absolute top-0 right-0 bg-student-gold text-white px-2 py-1 text-[10px] font-bold">TERPILIH</div>
-<span class="material-symbols-outlined text-student-gold mb-3 block" data-icon="architecture" style="font-size: 32px;">architecture</span>
-<h3 class="font-bold text-primary mb-1">Arsitek</h3>
-<p class="font-body-sm text-[12px] text-on-surface-variant">Gabungan presisi sains dan kebebasan seni visual.</p>
-</div>
-<!-- Data Scientist Card -->
-<div class="bg-surface-container-lowest ledger-border p-5 cursor-pointer hover:border-primary/40 transition-all" onclick="selectCareer('data_scientist')">
-<span class="material-symbols-outlined text-primary/60 mb-3 block" data-icon="query_stats" style="font-size: 32px;">query_stats</span>
-<h3 class="font-bold text-primary mb-1">Data Scientist</h3>
-<p class="font-body-sm text-[12px] text-on-surface-variant">Menganalisis pola kompleks dengan narasi data kreatif.</p>
-</div>
-<!-- Arsitek Sistem Card -->
-<div class="bg-surface-container-lowest ledger-border p-5 cursor-pointer hover:border-primary/40 transition-all" onclick="selectCareer('system_architect')">
-<span class="material-symbols-outlined text-primary/60 mb-3 block" data-icon="hub" style="font-size: 32px;">hub</span>
-<h3 class="font-bold text-primary mb-1">Arsitek Sistem</h3>
-<p class="font-body-sm text-[12px] text-on-surface-variant">Merancang struktur digital yang efisien dan estetik.</p>
-</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="career-cards-container">
+<!-- Will be populated dynamically by JS -->
 </div>
 </section>
 <!-- Career Explorer -->
@@ -263,64 +245,82 @@
 </div>
 </footer>
 <script>
-        function selectCareer(careerId) {
-            const details = {
-                'arsitek': {
-                    title: 'Arsitek',
-                    icon: 'architecture',
-                    desc: 'S1 Arsitektur. Fokus: Perancangan Ruang, Struktur Bangunan, & Estetika Lingkungan.'
-                },
-                'data_scientist': {
-                    title: 'Data Scientist',
-                    icon: 'query_stats',
-                    desc: 'S1 Ilmu Data / Statistika. Fokus: Algoritma Machine Learning, Analisis Statistik, & Visualisasi Data.'
-                },
-                'system_architect': {
-                    title: 'Arsitek Sistem',
-                    icon: 'hub',
-                    desc: 'S1 Teknik Informatika. Fokus: Arsitektur Perangkat Lunak, Keamanan Jaringan, & Skalabilitas Sistem.'
-                }
-            };
+        let selectedCareerTitle = 'Arsitek';
 
-            const data = details[careerId];
-            if (data) {
-                document.getElementById('detail-title').innerText = data.title;
-                // Highlight the selected card
-                document.querySelectorAll('.cursor-pointer').forEach(el => {
-                    el.classList.remove('border-2', 'border-student-gold');
-                    el.classList.add('ledger-border');
-                    const badge = el.querySelector('.bg-student-gold.text-white');
-                    if (badge) badge.remove();
-                });
-                const selectedEl = document.querySelector(`[onclick="selectCareer('${careerId}')"]`);
-                if (selectedEl) {
-                    selectedEl.classList.remove('ledger-border');
-                    selectedEl.classList.add('border-2', 'border-student-gold');
-                    selectedEl.innerHTML = `<div class="absolute top-0 right-0 bg-student-gold text-white px-2 py-1 text-[10px] font-bold">TERPILIH</div>` + selectedEl.innerHTML;
-                }
+        function selectCareer(title, icon = 'architecture', desc = '') {
+            selectedCareerTitle = title;
+            document.getElementById('detail-title').innerText = title;
+            
+            // Highlight selected card
+            document.querySelectorAll('.career-card').forEach(el => {
+                el.classList.remove('border-2', 'border-student-gold');
+                el.classList.add('ledger-border');
+                const badge = el.querySelector('.bg-student-gold.text-white');
+                if (badge) badge.remove();
+            });
+
+            const selectedEl = document.getElementById(`career-card-${title.toLowerCase().replace(/\s+/g, '-')}`);
+            if (selectedEl) {
+                selectedEl.classList.remove('ledger-border');
+                selectedEl.classList.add('border-2', 'border-student-gold');
+                selectedEl.insertAdjacentHTML('afterbegin', `<div class="absolute top-0 right-0 bg-student-gold text-white px-2 py-1 text-[10px] font-bold">TERPILIH</div>`);
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const answersStr = localStorage.getItem('diagnosisAnswers');
-            let answers = {};
-            if (answersStr) {
-                try { answers = JSON.parse(answersStr); } catch (e) {}
-            }
-            if (Object.keys(answers).length > 0) {
-                let riasecScores = { 'Investigatif': 0, 'Artistik': 0, 'Sosial': 0, 'Realistik': 0, 'Konvensional': 0, 'Enterprising': 0 };
-                for (let i = 1; i <= 10; i++) {
-                    let ans = answers[i];
-                    if (ans === 0) { riasecScores['Investigatif'] += 20; riasecScores['Realistik'] += 5; }
-                    else if (ans === 1) { riasecScores['Artistik'] += 20; riasecScores['Sosial'] += 5; }
-                    else if (ans === 2) { riasecScores['Realistik'] += 20; riasecScores['Enterprising'] += 5; }
-                    else if (ans === 3) { riasecScores['Konvensional'] += 20; riasecScores['Sosial'] += 10; }
-                }
-                const sortedRiasec = Object.entries(riasecScores).sort((a,b) => b[1] - a[1]);
-                const top1 = sortedRiasec[0][0];
-                const top2 = sortedRiasec[1][0];
+        function confirmCareer() {
+            localStorage.setItem('selectedCareer', selectedCareerTitle);
+            window.location.href = '../06_roadmap-disusun/code.html';
+        }
 
-                document.getElementById('dynamic-riasec-text').innerHTML = \`Berdasarkan hasil asesmen RIASEC, profilmu sangat kuat pada area <strong class="text-primary italic">\${top1}</strong> dan <strong class="text-primary italic">\${top2}</strong>. Pilihan profesi di bawah ini akan menentukan peta jalan pendidikan (Roadmap) selama 6 tahun ke depan, mulai dari tingkat SMA hingga Perguruan Tinggi.\`;
+        document.addEventListener('DOMContentLoaded', () => {
+            const aiDataStr = localStorage.getItem('aiDiagnosisResult');
+            let aiData = null;
+            if (aiDataStr) {
+                try { aiData = JSON.parse(aiDataStr); } catch (e) {}
+            }
+
+            const defaultCareers = [
+                { id: 'arsitek', title: 'Arsitek', icon: 'architecture', desc: 'Gabungan presisi sains, estetika lingkungan, dan desain terapan.' },
+                { id: 'data_scientist', title: 'Data Scientist', icon: 'query_stats', desc: 'Mengolah pola data besar, statistik, dan machine learning.' },
+                { id: 'system_architect', title: 'Arsitek Sistem', icon: 'hub', desc: 'Merancang arsitektur software, cloud, dan jaringan digital.' }
+            ];
+
+            const careers = (aiData && aiData.rekomendasiKarir && aiData.rekomendasiKarir.length > 0) 
+                ? aiData.rekomendasiKarir 
+                : defaultCareers;
+
+            if (aiData && aiData.source) {
+                const badge = document.getElementById('riasec-badge');
+                if (badge) badge.innerText = `✨ ${aiData.source}`;
+            }
+
+            let containerHtml = '';
+            careers.forEach((c, idx) => {
+                const isFirst = idx === 0;
+                const cardId = `career-card-${c.title.toLowerCase().replace(/\s+/g, '-')}`;
+                const borderClass = isFirst ? 'border-2 border-student-gold' : 'ledger-border hover:border-primary/40';
+                const iconColor = isFirst ? 'text-student-gold' : 'text-primary/60';
+                const badgeHtml = isFirst ? '<div class="absolute top-0 right-0 bg-student-gold text-white px-2 py-1 text-[10px] font-bold">TERPILIH</div>' : '';
+
+                containerHtml += `
+                <div class="bg-surface-container-lowest ${borderClass} p-5 cursor-pointer relative group transition-all career-card" id="${cardId}" onclick="selectCareer('${c.title}', '${c.icon}', '${c.desc.replace(/'/g, "\\'")}')">
+                    ${badgeHtml}
+                    <span class="material-symbols-outlined ${iconColor} mb-3 block" style="font-size: 32px;">${c.icon || 'star'}</span>
+                    <h3 class="font-bold text-primary mb-1">${c.title}</h3>
+                    <p class="font-body-sm text-[12px] text-on-surface-variant">${c.desc}</p>
+                </div>`;
+            });
+
+            document.getElementById('career-cards-container').innerHTML = containerHtml;
+            if (careers.length > 0) {
+                selectedCareerTitle = careers[0].title;
+                document.getElementById('detail-title').innerText = careers[0].title;
+            }
+
+            // Update confirm button onclick
+            const confirmBtn = document.querySelector('button[onclick*="06_roadmap-disusun"]');
+            if (confirmBtn) {
+                confirmBtn.setAttribute('onclick', 'confirmCareer()');
             }
         });
     </script>

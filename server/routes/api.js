@@ -4,6 +4,7 @@
 const express = require('express');
 const router = express.Router();
 const { getRecords, getRecordByField, addRecord, updateRecord } = require('../models');
+const { generateDiagnosis, generateRoadmap } = require('../services/geminiService');
 
 // ==========================================
 // POST /api/login — Menggantikan loginSso()
@@ -166,6 +167,34 @@ router.get('/user/:email', async (req, res) => {
     res.json({ success: true, data: user });
   } catch (err) {
     console.error('Get user error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ==========================================
+// POST /api/ai/generate-diagnosis — Gemini AI Diagnosis
+// ==========================================
+router.post('/ai/generate-diagnosis', async (req, res) => {
+  try {
+    const { answers } = req.body;
+    const result = await generateDiagnosis(answers || {});
+    res.json({ success: true, data: result });
+  } catch (err) {
+    console.error('AI Diagnosis error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ==========================================
+// POST /api/ai/generate-roadmap — Gemini AI 6-Year Roadmap
+// ==========================================
+router.post('/ai/generate-roadmap', async (req, res) => {
+  try {
+    const { career, diagnosisData } = req.body;
+    const result = await generateRoadmap(career || 'Arsitek', diagnosisData || {});
+    res.json({ success: true, data: result });
+  } catch (err) {
+    console.error('AI Roadmap error:', err);
     res.status(500).json({ error: err.message });
   }
 });

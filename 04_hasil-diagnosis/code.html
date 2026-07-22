@@ -197,7 +197,10 @@
 <header class="mb-12">
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
 <div>
-<span class="font-label-caps text-label-caps text-secondary tracking-[0.2em] mb-2 block uppercase">Laporan Analisis Diagnostik</span>
+<div class="flex items-center gap-2 mb-2">
+<span class="font-label-caps text-label-caps text-secondary tracking-[0.2em] uppercase">Laporan Analisis Diagnostik</span>
+<span class="px-2 py-0.5 text-[10px] bg-secondary/10 text-secondary border border-secondary/30 rounded font-stats-sm" id="ai-badge">✨ Generating AI...</span>
+</div>
 <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary leading-tight">Profil Belajar &amp; <br class="hidden md:block"/>Roadmap Kamu</h1>
 </div>
 <div class="flex gap-4">
@@ -360,141 +363,126 @@
 
 <!-- Micro-interaction Script -->
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const answersStr = localStorage.getItem('diagnosisAnswers');
-        let answers = {};
-        if (answersStr) {
+        document.addEventListener('DOMContentLoaded', async () => {
+            const answersStr = localStorage.getItem('diagnosisAnswers');
+            let answers = {};
+            if (answersStr) {
+                try { answers = JSON.parse(answersStr); } catch (e) {}
+            }
+
+            const aiBadge = document.getElementById('ai-badge');
+            if (aiBadge) aiBadge.innerText = '✨ Analisis AI Memuat...';
+
+            let aiData = null;
             try {
-                answers = JSON.parse(answersStr);
-            } catch (e) {}
-        }
-
-        // --- RIASEC Logic (Q1-10) ---
-        // Simplified mapping for demonstration: 
-        // Option 0 -> I, 1 -> A, 2 -> R, 3 -> E,S,C
-        let riasecScores = { 'Investigatif': 0, 'Artistik': 0, 'Sosial': 0, 'Realistik': 0, 'Konvensional': 0, 'Enterprising': 0 };
-        for (let i = 1; i <= 10; i++) {
-            let ans = answers[i];
-            if (ans === 0) { riasecScores['Investigatif'] += 20; riasecScores['Realistik'] += 5; }
-            else if (ans === 1) { riasecScores['Artistik'] += 20; riasecScores['Sosial'] += 5; }
-            else if (ans === 2) { riasecScores['Realistik'] += 20; riasecScores['Enterprising'] += 5; }
-            else if (ans === 3) { riasecScores['Konvensional'] += 20; riasecScores['Sosial'] += 10; }
-        }
-
-        // Generate Random base scores so it doesn't look empty if user skipped questions
-        if(Object.keys(answers).length === 0) {
-            riasecScores = { 'Investigatif': 85, 'Artistik': 78, 'Sosial': 42, 'Realistik': 35, 'Konvensional': 28, 'Enterprising': 54 };
-        } else {
-            // Normalize to make it look like percentages
-            Object.keys(riasecScores).forEach(k => {
-                riasecScores[k] = Math.min(100, Math.max(15, riasecScores[k] + Math.floor(Math.random()*10)));
-            });
-        }
-
-        const sortedRiasec = Object.entries(riasecScores).sort((a,b) => b[1] - a[1]);
-        const top1 = sortedRiasec[0][0];
-        const top2 = sortedRiasec[1][0];
-
-        document.getElementById('riasec-desc').innerHTML = `Berdasarkan respons Anda, Anda memiliki profil yang kuat di kategori <strong>${top1}</strong> dan <strong>${top2}</strong>. Anda cenderung menikmati pemecahan masalah yang kompleks melalui pemikiran analitis sekaligus mengekspresikan ide secara kreatif.`;
-
-        let riasecHtml = '<div class="grid grid-cols-2 md:grid-cols-3 gap-4">';
-        sortedRiasec.forEach((item, index) => {
-            const isTop = index < 2;
-            const borderClass = isTop ? (index===0 ? 'border-primary/10' : 'border-secondary') : 'border-primary/10';
-            const bgClass = isTop ? (index===0 ? 'bg-surface-bright' : 'bg-secondary/5') : 'bg-surface-bright opacity-60';
-            const textValClass = isTop ? 'text-secondary' : 'text-on-surface-variant';
-            const textLblClass = isTop ? (index===0 ? 'text-on-surface-variant' : 'text-primary') : 'text-on-surface-variant';
-
-            riasecHtml += `
-            <div class="p-4 border ${borderClass} ${bgClass} flex flex-col items-center text-center riasec-block transition-all">
-                <span class="font-stats-lg text-stats-lg ${textValClass} mb-1">${item[1]}%</span>
-                <span class="font-label-caps text-label-caps ${textLblClass}">${item[0]}</span>
-            </div>`;
-        });
-        riasecHtml += '</div>';
-        document.getElementById('riasec-container').innerHTML = riasecHtml;
-
-        // --- VAK Logic (Q21-30) ---
-        let vakCount = { 'Visual': 0, 'Auditori': 0, 'Kinestetik': 0 };
-        let vakAnswered = 0;
-        for (let i = 21; i <= 30; i++) {
-            let ans = answers[i];
-            if (ans !== undefined) vakAnswered++;
-            if (ans === 0) vakCount['Visual']++;
-            else if (ans === 1) vakCount['Auditori']++;
-            else if (ans === 2 || ans === 3) vakCount['Kinestetik']++;
-        }
-        
-        let vakScores = { 'Visual': 72, 'Auditori': 18, 'Kinestetik': 10 };
-        if (vakAnswered > 0) {
-            vakScores['Visual'] = Math.round((vakCount['Visual'] / vakAnswered) * 100);
-            vakScores['Auditori'] = Math.round((vakCount['Auditori'] / vakAnswered) * 100);
-            vakScores['Kinestetik'] = Math.round((vakCount['Kinestetik'] / vakAnswered) * 100);
-        }
-        
-        const sortedVak = Object.entries(vakScores).sort((a,b) => b[1] - a[1]);
-        const domVak = sortedVak[0][0];
-
-        let descVak = "Anda belajar paling baik melalui <strong>infografis, peta konsep, dan video tutorial</strong>. Cobalah menggunakan teknik 'Mind Mapping' untuk merangkum materi yang kompleks.";
-        if (domVak === 'Auditori') {
-            descVak = "Anda belajar paling baik melalui <strong>diskusi verbal, mendengarkan rekaman, dan ceramah</strong>. Cobalah belajar sambil berbicara keras atau mengajar orang lain.";
-        } else if (domVak === 'Kinestetik') {
-            descVak = "Anda belajar paling baik melalui <strong>praktik langsung, eksperimen, dan gerakan fisik</strong>. Cobalah role-play atau membangun sesuatu saat belajar materi baru.";
-        }
-        document.getElementById('vak-desc').innerHTML = descVak;
-
-        let vakHtml = '';
-        sortedVak.forEach((item, index) => {
-            const isTop = index === 0;
-            const titleColor = isTop ? 'text-primary' : 'text-on-surface-variant';
-            const scoreColor = isTop ? 'text-secondary' : 'text-on-surface-variant';
-            const scoreText = isTop ? `Dominan (${item[1]}%)` : `${item[1]}%`;
-            const barBg = isTop ? 'bg-secondary' : 'bg-primary/30';
-            
-            vakHtml += `
-            <div>
-                <div class="flex justify-between items-end mb-2">
-                    <span class="font-label-caps text-label-caps ${titleColor}">${item[0]}</span>
-                    <span class="font-stats-sm text-stats-sm ${scoreColor}">${scoreText}</span>
-                </div>
-                <div class="w-full h-3 bg-surface-container border border-primary/10">
-                    <div class="h-full ${barBg} transition-all duration-1000" style="width: 0%" data-target="${item[1]}%"></div>
-                </div>
-            </div>`;
-        });
-        document.getElementById('vak-container').innerHTML = vakHtml;
-
-        // Animations
-        setTimeout(() => {
-            document.querySelectorAll('#vak-container .h-full').forEach(bar => {
-                bar.style.width = bar.getAttribute('data-target');
-            });
-        }, 300);
-
-        const blocks = document.querySelectorAll('.riasec-block');
-        blocks.forEach(block => {
-            block.addEventListener('mouseenter', () => {
-                block.style.borderColor = '#805600';
-            });
-            block.addEventListener('mouseleave', () => {
-                if (!block.classList.contains('border-secondary')) {
-                    block.style.borderColor = 'rgba(2, 11, 36, 0.1)';
+                const res = await fetch('/api/ai/generate-diagnosis', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ answers })
+                });
+                const json = await res.json();
+                if (json.success && json.data) {
+                    aiData = json.data;
                 }
+            } catch (err) {
+                console.warn('API call error, using local fallback:', err);
+            }
+
+            if (!aiData) {
+                // Fallback default structure
+                aiData = {
+                    source: 'Local Engine',
+                    riasec: { 'Investigatif': 85, 'Artistik': 78, 'Sosial': 42, 'Realistik': 35, 'Konvensional': 28, 'Enterprising': 54 },
+                    gayaBelajar: { 'Visual': 72, 'Auditori': 18, 'Kinestetik': 10 },
+                    narasiRiasec: 'Berdasarkan respons Anda, Anda memiliki profil yang kuat di kategori <strong>Investigatif</strong> dan <strong>Artistik</strong>.',
+                    narasiGayaBelajar: 'Anda belajar paling baik melalui <strong>infografis, peta konsep, dan video tutorial</strong>.'
+                };
+            }
+
+            // Save AI Diagnosis result to localStorage for subsequent pages
+            localStorage.setItem('aiDiagnosisResult', JSON.stringify(aiData));
+
+            if (aiBadge) {
+                aiBadge.innerText = `✨ ${aiData.source || 'Gemini AI'}`;
+            }
+
+            // --- Render RIASEC ---
+            const sortedRiasec = Object.entries(aiData.riasec).sort((a,b) => b[1] - a[1]);
+            document.getElementById('riasec-desc').innerHTML = aiData.narasiRiasec;
+
+            let riasecHtml = '<div class="grid grid-cols-2 md:grid-cols-3 gap-4">';
+            sortedRiasec.forEach((item, index) => {
+                const isTop = index < 2;
+                const borderClass = isTop ? (index===0 ? 'border-primary/10' : 'border-secondary') : 'border-primary/10';
+                const bgClass = isTop ? (index===0 ? 'bg-surface-bright' : 'bg-secondary/5') : 'bg-surface-bright opacity-60';
+                const textValClass = isTop ? 'text-secondary' : 'text-on-surface-variant';
+                const textLblClass = isTop ? (index===0 ? 'text-on-surface-variant' : 'text-primary') : 'text-on-surface-variant';
+
+                riasecHtml += `
+                <div class="p-4 border ${borderClass} ${bgClass} flex flex-col items-center text-center riasec-block transition-all">
+                    <span class="font-stats-lg text-stats-lg ${textValClass} mb-1">${item[1]}%</span>
+                    <span class="font-label-caps text-label-caps ${textLblClass}">${item[0]}</span>
+                </div>`;
+            });
+            riasecHtml += '</div>';
+            document.getElementById('riasec-container').innerHTML = riasecHtml;
+
+            // --- Render VAK Gaya Belajar ---
+            const sortedVak = Object.entries(aiData.gayaBelajar).sort((a,b) => b[1] - a[1]);
+            document.getElementById('vak-desc').innerHTML = aiData.narasiGayaBelajar;
+
+            let vakHtml = '';
+            sortedVak.forEach((item, index) => {
+                const isTop = index === 0;
+                const titleColor = isTop ? 'text-primary' : 'text-on-surface-variant';
+                const scoreColor = isTop ? 'text-secondary' : 'text-on-surface-variant';
+                const scoreText = isTop ? `Dominan (${item[1]}%)` : `${item[1]}%`;
+                const barBg = isTop ? 'bg-secondary' : 'bg-primary/30';
+                
+                vakHtml += `
+                <div>
+                    <div class="flex justify-between items-end mb-2">
+                        <span class="font-label-caps text-label-caps ${titleColor}">${item[0]}</span>
+                        <span class="font-stats-sm text-stats-sm ${scoreColor}">${scoreText}</span>
+                    </div>
+                    <div class="w-full h-3 bg-surface-container border border-primary/10">
+                        <div class="h-full ${barBg} transition-all duration-1000" style="width: 0%" data-target="${item[1]}%"></div>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('vak-container').innerHTML = vakHtml;
+
+            // Animations
+            setTimeout(() => {
+                document.querySelectorAll('#vak-container .h-full').forEach(bar => {
+                    bar.style.width = bar.getAttribute('data-target');
+                });
+            }, 300);
+
+            const blocks = document.querySelectorAll('.riasec-block');
+            blocks.forEach(block => {
+                block.addEventListener('mouseenter', () => {
+                    block.style.borderColor = '#805600';
+                });
+                block.addEventListener('mouseleave', () => {
+                    if (!block.classList.contains('border-secondary')) {
+                        block.style.borderColor = 'rgba(2, 11, 36, 0.1)';
+                    }
+                });
+            });
+
+            const roadmapItems = document.querySelectorAll('.space-y-8 > div');
+            roadmapItems.forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = `all 0.5s ease ${index * 0.2}s`;
+                
+                setTimeout(() => {
+                    item.style.opacity = item.classList.contains('opacity-70') ? '0.7' : '1';
+                    item.style.transform = 'translateY(0)';
+                }, 100);
             });
         });
-
-        const roadmapItems = document.querySelectorAll('.space-y-8 > div');
-        roadmapItems.forEach((item, index) => {
-            item.style.opacity = '0';
-            item.style.transform = 'translateY(20px)';
-            item.style.transition = `all 0.5s ease ${index * 0.2}s`;
-            
-            setTimeout(() => {
-                item.style.opacity = item.classList.contains('opacity-70') ? '0.7' : '1';
-                item.style.transform = 'translateY(0)';
-            }, 100);
-        });
-    });
 </script>
 
 </body></html>

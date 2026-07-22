@@ -224,39 +224,85 @@
         const progressBar = document.getElementById('progress-bar');
         
         const phases = [
-            { text: "Menganalisis kompetensi awal...", progress: 15 },
-            { text: "Memetakan kurikulum UNIPDU...", progress: 42 },
-            { text: "Menghubungkan standar industri...", progress: 68 },
-            { text: "Menyiapkan modul belajar 6 tahun...", progress: 89 },
-            { text: "Hampir selesai...", progress: 98 }
+            { text: "Menghubungi Gemini AI Engine...", progress: 20 },
+            { text: "Menganalisis kompetensi awal & minat...", progress: 45 },
+            { text: "Memetakan kurikulum 6 tahun UNIPDU...", progress: 70 },
+            { text: "Menyusun modul belajar & sertifikasi...", progress: 90 },
+            { text: "Roadmap siap! Mengalihkan...", progress: 100 }
         ];
 
         let currentPhase = 0;
 
-        function updateLoading() {
-            if (currentPhase < phases.length) {
-                const phase = phases[currentPhase];
-                
-                // Fade out
+        function updateProgress(text, progress) {
+            if (statusText && progressBar) {
                 statusText.style.opacity = '0';
-                
                 setTimeout(() => {
-                    statusText.innerText = phase.text;
-                    progressBar.style.width = phase.progress + '%';
-                    // Fade in
+                    statusText.innerText = text;
+                    progressBar.style.width = progress + '%';
                     statusText.style.opacity = '1';
-                    currentPhase++;
-                }, 300);
-
-                // Schedule next phase with random delay
-                const delay = 1500 + Math.random() * 2000;
-                setTimeout(updateLoading, delay);
+                }, 200);
             }
         }
 
-        // Initialize animation
+        async function startAiRoadmapGeneration() {
+            const selectedCareer = localStorage.getItem('selectedCareer') || 'Arsitek';
+            const aiDataStr = localStorage.getItem('aiDiagnosisResult');
+            let aiDiagnosisResult = {};
+            if (aiDataStr) {
+                try { aiDiagnosisResult = JSON.parse(aiDataStr); } catch (e) {}
+            }
+
+            // Animate initial phase
+            updateProgress("Menghubungi Gemini AI Engine...", 25);
+
+            let roadmapData = null;
+            try {
+                // Interval animation step
+                setTimeout(() => updateProgress(`Memetakan kurikulum 6 tahun untuk ${selectedCareer}...`, 60), 1000);
+
+                const res = await fetch('/api/ai/generate-roadmap', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ career: selectedCareer, diagnosisData: aiDiagnosisResult })
+                });
+                const json = await res.json();
+                if (json.success && json.data) {
+                    roadmapData = json.data;
+                }
+            } catch (err) {
+                console.warn('AI Roadmap API error, using fallback:', err);
+            }
+
+            updateProgress("Menyelesaikan penyusunan roadmap...", 95);
+
+            if (!roadmapData) {
+                roadmapData = {
+                    source: 'Local Engine',
+                    careerTitle: selectedCareer,
+                    quote: `"${selectedCareer} membutuhkan konsistensi dan eksplorasi ilmu secara terstruktur."`,
+                    years: [
+                        { yearCode: "10", yearTitle: "SMA Kelas 10 — Fondasi", status: "Selesai", desc: "Penguatan matematika dasar & literasi.", tags: ["Matematika", "Sains"] },
+                        { yearCode: "11", yearTitle: `SMA Kelas 11 — Spesialisasi (${selectedCareer})`, status: "Sedang Berjalan", desc: "Mata pelajaran pendukung & lomba.", tags: ["Olimpiade", "Proyek"] },
+                        { yearCode: "12", yearTitle: "SMA Kelas 12 — Strategi SNBT", status: "Mendatang", desc: "Tryout intensif & bimbingan PTN.", tags: ["SNBT", "PTN"] },
+                        { yearCode: "K1", yearTitle: "Kuliah Th 1 — Adaptasi Kampus", status: "Mendatang", desc: "Pemahaman kurikulum dasar prodi.", tags: ["Keahlian Dasar"] },
+                        { yearCode: "K2", yearTitle: "Kuliah Th 2 — Magang & Sertifikasi", status: "Mendatang", desc: "Magang industri & riset.", tags: ["Magang", "Sertifikasi"] },
+                        { yearCode: "K3", yearTitle: "Kuliah Th 3-4 — Skripsi & Karir", status: "Mendatang", desc: "Tugas akhir & persiapan karir.", tags: ["Tugas Akhir", "Karir"] }
+                    ]
+                };
+            }
+
+            localStorage.setItem('aiRoadmapResult', JSON.stringify(roadmapData));
+
+            setTimeout(() => {
+                updateProgress("Selesai! Mengalihkan ke Roadmap...", 100);
+                setTimeout(() => {
+                    window.location.href = '../07_hasil-roadmap/code.html';
+                }, 600);
+            }, 800);
+        }
+
         window.onload = () => {
-            setTimeout(updateLoading, 1000);
+            startAiRoadmapGeneration();
         };
-    </script>
+</script>
 </body></html>

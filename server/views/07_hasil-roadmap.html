@@ -183,10 +183,10 @@
 <!-- Header Section -->
 <header class="mb-12 text-center">
 <div class="inline-block bg-secondary-container/30 border border-secondary px-4 py-1 mb-4 rounded-full">
-<span class="font-label-caps text-label-caps text-secondary">Rencana Strategis 6 Tahun</span>
+<span class="font-label-caps text-label-caps text-secondary" id="roadmap-ai-badge">✨ Rencana Strategis Gemini AI</span>
 </div>
-<h1 class="font-display-lg text-display-lg text-primary mb-2">Roadmap Karier: Ahmad Fauzi</h1>
-<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto">Selamat! Rencana perjalanan menuju profesi Arsitek telah dipetakan berdasarkan minat dan kompetensi Anda. Mari mulai melangkah dari sekarang.</p>
+<h1 class="font-display-lg text-display-lg text-primary mb-2" id="roadmap-title">Roadmap Karier: Arsitek</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl mx-auto italic" id="roadmap-quote">"Arsitektur adalah perpaduan antara presisi dan kebebasan berekspresi."</p>
 </header>
 <!-- Roadmap Wrapper -->
 <div class="relative">
@@ -445,6 +445,32 @@
             });
         });
     </script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const aiDataStr = localStorage.getItem('aiRoadmapResult');
+        let aiRoadmap = null;
+        if (aiDataStr) {
+            try { aiRoadmap = JSON.parse(aiDataStr); } catch (e) {}
+        }
+
+        if (aiRoadmap) {
+            const titleEl = document.getElementById('roadmap-title');
+            if (titleEl && aiRoadmap.careerTitle) {
+                titleEl.innerText = `Roadmap Karier: ${aiRoadmap.careerTitle}`;
+            }
+
+            const quoteEl = document.getElementById('roadmap-quote');
+            if (quoteEl && aiRoadmap.quote) {
+                quoteEl.innerHTML = aiRoadmap.quote;
+            }
+
+            const badgeEl = document.getElementById('roadmap-ai-badge');
+            if (badgeEl && aiRoadmap.source) {
+                badgeEl.innerText = `✨ Roadmap oleh ${aiRoadmap.source}`;
+            }
+        }
+    });
+</script>
 
 <script>
 (function(){
