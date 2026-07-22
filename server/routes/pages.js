@@ -37,4 +37,21 @@ router.get('/', (req, res) => {
   }
 });
 
+// Support direct links like /04_hasil-diagnosis/code.html or /04_hasil-diagnosis
+router.get('/:folder/code.html', (req, res) => {
+  const folder = req.params.folder;
+  if (ALLOWED_PAGES.includes(folder)) {
+    return res.redirect(`/?page=${folder}`);
+  }
+  res.redirect('/');
+});
+
+router.get('/:folder', (req, res, next) => {
+  const folder = req.params.folder;
+  if (ALLOWED_PAGES.includes(folder)) {
+    return res.redirect(`/?page=${folder}`);
+  }
+  next();
+});
+
 module.exports = router;
