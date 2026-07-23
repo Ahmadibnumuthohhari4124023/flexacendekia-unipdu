@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Kartu Rencana Studi (KRS) - Ahmad Fauzi</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=Libre+Franklin:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100..900&family=Source+Serif+4:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#FBFAF5", /* Ivory White (Ledger) */
+                        "surface-bright": "#fbf8fb",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#bbc6e7",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#EAEDE2", /* Cream Base */
+                        "secondary": "#B9862F", /* Gold Accent */
+                        "on-primary-container": "#7f89a8",
+                        "tertiary-container": "#002822",
+                        "surface-tint": "#535e7a",
+                        "on-surface": "#1b1b1d",
+                        "surface-container-high": "#eae7ea",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e4e2e4",
+                        "on-primary-fixed": "#101b34",
+                        "tertiary-fixed": "#adefe1",
+                        "outline-variant": "rgba(23, 34, 59, 0.15)", /* Dark Navy Hairline */
+                        "on-secondary-container": "#754e00",
+                        "primary": "#020b24", /* Dark Navy */
+                        "primary-fixed": "#d9e2ff",
+                        "primary-container": "#17223b",
+                        "on-tertiary": "#ffffff",
+                        "inverse-surface": "#303032",
+                        "error": "#ba1a1a",
+                        "tertiary": "#000f0c",
+                        "on-primary-fixed-variant": "#3c4661",
+                        "on-tertiary-fixed": "#00201b",
+                        "on-surface-variant": "#45464d",
+                        "surface-variant": "#e4e2e4",
+                        "on-tertiary-fixed-variant": "#005046",
+                        "surface-container": "#f0edf0",
+                        "surface-dim": "#dcd9dc",
+                        "on-background": "#1b1b1d",
+                        "on-secondary-fixed": "#281800",
+                        "secondary-fixed": "#ffddaf",
+                        "surface": "#fbf8fb",
+                        "on-tertiary-container": "#549589",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#bbc6e7",
+                        "secondary-container": "#B9862F",
+                        "outline": "#17223b",
+                        "secondary-fixed-dim": "#f7bc60",
+                        "on-secondary-fixed-variant": "#614000",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#91d3c5",
+                        "background": "#EAEDE2",
+                        "inverse-on-surface": "#f3f0f2"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["\"Source Serif 4\""],
+                        "label-caps": ["Libre Franklin"],
+                        "body-md": ["Libre Franklin"],
+                        "body-sm": ["Libre Franklin"],
+                        "stats-sm": ["JetBrains Mono"],
+                        "headline-md": ["\"Source Serif 4\""]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "stats-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .academic-border {
+            border: 1px solid rgba(23, 34, 59, 0.15);
+        }
+        .ledger-shadow {
+            box-shadow: 4px 4px 0px 0px #17223B;
+        }
+        tr:nth-child(even) {
+            background-color: rgba(185, 134, 47, 0.03);
+        }
+    </style>
+</head>
+<body class="bg-surface-container-low text-on-surface font-body-md">
+<div style="background:#17223B;color:#EAEDE2;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+<span>2. Siklus siswa &middot; 09/18 &middot; Halaman KRS siswa</span>
+<span><a href="../08_dashboard-siswa/code.html" style="color:#EAEDE2;">&larr; Dashboard siswa</a> <a href="../index.html" style="color:#EAEDE2;margin:0 10px;">Peta alur</a> <a href="../10_detail-roadmap/code.html" style="color:#EAEDE2;">Detail roadmap 6 tahun &rarr;</a></span>
+</div>
+
+<!-- TopNavBar -->
+<nav class="bg-surface-container-low w-full border-b border-primary/20 top-0 fixed z-50">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-16">
+<div class="font-headline-md text-headline-md font-bold text-primary">
+                Flexa Cendekia x UNIPDU
+            </div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-secondary border-b-2 border-secondary font-bold pb-2 bg-secondary/10 transition-colors duration-200 px-4 py-2" href="#">Siswa</a>
+<a class="text-on-surface-variant font-medium pb-2 hover:bg-surface-container-high transition-colors duration-200 px-4 py-2" href="#">Guru</a>
+<a class="text-on-surface-variant font-medium pb-2 hover:bg-surface-container-high transition-colors duration-200 px-4 py-2" href="#">Orang Tua</a>
+</div>
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-primary cursor-pointer">notifications</span>
+<span class="material-symbols-outlined text-primary cursor-pointer">account_circle</span>
+</div>
+</div>
+</nav>
+<main class="pt-24 pb-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Header Section -->
+<header class="mb-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-headline-md text-headline-md text-primary mb-2">Kartu Rencana Studi (KRS)</h1>
+<p class="font-body-md text-on-surface-variant italic">Semester Ganjil 2023/2024</p>
+</div>
+<div class="inline-flex items-center px-4 py-2 bg-secondary/10 border border-secondary text-secondary rounded-sm">
+<span class="material-symbols-outlined text-[20px] mr-2">pending_actions</span>
+<span class="font-label-caps text-label-caps">Menunggu Persetujuan Guru</span>
+</div>
+</div>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Main Content Area: The Ledger -->
+<div class="lg:col-span-8 space-y-8">
+<!-- Identitas Siswa & Roadmap Card -->
+<section class="bg-surface-container-lowest academic-border p-8 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 opacity-10">
+<span class="material-symbols-outlined text-[96px] text-primary">architecture</span>
+</div>
+<div class="grid md:grid-cols-2 gap-8 mb-8">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">NAMA SISWA</p>
+<p class="font-headline-md text-headline-md text-primary">Ahmad Fauzi</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">NISN / IDENTITAS</p>
+<p class="font-stats-sm text-stats-sm text-primary">202301044 / Kelas X-A</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">CITA-CITA STRATEGIS</p>
+<div class="flex items-center text-secondary font-bold">
+<span class="material-symbols-outlined mr-2">precision_manufacturing</span>
+<span>Arsitek</span>
+</div>
+</div>
+</div>
+<hr class="border-outline-variant mb-8"/>
+<div>
+<div class="flex justify-between items-center mb-4">
+<p class="font-label-caps text-label-caps text-on-surface-variant">RINGKASAN ROADMAP 6 TAHUN</p>
+<p class="font-stats-sm text-stats-sm text-secondary">Semester 1 of 12</p>
+</div>
+<div class="flex h-2 w-full bg-surface-container-low academic-border overflow-hidden">
+<div class="bg-secondary w-1/12"></div>
+<div class="border-r border-outline-variant w-1/12"></div>
+<div class="border-r border-outline-variant w-1/12"></div>
+<div class="border-r border-outline-variant w-1/12"></div>
+<div class="border-r border-outline-variant w-1/12"></div>
+<div class="border-r border-outline-variant w-1/12"></div>
+<div class="border-r border-outline-variant w-1/12"></div>
+<div class="border-r border-outline-variant w-1/12"></div>
+<div class="border-r border-outline-variant w-1/12"></div>
+<div class="border-r border-outline-variant w-1/12"></div>
+<div class="border-r border-outline-variant w-1/12"></div>
+</div>
+<div class="flex justify-between mt-2 font-stats-sm text-stats-sm text-on-surface-variant">
+<span>Mulai</span>
+<span>Kelulusan</span>
+</div>
+</div>
+</section>
+<!-- Daftar Modul (Table) -->
+<section class="bg-surface-container-lowest academic-border overflow-hidden">
+<div class="p-6 border-b border-outline-variant bg-surface-container-low/50">
+<h2 class="font-headline-md text-headline-md text-primary">Daftar Modul Belajar</h2>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="px-6 py-4 font-label-caps text-label-caps border-b border-outline-variant">KODE</th>
+<th class="px-6 py-4 font-label-caps text-label-caps border-b border-outline-variant">MODUL</th>
+<th class="px-6 py-4 font-label-caps text-label-caps border-b border-outline-variant">KOMPETENSI UTAMA</th>
+<th class="px-6 py-4 font-label-caps text-label-caps border-b border-outline-variant">PACING</th>
+<th class="px-6 py-4 font-label-caps text-label-caps border-b border-outline-variant text-right">STATUS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="px-6 py-4 font-stats-sm text-stats-sm">MAT-101</td>
+<td class="px-6 py-4 font-body-md font-bold text-primary">Geometri Ruang</td>
+<td class="px-6 py-4 font-body-sm text-on-surface-variant">Analisis Spasial</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-primary/5 text-primary border border-primary/10 text-[11px] font-bold uppercase">Menengah</span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="font-label-caps text-[10px] text-secondary">WAJIB</span>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 font-stats-sm text-stats-sm">ARS-202</td>
+<td class="px-6 py-4 font-body-md font-bold text-primary">Sejarah Arsitektur Dunia</td>
+<td class="px-6 py-4 font-body-sm text-on-surface-variant">Literasi Budaya</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-primary/5 text-primary border border-primary/10 text-[11px] font-bold uppercase">Tinggi</span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="font-label-caps text-[10px] text-on-surface-variant">PILIHAN</span>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 font-stats-sm text-stats-sm">DSN-105</td>
+<td class="px-6 py-4 font-body-md font-bold text-primary">Sketsa Dasar</td>
+<td class="px-6 py-4 font-body-sm text-on-surface-variant">Teknik Visualisasi</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-primary/5 text-primary border border-primary/10 text-[11px] font-bold uppercase">Menengah</span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="font-label-caps text-[10px] text-secondary">WAJIB</span>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4 font-stats-sm text-stats-sm">FIS-103</td>
+<td class="px-6 py-4 font-body-md font-bold text-primary">Fisika Bangunan I</td>
+<td class="px-6 py-4 font-body-sm text-on-surface-variant">Mekanika Struktur</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-primary/5 text-primary border border-primary/10 text-[11px] font-bold uppercase">Tinggi</span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="font-label-caps text-[10px] text-secondary">WAJIB</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<!-- Sidebar -->
+<aside class="lg:col-span-4 space-y-8">
+<!-- Guidance Note Card -->
+<div class="bg-surface-container-lowest academic-border p-6 relative">
+<div class="absolute -top-3 -right-3">
+<span class="material-symbols-outlined text-secondary bg-surface-container-lowest border border-outline-variant p-2 rounded-full">push_pin</span>
+</div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4">Catatan Guru Pembimbing</h3>
+<div class="space-y-4">
+<div class="flex gap-4">
+<div class="w-10 h-10 bg-primary/5 border border-outline-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+<div>
+<p class="font-body-sm font-bold">Drs. Bambang Wijaya</p>
+<p class="font-stats-sm text-stats-sm text-on-surface-variant">Wali Kelas & Mentor</p>
+</div>
+</div>
+<p class="font-body-sm italic text-on-surface leading-relaxed border-l-2 border-secondary pl-4">
+                            "Ahmad, pemilihan modul Geometri Ruang sangat tepat untuk dasar Arsitektur. Namun, perhatikan beban 'Tinggi' pada Fisika Bangunan. Pastikan jadwal belajarmu teratur."
+                        </p>
+</div>
+</div>
+<!-- Action Card -->
+<div class="bg-primary p-8 ledger-shadow">
+<h3 class="font-headline-md text-headline-md text-surface-container-lowest mb-6">Aksi Studi</h3>
+<div class="space-y-4">
+<button class="w-full py-4 bg-secondary text-surface-container-lowest font-bold text-label-caps hover:bg-secondary/90 transition-all duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined mr-2">edit_note</span>
+                            AJUKAN REVISI
+                        </button>
+<button class="w-full py-4 bg-transparent border border-surface-container-lowest text-surface-container-lowest font-bold text-label-caps hover:bg-surface-container-lowest/10 transition-all duration-150 flex items-center justify-center">
+<span class="material-symbols-outlined mr-2">download</span>
+                            UNDUH DRAFT KRS
+                        </button>
+</div>
+<div class="mt-8 pt-8 border-t border-surface-container-lowest/20">
+<p class="font-stats-sm text-stats-sm text-surface-container-lowest/60 text-center uppercase tracking-widest">
+                            Deadline Pengajuan:<br/>
+<span class="text-secondary font-bold">31 Agustus 2023</span>
+</p>
+</div>
+</div>
+<!-- Visualization Aspect -->
+<div class="bg-surface-container-lowest academic-border overflow-hidden">
+<div class="w-full h-48 bg-cover bg-center grayscale contrast-125 opacity-40 hover:opacity-100 transition-opacity duration-700 cursor-pointer" data-alt="A detailed digital illustration of an architect's workspace in a minimalist academic ledger style. Features include precise architectural blueprints of a modern building layout, a classic drafting compass, and mechanical pencils. The scene is illuminated by soft, neutral daylight across an ivory paper surface, emphasizing clean geometric lines and a studious, professional atmosphere in shades of cream, navy, and muted gold." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBiC3OLFQohMRQPCwt87NKMbOQTuvHNoj3rTSsAvIOOVufBjJSV5GOhZoyS5NmCr-ftspu1ktesfzXoJ5qYm_-tMEF14Qf7MxPk10pkQ0cjy26s699GJJ03zF4YCxcSuewTROIFlMEpdE6zw6_LnZzJdQrl6i6ddUsG3nGL3cC-tie5q_sD1-frESrlIB0WMepN5MoBU1Aqwcv5epMZHS-hSBZKn2PHjsqrQjrEsmGx5nBS-jXD6hC6bmn7rj---hMyX8BkOUw2IBk')"></div>
+<div class="p-4 border-t border-outline-variant">
+<p class="font-label-caps text-[10px] text-on-surface-variant">INSPIRASI KARIR</p>
+<p class="font-body-sm font-bold text-primary italic">"Membangun Masa Depan Lewat Struktur"</p>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-8 border-t border-primary/10">
+<div class="max-w-container-max mx-auto px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center space-x-2">
+<div class="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
+<p class="font-stats-sm text-stats-sm text-on-surface-variant">Data disinkronkan via SSO Flexa Cendekia</p>
+</div>
+<div class="flex gap-6 font-label-caps text-[10px] text-on-surface-variant">
+<a class="hover:text-primary" href="#">KEBIJAKAN PRIVASI</a>
+<a class="hover:text-primary" href="#">BANTUAN</a>
+<span class="font-stats-sm">V.2.4.0-STABLE</span>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for table rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateX(4px)';
+                row.style.transition = 'transform 0.2s ease-out';
+                row.style.borderLeft = '2px solid #B9862F';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateX(0)';
+                row.style.borderLeft = 'none';
+            });
+        });
+    </script>
+</body></html>

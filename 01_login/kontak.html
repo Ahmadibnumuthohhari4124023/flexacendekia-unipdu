@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html class="light" lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Kontak Kami - Flexa Cendekia x UNIPDU</title>
+    <meta name="description"
+        content="Hubungi tim Flexa Cendekia x UNIPDU melalui formulir kontak, email, telepon, atau kunjungi alamat kami." />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        body {
+            background-color: #EAEDE2;
+            font-family: 'Libre Franklin', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .academic-ledger-card {
+            background-color: #FBFAF5;
+            border: 1px solid rgba(23, 34, 59, 0.20);
+            box-shadow: none;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .contact-card {
+            background-color: #FBFAF5;
+            border: 1px solid rgba(23, 34, 59, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            border-color: rgba(23, 34, 59, 0.40);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(23, 34, 59, 0.08);
+        }
+
+        .form-input {
+            background-color: #FBFAF5;
+            border: 1px solid rgba(23, 34, 59, 0.20);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            font-family: 'Libre Franklin', sans-serif;
+        }
+
+        .form-input:focus {
+            border-color: #17223B;
+            box-shadow: 0 0 0 2px rgba(23, 34, 59, 0.08);
+            outline: none;
+        }
+
+        .form-input::placeholder {
+            color: rgba(69, 70, 77, 0.4);
+        }
+
+        .submit-btn {
+            background-color: #17223B;
+            color: #EAEDE2;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .success-message {
+            background-color: rgba(0, 80, 70, 0.06);
+            border: 1px solid rgba(0, 80, 70, 0.20);
+        }
+
+        .info-strip {
+            background: repeating-linear-gradient(-45deg,
+                    rgba(23, 34, 59, 0.02),
+                    rgba(23, 34, 59, 0.02) 10px,
+                    transparent 10px,
+                    transparent 20px);
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#614000",
+                        "secondary-fixed-dim": "#f7bc60",
+                        "error-container": "#ffdad6",
+                        "surface": "#fbf8fb",
+                        "on-tertiary-container": "#549589",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#ffddaf",
+                        "secondary-container": "#fdc265",
+                        "outline": "#76777e",
+                        "inverse-primary": "#bbc6e7",
+                        "inverse-on-surface": "#f3f0f2",
+                        "background": "#fbf8fb",
+                        "tertiary-fixed-dim": "#91d3c5",
+                        "tertiary": "#000f0c",
+                        "on-tertiary-fixed": "#00201b",
+                        "on-surface-variant": "#45464d",
+                        "on-primary-fixed-variant": "#3c4661",
+                        "primary-fixed": "#d9e2ff",
+                        "inverse-surface": "#303032",
+                        "error": "#ba1a1a",
+                        "primary-container": "#17223b",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#dcd9dc",
+                        "on-background": "#1b1b1d",
+                        "on-secondary-fixed": "#281800",
+                        "surface-variant": "#e4e2e4",
+                        "surface-container": "#f0edf0",
+                        "on-tertiary-fixed-variant": "#005046",
+                        "surface-container-highest": "#e4e2e4",
+                        "on-primary-fixed": "#101b34",
+                        "tertiary-fixed": "#adefe1",
+                        "outline-variant": "#c6c6ce",
+                        "surface-container-high": "#eae7ea",
+                        "on-error": "#ffffff",
+                        "primary": "#020b24",
+                        "on-secondary-container": "#754e00",
+                        "primary-fixed-dim": "#bbc6e7",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f5f3f5",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#fbf8fb",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#002822",
+                        "on-surface": "#1b1b1d",
+                        "surface-tint": "#535e7a",
+                        "secondary": "#805600",
+                        "on-primary-container": "#7f89a8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "margin-desktop": "32px",
+                        "gutter": "16px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "stats-lg": ["JetBrains Mono"],
+                        "label-caps": ["Libre Franklin"],
+                        "body-md": ["Libre Franklin"],
+                        "display-lg-mobile": ["\"Source Serif 4\""],
+                        "display-lg": ["\"Source Serif 4\""],
+                        "stats-sm": ["JetBrains Mono"],
+                        "headline-md": ["\"Source Serif 4\""],
+                        "body-sm": ["Libre Franklin"]
+                    },
+                    "fontSize": {
+                        "stats-lg": ["20px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "stats-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden">
+    <!-- Subtle Background Pattern -->
+    <div class="fixed inset-0 opacity-[0.03] pointer-events-none"
+        style="background-image: radial-gradient(#17223B 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
+
+    <!-- Top Navigation -->
+    <header class="w-full bg-surface border-b border-primary/20">
+        <div
+            class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+            <a href="code.html"
+                class="font-headline-md text-headline-md font-bold text-primary hover:opacity-80 transition-opacity"
+                style="text-decoration:none;">
+                Flexa Cendekia x UNIPDU
+            </a>
+            <div class="hidden md:flex gap-8">
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
+                    href="panduan.html">Panduan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
+                    href="bantuan.html">Bantuan</a>
+                <a class="text-primary font-body-md text-body-md font-semibold border-b-2 border-primary pb-1"
+                    href="kontak.html">Kontak</a>
+            </div>
+            <!-- Mobile menu button -->
+            <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center p-2 text-primary">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-primary/10 bg-surface">
+            <div class="flex flex-col px-margin-mobile py-4 gap-4">
+                <a class="text-on-surface-variant font-body-md text-body-md" href="panduan.html">Panduan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md" href="bantuan.html">Bantuan</a>
+                <a class="text-primary font-body-md text-body-md font-semibold" href="kontak.html">Kontak</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow py-12 px-6">
+        <div class="w-full max-w-3xl mx-auto">
+
+            <!-- Breadcrumb -->
+            <nav class="mb-8 flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant">
+                <a href="code.html" class="hover:text-primary transition-colors">Beranda</a>
+                <span class="material-symbols-outlined text-sm opacity-40">chevron_right</span>
+                <span class="text-primary font-semibold">Kontak</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="academic-ledger-card p-8 md:p-12 mb-10">
+                <div class="flex items-start gap-5">
+                    <div class="h-14 w-14 border-2 border-primary flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-primary text-3xl">contact_mail</span>
+                    </div>
+                    <div>
+                        <h1 class="font-headline-md text-headline-md text-primary mb-2">Hubungi Kami</h1>
+                        <p class="font-body-md text-body-md text-on-surface-variant max-w-xl">
+                            Kami siap membantu Anda. Pilih metode kontak yang paling nyaman, atau gunakan formulir di
+                            bawah untuk mengirim pesan langsung kepada tim kami.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Methods -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+                <div class="contact-card p-6 text-center">
+                    <div class="h-12 w-12 border border-primary/20 flex items-center justify-center mx-auto mb-4">
+                        <span class="material-symbols-outlined text-primary text-xl">mail</span>
+                    </div>
+                    <p class="font-label-caps text-label-caps text-primary mb-2">Email</p>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mb-3">Kirim email untuk pertanyaan umum
+                        atau masalah teknis.</p>
+                    <a href="mailto:support@flexacendekia.ac.id"
+                        class="font-body-sm text-body-sm text-primary font-semibold hover:underline underline-offset-4">
+                        support@flexacendekia.ac.id
+                    </a>
+                </div>
+
+                <div class="contact-card p-6 text-center">
+                    <div class="h-12 w-12 border border-primary/20 flex items-center justify-center mx-auto mb-4">
+                        <span class="material-symbols-outlined text-primary text-xl">call</span>
+                    </div>
+                    <p class="font-label-caps text-label-caps text-primary mb-2">Telepon</p>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mb-3">Hubungi kami di jam kerja
+                        (Senin–Jumat, 08.00–16.00 WIB).</p>
+                    <a href="tel:+62321123456"
+                        class="font-body-sm text-body-sm text-primary font-semibold hover:underline underline-offset-4">
+                        (0321) 123-456
+                    </a>
+                </div>
+
+                <div class="contact-card p-6 text-center">
+                    <div class="h-12 w-12 border border-primary/20 flex items-center justify-center mx-auto mb-4">
+                        <span class="material-symbols-outlined text-primary text-xl">location_on</span>
+                    </div>
+                    <p class="font-label-caps text-label-caps text-primary mb-2">Alamat</p>
+                    <p class="font-body-sm text-body-sm text-on-surface-variant mb-3">Kunjungi kantor kami di kampus
+                        UNIPDU.</p>
+                    <p class="font-body-sm text-body-sm text-primary font-semibold">
+                        Jl. Raya Darul Ulum, Peterongan, Jombang, Jawa Timur
+                    </p>
+                </div>
+            </div>
+
+            <!-- Operating Hours -->
+            <div class="academic-ledger-card p-6 mb-10">
+                <div class="flex items-center gap-3 mb-4">
+                    <span class="material-symbols-outlined text-primary text-xl">schedule</span>
+                    <p class="font-label-caps text-label-caps uppercase tracking-widest text-primary">Jam Operasional
+                        Layanan</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="flex justify-between items-center py-2 border-b border-primary/10">
+                        <span class="font-body-sm text-body-sm text-on-surface-variant">Senin – Jumat</span>
+                        <span class="font-stats-sm text-stats-sm text-primary"
+                            style="font-family:'JetBrains Mono',monospace;">08.00 – 16.00 WIB</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 border-b border-primary/10">
+                        <span class="font-body-sm text-body-sm text-on-surface-variant">Sabtu</span>
+                        <span class="font-stats-sm text-stats-sm text-primary"
+                            style="font-family:'JetBrains Mono',monospace;">08.00 – 12.00 WIB</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 border-b border-primary/10 md:border-b-0">
+                        <span class="font-body-sm text-body-sm text-on-surface-variant">Minggu & Hari Libur</span>
+                        <span class="font-stats-sm text-stats-sm text-error/60"
+                            style="font-family:'JetBrains Mono',monospace;">Tutup</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2">
+                        <span class="font-body-sm text-body-sm text-on-surface-variant">Respon Email</span>
+                        <span class="font-stats-sm text-stats-sm text-primary"
+                            style="font-family:'JetBrains Mono',monospace;">Maks. 1×24 Jam</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="academic-ledger-card p-8 md:p-10 mb-10">
+                <p class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant mb-6">
+                    Formulir Kontak</p>
+
+                <!-- Success Message (hidden by default) -->
+                <div id="success-msg" class="success-message p-5 mb-6 hidden">
+                    <div class="flex items-center gap-3">
+                        <span
+                            class="material-symbols-outlined text-on-tertiary-fixed-variant text-xl">check_circle</span>
+                        <div>
+                            <p class="font-body-md text-body-md text-on-tertiary-fixed-variant font-semibold">Pesan
+                                Terkirim!</p>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant">Terima kasih telah menghubungi
+                                kami. Tim kami akan merespons dalam 1×24 jam kerja.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="contact-form" onsubmit="handleSubmit(event)" class="space-y-5">
+                    <!-- Name -->
+                    <div>
+                        <label class="block font-body-sm text-body-sm text-primary font-semibold mb-2"
+                            for="contact-name">
+                            Nama Lengkap <span class="text-error">*</span>
+                        </label>
+                        <input id="contact-name" type="text" required
+                            class="form-input w-full px-4 py-3 font-body-md text-body-md text-primary"
+                            placeholder="Masukkan nama lengkap Anda" />
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label class="block font-body-sm text-body-sm text-primary font-semibold mb-2"
+                            for="contact-email">
+                            Alamat Email <span class="text-error">*</span>
+                        </label>
+                        <input id="contact-email" type="email" required
+                            class="form-input w-full px-4 py-3 font-body-md text-body-md text-primary"
+                            placeholder="contoh@email.com" />
+                    </div>
+
+                    <!-- Role -->
+                    <div>
+                        <label class="block font-body-sm text-body-sm text-primary font-semibold mb-2"
+                            for="contact-role">
+                            Peran Anda
+                        </label>
+                        <select id="contact-role"
+                            class="form-input w-full px-4 py-3 font-body-md text-body-md text-primary">
+                            <option value="" disabled selected>Pilih peran Anda</option>
+                            <option value="siswa">Siswa</option>
+                            <option value="guru">Guru</option>
+                            <option value="orangtua">Orang Tua</option>
+                            <option value="admin">Administrator Sekolah</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+
+                    <!-- Subject -->
+                    <div>
+                        <label class="block font-body-sm text-body-sm text-primary font-semibold mb-2"
+                            for="contact-subject">
+                            Subjek <span class="text-error">*</span>
+                        </label>
+                        <select id="contact-subject" required
+                            class="form-input w-full px-4 py-3 font-body-md text-body-md text-primary">
+                            <option value="" disabled selected>Pilih topik</option>
+                            <option value="login">Masalah Login / Akun</option>
+                            <option value="teknis">Masalah Teknis</option>
+                            <option value="fitur">Pertanyaan Fitur</option>
+                            <option value="saran">Saran & Masukan</option>
+                            <option value="kerjasama">Kerjasama</option>
+                            <option value="lainnya">Lainnya</option>
+                        </select>
+                    </div>
+
+                    <!-- Message -->
+                    <div>
+                        <label class="block font-body-sm text-body-sm text-primary font-semibold mb-2"
+                            for="contact-message">
+                            Pesan <span class="text-error">*</span>
+                        </label>
+                        <textarea id="contact-message" required rows="5"
+                            class="form-input w-full px-4 py-3 font-body-md text-body-md text-primary resize-y"
+                            placeholder="Jelaskan pertanyaan atau masalah Anda secara detail..."></textarea>
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="flex items-center justify-between pt-2">
+                        <p class="font-body-sm text-[12px] text-on-surface-variant/60">
+                            <span class="text-error">*</span> Wajib diisi
+                        </p>
+                        <button type="submit" id="submit-btn"
+                            class="submit-btn inline-flex items-center gap-3 py-3 px-8 border border-transparent">
+                            <span class="material-symbols-outlined text-lg">send</span>
+                            <span class="font-label-caps text-label-caps uppercase tracking-wider">Kirim Pesan</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Social / Additional Info -->
+            <div class="academic-ledger-card p-8 mb-10">
+                <p class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant mb-5">Ikuti
+                    Kami</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div
+                        class="flex items-center gap-4 p-4 border border-primary/10 hover:border-primary/30 transition-colors">
+                        <div class="h-10 w-10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined text-primary text-lg">language</span>
+                        </div>
+                        <div>
+                            <p class="font-body-sm text-body-sm text-primary font-semibold">Website Resmi</p>
+                            <p class="font-body-sm text-[12px] text-on-surface-variant">www.flexacendekia.ac.id</p>
+                        </div>
+                    </div>
+                    <div
+                        class="flex items-center gap-4 p-4 border border-primary/10 hover:border-primary/30 transition-colors">
+                        <div class="h-10 w-10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined text-primary text-lg">share</span>
+                        </div>
+                        <div>
+                            <p class="font-body-sm text-body-sm text-primary font-semibold">Media Sosial</p>
+                            <p class="font-body-sm text-[12px] text-on-surface-variant">@flexacendekia_unipdu</p>
+                        </div>
+                    </div>
+                    <div
+                        class="flex items-center gap-4 p-4 border border-primary/10 hover:border-primary/30 transition-colors">
+                        <div class="h-10 w-10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined text-primary text-lg">chat</span>
+                        </div>
+                        <div>
+                            <p class="font-body-sm text-body-sm text-primary font-semibold">WhatsApp</p>
+                            <p class="font-body-sm text-[12px] text-on-surface-variant">+62 812-3456-7890</p>
+                        </div>
+                    </div>
+                    <div
+                        class="flex items-center gap-4 p-4 border border-primary/10 hover:border-primary/30 transition-colors">
+                        <div class="h-10 w-10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+                            <span class="material-symbols-outlined text-primary text-lg">school</span>
+                        </div>
+                        <div>
+                            <p class="font-body-sm text-body-sm text-primary font-semibold">UNIPDU Jombang</p>
+                            <p class="font-body-sm text-[12px] text-on-surface-variant">www.unipdu.ac.id</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map placeholder -->
+            <div class="academic-ledger-card overflow-hidden mb-10">
+                <div class="p-5 border-b border-primary/10">
+                    <div class="flex items-center gap-2">
+                        <span class="material-symbols-outlined text-primary text-lg">map</span>
+                        <p class="font-label-caps text-label-caps uppercase tracking-widest text-primary">Lokasi Kami
+                        </p>
+                    </div>
+                </div>
+                <div
+                    class="h-64 bg-surface-container-high flex items-center justify-center relative overflow-hidden info-strip">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3954.7!2d112.2!3d-7.55!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zN8KwMzMnMDAuMCJTIDExMsKwMTInMDAuMCJF!5e0!3m2!1sid!2sid!4v1"
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade" title="Lokasi UNIPDU Jombang"
+                        onerror="this.style.display='none';this.parentElement.querySelector('.map-fallback').style.display='flex';">
+                    </iframe>
+                    <div class="map-fallback hidden absolute inset-0 flex-col items-center justify-center"
+                        style="display:none;">
+                        <span
+                            class="material-symbols-outlined text-on-surface-variant text-5xl mb-3 opacity-30">map</span>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant">Universitas Pesantren Tinggi Darul
+                            Ulum</p>
+                        <p class="font-body-sm text-[12px] text-on-surface-variant/60">Jl. Raya Darul Ulum, Peterongan,
+                            Jombang, Jawa Timur</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back CTA -->
+            <div class="text-center">
+                <a href="code.html"
+                    class="inline-flex items-center gap-3 bg-transparent text-primary py-3 px-6 hover:bg-primary/5 transition-all active:scale-[0.98] border border-primary/20"
+                    style="text-decoration:none;">
+                    <span class="material-symbols-outlined text-lg">arrow_back</span>
+                    <span class="font-label-caps text-label-caps uppercase tracking-wider">Kembali ke Halaman
+                        Login</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full bg-surface-container border-t border-primary/10 mt-12">
+        <div
+            class="flex flex-col md:flex-row justify-between items-center gap-4 px-margin-mobile md:px-margin-desktop py-8 max-w-container-max mx-auto">
+            <div class="flex flex-col items-center md:items-start gap-1">
+                <span class="font-label-caps text-label-caps uppercase tracking-widest text-primary">Kolaborasi
+                    Akademik</span>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Flexa Cendekia &amp; Universitas
+                    Pesantren Tinggi Darul Ulum</span>
+            </div>
+            <div class="flex gap-6">
+                <a class="text-on-surface-variant font-body-sm text-body-sm hover:underline decoration-1 underline-offset-4"
+                    href="#">Kebijakan Privasi</a>
+                <a class="text-on-surface-variant font-body-sm text-body-sm hover:underline decoration-1 underline-offset-4"
+                    href="#">Syarat &amp; Ketentuan</a>
+            </div>
+            <div class="font-body-sm text-body-sm text-on-surface-variant">
+                © 2026 Flexa Cendekia x UNIPDU. Hak Cipta Dilindungi.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Form submission handler
+        function handleSubmit(e) {
+            e.preventDefault();
+
+            const form = document.getElementById('contact-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const successMsg = document.getElementById('success-msg');
+
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `
+                <span class="material-symbols-outlined text-lg animate-spin">progress_activity</span>
+                <span class="font-label-caps text-label-caps uppercase tracking-wider">Mengirim...</span>
+            `;
+
+            // Simulate sending (in production, this would be an API call)
+            setTimeout(() => {
+                successMsg.classList.remove('hidden');
+                form.reset();
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `
+                    <span class="material-symbols-outlined text-lg">send</span>
+                    <span class="font-label-caps text-label-caps uppercase tracking-wider">Kirim Pesan</span>
+                `;
+
+                // Scroll to success message
+                successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                // Hide success message after 8 seconds
+                setTimeout(() => {
+                    successMsg.classList.add('hidden');
+                }, 8000);
+            }, 1500);
+        }
+    </script>
+</body>
+
+</html>
