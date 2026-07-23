@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Timeline | Flexa Cendekia</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <style>
+        .blueprint-grid {
+            background-image: 
+                linear-gradient(rgba(23, 34, 59, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(23, 34, 59, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-[#fbf8fb] text-[#1b1b1d] font-sans blueprint-grid min-h-screen">
+    <!-- TopNavBar -->
+    <nav class="fixed top-0 w-full bg-[#fbf8fb] z-50 border-b border-[#1b1b1d]/20 flex justify-between items-center h-16 px-4 md:px-8">
+        <div class="flex items-center gap-4">
+            <span class="font-bold text-2xl text-[#020b24]">Flexa Cendekia</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="code.html" class="text-sm font-semibold border-b-2 border-[#020b24]">Kembali ke Roadmap</a>
+        </div>
+    </nav>
+    
+    <main class="pt-24 px-4 md:px-8 max-w-4xl mx-auto">
+        <h1 class="text-4xl font-bold text-[#020b24] mb-8">Timeline Perjalanan Anda</h1>
+        <div class="bg-white p-8 border border-[#020b24]/20 shadow-[4px_4px_0_0_#020b24] rounded">
+            <p class="text-gray-600 mb-6">Berikut adalah gambaran waktu dari langkah-langkah yang perlu Anda ambil dari Kelas 10 hingga Universitas.</p>
+            
+            <div class="space-y-8 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+                <!-- Timeline Item 1 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-emerald-500 text-slate-500 group-[.is-active]:text-emerald-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                        <span class="material-symbols-outlined">looks_one</span>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow">
+                        <div class="flex items-center justify-between mb-1">
+                            <h3 class="font-bold text-slate-900">Kelas 10</h3>
+                            <time class="text-sm font-medium text-emerald-500">Tahun 1</time>
+                        </div>
+                        <div class="text-slate-500">Eksplorasi minat dan pembangunan fondasi akademik dasar.</div>
+                    </div>
+                </div>
+                <!-- Timeline Item 2 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 group-[.is-active]:bg-emerald-500 text-slate-500 group-[.is-active]:text-emerald-50 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                        <span class="material-symbols-outlined">looks_two</span>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow">
+                        <div class="flex items-center justify-between mb-1">
+                            <h3 class="font-bold text-slate-900">Kelas 11</h3>
+                            <time class="text-sm font-medium text-emerald-500">Tahun 2</time>
+                        </div>
+                        <div class="text-slate-500">Pengembangan skill spesifik dan proyek awal.</div>
+                    </div>
+                </div>
+                <!-- Timeline Item 3 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-300 text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                        <span class="material-symbols-outlined">looks_3</span>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded border border-slate-200 bg-white shadow">
+                        <div class="flex items-center justify-between mb-1">
+                            <h3 class="font-bold text-slate-900">Kelas 12</h3>
+                            <time class="text-sm font-medium text-slate-500">Tahun 3</time>
+                        </div>
+                        <div class="text-slate-500">Persiapan ujian masuk dan finalisasi portofolio.</div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+</body>
+</html>
