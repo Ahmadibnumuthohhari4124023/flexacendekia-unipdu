@@ -124,6 +124,67 @@
         background: #020b24;
         border-radius: 10px;
       }
+      /* Notification Dropdown */
+      .notif-dropdown {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        width: 380px;
+        max-height: 480px;
+        background: rgba(251, 250, 245, 0.98);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(2, 11, 36, 0.12);
+        box-shadow: 0 20px 60px rgba(2, 11, 36, 0.18), 0 4px 16px rgba(2, 11, 36, 0.08);
+        border-radius: 12px;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(-8px) scale(0.96);
+        pointer-events: none;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        z-index: 100;
+      }
+      .notif-dropdown.open {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+      }
+      .notif-item {
+        transition: background 0.15s ease;
+      }
+      .notif-item:hover {
+        background: rgba(2, 11, 36, 0.04);
+      }
+      .notif-badge {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        width: 10px;
+        height: 10px;
+        background: #ba1a1a;
+        border-radius: 50%;
+        border: 2px solid #fbf8fb;
+        animation: badgePulse 2s ease-in-out infinite;
+      }
+      @keyframes badgePulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+      }
+      .milestone-nav-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 20px;
+        height: 20px;
+        padding: 0 5px;
+        border-radius: 10px;
+        background: #805600;
+        color: #fff;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+        font-weight: 700;
+        line-height: 1;
+      }
     </style>
 </head>
 <body class="bg-background text-on-surface font-body-md overflow-x-hidden">
@@ -138,15 +199,82 @@
 <span class="font-display-lg text-display-lg font-bold text-primary">Flexa Cendekia</span>
 </div>
 <div class="hidden md:flex gap-8 items-center h-full">
-<a class="font-body-md text-on-surface-variant hover:bg-on-surface/5 px-3 py-2 transition-colors" href="#">Dashboard</a>
-<a class="font-body-md text-secondary border-b-2 border-secondary px-3 py-2" href="#">Kurikulum</a>
-<a class="font-body-md text-on-surface-variant hover:bg-on-surface/5 px-3 py-2 transition-colors" href="#">Pencapaian</a>
+<a class="font-body-md text-on-surface-variant hover:bg-on-surface/5 px-3 py-2 transition-colors" href="../08_dashboard-siswa/code.html">Dashboard</a>
+<a class="font-body-md text-secondary border-b-2 border-secondary px-3 py-2" href="code.html">Kurikulum</a>
+<a class="font-body-md text-on-surface-variant hover:bg-on-surface/5 px-3 py-2 transition-colors flex items-center gap-2" href="milestones.html">Pencapaian <span class="milestone-nav-badge" id="nav-milestone-badge">0</span></a>
 </div>
 <div class="flex items-center gap-4">
-<button class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform">notifications</button>
-<div class="w-8 h-8 rounded-full border border-primary/20 overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a young male student named Ahmad Fauzi, looking confident and focused. He is wearing a clean, modern navy blazer over a white shirt. The background is a soft, blurred library setting with warm, scholarly lighting, reflecting an academic and ambitious atmosphere. The overall style is clean, sharp, and high-quality photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYyODgzRK4CCp_SNxv5IJ6Wlf6Tnr8jFKI_qfGBrkfvk3UKT42fp75pqKJ7fqrq2qoC3Tsxtp5Ydwt-ggsbgs75gGUp5LjRYprk9Pe0247Wy5JS2WcWTBoEspHHJm_rjfqEJB_H6vGA0UC3mt461K2OKLUibytbZ3kNYuCM8WVWXZ_P-l0Uhjw5_QJy1f8Rd5Pkc8UpEktwhEXn3M8Py90COyMq6MWaNUQEr7tKhWqRUByvmdI4nig5qJ3GD3rYbvbO7mMxHh7cCw"/>
+<!-- Notification Bell with Dropdown -->
+<div class="relative" id="notif-wrapper">
+<button class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform relative" id="notif-bell" onclick="toggleNotifDropdown(event)">
+notifications
+<span class="notif-badge" id="notif-badge"></span>
+</button>
+<!-- Notification Dropdown Panel -->
+<div class="notif-dropdown" id="notif-dropdown">
+<div class="flex items-center justify-between px-5 py-4 border-b border-on-surface/10">
+<h4 class="font-headline-md text-[16px] font-bold text-primary">Notifikasi</h4>
+<button class="font-body-sm text-body-sm text-secondary hover:underline" onclick="markAllRead()">Tandai dibaca</button>
 </div>
+<div class="overflow-y-auto max-h-[320px] custom-scrollbar" id="notif-list">
+<!-- Notif 1: Unread -->
+<div class="notif-item flex gap-3 px-5 py-4 border-b border-on-surface/5 bg-secondary/5" data-unread="true">
+<div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-white text-[18px]">assignment_late</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-[13px] font-bold text-primary leading-tight">Checkpoint Jumat Tersedia</p>
+<p class="text-[12px] text-on-surface-variant mt-0.5 leading-relaxed">Saatnya refleksi mingguan! Checkpoint Jumat ini sudah menunggu Anda.</p>
+<span class="text-[10px] text-secondary font-mono mt-1 inline-block">Baru saja</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-secondary shrink-0 mt-2"></span>
+</div>
+<!-- Notif 2: Unread -->
+<div class="notif-item flex gap-3 px-5 py-4 border-b border-on-surface/5 bg-secondary/5" data-unread="true">
+<div class="w-9 h-9 rounded-full bg-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-secondary-container text-[18px]">emoji_events</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-[13px] font-bold text-primary leading-tight">Roadmap Karier Siap!</p>
+<p class="text-[12px] text-on-surface-variant mt-0.5 leading-relaxed">Rencana strategis 6 tahun Anda telah selesai dibuat oleh Gemini AI.</p>
+<span class="text-[10px] text-secondary font-mono mt-1 inline-block">5 menit lalu</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-secondary shrink-0 mt-2"></span>
+</div>
+<!-- Notif 3: Read -->
+<div class="notif-item flex gap-3 px-5 py-4 border-b border-on-surface/5">
+<div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center shrink-0 border border-on-surface/10">
+<span class="material-symbols-outlined text-primary text-[18px]">school</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-[13px] font-bold text-on-surface-variant leading-tight">Diagnosis Selesai</p>
+<p class="text-[12px] text-on-surface-variant mt-0.5 leading-relaxed">Hasil diagnosis minat & bakat Anda telah tersimpan di profil.</p>
+<span class="text-[10px] text-outline font-mono mt-1 inline-block">1 jam lalu</span>
+</div>
+</div>
+<!-- Notif 4: Read -->
+<div class="notif-item flex gap-3 px-5 py-4">
+<div class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center shrink-0 border border-on-surface/10">
+<span class="material-symbols-outlined text-primary text-[18px]">waving_hand</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-[13px] font-bold text-on-surface-variant leading-tight">Selamat Datang!</p>
+<p class="text-[12px] text-on-surface-variant mt-0.5 leading-relaxed">Selamat bergabung di Flexa Cendekia, Ahmad Fauzi! Mari mulai perjalanan Anda.</p>
+<span class="text-[10px] text-outline font-mono mt-1 inline-block">Hari ini</span>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<a href="../17_notifikasi/code.html" class="flex items-center justify-center gap-2 px-5 py-3.5 border-t border-on-surface/10 bg-surface-container/50 hover:bg-surface-container transition-colors">
+<span class="text-[12px] font-bold text-secondary tracking-wider uppercase">Lihat Semua Notifikasi</span>
+<span class="material-symbols-outlined text-secondary text-[16px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Profile Avatar -->
+<a href="../18_profil/code.html" class="w-8 h-8 rounded-full border border-primary/20 overflow-hidden block hover:ring-2 hover:ring-secondary/50 transition-all">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a young male student named Ahmad Fauzi, looking confident and focused. He is wearing a clean, modern navy blazer over a white shirt. The background is a soft, blurred library setting with warm, scholarly lighting, reflecting an academic and ambitious atmosphere. The overall style is clean, sharp, and high-quality photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYyODgzRK4CCp_SNxv5IJ6Wlf6Tnr8jFKI_qfGBrkfvk3UKT42fp75pqKJ7fqrq2qoC3Tsxtp5Ydwt-ggsbgs75gGUp5LjRYprk9Pe0247Wy5JS2WcWTBoEspHHJm_rjfqEJB_H6vGA0UC3mt461K2OKLUibytbZ3kNYuCM8WVWXZ_P-l0Uhjw5_QJy1f8Rd5Pkc8UpEktwhEXn3M8Py90COyMq6MWaNUQEr7tKhWqRUByvmdI4nig5qJ3GD3rYbvbO7mMxHh7cCw"/>
+</a>
 </div>
 </nav>
 <!-- SideNavBar (Collapsed/Hidden focus for Roadmap) -->
@@ -232,10 +360,10 @@
 </div>
 <!-- Footer CTA -->
 <div class="flex flex-col items-center gap-4 py-8 border-t border-primary/10">
-<button class="bg-primary text-white font-label-caps text-label-caps px-12 py-4 rounded-lg hard-shadow hover:bg-primary-container transition-all active:scale-95 flex items-center gap-3">
+<a href="../08_dashboard-siswa/code.html" class="bg-primary text-white font-label-caps text-label-caps px-12 py-4 rounded-lg hard-shadow hover:bg-primary-container transition-all active:scale-95 flex items-center gap-3 no-underline">
                     Buka Dashboard Saya
                     <span class="material-symbols-outlined">arrow_forward</span>
-</button>
+</a>
 <p class="font-body-sm text-body-sm text-on-surface-variant">Klik untuk memulai perjalanan belajar Anda hari ini.</p>
 </div>
 </div>
@@ -850,6 +978,62 @@
         });
     }
 
+    // ===== Notification Dropdown Logic =====
+    function toggleNotifDropdown(e) {
+        e.stopPropagation();
+        const dropdown = document.getElementById('notif-dropdown');
+        const badge = document.getElementById('notif-badge');
+        dropdown.classList.toggle('open');
+        // Hide badge when opened (simulate "seen")
+        if (dropdown.classList.contains('open') && badge) {
+            badge.style.display = 'none';
+        }
+    }
+
+    function markAllRead() {
+        const items = document.querySelectorAll('.notif-item[data-unread="true"]');
+        items.forEach(item => {
+            item.removeAttribute('data-unread');
+            item.classList.remove('bg-secondary/5');
+            const dot = item.querySelector('.w-2.h-2.rounded-full.bg-secondary');
+            if (dot) dot.remove();
+        });
+        const badge = document.getElementById('notif-badge');
+        if (badge) badge.style.display = 'none';
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        const wrapper = document.getElementById('notif-wrapper');
+        const dropdown = document.getElementById('notif-dropdown');
+        if (wrapper && dropdown && !wrapper.contains(e.target)) {
+            dropdown.classList.remove('open');
+        }
+    });
+
+    // ===== Milestone Badge Counter =====
+    function updateMilestoneBadge() {
+        const careerTitle = (localStorage.getItem('selectedCareer') || 'Arsitek').toLowerCase();
+        const roadmap = careerRoadmaps[careerTitle];
+        if (!roadmap || !roadmap.milestones) return;
+        
+        let completed = 0;
+        roadmap.milestones.forEach(m => {
+            if (localStorage.getItem(`milestone_${m.id}`) === 'true') completed++;
+        });
+        
+        const badge = document.getElementById('nav-milestone-badge');
+        if (badge) {
+            badge.textContent = `${completed}/${roadmap.milestones.length}`;
+            if (completed > 0) {
+                badge.style.background = '#805600';
+            } else {
+                badge.style.background = 'rgba(2,11,36,0.15)';
+                badge.style.color = '#45464d';
+            }
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         let careerTitle = localStorage.getItem('selectedCareer') || 'Arsitek';
         const careerData = careerRoadmaps[careerTitle.toLowerCase()] || defaultCareer;
@@ -865,6 +1049,9 @@
         
         // Populate Phase Content
         renderPhases(careerData);
+        
+        // Update milestone badge counter
+        updateMilestoneBadge();
         
         // Try to add AI badge info if exists
         const aiDataStr = localStorage.getItem('aiDiagnosisResult');

@@ -86,28 +86,31 @@
 
             <!-- Middle Navigation Tabs -->
             <nav class="hidden md:flex items-center self-end h-full">
-                <a href="/?page=08_dashboard-siswa" class="bg-brand-gold text-white px-6 py-2 rounded-t-md font-bold text-sm h-[calc(100%-8px)] flex items-center mt-auto">
+                <a href="code.html" class="bg-brand-gold text-white px-6 py-2 rounded-t-md font-bold text-sm h-[calc(100%-8px)] flex items-center mt-auto">
                     Siswa
                 </a>
-                <a href="/?page=14_dashboard-guru" class="text-on-surface-variant hover:text-primary px-6 py-2 text-sm font-medium h-[calc(100%-8px)] flex items-center mt-auto transition-colors">
+                <a href="../14_dashboard-guru/code.html" class="text-on-surface-variant hover:text-primary px-6 py-2 text-sm font-medium h-[calc(100%-8px)] flex items-center mt-auto transition-colors">
                     Guru
                 </a>
-                <a href="/?page=16_dashboard-ortu" class="text-on-surface-variant hover:text-primary px-6 py-2 text-sm font-medium h-[calc(100%-8px)] flex items-center mt-auto transition-colors">
+                <a href="../16_dashboard-ortu/code.html" class="text-on-surface-variant hover:text-primary px-6 py-2 text-sm font-medium h-[calc(100%-8px)] flex items-center mt-auto transition-colors">
                     Orang Tua
                 </a>
             </nav>
 
             <!-- Right Icons -->
-            <div class="flex items-center gap-3">
-                <button class="p-2 text-on-surface-variant hover:text-primary rounded-full transition-colors">
+            <div class="flex items-center gap-1">
+                <!-- Realtime Clock -->
+                <span class="hidden lg:inline-block font-mono text-[11px] text-on-surface-variant tracking-wider mr-3 bg-primary/5 px-3 py-1.5 border border-primary/10" id="realtime-clock">--:--:--</span>
+                <a href="../17_notifikasi/code.html" class="p-2 text-on-surface-variant hover:text-primary rounded-full transition-colors relative">
                     <span class="material-symbols-outlined">notifications</span>
-                </button>
-                <button class="p-2 text-on-surface-variant hover:text-primary rounded-full transition-colors">
+                    <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                </a>
+                <a href="../18_profil/code.html" class="p-2 text-on-surface-variant hover:text-primary rounded-full transition-colors">
                     <span class="material-symbols-outlined">settings</span>
-                </button>
-                <div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-mono text-sm font-bold border border-primary/30">
+                </a>
+                <a href="../18_profil/code.html" class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-mono text-sm font-bold border border-primary/30 hover:ring-2 hover:ring-brand-gold/50 transition-all">
                     AF
-                </div>
+                </a>
             </div>
         </div>
     </header>
@@ -130,7 +133,8 @@
                 </div>
                 <!-- Details -->
                 <div>
-                    <h1 class="font-serif text-2xl md:text-3xl font-bold text-primary mb-2">Ahmad Fauzi</h1>
+                    <h1 class="font-serif text-2xl md:text-3xl font-bold text-primary mb-1">Ahmad Fauzi</h1>
+                    <p class="text-on-surface-variant text-sm mb-2" id="greeting-text">Selamat datang kembali!</p>
                     <div class="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-on-surface-variant text-xs md:text-sm font-medium">
                         <span class="flex items-center gap-1.5">
                             <span class="material-symbols-outlined text-[18px]">school</span> SMA Kelas 11
@@ -138,7 +142,7 @@
                         <span class="flex items-center gap-1.5">
                             <span class="material-symbols-outlined text-[18px]">architecture</span> Cita-cita: Arsitek
                         </span>
-                        <a href="/?page=12_ganti-cita-cita" class="text-brand-gold font-bold hover:underline">
+                        <a href="../12_ganti-cita-cita/code.html" class="text-brand-gold font-bold hover:underline">
                             Ajukan Ganti Cita-cita
                         </a>
                     </div>
@@ -147,10 +151,10 @@
 
             <!-- Right: Semester Badge + Action Button -->
             <div class="flex flex-col items-start md:items-end gap-3 w-full md:w-auto">
-                <span class="inline-block bg-[#FDC265]/25 text-brand-dark border border-brand-gold/40 px-3.5 py-1 font-mono text-xs font-bold uppercase tracking-wider">
-                    Semester Ganjil 2023/2024
+                <span class="inline-block bg-[#FDC265]/25 text-brand-dark border border-brand-gold/40 px-3.5 py-1 font-mono text-xs font-bold uppercase tracking-wider" id="semester-badge">
+                    Semester Ganjil 2024/2025
                 </span>
-                <a href="/?page=10_detail-roadmap" class="w-full md:w-auto border border-primary text-primary px-6 py-2.5 hover:bg-primary/5 transition-all font-mono text-xs font-bold tracking-wider text-center">
+                <a href="../10_detail-roadmap/code.html" class="w-full md:w-auto border border-primary text-primary px-6 py-2.5 hover:bg-primary/5 transition-all font-mono text-xs font-bold tracking-wider text-center">
                     LIHAT DETAIL ROADMAP
                 </a>
             </div>
@@ -202,43 +206,43 @@
 
                     <div class="flex justify-between items-center relative z-10">
                         <!-- Year 1 -->
-                        <div class="flex flex-col items-center">
-                            <div class="w-4 h-4 rounded-full bg-primary"></div>
+                        <div class="flex flex-col items-center hover:scale-110 transition-transform cursor-pointer">
+                            <div class="w-4 h-4 rounded-full bg-primary hover:bg-brand-gold transition-colors"></div>
                             <span class="font-mono text-xs text-on-surface-variant mt-3 font-medium">Thn 1</span>
                         </div>
                         <!-- Year 2 -->
-                        <div class="flex flex-col items-center">
-                            <div class="w-4 h-4 rounded-full bg-primary"></div>
+                        <div class="flex flex-col items-center hover:scale-110 transition-transform cursor-pointer">
+                            <div class="w-4 h-4 rounded-full bg-primary hover:bg-brand-gold transition-colors"></div>
                             <span class="font-mono text-xs text-on-surface-variant mt-3 font-medium">Thn 2</span>
                         </div>
                         <!-- Year 3 -->
-                        <div class="flex flex-col items-center">
-                            <div class="w-4 h-4 rounded-full bg-primary"></div>
+                        <div class="flex flex-col items-center hover:scale-110 transition-transform cursor-pointer">
+                            <div class="w-4 h-4 rounded-full bg-primary hover:bg-brand-gold transition-colors"></div>
                             <span class="font-mono text-xs text-on-surface-variant mt-3 font-medium">Thn 3</span>
                         </div>
-                        <!-- Year 4 -->
-                        <div class="flex flex-col items-center">
-                            <div class="w-4 h-4 rounded-full bg-primary"></div>
-                            <span class="font-mono text-xs text-on-surface-variant mt-3 font-medium">Thn 4</span>
-                        </div>
-                        <!-- Year 5 (Active Highlighted) -->
-                        <div class="flex flex-col items-center relative">
-                            <!-- Tooltip Banner Above -->
-                            <div class="absolute -top-14 bg-brand-gold text-white px-3 py-1.5 text-xs font-bold whitespace-nowrap shadow-[3px_3px_0px_#17223B] z-20">
+                        <!-- Year 4 (Previous step integration) -->
+                        <a href="../07_hasil-roadmap/code.html" class="flex flex-col items-center hover:scale-110 transition-transform group" title="Lihat Hasil Roadmap Sebelumnya">
+                            <div class="w-4 h-4 rounded-full bg-primary group-hover:bg-brand-gold transition-colors shadow-[0_0_10px_rgba(23,34,59,0.3)]"></div>
+                            <span class="font-mono text-xs text-primary mt-3 font-bold group-hover:text-brand-gold">Thn 4</span>
+                        </a>
+                        <!-- Year 5 (Active Highlighted - Animated) -->
+                        <div class="flex flex-col items-center relative group">
+                            <!-- Tooltip Banner Above (Animated) -->
+                            <div class="absolute -top-14 bg-brand-gold text-white px-3 py-1.5 text-xs font-bold whitespace-nowrap shadow-[3px_3px_0px_#17223B] z-20 animate-bounce cursor-default">
                                 Siswa Saat Ini: SMA 11
                                 <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-brand-gold rotate-45"></div>
                             </div>
                             <!-- Star Marker -->
-                            <div class="w-6 h-6 bg-brand-gold border-2 border-primary flex items-center justify-center text-white z-10">
+                            <div class="w-6 h-6 bg-brand-gold border-2 border-primary flex items-center justify-center text-white z-10 animate-pulse group-hover:scale-125 transition-transform cursor-pointer shadow-[0_0_15px_rgba(253,194,101,0.6)]">
                                 <span class="material-symbols-outlined text-[14px] filled-icon">star</span>
                             </div>
                             <span class="font-mono text-xs text-brand-gold font-bold mt-2">Thn 5</span>
                         </div>
-                        <!-- Year 6 -->
-                        <div class="flex flex-col items-center">
-                            <div class="w-4 h-4 rounded-full bg-[#C6C6CE]"></div>
-                            <span class="font-mono text-xs text-on-surface-variant mt-3 font-medium">Thn 6</span>
-                        </div>
+                        <!-- Year 6 (Next step integration) -->
+                        <a href="../10_detail-roadmap/code.html" class="flex flex-col items-center hover:scale-110 transition-transform group" title="Lihat Detail Roadmap Selanjutnya">
+                            <div class="w-4 h-4 rounded-full bg-[#C6C6CE] group-hover:bg-primary transition-colors"></div>
+                            <span class="font-mono text-xs text-on-surface-variant mt-3 font-medium group-hover:text-primary">Thn 6</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -257,57 +261,20 @@
                 <!-- Header -->
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="font-serif text-xl md:text-2xl font-bold text-primary">Target Minggu Ini</h2>
-                    <span class="font-mono text-lg font-bold text-brand-gold">75%</span>
+                    <span id="weekly-progress-text" class="font-mono text-lg font-bold text-brand-gold">0%</span>
                 </div>
 
                 <!-- Progress Bar -->
-                <div class="w-full h-3 bg-[#E4E2E4] mb-6 overflow-hidden">
-                    <div class="h-full bg-brand-gold" style="width: 75%;"></div>
+                <div class="w-full h-3 bg-[#E4E2E4] mb-6 overflow-hidden rounded-full">
+                    <div id="weekly-progress-bar" class="h-full bg-brand-gold transition-all duration-1000 ease-out" style="width: 0%;"></div>
                 </div>
 
-                <!-- Weekly Task List -->
-                <ul class="divide-y divide-primary/10 border-t border-b border-primary/10">
-                    <!-- Senin -->
-                    <li class="flex items-center justify-between py-3">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-primary filled-icon text-xl">check_circle</span>
-                            <span class="font-bold text-sm text-primary">Senin</span>
-                        </div>
-                        <span class="text-xs text-on-surface-variant font-medium">Selesai</span>
-                    </li>
-                    <!-- Selasa -->
-                    <li class="flex items-center justify-between py-3">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-primary filled-icon text-xl">check_circle</span>
-                            <span class="font-bold text-sm text-primary">Selasa</span>
-                        </div>
-                        <span class="text-xs text-on-surface-variant font-medium">Selesai</span>
-                    </li>
-                    <!-- Rabu -->
-                    <li class="flex items-center justify-between py-3">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-primary filled-icon text-xl">check_circle</span>
-                            <span class="font-bold text-sm text-primary">Rabu</span>
-                        </div>
-                        <span class="text-xs text-on-surface-variant font-medium">Selesai</span>
-                    </li>
-                    <!-- Kamis (Active) -->
-                    <li class="flex items-center justify-between py-3 -mx-6 px-6 bg-[#FDC265]/15">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-brand-gold text-xl">more_horiz</span>
-                            <span class="font-bold text-sm text-primary">Kamis</span>
-                        </div>
-                        <span class="text-xs font-bold text-brand-gold">Berjalan</span>
-                    </li>
-                    <!-- Jumat -->
-                    <li class="flex items-center justify-between py-3">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-outline-variant text-xl">circle</span>
-                            <span class="font-bold text-sm text-primary">Jumat</span>
-                        </div>
-                        <a href="/?page=11_checkpoint-jumat" class="bg-brand-gold text-white px-2.5 py-1 text-[11px] font-mono font-bold flex items-center gap-1 hover:bg-brand-gold-dark transition-colors">
-                            <span class="material-symbols-outlined text-[13px]">flag</span> CHECKPOINT
-                        </a>
+                <!-- Weekly Task List (Dynamic) -->
+                <ul id="weekly-target-list" class="divide-y divide-primary/10 border-t border-b border-primary/10 space-y-1 py-1">
+                    <!-- Will be populated by JS based on current day -->
+                    <li class="flex items-center justify-center py-4">
+                        <span class="material-symbols-outlined animate-spin text-brand-gold">sync</span>
+                        <span class="ml-2 text-sm text-on-surface-variant">Memuat target realtime...</span>
                     </li>
                 </ul>
             </div>
@@ -336,28 +303,121 @@
         </div>
     </main>
 
-    <!-- Global Navigation Script for Express -->
+    <!-- Realtime Clock & Greeting Script -->
     <script>
-        (function() {
-            function bindClick(selectors, handler) {
-                document.querySelectorAll(selectors).forEach(function(el) {
-                    el.addEventListener('click', function(e) {
-                        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#' && el.getAttribute('href')) {
-                            return;
-                        }
-                        e.preventDefault();
-                        handler(e, el);
-                    });
-                });
+        function updateClock() {
+            const now = new Date();
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+            const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+            const clockEl = document.getElementById('realtime-clock');
+            if (clockEl) clockEl.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} • ${h}:${m}:${s}`;
+        }
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            const el = document.getElementById('greeting-text');
+            if (!el) return;
+            if (hour < 10) el.textContent = 'Selamat Pagi, Ahmad! ☀️ Semangat belajar hari ini.';
+            else if (hour < 15) el.textContent = 'Selamat Siang, Ahmad! 📚 Terus semangat ya.';
+            else if (hour < 18) el.textContent = 'Selamat Sore, Ahmad! 🌤️ Waktunya review materi.';
+            else el.textContent = 'Selamat Malam, Ahmad! 🌙 Jangan lupa istirahat.';
+        }
+        
+        function updateWeeklyTarget() {
+            const today = new Date().getDay(); // 0:Sun, 1:Mon, ..., 6:Sat
+            const daysData = [
+                { id: 1, name: 'Senin' },
+                { id: 2, name: 'Selasa' },
+                { id: 3, name: 'Rabu' },
+                { id: 4, name: 'Kamis' },
+                { id: 5, name: 'Jumat', isCheckpoint: true }
+            ];
+
+            let activeDay = today;
+            // Jika weekend (0 atau 6), anggap jumat sudah selesai
+            if (today === 0 || today === 6) activeDay = 6; 
+
+            // Hitung progress 0-100% (Masing-masing hari = 20%)
+            let progressPercentage = 0;
+            if (activeDay >= 1 && activeDay <= 5) progressPercentage = (activeDay - 1) * 20 + 10; // tengah jalan
+            if (activeDay > 5) progressPercentage = 100;
+
+            // Animasi progress bar & text
+            const pBar = document.getElementById('weekly-progress-bar');
+            const pText = document.getElementById('weekly-progress-text');
+            
+            setTimeout(() => {
+                if(pBar) pBar.style.width = progressPercentage + '%';
+            }, 300);
+
+            if(pText) {
+                let currentP = 0;
+                let interval = setInterval(() => {
+                    if(currentP >= progressPercentage) {
+                        clearInterval(interval);
+                        pText.textContent = progressPercentage + '%';
+                    } else {
+                        currentP += Math.ceil(progressPercentage / 20);
+                        if(currentP > progressPercentage) currentP = progressPercentage;
+                        pText.textContent = currentP + '%';
+                    }
+                }, 30);
             }
 
-            bindClick('header nav a', function(e, a) {
-                var text = a.textContent.trim().toLowerCase();
-                if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
-                else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
-                else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
+            let html = '';
+            daysData.forEach(day => {
+                let statusHtml = '';
+                let iconHtml = '';
+                let liClass = 'flex items-center justify-between py-3 px-2 rounded-lg transition-colors';
+                
+                if (day.id < activeDay) {
+                    // Selesai
+                    iconHtml = `<span class="material-symbols-outlined text-primary filled-icon text-xl hover:scale-110 transition-transform">check_circle</span>`;
+                    statusHtml = `<span class="text-xs text-primary font-bold px-2 py-0.5 bg-primary/10 rounded">Selesai</span>`;
+                } else if (day.id === activeDay) {
+                    // Berjalan
+                    liClass = 'flex items-center justify-between py-3 -mx-2 px-4 bg-[#FDC265]/20 rounded-lg shadow-sm border border-brand-gold/30 transform scale-[1.02] transition-all';
+                    iconHtml = `<span class="material-symbols-outlined text-brand-gold text-xl animate-spin" style="animation-duration: 3s;">sync</span>`;
+                    statusHtml = `<span class="text-xs font-bold text-brand-gold animate-pulse bg-brand-gold/10 px-2 py-0.5 rounded">Berjalan</span>`;
+                } else {
+                    // Belum
+                    iconHtml = `<span class="material-symbols-outlined text-outline-variant text-xl">circle</span>`;
+                    statusHtml = `<span class="text-xs text-outline-variant font-medium">Belum</span>`;
+                }
+
+                if (day.isCheckpoint) {
+                    if (day.id <= activeDay) {
+                         statusHtml = `<a href="../11_checkpoint-jumat/code.html" class="bg-brand-gold text-white px-3 py-1.5 text-[11px] font-mono font-bold flex items-center gap-1 hover:bg-brand-gold-dark hover:scale-105 transition-all shadow-md rounded-sm">
+                            <span class="material-symbols-outlined text-[13px]">flag</span> CHECKPOINT
+                        </a>`;
+                    } else {
+                         statusHtml = `<span class="bg-outline-variant/20 text-on-surface-variant px-3 py-1.5 text-[11px] font-mono font-bold flex items-center gap-1 rounded-sm">
+                            <span class="material-symbols-outlined text-[13px]">flag</span> CHECKPOINT
+                        </span>`;
+                    }
+                }
+
+                html += `
+                <li class="${liClass}">
+                    <div class="flex items-center gap-3">
+                        ${iconHtml}
+                        <span class="font-bold text-sm ${day.id === activeDay ? 'text-brand-dark' : 'text-primary'}">${day.name}</span>
+                    </div>
+                    ${statusHtml}
+                </li>`;
             });
-        })();
+
+            const ul = document.getElementById('weekly-target-list');
+            if (ul) ul.innerHTML = html;
+        }
+
+        updateClock();
+        updateGreeting();
+        setInterval(updateClock, 1000);
+        // Delay slight to allow UI render before calculation
+        setTimeout(updateWeeklyTarget, 300);
     </script>
 </body>
 
