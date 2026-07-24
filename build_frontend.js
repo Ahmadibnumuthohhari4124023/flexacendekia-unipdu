@@ -276,6 +276,13 @@ folders.forEach(folder => {
         content = content.replace(/href="bantuan\.html"/g, 'target="_top" href="<?= getWebAppUrl() ?>?page=01_login_bantuan"');
         content = content.replace(/href="kontak\.html"/g, 'target="_top" href="<?= getWebAppUrl() ?>?page=01_login_kontak"');
         
+        if (folder === '07_hasil-roadmap') {
+            content = content.replace(/href="timeline\.html"/g, 'target="_top" href="<?= getWebAppUrl() ?>?page=07_hasil-roadmap_timeline"');
+            content = content.replace(/href="milestones\.html"/g, 'target="_top" href="<?= getWebAppUrl() ?>?page=07_hasil-roadmap_milestones"');
+            content = content.replace(/href="resources\.html"/g, 'target="_top" href="<?= getWebAppUrl() ?>?page=07_hasil-roadmap_resources"');
+            content = content.replace(/href="settings\.html"/g, 'target="_top" href="<?= getWebAppUrl() ?>?page=07_hasil-roadmap_settings"');
+        }
+        
         // Ensure other valid hrefs get target="_top"
         content = content.replace(/<a\s+([^>]*?)href="([^#"][^"]*)"([^>]*?)>/g, function(match, before, href, after) {
             if (match.includes('target=')) return match;
@@ -323,6 +330,44 @@ subPages.forEach(subPage => {
         const destFile = path.join(destDir, `01_login_${subPage}.html`);
         fs.writeFileSync(destFile, content);
         console.log(`✓ 01_login_${subPage}.html - processed (sub-page)`);
+    }
+});
+
+// Process sub-pages from 07_hasil-roadmap
+const roadmapSubPages = ['timeline', 'milestones', 'resources', 'settings'];
+roadmapSubPages.forEach(subPage => {
+    const subFile = path.join(srcDir, '07_hasil-roadmap', `${subPage}.html`);
+    if (fs.existsSync(subFile)) {
+        let content = fs.readFileSync(subFile, 'utf8');
+        
+        // Remove dev nav
+        content = content.replace(/<div style="background:#17223B;color:#EAEDE2;font-family:'JetBrains Mono'[^>]*>[\s\S]*?<\/div>\s*\n?/i, '');
+        
+        // Rewrite internal links
+        content = content.replace(/href="code\.html"/g, 'target="_top" href="<?= getWebAppUrl() ?>?page=07_hasil-roadmap"');
+        content = content.replace(/href="timeline\.html"/g, 'target="_top" href="<?= getWebAppUrl() ?>?page=07_hasil-roadmap_timeline"');
+        content = content.replace(/href="milestones\.html"/g, 'target="_top" href="<?= getWebAppUrl() ?>?page=07_hasil-roadmap_milestones"');
+        content = content.replace(/href="resources\.html"/g, 'target="_top" href="<?= getWebAppUrl() ?>?page=07_hasil-roadmap_resources"');
+        content = content.replace(/href="settings\.html"/g, 'target="_top" href="<?= getWebAppUrl() ?>?page=07_hasil-roadmap_settings"');
+        content = content.replace(/href="\.\.\/05_pilih-cita-cita\/code\.html"/g, 'target="_top" href="<?= getWebAppUrl() ?>?page=05_pilih-cita-cita"');
+        
+        // Ensure other valid hrefs get target="_top"
+        content = content.replace(/<a\s+([^>]*?)href="([^#"][^"]*)"([^>]*?)>/g, function(match, before, href, after) {
+            if (match.includes('target=')) return match;
+            if (href.startsWith('http') || href.startsWith('<?=')) {
+                return '<a ' + before + 'target="_top" href="' + href + '"' + after + '>';
+            }
+            return match;
+        });
+
+        const navScript = GLOBAL_NAV_SCRIPT;
+        if (navScript) {
+            content = content.replace('</body>', navScript + '\n</body>');
+        }
+        
+        const destFile = path.join(destDir, `07_hasil-roadmap_${subPage}.html`);
+        fs.writeFileSync(destFile, content);
+        console.log(`✓ 07_hasil-roadmap_${subPage}.html - processed (sub-page)`);
     }
 });
 

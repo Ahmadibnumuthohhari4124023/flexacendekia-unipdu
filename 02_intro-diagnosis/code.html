@@ -339,7 +339,7 @@
                         </div>
                         <!-- CTA Section -->
                         <div class="pt-8 flex flex-col items-center gap-6">
-                            <button
+                            <button id="btn-start-test"
                                 class="bg-academic-accent hover:opacity-90 active:scale-95 text-white font-bold py-4 px-12 rounded-sm shadow-lg transition-all duration-200 flex items-center gap-4 group">
                                 <span class="font-label-caps text-label-caps tracking-widest">Mulai Tes Sekarang</span>
                                 <span class="material-symbols-outlined transition-transform group-hover:translate-x-1"
@@ -378,6 +378,48 @@
                         <span class="font-stats-sm text-stats-sm">SECTION 01: DIAGNOSTIC</span>
                         <div class="h-[1px] w-8 bg-primary"></div>
                     </div>
+
+                    <!-- Level Selection Modal (Hidden by default) -->
+                    <div id="level-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-primary/40 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+                        <div class="bg-white p-8 rounded-sm hard-shadow max-w-md w-full relative transform scale-95 transition-transform duration-300 shadow-2xl hairline-border" id="level-modal-content">
+                            <button id="close-modal" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors">
+                                <span class="material-symbols-outlined">close</span>
+                            </button>
+                            <h2 class="font-display-lg text-2xl text-primary font-bold mb-2">Pilih Jenjang Pendidikan</h2>
+                            <p class="font-body-sm text-on-surface-variant mb-6">Pilih jenjang yang sesuai agar tes diagnostik lebih akurat.</p>
+                            
+                            <div class="space-y-3">
+                                <a href="/?page=03_soal-diagnosis_sd" class="block w-full text-left p-4 hairline-border hover:bg-secondary/10 hover:border-secondary transition-all rounded-sm group level-link">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="font-bold text-primary text-lg">Sekolah Dasar (SD)</h3>
+                                            <p class="text-xs text-on-surface-variant mt-1">Tes disesuaikan dengan psikologi & keseharian anak.</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+                                    </div>
+                                </a>
+                                <a href="/?page=03_soal-diagnosis_smp" class="block w-full text-left p-4 hairline-border hover:bg-secondary/10 hover:border-secondary transition-all rounded-sm group level-link">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="font-bold text-primary text-lg">Sekolah Menengah Pertama (SMP)</h3>
+                                            <p class="text-xs text-on-surface-variant mt-1">Fokus pada eksplorasi minat remaja awal.</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+                                    </div>
+                                </a>
+                                <a href="/?page=03_soal-diagnosis" class="block w-full text-left p-4 hairline-border hover:bg-secondary/10 hover:border-secondary transition-all rounded-sm group level-link">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h3 class="font-bold text-primary text-lg">Sekolah Menengah Atas (SMA)</h3>
+                                            <p class="text-xs text-on-surface-variant mt-1">Analisis mendalam untuk peminatan karier.</p>
+                                        </div>
+                                        <span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <!-- Footer Context -->
                 <div
@@ -420,13 +462,38 @@
     <script>
         // Micro-interactions for academic feel
         document.addEventListener('DOMContentLoaded', () => {
-            const cta = document.querySelector('button.bg-academic-accent');
-            cta.addEventListener('mousedown', () => {
-                cta.classList.add('translate-y-0.5');
-            });
-            cta.addEventListener('mouseup', () => {
-                cta.classList.remove('translate-y-0.5');
-            });
+            const cta = document.getElementById('btn-start-test');
+            const modal = document.getElementById('level-modal');
+            const modalContent = document.getElementById('level-modal-content');
+            const closeBtn = document.getElementById('close-modal');
+
+            if(cta) {
+                cta.addEventListener('mousedown', () => {
+                    cta.classList.add('translate-y-0.5');
+                });
+                cta.addEventListener('mouseup', () => {
+                    cta.classList.remove('translate-y-0.5');
+                });
+                
+                cta.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    modal.classList.remove('hidden');
+                    // Trigger reflow
+                    void modal.offsetWidth;
+                    modal.classList.remove('opacity-0');
+                    modalContent.classList.remove('scale-95');
+                });
+            }
+
+            if(closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    modal.classList.add('opacity-0');
+                    modalContent.classList.add('scale-95');
+                    setTimeout(() => {
+                        modal.classList.add('hidden');
+                    }, 300);
+                });
+            }
 
             // Dynamic student count
             const baseCount = 1200;

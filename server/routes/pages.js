@@ -8,8 +8,10 @@ const fs = require('fs');
 
 const ALLOWED_PAGES = [
   '01_login', '01_login_panduan', '01_login_bantuan', '01_login_kontak',
-  '02_intro-diagnosis', '03_soal-diagnosis', '04_hasil-diagnosis',
-  '05_pilih-cita-cita', '06_roadmap-disusun', '07_hasil-roadmap', '08_dashboard-siswa',
+  '02_intro-diagnosis', '03_soal-diagnosis', '03_soal-diagnosis_sd', '03_soal-diagnosis_smp', '04_hasil-diagnosis',
+  '05_pilih-cita-cita', '06_roadmap-disusun', '07_hasil-roadmap', 
+  '07_hasil-roadmap_timeline', '07_hasil-roadmap_milestones', '07_hasil-roadmap_resources', '07_hasil-roadmap_settings',
+  '08_dashboard-siswa',
   '09_krs-siswa', '10_detail-roadmap', '11_checkpoint-jumat', '12_ganti-cita-cita',
   '13_riwayat-semester', '14_dashboard-guru', '15_tinjauan-guru', '16_dashboard-ortu',
   '17_notifikasi', '18_profil'

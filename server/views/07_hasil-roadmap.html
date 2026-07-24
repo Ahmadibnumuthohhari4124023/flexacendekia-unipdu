@@ -148,33 +148,33 @@
 <aside class="fixed left-0 top-16 bottom-0 z-40 w-16 md:w-64 bg-surface-container-low border-r border-on-surface/20 flex flex-col transition-all duration-300 transform -translate-x-full md:translate-x-0 overflow-hidden">
 <div class="p-4 border-b border-on-surface/10">
 <p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">Jalur Karier</p>
-<h3 class="font-headline-md text-headline-md text-primary leading-tight">Jalur Arsitek</h3>
+<h3 class="font-headline-md text-headline-md text-primary leading-tight" id="sidebar-career-title">Jalur Arsitek</h3>
 <p class="font-body-sm text-body-sm text-on-surface-variant">Kelas 10 - Persiapan</p>
 </div>
 <nav class="flex-1 p-2 space-y-1">
-<div class="flex items-center gap-3 p-3 bg-secondary-container text-on-secondary-container font-bold rounded-lg cursor-pointer">
+<a href="code.html" class="flex items-center gap-3 p-3 bg-secondary-container text-on-secondary-container font-bold rounded-lg cursor-pointer">
 <span class="material-symbols-outlined">dashboard</span>
 <span class="font-label-caps text-label-caps">Overview</span>
-</div>
-<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all cursor-pointer">
+</a>
+<a href="/?page=07_hasil-roadmap_timeline" class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all cursor-pointer">
 <span class="material-symbols-outlined">timeline</span>
 <span class="font-label-caps text-label-caps">Timeline</span>
-</div>
-<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all cursor-pointer">
+</a>
+<a href="/?page=07_hasil-roadmap_milestones" class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all cursor-pointer">
 <span class="material-symbols-outlined">emoji_events</span>
 <span class="font-label-caps text-label-caps">Milestones</span>
-</div>
-<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all cursor-pointer">
+</a>
+<a href="/?page=07_hasil-roadmap_resources" class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all cursor-pointer">
 <span class="material-symbols-outlined">library_books</span>
 <span class="font-label-caps text-label-caps">Resources</span>
-</div>
-<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all cursor-pointer">
+</a>
+<a href="/?page=07_hasil-roadmap_settings" class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all cursor-pointer">
 <span class="material-symbols-outlined">settings</span>
 <span class="font-label-caps text-label-caps">Settings</span>
-</div>
+</a>
 </nav>
 <div class="p-4 border-t border-on-surface/10">
-<button class="w-full py-2 px-4 border border-primary text-primary font-label-caps text-label-caps rounded hover:bg-primary/5 transition-colors">Ubah Jalur Karier</button>
+<button onclick="window.location.href='../05_pilih-cita-cita/code.html'" class="w-full py-2 px-4 border border-primary text-primary font-label-caps text-label-caps rounded hover:bg-primary/5 transition-colors">Ubah Jalur Karier</button>
 </div>
 </aside>
 <!-- Main Content Canvas -->
@@ -192,189 +192,15 @@
 <div class="relative">
 <!-- Vertical Line (Blueprint Style) -->
 <div class="absolute left-1/2 top-0 bottom-0 w-px bg-primary/20 hidden lg:block"></div>
-<!-- Phase 1: SMA -->
-<section class="mb-16">
-<div class="flex flex-col items-center mb-8">
-<div class="bg-primary text-white font-label-caps text-label-caps px-6 py-2 rounded-lg hard-shadow z-10">
-                            PHASE 01: FONDASI AKADEMIK (GR. 10 - 12)
-                        </div>
+<div id="dynamic-phases-container">
+<!-- Content will be injected here by JS -->
 </div>
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-<!-- Grade 10 -->
-<div class="bg-[#FBFAF5] border border-primary/20 p-6 hard-shadow relative overflow-hidden group">
-<div class="absolute top-0 right-0 w-16 h-16 opacity-5 pointer-events-none group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-[64px]">architecture</span>
-</div>
-<div class="flex justify-between items-start mb-4">
-<h4 class="font-headline-md text-headline-md text-primary">Kelas 10</h4>
-<span class="font-stats-sm text-stats-sm bg-secondary/10 text-secondary px-2 py-0.5 rounded">Tahun 1</span>
-</div>
-<ul class="space-y-4 font-body-sm text-body-sm">
-<li class="flex items-start gap-3 p-2 border-b border-primary/5 hover:bg-secondary/5 transition-colors">
-<span class="material-symbols-outlined text-secondary shrink-0" style="font-variation-settings: 'FILL' 1;">check_circle</span>
-<div>
-<p class="font-bold">Modul: Geometri Ruang</p>
-<p class="text-on-surface-variant">Memahami visualisasi 3D dan proyeksi objek.</p>
-</div>
-</li>
-<li class="flex items-start gap-3 p-2 border-b border-primary/5 hover:bg-secondary/5 transition-colors">
-<span class="material-symbols-outlined text-primary/30 shrink-0">radio_button_unchecked</span>
-<div>
-<p class="font-bold">Eksplorasi SketchUp Dasar</p>
-<p class="text-on-surface-variant">Pengenalan tools dasar permodelan digital.</p>
-</div>
-</li>
-</ul>
-</div>
-<!-- Grade 11 -->
-<div class="bg-[#FBFAF5] border border-primary/20 p-6 hard-shadow relative lg:mt-12 group">
-<div class="absolute top-0 right-0 w-16 h-16 opacity-5 pointer-events-none group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-[64px]">home_work</span>
-</div>
-<div class="flex justify-between items-start mb-4">
-<h4 class="font-headline-md text-headline-md text-primary">Kelas 11</h4>
-<span class="font-stats-sm text-stats-sm bg-secondary/10 text-secondary px-2 py-0.5 rounded">Tahun 2</span>
-</div>
-<ul class="space-y-4 font-body-sm text-body-sm">
-<li class="flex items-start gap-3 p-2 border-b border-primary/5 hover:bg-secondary/5 transition-colors">
-<span class="material-symbols-outlined text-primary/30 shrink-0">radio_button_unchecked</span>
-<div>
-<p class="font-bold">Proyek: Desain Rumah Ramah Lingkungan</p>
-<p class="text-on-surface-variant">Integrasi elemen keberlanjutan dalam hunian mikro.</p>
-</div>
-</li>
-<li class="flex items-start gap-3 p-2 border-b border-primary/5 hover:bg-secondary/5 transition-colors">
-<span class="material-symbols-outlined text-primary/30 shrink-0">radio_button_unchecked</span>
-<div>
-<p class="font-bold">Workshop: Gambar Perspektif 2 Titik Hilang</p>
-<p class="text-on-surface-variant">Pengembangan skill menggambar manual.</p>
-</div>
-</li>
-</ul>
-</div>
-<!-- Grade 12 -->
-<div class="bg-[#FBFAF5] border border-primary/20 p-6 hard-shadow relative lg:col-span-2 max-w-3xl mx-auto w-full group">
-<div class="absolute top-0 right-0 w-16 h-16 opacity-5 pointer-events-none group-hover:scale-110 transition-transform">
-<span class="material-symbols-outlined text-[64px]">school</span>
-</div>
-<div class="flex justify-between items-start mb-4">
-<h4 class="font-headline-md text-headline-md text-primary">Kelas 12</h4>
-<span class="font-stats-sm text-stats-sm bg-secondary/10 text-secondary px-2 py-0.5 rounded">Tahun 3</span>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6 font-body-sm text-body-sm">
-<div>
-<p class="font-label-caps text-label-caps text-on-surface-variant mb-2">Milestone Utama</p>
-<div class="flex items-start gap-3 p-3 bg-primary text-white rounded">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-<div>
-<p class="font-bold">Pendaftaran Universitas (S1 Arsitektur)</p>
-<p class="opacity-80">Persiapan Portfolio &amp; Ujian Masuk PTN.</p>
-</div>
-</div>
-</div>
-<ul class="space-y-3">
-<li class="flex items-center gap-2">
-<span class="material-symbols-outlined text-secondary text-sm">circle</span>
-<span>Penyelesaian 10 Karya Portfolio</span>
-</li>
-<li class="flex items-center gap-2">
-<span class="material-symbols-outlined text-secondary text-sm">circle</span>
-<span>Simulasi Tes Kemampuan Spasial</span>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</section>
-<!-- Phase 2: Preparation / Gap Year (Optional) -->
-<section class="mb-16">
-<div class="flex flex-col items-center mb-8">
-<div class="bg-[#FBFAF5] border-2 border-dashed border-primary/40 text-primary font-label-caps text-label-caps px-6 py-2 rounded-lg z-10">
-                            PHASE 02: PENGUATAN PORTOFOLIO (OPSIONAL)
-                        </div>
-</div>
-<div class="max-w-2xl mx-auto bg-white/40 border border-primary/10 p-8 rounded-xl backdrop-blur-sm relative">
-<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-secondary text-white text-[10px] px-3 py-1 font-bold uppercase tracking-widest rounded-full">Gap Year Pathway</div>
-<div class="text-center mb-6">
-<p class="font-body-md text-body-md text-on-surface-variant">Fase ini ditujukan untuk pendalaman keahlian teknis sebelum memasuki bangku perkuliahan yang intensif.</p>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-<div class="p-4 bg-[#FBFAF5] border border-primary/10 text-center">
-<span class="material-symbols-outlined text-primary mb-2">draw</span>
-<p class="font-label-caps text-label-caps">Advanced Drafting</p>
-</div>
-<div class="p-4 bg-[#FBFAF5] border border-primary/10 text-center">
-<span class="material-symbols-outlined text-primary mb-2">foundation</span>
-<p class="font-label-caps text-label-caps">Struktur Dasar</p>
-</div>
-<div class="p-4 bg-[#FBFAF5] border border-primary/10 text-center">
-<span class="material-symbols-outlined text-primary mb-2">brush</span>
-<p class="font-label-caps text-label-caps">Seni Rupa Murni</p>
-</div>
-</div>
-</div>
-</section>
-<!-- Phase 3: Higher Education -->
-<section class="mb-24">
-<div class="flex flex-col items-center mb-8">
-<div class="bg-secondary text-white font-label-caps text-label-caps px-6 py-2 rounded-lg hard-shadow z-10">
-                            PHASE 03: PENDIDIKAN TINGGI (S1 ARSITEKTUR)
-                        </div>
-</div>
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-<!-- Year 1-2 Uni -->
-<div class="bg-[#FBFAF5] border border-primary/20 p-6 hard-shadow">
-<h4 class="font-headline-md text-headline-md text-primary mb-4">Tahun 1 - 2</h4>
-<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">Teori &amp; Estetika</p>
-<div class="space-y-4">
-<div class="bg-surface-container p-3 rounded">
-<p class="font-stats-sm text-stats-sm text-secondary">SEMESTER 1-2</p>
-<p class="font-bold text-body-sm">Pengantar Arsitektur &amp; Studio 1</p>
-</div>
-<div class="bg-surface-container p-3 rounded">
-<p class="font-stats-sm text-stats-sm text-secondary">SEMESTER 3-4</p>
-<p class="font-bold text-body-sm">Sejarah Arsitektur &amp; Teknologi Bangunan</p>
-</div>
-</div>
-</div>
-<!-- Year 3 Uni -->
-<div class="bg-[#FBFAF5] border border-primary/20 p-6 hard-shadow">
-<h4 class="font-headline-md text-headline-md text-primary mb-4">Tahun 3</h4>
-<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">Praktik &amp; Sistem</p>
-<div class="space-y-4">
-<div class="bg-surface-container p-3 rounded">
-<p class="font-stats-sm text-stats-sm text-secondary">SEMESTER 5-6</p>
-<p class="font-bold text-body-sm">Sains Bangunan &amp; Utilitas</p>
-</div>
-<div class="border border-dashed border-secondary p-3 rounded bg-secondary/5">
-<p class="font-stats-sm text-stats-sm text-secondary">MAGANG KERJA</p>
-<p class="font-bold text-body-sm">Praktik di Biro Arsitek</p>
-</div>
-</div>
-</div>
-<!-- Year 4 Uni -->
-<div class="bg-primary text-white p-6 hard-shadow">
-<h4 class="font-headline-md text-headline-md mb-4">Tahun 4</h4>
-<p class="font-label-caps text-label-caps opacity-70 mb-4">Sintesis &amp; Profesional</p>
-<div class="space-y-4">
-<div class="bg-white/10 p-3 rounded border border-white/20">
-<p class="font-stats-sm text-stats-sm text-secondary-container">SEMESTER 7</p>
-<p class="font-bold text-body-sm">Metodologi Riset &amp; Seminar</p>
-</div>
-<div class="bg-secondary-container text-on-secondary-container p-3 rounded">
-<p class="font-stats-sm text-stats-sm opacity-80">FINAL MILESTONE</p>
-<p class="font-bold text-body-sm">Tugas Akhir: Desain Kompleks</p>
-</div>
-</div>
-</div>
-</div>
-</section>
 </div>
 <!-- Dashboard Summary Card (Asymmetric Layout) -->
 <div class="bg-[#FBFAF5] border border-primary/20 p-8 hard-shadow flex flex-col md:flex-row items-center gap-8 mb-12">
 <div class="w-full md:w-1/3">
 <div class="aspect-square bg-surface-container-highest relative border border-primary/10 overflow-hidden group">
-<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean, minimalist 3D architectural rendering of a modern sustainable house with wooden accents and large glass windows. The lighting is soft morning sunlight casting elegant shadows on a neutral background. The image has a blueprint-inspired overlay with faint technical lines and measurements, perfectly representing an architect's vision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjAWi0Hx4sbiDahX37LX0CJiKVeBlGjEtLg5Si5WjDWL8RUACV5848nxxJ3r_wj-XtScBl_MfUjGisEvvJGymdFfTpoafr1wbMSVLp9sQgyEnr6pwY83G8GOCvXy_zuhMxZkVNTyRvO2sr-rWd11sZjtNiwidEg9XzcglOr-MY77bAK3TkkOp0Mdv85PxNX_BoUDtJYkRRQOfW5ajrImQ6FizpZIv_ot3kiyJyCVT9LqdvPJ5E-lth92OdYkghIeH2AJtBg-dO6Uk"/>
+<img id="dashboard-image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A clean, minimalist architectural rendering" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjAWi0Hx4sbiDahX37LX0CJiKVeBlGjEtLg5Si5WjDWL8RUACV5848nxxJ3r_wj-XtScBl_MfUjGisEvvJGymdFfTpoafr1wbMSVLp9sQgyEnr6pwY83G8GOCvXy_zuhMxZkVNTyRvO2sr-rWd11sZjtNiwidEg9XzcglOr-MY77bAK3TkkOp0Mdv85PxNX_BoUDtJYkRRQOfW5ajrImQ6FizpZIv_ot3kiyJyCVT9LqdvPJ5E-lth92OdYkghIeH2AJtBg-dO6Uk"/>
 <div class="absolute inset-0 bg-primary/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
 <span class="material-symbols-outlined text-white text-4xl">zoom_in</span>
 </div>
@@ -446,28 +272,605 @@
         });
     </script>
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const aiDataStr = localStorage.getItem('aiRoadmapResult');
-        let aiRoadmap = null;
-        if (aiDataStr) {
-            try { aiRoadmap = JSON.parse(aiDataStr); } catch (e) {}
+    const careerRoadmaps = {
+        'arsitek': {
+            quote: '"Arsitektur adalah perpaduan antara presisi dan kebebasan berekspresi."',
+            img: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=600&auto=format&fit=crop',
+            icon: 'architecture',
+            phase1: {
+                title: 'FONDASI AKADEMIK (GR. 10 - 12)',
+                k10: [
+                    { id: 'a1', title: 'Modul: Geometri Ruang', desc: 'Memahami visualisasi 3D dan proyeksi objek.' },
+                    { id: 'a2', title: 'Eksplorasi SketchUp Dasar', desc: 'Pengenalan tools dasar permodelan digital.' }
+                ],
+                k11: [
+                    { id: 'a3', title: 'Proyek: Desain Rumah Ramah Lingkungan', desc: 'Integrasi elemen keberlanjutan dalam hunian mikro.' },
+                    { id: 'a4', title: 'Workshop: Gambar Perspektif 2 Titik Hilang', desc: 'Pengembangan skill menggambar manual.' }
+                ],
+                k12: {
+                    milestone: 'Pendaftaran Universitas (S1 Arsitektur)',
+                    milestoneDesc: 'Persiapan Portfolio & Ujian Masuk PTN.',
+                    bullets: ['Penyelesaian 10 Karya Portfolio', 'Simulasi Tes Kemampuan Spasial']
+                }
+            },
+            phase2: {
+                title: 'PENGUATAN PORTOFOLIO (OPSIONAL)',
+                desc: 'Fase ini ditujukan untuk pendalaman keahlian teknis sebelum memasuki bangku perkuliahan yang intensif.',
+                skills: [
+                    { icon: 'draw', name: 'Advanced Drafting' },
+                    { icon: 'foundation', name: 'Struktur Dasar' },
+                    { icon: 'brush', name: 'Seni Rupa Murni' }
+                ]
+            },
+            phase3: {
+                title: 'PENDIDIKAN TINGGI (S1 ARSITEKTUR)',
+                y12: { title: 'Teori & Estetika', sem12: 'Pengantar Arsitektur & Studio 1', sem34: 'Sejarah Arsitektur & Teknologi Bangunan' },
+                y3: { title: 'Praktik & Sistem', sem56: 'Sains Bangunan & Utilitas', magang: 'Praktik di Biro Arsitek' },
+                y4: { title: 'Sintesis & Profesional', sem7: 'Metodologi Riset & Seminar', ta: 'Tugas Akhir: Desain Kompleks' }
+            },
+            timeline: [
+                { year: 'Kelas 10', label: 'Tahun 1', desc: 'Membangun fondasi geometri ruang, menguasai SketchUp dasar, dan eksplorasi seni rupa visual.', status: 'active', icon: 'looks_one' },
+                { year: 'Kelas 11', label: 'Tahun 2', desc: 'Proyek desain rumah ramah lingkungan, workshop perspektif 2 titik hilang, dan studi material bangunan.', status: 'active', icon: 'looks_two' },
+                { year: 'Kelas 12', label: 'Tahun 3', desc: 'Finalisasi 10 karya portfolio, simulasi tes spasial, dan persiapan ujian masuk S1 Arsitektur.', status: 'upcoming', icon: 'looks_3' },
+                { year: 'Gap Year', label: 'Opsional', desc: 'Pendalaman advanced drafting, struktur dasar bangunan, dan seni rupa murni.', status: 'optional', icon: 'hourglass_empty' },
+                { year: 'Universitas Tahun 1-2', label: 'Tahun 4-5', desc: 'Pengantar Arsitektur, Studio 1, Sejarah Arsitektur, dan Teknologi Bangunan.', status: 'upcoming', icon: 'school' },
+                { year: 'Universitas Tahun 3-4', label: 'Tahun 6-7', desc: 'Sains Bangunan, magang di biro arsitek, dan Tugas Akhir: Desain Kompleks Arsitektural.', status: 'upcoming', icon: 'emoji_events' }
+            ],
+            milestones: [
+                { id: 'am1', title: 'Menguasai SketchUp 3D', desc: 'Mampu membuat model 3D bangunan sederhana secara mandiri.', target: 'Kelas 10 - Semester 2', icon: 'view_in_ar' },
+                { id: 'am2', title: 'Proyek Desain Pertama', desc: 'Menyelesaikan desain rumah ramah lingkungan dengan konsep sustainable.', target: 'Kelas 11 - Semester 1', icon: 'home_work' },
+                { id: 'am3', title: '10 Karya Portfolio', desc: 'Mengumpulkan 10 karya desain terbaik untuk portfolio masuk universitas.', target: 'Kelas 12 - Semester 1', icon: 'collections' },
+                { id: 'am4', title: 'Lulus Seleksi PTN', desc: 'Diterima di program S1 Arsitektur perguruan tinggi pilihan.', target: 'Kelas 12 - Semester 2', icon: 'school' },
+                { id: 'am5', title: 'Magang Biro Arsitek', desc: 'Menyelesaikan program magang profesional di biro arsitek ternama.', target: 'Universitas Tahun 3', icon: 'work' },
+                { id: 'am6', title: 'Tugas Akhir: Desain Kompleks', desc: 'Menyelesaikan proyek akhir berupa desain kompleks arsitektural skala besar.', target: 'Universitas Tahun 4', icon: 'emoji_events' }
+            ],
+            resources: [
+                { title: 'Buku: Arsitektur Bentuk, Ruang & Tatanan', author: 'Francis D.K. Ching', type: 'book', icon: 'menu_book', color: 'blue', desc: 'Panduan klasik tentang prinsip dasar perancangan arsitektur.' },
+                { title: 'Kursus: SketchUp untuk Arsitek', author: 'SketchUp Academy', type: 'course', icon: 'ondemand_video', color: 'green', desc: 'Tutorial lengkap pemodelan 3D dari dasar hingga mahir.' },
+                { title: 'Tool: AutoCAD Student License', author: 'Autodesk', type: 'tool', icon: 'build', color: 'orange', desc: 'Software CAD standar industri arsitektur, gratis untuk pelajar.' },
+                { title: 'Buku: Toward an Architecture', author: 'Le Corbusier', type: 'book', icon: 'menu_book', color: 'blue', desc: 'Manifesto arsitektur modern yang wajib dibaca setiap calon arsitek.' },
+                { title: 'Kursus: Sustainable Architecture', author: 'Coursera - TU Delft', type: 'course', icon: 'ondemand_video', color: 'green', desc: 'Prinsip keberlanjutan dan desain ramah lingkungan.' },
+                { title: 'Tool: Lumion Visualization', author: 'Act-3D', type: 'tool', icon: 'build', color: 'orange', desc: 'Rendering 3D real-time untuk presentasi arsitektur profesional.' }
+            ]
+        },
+        'data scientist': {
+            quote: '"Data adalah minyak baru, namun insight adalah energi penggeraknya."',
+            img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop',
+            icon: 'query_stats',
+            phase1: {
+                title: 'FONDASI LOGIKA KOMPUTASI (GR. 10 - 12)',
+                k10: [
+                    { id: 'ds1', title: 'Modul: Logika Matematika', desc: 'Penguatan probabilitas dan statistika dasar.' },
+                    { id: 'ds2', title: 'Pengenalan Python', desc: 'Sintaks dasar dan struktur data.' }
+                ],
+                k11: [
+                    { id: 'ds3', title: 'Proyek: Analisis Data Sederhana', desc: 'Mengeksplorasi dataset publik.' },
+                    { id: 'ds4', title: 'Workshop: Machine Learning Basic', desc: 'Algoritma regresi dan klasifikasi.' }
+                ],
+                k12: {
+                    milestone: 'Pendaftaran Universitas (S1 Ilmu Komputer)',
+                    milestoneDesc: 'Persiapan Olimpiade Komputer & Ujian Masuk PTN.',
+                    bullets: ['Sertifikasi Python Dasar', 'Proyek Akhir Data Analysis']
+                }
+            },
+            phase2: {
+                title: 'BOOTCAMP TEKNOLOGI (OPSIONAL)',
+                desc: 'Pendalaman skill praktis dalam mengolah big data dan machine learning terapan.',
+                skills: [
+                    { icon: 'database', name: 'SQL Mastery' },
+                    { icon: 'analytics', name: 'Data Visualization' },
+                    { icon: 'smart_toy', name: 'AI Models' }
+                ]
+            },
+            phase3: {
+                title: 'PENDIDIKAN TINGGI (S1 DATA SCIENCE)',
+                y12: { title: 'Algoritma & Statistik', sem12: 'Kalkulus & Struktur Data', sem34: 'Aljabar Linier & Statistika Inferensial' },
+                y3: { title: 'Machine Learning & Big Data', sem56: 'Deep Learning & Cloud Computing', magang: 'Data Analyst Intern' },
+                y4: { title: 'Sintesis Sistem', sem7: 'NLP & Computer Vision', ta: 'Tugas Akhir: AI Predictive Model' }
+            },
+            timeline: [
+                { year: 'Kelas 10', label: 'Tahun 1', desc: 'Fondasi logika matematika, probabilitas, dan pengenalan bahasa Python.', status: 'active', icon: 'looks_one' },
+                { year: 'Kelas 11', label: 'Tahun 2', desc: 'Proyek analisis data sederhana, eksplorasi dataset publik, dan workshop Machine Learning dasar.', status: 'active', icon: 'looks_two' },
+                { year: 'Kelas 12', label: 'Tahun 3', desc: 'Sertifikasi Python, proyek akhir data analysis, dan persiapan ujian masuk S1 Ilmu Komputer.', status: 'upcoming', icon: 'looks_3' },
+                { year: 'Gap Year', label: 'Opsional', desc: 'Bootcamp intensif: SQL mastery, data visualization, dan pengenalan AI models.', status: 'optional', icon: 'hourglass_empty' },
+                { year: 'Universitas Tahun 1-2', label: 'Tahun 4-5', desc: 'Kalkulus, Struktur Data, Aljabar Linier, dan Statistika Inferensial.', status: 'upcoming', icon: 'school' },
+                { year: 'Universitas Tahun 3-4', label: 'Tahun 6-7', desc: 'Deep Learning, Cloud Computing, magang Data Analyst, NLP, dan Tugas Akhir: AI Predictive Model.', status: 'upcoming', icon: 'emoji_events' }
+            ],
+            milestones: [
+                { id: 'dm1', title: 'Sertifikasi Python Dasar', desc: 'Menyelesaikan sertifikasi resmi bahasa pemrograman Python.', target: 'Kelas 10 - Semester 2', icon: 'code' },
+                { id: 'dm2', title: 'Proyek Data Analysis', desc: 'Menganalisis dataset publik dan membuat visualisasi data interaktif.', target: 'Kelas 11 - Semester 1', icon: 'analytics' },
+                { id: 'dm3', title: 'ML Model Pertama', desc: 'Membangun model machine learning regresi dan klasifikasi sederhana.', target: 'Kelas 11 - Semester 2', icon: 'smart_toy' },
+                { id: 'dm4', title: 'Lulus Seleksi PTN', desc: 'Diterima di program S1 Ilmu Komputer / Data Science.', target: 'Kelas 12 - Semester 2', icon: 'school' },
+                { id: 'dm5', title: 'Magang Data Analyst', desc: 'Menyelesaikan internship sebagai Data Analyst di perusahaan teknologi.', target: 'Universitas Tahun 3', icon: 'work' },
+                { id: 'dm6', title: 'Tugas Akhir: AI Predictive Model', desc: 'Membangun sistem prediksi berbasis AI untuk studi kasus nyata.', target: 'Universitas Tahun 4', icon: 'emoji_events' }
+            ],
+            resources: [
+                { title: 'Buku: Python for Data Analysis', author: 'Wes McKinney', type: 'book', icon: 'menu_book', color: 'blue', desc: 'Panduan lengkap analisis data dengan Python, Pandas, dan NumPy.' },
+                { title: 'Kursus: Machine Learning Specialization', author: 'Coursera - Andrew Ng', type: 'course', icon: 'ondemand_video', color: 'green', desc: 'Kursus ML terbaik di dunia dari Stanford University.' },
+                { title: 'Tool: Jupyter Notebook', author: 'Project Jupyter', type: 'tool', icon: 'build', color: 'orange', desc: 'IDE interaktif standar untuk eksplorasi dan analisis data.' },
+                { title: 'Buku: Hands-On Machine Learning', author: 'Aurélien Géron', type: 'book', icon: 'menu_book', color: 'blue', desc: 'Implementasi praktis ML dengan Scikit-Learn, Keras, dan TensorFlow.' },
+                { title: 'Kursus: SQL for Data Science', author: 'Coursera - UC Davis', type: 'course', icon: 'ondemand_video', color: 'green', desc: 'Penguasaan query database untuk pengolahan data berskala besar.' },
+                { title: 'Tool: Tableau Public', author: 'Tableau Software', type: 'tool', icon: 'build', color: 'orange', desc: 'Platform visualisasi data profesional gratis untuk pelajar.' }
+            ]
+        },
+        'arsitek sistem': {
+            quote: '"Membangun fondasi digital yang kuat untuk menopang masa depan teknologi."',
+            img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop',
+            icon: 'hub',
+            phase1: {
+                title: 'FONDASI KOMPUTASI & JARINGAN (GR. 10 - 12)',
+                k10: [
+                    { id: 'sa1', title: 'Modul: Dasar Jaringan Komputer', desc: 'Memahami TCP/IP, DNS, dan protokol internet.' },
+                    { id: 'sa2', title: 'Pengenalan Linux & CLI', desc: 'Operasi dasar sistem operasi berbasis command line.' }
+                ],
+                k11: [
+                    { id: 'sa3', title: 'Proyek: Web Server Sederhana', desc: 'Membangun dan mengkonfigurasi web server dari nol.' },
+                    { id: 'sa4', title: 'Workshop: Cloud Computing Intro', desc: 'Pengenalan AWS/GCP dan deployment dasar.' }
+                ],
+                k12: {
+                    milestone: 'Pendaftaran Universitas (S1 Teknik Informatika)',
+                    milestoneDesc: 'Persiapan Olimpiade Komputer & Ujian Masuk PTN.',
+                    bullets: ['Sertifikasi Linux Essentials', 'Proyek Cloud Deployment']
+                }
+            },
+            phase2: {
+                title: 'INTENSIF DEVOPS & CLOUD (OPSIONAL)',
+                desc: 'Pendalaman praktis dalam arsitektur cloud, containerization, dan otomatisasi infrastruktur.',
+                skills: [
+                    { icon: 'cloud', name: 'Cloud Architecture' },
+                    { icon: 'deployed_code', name: 'Docker & K8s' },
+                    { icon: 'security', name: 'Cybersecurity' }
+                ]
+            },
+            phase3: {
+                title: 'PENDIDIKAN TINGGI (S1 TEKNIK INFORMATIKA)',
+                y12: { title: 'Algoritma & Sistem Operasi', sem12: 'Algoritma & Struktur Data', sem34: 'Sistem Operasi & Basis Data' },
+                y3: { title: 'Arsitektur & Distributed Systems', sem56: 'Arsitektur Perangkat Lunak & Microservices', magang: 'DevOps Engineer Intern' },
+                y4: { title: 'Sintesis & Leadership', sem7: 'Keamanan Siber & High Availability', ta: 'Tugas Akhir: Desain Arsitektur Cloud-Native' }
+            },
+            timeline: [
+                { year: 'Kelas 10', label: 'Tahun 1', desc: 'Fondasi jaringan komputer, TCP/IP, dan pengenalan Linux CLI.', status: 'active', icon: 'looks_one' },
+                { year: 'Kelas 11', label: 'Tahun 2', desc: 'Membangun web server, pengenalan cloud computing, dan scripting otomasi.', status: 'active', icon: 'looks_two' },
+                { year: 'Kelas 12', label: 'Tahun 3', desc: 'Sertifikasi Linux, proyek cloud deployment, dan persiapan masuk S1 Teknik Informatika.', status: 'upcoming', icon: 'looks_3' },
+                { year: 'Gap Year', label: 'Opsional', desc: 'Bootcamp DevOps: Docker, Kubernetes, dan arsitektur cloud.', status: 'optional', icon: 'hourglass_empty' },
+                { year: 'Universitas Tahun 1-2', label: 'Tahun 4-5', desc: 'Algoritma, Struktur Data, Sistem Operasi, dan Basis Data relasional.', status: 'upcoming', icon: 'school' },
+                { year: 'Universitas Tahun 3-4', label: 'Tahun 6-7', desc: 'Arsitektur Perangkat Lunak, Microservices, magang DevOps, dan Tugas Akhir Desain Cloud-Native.', status: 'upcoming', icon: 'emoji_events' }
+            ],
+            milestones: [
+                { id: 'sm1', title: 'Sertifikasi Linux Essentials', desc: 'Menguasai operasi dasar Linux dan administrasi sistem.', target: 'Kelas 10 - Semester 2', icon: 'terminal' },
+                { id: 'sm2', title: 'Web Server Deployment', desc: 'Berhasil membangun dan men-deploy web server dari nol.', target: 'Kelas 11 - Semester 1', icon: 'dns' },
+                { id: 'sm3', title: 'Cloud Architecture Project', desc: 'Menyelesaikan proyek arsitektur cloud menggunakan AWS/GCP.', target: 'Kelas 12 - Semester 1', icon: 'cloud' },
+                { id: 'sm4', title: 'Lulus Seleksi PTN', desc: 'Diterima di S1 Teknik Informatika perguruan tinggi pilihan.', target: 'Kelas 12 - Semester 2', icon: 'school' },
+                { id: 'sm5', title: 'Magang DevOps Engineer', desc: 'Internship sebagai DevOps Engineer di perusahaan teknologi.', target: 'Universitas Tahun 3', icon: 'work' },
+                { id: 'sm6', title: 'TA: Desain Cloud-Native', desc: 'Merancang arsitektur sistem cloud-native berskala enterprise.', target: 'Universitas Tahun 4', icon: 'emoji_events' }
+            ],
+            resources: [
+                { title: 'Buku: Designing Data-Intensive Applications', author: 'Martin Kleppmann', type: 'book', icon: 'menu_book', color: 'blue', desc: 'Bible untuk memahami arsitektur sistem data modern.' },
+                { title: 'Kursus: AWS Solutions Architect', author: 'AWS Training', type: 'course', icon: 'ondemand_video', color: 'green', desc: 'Sertifikasi arsitektur cloud paling diminati di industri.' },
+                { title: 'Tool: Docker Desktop', author: 'Docker Inc.', type: 'tool', icon: 'build', color: 'orange', desc: 'Platform containerization standar untuk pengembangan modern.' },
+                { title: 'Buku: Clean Architecture', author: 'Robert C. Martin', type: 'book', icon: 'menu_book', color: 'blue', desc: 'Prinsip arsitektur perangkat lunak yang bersih dan maintainable.' },
+                { title: 'Kursus: Kubernetes for Beginners', author: 'Udemy - Mumshad', type: 'course', icon: 'ondemand_video', color: 'green', desc: 'Orkestrasi container dari dasar hingga production-ready.' },
+                { title: 'Tool: Terraform', author: 'HashiCorp', type: 'tool', icon: 'build', color: 'orange', desc: 'Infrastructure as Code untuk provisioning cloud otomatis.' }
+            ]
+        },
+        'dokter': {
+            quote: '"Menyembuhkan satu kehidupan, berarti menjaga kelangsungan umat manusia."',
+            img: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=600&auto=format&fit=crop',
+            icon: 'stethoscope',
+            phase1: {
+                title: 'FONDASI BIOMEDIS (GR. 10 - 12)',
+                k10: [
+                    { id: 'd1', title: 'Modul: Biologi Sel & Genetika', desc: 'Memahami struktur sel, DNA, dan mekanisme genetik dasar.' },
+                    { id: 'd2', title: 'Eksplorasi Anatomi Dasar', desc: 'Sistem organ tubuh manusia dan fungsinya.' }
+                ],
+                k11: [
+                    { id: 'd3', title: 'Proyek: Riset Kesehatan Masyarakat', desc: 'Survei kesehatan lingkungan sekolah dan analisis data.' },
+                    { id: 'd4', title: 'Workshop: Pertolongan Pertama (P3K)', desc: 'Teknik pertolongan pertama dan CPR bersertifikat.' }
+                ],
+                k12: {
+                    milestone: 'Pendaftaran Universitas (S1 Kedokteran)',
+                    milestoneDesc: 'Persiapan UTBK & Tes Potensi Kedokteran.',
+                    bullets: ['Olimpiade Biologi Tingkat Nasional', 'Simulasi Tes Kedokteran']
+                }
+            },
+            phase2: {
+                title: 'PENDALAMAN PRA-MEDIS (OPSIONAL)',
+                desc: 'Penguatan kemampuan biomedis dan soft skill komunikasi pasien sebelum kuliah kedokteran.',
+                skills: [
+                    { icon: 'biotech', name: 'Biokimia Lanjut' },
+                    { icon: 'psychology', name: 'Psikologi Medis' },
+                    { icon: 'volunteer_activism', name: 'Komunitas Kesehatan' }
+                ]
+            },
+            phase3: {
+                title: 'PENDIDIKAN TINGGI (S1 KEDOKTERAN)',
+                y12: { title: 'Pre-Klinik', sem12: 'Anatomi & Fisiologi Manusia', sem34: 'Biokimia & Histologi' },
+                y3: { title: 'Klinik Awal', sem56: 'Patologi & Farmakologi', magang: 'Rotasi Klinik RS Pendidikan' },
+                y4: { title: 'Profesi & Ko-Asisten', sem7: 'Bedah, Obstetri & Pediatri', ta: 'Ujian Kompetensi Dokter Indonesia (UKMPPD)' }
+            },
+            timeline: [
+                { year: 'Kelas 10', label: 'Tahun 1', desc: 'Fondasi biologi sel, genetika, dan pengenalan anatomi sistem organ tubuh manusia.', status: 'active', icon: 'looks_one' },
+                { year: 'Kelas 11', label: 'Tahun 2', desc: 'Riset kesehatan masyarakat, workshop P3K bersertifikat, dan pendalaman kimia organik.', status: 'active', icon: 'looks_two' },
+                { year: 'Kelas 12', label: 'Tahun 3', desc: 'Olimpiade Biologi, simulasi tes kedokteran, dan persiapan UTBK masuk FK.', status: 'upcoming', icon: 'looks_3' },
+                { year: 'Gap Year', label: 'Opsional', desc: 'Pendalaman biokimia lanjut, psikologi medis, dan kegiatan komunitas kesehatan.', status: 'optional', icon: 'hourglass_empty' },
+                { year: 'Universitas Tahun 1-2', label: 'Tahun 4-5', desc: 'Pre-Klinik: Anatomi, Fisiologi, Biokimia, dan Histologi.', status: 'upcoming', icon: 'school' },
+                { year: 'Universitas Tahun 3-5+', label: 'Tahun 6-8+', desc: 'Klinik: Patologi, Farmakologi, rotasi RS, Ko-Asistensi, dan UKMPPD.', status: 'upcoming', icon: 'emoji_events' }
+            ],
+            milestones: [
+                { id: 'dm1_doc', title: 'Sertifikat P3K & CPR', desc: 'Menyelesaikan pelatihan pertolongan pertama dan CPR bersertifikat resmi.', target: 'Kelas 11 - Semester 1', icon: 'medical_services' },
+                { id: 'dm2_doc', title: 'Olimpiade Biologi', desc: 'Berpartisipasi dalam Olimpiade Sains Nasional bidang Biologi.', target: 'Kelas 11 - Semester 2', icon: 'science' },
+                { id: 'dm3_doc', title: 'Riset Kesehatan', desc: 'Menyelesaikan proyek riset kesehatan masyarakat dengan metodologi ilmiah.', target: 'Kelas 12 - Semester 1', icon: 'biotech' },
+                { id: 'dm4_doc', title: 'Lulus Seleksi FK', desc: 'Diterima di Fakultas Kedokteran perguruan tinggi pilihan.', target: 'Kelas 12 - Semester 2', icon: 'school' },
+                { id: 'dm5_doc', title: 'Rotasi Klinik RS', desc: 'Menyelesaikan rotasi klinik di berbagai departemen RS Pendidikan.', target: 'Universitas Tahun 3', icon: 'local_hospital' },
+                { id: 'dm6_doc', title: 'Lulus UKMPPD', desc: 'Lulus Ujian Kompetensi Mahasiswa Program Profesi Dokter.', target: 'Universitas Tahun 5+', icon: 'emoji_events' }
+            ],
+            resources: [
+                { title: 'Buku: Atlas Anatomi Manusia Netter', author: 'Frank H. Netter', type: 'book', icon: 'menu_book', color: 'blue', desc: 'Atlas anatomi paling detail dan berwarna standar kedokteran dunia.' },
+                { title: 'Kursus: Anatomi & Fisiologi', author: 'Khan Academy', type: 'course', icon: 'ondemand_video', color: 'green', desc: 'Pengantar sistem tubuh manusia secara visual dan interaktif.' },
+                { title: 'Tool: Complete Anatomy (3D4Medical)', author: '3D4Medical', type: 'tool', icon: 'build', color: 'orange', desc: 'Platform anatomi 3D interaktif untuk eksplorasi tubuh manusia.' },
+                { title: "Buku: Guyton's Textbook of Medical Physiology", author: 'John E. Hall', type: 'book', icon: 'menu_book', color: 'blue', desc: 'Textbook fisiologi paling komprehensif untuk mahasiswa kedokteran.' },
+                { title: 'Kursus: Farmakologi Klinis', author: 'Coursera - UPenn', type: 'course', icon: 'ondemand_video', color: 'green', desc: 'Prinsip dasar farmakologi dan mekanisme kerja obat.' },
+                { title: 'Tool: Anki Flashcards Medical', author: 'Komunitas Anki', type: 'tool', icon: 'build', color: 'orange', desc: 'Sistem spaced repetition terbaik untuk menghafal terminologi medis.' }
+            ]
+        },
+        'akuntan': {
+            quote: '"Kesehatan finansial adalah cermin dari keberhasilan sebuah strategi."',
+            img: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=600&auto=format&fit=crop',
+            icon: 'account_balance',
+            phase1: {
+                title: 'FONDASI FINANSIAL & LOGIKA (GR. 10 - 12)',
+                k10: [
+                    { id: 'ak1', title: 'Modul: Pengantar Akuntansi', desc: 'Memahami siklus akuntansi, debit-kredit, dan laporan keuangan dasar.' },
+                    { id: 'ak2', title: 'Eksplorasi Microsoft Excel', desc: 'Formula, pivot table, dan otomatisasi spreadsheet.' }
+                ],
+                k11: [
+                    { id: 'ak3', title: 'Proyek: Pembukuan UMKM', desc: 'Praktik mencatat transaksi dan menyusun laporan keuangan UMKM nyata.' },
+                    { id: 'ak4', title: 'Workshop: Perpajakan Dasar', desc: 'Memahami PPh, PPN, dan kewajiban perpajakan di Indonesia.' }
+                ],
+                k12: {
+                    milestone: 'Pendaftaran Universitas (S1 Akuntansi)',
+                    milestoneDesc: 'Persiapan Olimpiade Ekonomi & Ujian Masuk PTN.',
+                    bullets: ['Sertifikasi Excel Intermediate', 'Simulasi Audit Koperasi Sekolah']
+                }
+            },
+            phase2: {
+                title: 'INTENSIF KEUANGAN (OPSIONAL)',
+                desc: 'Pendalaman praktis dalam analisis keuangan, software akuntansi, dan etika profesi.',
+                skills: [
+                    { icon: 'calculate', name: 'Financial Modeling' },
+                    { icon: 'receipt_long', name: 'Software Akuntansi' },
+                    { icon: 'gavel', name: 'Hukum Bisnis' }
+                ]
+            },
+            phase3: {
+                title: 'PENDIDIKAN TINGGI (S1 AKUNTANSI)',
+                y12: { title: 'Akuntansi Dasar & Hukum', sem12: 'Pengantar Akuntansi & Ekonomi Mikro', sem34: 'Akuntansi Menengah & Hukum Bisnis' },
+                y3: { title: 'Auditing & Perpajakan', sem56: 'Audit & Akuntansi Perpajakan', magang: 'Junior Auditor Intern di KAP' },
+                y4: { title: 'Spesialisasi & Profesi', sem7: 'Akuntansi Forensik & Sistem Informasi', ta: 'Tugas Akhir: Analisis Laporan Keuangan Perusahaan' }
+            },
+            timeline: [
+                { year: 'Kelas 10', label: 'Tahun 1', desc: 'Pengantar akuntansi, siklus debit-kredit, dan penguasaan Microsoft Excel.', status: 'active', icon: 'looks_one' },
+                { year: 'Kelas 11', label: 'Tahun 2', desc: 'Praktik pembukuan UMKM, workshop perpajakan dasar, dan ekonomi makro.', status: 'active', icon: 'looks_two' },
+                { year: 'Kelas 12', label: 'Tahun 3', desc: 'Sertifikasi Excel, simulasi audit koperasi, dan persiapan masuk S1 Akuntansi.', status: 'upcoming', icon: 'looks_3' },
+                { year: 'Gap Year', label: 'Opsional', desc: 'Intensif financial modeling, software akuntansi, dan hukum bisnis.', status: 'optional', icon: 'hourglass_empty' },
+                { year: 'Universitas Tahun 1-2', label: 'Tahun 4-5', desc: 'Pengantar Akuntansi, Ekonomi Mikro, Akuntansi Menengah, dan Hukum Bisnis.', status: 'upcoming', icon: 'school' },
+                { year: 'Universitas Tahun 3-4', label: 'Tahun 6-7', desc: 'Audit, Perpajakan, magang di KAP, Akuntansi Forensik, dan Tugas Akhir.', status: 'upcoming', icon: 'emoji_events' }
+            ],
+            milestones: [
+                { id: 'akm1', title: 'Sertifikasi Excel Intermediate', desc: 'Menguasai formula lanjut, pivot table, dan macro di Excel.', target: 'Kelas 10 - Semester 2', icon: 'grid_on' },
+                { id: 'akm2', title: 'Pembukuan UMKM', desc: 'Menyelesaikan proyek pembukuan nyata untuk UMKM lokal.', target: 'Kelas 11 - Semester 1', icon: 'storefront' },
+                { id: 'akm3', title: 'Simulasi Audit', desc: 'Melakukan simulasi audit pada koperasi sekolah.', target: 'Kelas 12 - Semester 1', icon: 'fact_check' },
+                { id: 'akm4', title: 'Lulus Seleksi PTN', desc: 'Diterima di S1 Akuntansi perguruan tinggi pilihan.', target: 'Kelas 12 - Semester 2', icon: 'school' },
+                { id: 'akm5', title: 'Magang di KAP', desc: 'Menyelesaikan internship sebagai Junior Auditor di Kantor Akuntan Publik.', target: 'Universitas Tahun 3', icon: 'work' },
+                { id: 'akm6', title: 'TA: Analisis Laporan Keuangan', desc: 'Menyelesaikan tugas akhir berupa analisis mendalam laporan keuangan perusahaan publik.', target: 'Universitas Tahun 4', icon: 'emoji_events' }
+            ],
+            resources: [
+                { title: 'Buku: Pengantar Akuntansi (PSAK)', author: 'IAI', type: 'book', icon: 'menu_book', color: 'blue', desc: 'Standar akuntansi keuangan Indonesia yang wajib dipahami.' },
+                { title: 'Kursus: Financial Accounting Fundamentals', author: 'Coursera - UVA', type: 'course', icon: 'ondemand_video', color: 'green', desc: 'Dasar akuntansi keuangan dari University of Virginia.' },
+                { title: 'Tool: MYOB Accounting', author: 'MYOB', type: 'tool', icon: 'build', color: 'orange', desc: 'Software akuntansi populer untuk praktik pembukuan digital.' },
+                { title: 'Buku: Auditing & Assurance Services', author: 'Arens, Elder, Beasley', type: 'book', icon: 'menu_book', color: 'blue', desc: 'Textbook audit komprehensif standar internasional.' },
+                { title: 'Kursus: Perpajakan Indonesia', author: 'DJP Online Learning', type: 'course', icon: 'ondemand_video', color: 'green', desc: 'Pelatihan perpajakan resmi dari Direktorat Jenderal Pajak.' },
+                { title: 'Tool: Microsoft Power BI', author: 'Microsoft', type: 'tool', icon: 'build', color: 'orange', desc: 'Visualisasi data keuangan dan dashboard bisnis interaktif.' }
+            ]
+        },
+        'peneliti biologi': {
+            quote: '"Di setiap mikroskop, terdapat dunia tak terlihat yang membentuk kehidupan kita."',
+            img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=600&auto=format&fit=crop',
+            icon: 'science',
+            phase1: {
+                title: 'FONDASI SAINS KEHIDUPAN (GR. 10 - 12)',
+                k10: [
+                    { id: 'pb1', title: 'Modul: Ekologi & Keanekaragaman Hayati', desc: 'Memahami ekosistem, rantai makanan, dan biodiversitas Indonesia.' },
+                    { id: 'pb2', title: 'Praktikum Mikroskop', desc: 'Teknik pengamatan sel dan jaringan dengan mikroskop cahaya.' }
+                ],
+                k11: [
+                    { id: 'pb3', title: 'Proyek: Riset Biodiversitas Lokal', desc: 'Survei keanekaragaman hayati di ekosistem sekitar sekolah.' },
+                    { id: 'pb4', title: 'Workshop: Teknik Laboratorium', desc: 'Sterilisasi, kultur bakteri, dan pewarnaan Gram.' }
+                ],
+                k12: {
+                    milestone: 'Pendaftaran Universitas (S1 Biologi)',
+                    milestoneDesc: 'Persiapan Olimpiade Biologi & Ujian Masuk PTN.',
+                    bullets: ['Karya Ilmiah Remaja Biologi', 'Herbarium & Koleksi Spesimen']
+                }
+            },
+            phase2: {
+                title: 'EKSPEDISI SAINS LAPANGAN (OPSIONAL)',
+                desc: 'Pengalaman riset lapangan langsung dan pendalaman teknik laboratorium modern.',
+                skills: [
+                    { icon: 'forest', name: 'Field Research' },
+                    { icon: 'biotech', name: 'Bioteknologi' },
+                    { icon: 'eco', name: 'Konservasi' }
+                ]
+            },
+            phase3: {
+                title: 'PENDIDIKAN TINGGI (S1 BIOLOGI)',
+                y12: { title: 'Biologi Dasar & Kimia', sem12: 'Biologi Umum & Kimia Organik', sem34: 'Mikrobiologi & Genetika' },
+                y3: { title: 'Spesialisasi & Riset', sem56: 'Biologi Molekuler & Bioinformatika', magang: 'Research Assistant di Lab Universitas' },
+                y4: { title: 'Tesis & Publikasi', sem7: 'Metodologi Riset & Seminar', ta: 'Tugas Akhir: Riset Biodiversitas atau Bioteknologi' }
+            },
+            timeline: [
+                { year: 'Kelas 10', label: 'Tahun 1', desc: 'Fondasi ekologi, keanekaragaman hayati, dan praktikum pengamatan sel dengan mikroskop.', status: 'active', icon: 'looks_one' },
+                { year: 'Kelas 11', label: 'Tahun 2', desc: 'Riset biodiversitas lokal, workshop teknik laboratorium, dan pendalaman genetika.', status: 'active', icon: 'looks_two' },
+                { year: 'Kelas 12', label: 'Tahun 3', desc: 'Karya ilmiah biologi, koleksi herbarium, dan persiapan masuk S1 Biologi.', status: 'upcoming', icon: 'looks_3' },
+                { year: 'Gap Year', label: 'Opsional', desc: 'Ekspedisi riset lapangan, pengenalan bioteknologi, dan kegiatan konservasi.', status: 'optional', icon: 'hourglass_empty' },
+                { year: 'Universitas Tahun 1-2', label: 'Tahun 4-5', desc: 'Biologi Umum, Kimia Organik, Mikrobiologi, dan Genetika.', status: 'upcoming', icon: 'school' },
+                { year: 'Universitas Tahun 3-4', label: 'Tahun 6-7', desc: 'Biologi Molekuler, Bioinformatika, riset di lab, dan Tugas Akhir Riset.', status: 'upcoming', icon: 'emoji_events' }
+            ],
+            milestones: [
+                { id: 'pm1', title: 'Praktikum Mikroskop', desc: 'Mampu mengoperasikan mikroskop cahaya dan mendokumentasikan pengamatan sel.', target: 'Kelas 10 - Semester 2', icon: 'biotech' },
+                { id: 'pm2', title: 'Riset Biodiversitas', desc: 'Menyelesaikan survei keanekaragaman hayati dengan metodologi ilmiah.', target: 'Kelas 11 - Semester 1', icon: 'forest' },
+                { id: 'pm3', title: 'Karya Ilmiah Remaja', desc: 'Menulis dan mempresentasikan karya ilmiah biologi di tingkat kabupaten/kota.', target: 'Kelas 12 - Semester 1', icon: 'description' },
+                { id: 'pm4', title: 'Lulus Seleksi PTN', desc: 'Diterima di program S1 Biologi perguruan tinggi pilihan.', target: 'Kelas 12 - Semester 2', icon: 'school' },
+                { id: 'pm5', title: 'Research Assistant', desc: 'Menjadi asisten riset di laboratorium biologi universitas.', target: 'Universitas Tahun 3', icon: 'work' },
+                { id: 'pm6', title: 'Publikasi Ilmiah', desc: 'Mempublikasikan hasil riset tugas akhir di jurnal ilmiah nasional.', target: 'Universitas Tahun 4', icon: 'emoji_events' }
+            ],
+            resources: [
+                { title: 'Buku: Campbell Biology', author: 'Lisa A. Urry et al.', type: 'book', icon: 'menu_book', color: 'blue', desc: 'Textbook biologi paling komprehensif dan menjadi standar dunia.' },
+                { title: 'Kursus: Introduction to Biology', author: 'edX - MIT', type: 'course', icon: 'ondemand_video', color: 'green', desc: 'Pengantar biologi dari Massachusetts Institute of Technology.' },
+                { title: 'Tool: ImageJ / FIJI', author: 'NIH', type: 'tool', icon: 'build', color: 'orange', desc: 'Software analisis gambar mikroskopis standar laboratorium.' },
+                { title: 'Buku: Molecular Biology of the Cell', author: 'Bruce Alberts et al.', type: 'book', icon: 'menu_book', color: 'blue', desc: 'Referensi utama biologi molekuler dan biokimia sel.' },
+                { title: 'Kursus: Bioinformatics Specialization', author: 'Coursera - UCSD', type: 'course', icon: 'ondemand_video', color: 'green', desc: 'Spesialisasi bioinformatika untuk analisis data genomik.' },
+                { title: 'Tool: MEGA (Molecular Evolutionary Genetics Analysis)', author: 'Penn State', type: 'tool', icon: 'build', color: 'orange', desc: 'Software analisis filogenetik dan evolusi molekuler.' }
+            ]
         }
+    };
+    
+    // Default fallback
+    const defaultCareer = careerRoadmaps['arsitek'];
 
-        if (aiRoadmap) {
-            const titleEl = document.getElementById('roadmap-title');
-            if (titleEl && aiRoadmap.careerTitle) {
-                titleEl.innerText = `Roadmap Karier: ${aiRoadmap.careerTitle}`;
-            }
+    function toggleCheckbox(element, id) {
+        // Toggle the icon visually
+        const isChecked = element.innerText === 'check_circle';
+        if (isChecked) {
+            element.innerText = 'radio_button_unchecked';
+            element.classList.remove('text-secondary');
+            element.classList.add('text-primary/30');
+            localStorage.setItem(`check_${id}`, 'false');
+        } else {
+            element.innerText = 'check_circle';
+            element.classList.remove('text-primary/30');
+            element.classList.add('text-secondary');
+            element.style.fontVariationSettings = "'FILL' 1";
+            localStorage.setItem(`check_${id}`, 'true');
+        }
+    }
 
-            const quoteEl = document.getElementById('roadmap-quote');
-            if (quoteEl && aiRoadmap.quote) {
-                quoteEl.innerHTML = aiRoadmap.quote;
-            }
+    function renderPhases(careerData) {
+        const container = document.getElementById('dynamic-phases-container');
+        
+        // Helper to get checked state
+        const getCheck = (id) => {
+            const state = localStorage.getItem(`check_${id}`);
+            if (state === 'true') return { icon: 'check_circle', class: 'text-secondary', style: "style=\"font-variation-settings: 'FILL' 1;\"" };
+            return { icon: 'radio_button_unchecked', class: 'text-primary/30', style: '' };
+        };
 
-            const badgeEl = document.getElementById('roadmap-ai-badge');
-            if (badgeEl && aiRoadmap.source) {
-                badgeEl.innerText = `✨ Roadmap oleh ${aiRoadmap.source}`;
-            }
+        const k10Html = careerData.phase1.k10.map(item => {
+            const chk = getCheck(item.id);
+            return `
+            <li class="flex items-start gap-3 p-2 border-b border-primary/5 hover:bg-secondary/5 transition-colors cursor-pointer" onclick="toggleCheckbox(this.querySelector('span'), '${item.id}')">
+                <span class="material-symbols-outlined ${chk.class} shrink-0" ${chk.style}>${chk.icon}</span>
+                <div>
+                    <p class="font-bold">${item.title}</p>
+                    <p class="text-on-surface-variant">${item.desc}</p>
+                </div>
+            </li>`;
+        }).join('');
+
+        const k11Html = careerData.phase1.k11.map(item => {
+            const chk = getCheck(item.id);
+            return `
+            <li class="flex items-start gap-3 p-2 border-b border-primary/5 hover:bg-secondary/5 transition-colors cursor-pointer" onclick="toggleCheckbox(this.querySelector('span'), '${item.id}')">
+                <span class="material-symbols-outlined ${chk.class} shrink-0" ${chk.style}>${chk.icon}</span>
+                <div>
+                    <p class="font-bold">${item.title}</p>
+                    <p class="text-on-surface-variant">${item.desc}</p>
+                </div>
+            </li>`;
+        }).join('');
+
+        const html = `
+        <section class="mb-16">
+            <div class="flex flex-col items-center mb-8">
+                <div class="bg-primary text-white font-label-caps text-label-caps px-6 py-2 rounded-lg hard-shadow z-10">
+                    PHASE 01: ${careerData.phase1.title}
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-[#FBFAF5] border border-primary/20 p-6 hard-shadow relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-16 h-16 opacity-5 pointer-events-none group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-[64px]">${careerData.icon}</span>
+                    </div>
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="font-headline-md text-headline-md text-primary">Kelas 10</h4>
+                        <span class="font-stats-sm text-stats-sm bg-secondary/10 text-secondary px-2 py-0.5 rounded">Tahun 1</span>
+                    </div>
+                    <ul class="space-y-4 font-body-sm text-body-sm">
+                        ${k10Html}
+                    </ul>
+                </div>
+                <div class="bg-[#FBFAF5] border border-primary/20 p-6 hard-shadow relative lg:mt-12 group">
+                    <div class="absolute top-0 right-0 w-16 h-16 opacity-5 pointer-events-none group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-[64px]">${careerData.icon}</span>
+                    </div>
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="font-headline-md text-headline-md text-primary">Kelas 11</h4>
+                        <span class="font-stats-sm text-stats-sm bg-secondary/10 text-secondary px-2 py-0.5 rounded">Tahun 2</span>
+                    </div>
+                    <ul class="space-y-4 font-body-sm text-body-sm">
+                        ${k11Html}
+                    </ul>
+                </div>
+                <div class="bg-[#FBFAF5] border border-primary/20 p-6 hard-shadow relative lg:col-span-2 max-w-3xl mx-auto w-full group">
+                    <div class="absolute top-0 right-0 w-16 h-16 opacity-5 pointer-events-none group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-outlined text-[64px]">school</span>
+                    </div>
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="font-headline-md text-headline-md text-primary">Kelas 12</h4>
+                        <span class="font-stats-sm text-stats-sm bg-secondary/10 text-secondary px-2 py-0.5 rounded">Tahun 3</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 font-body-sm text-body-sm">
+                        <div>
+                            <p class="font-label-caps text-label-caps text-on-surface-variant mb-2">Milestone Utama</p>
+                            <div class="flex items-start gap-3 p-3 bg-primary text-white rounded">
+                                <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+                                <div>
+                                    <p class="font-bold">${careerData.phase1.k12.milestone}</p>
+                                    <p class="opacity-80">${careerData.phase1.k12.milestoneDesc}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="space-y-3">
+                            ${careerData.phase1.k12.bullets.map(b => `<li class="flex items-center gap-2"><span class="material-symbols-outlined text-secondary text-sm">circle</span><span>${b}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 2 -->
+        <section class="mb-16">
+            <div class="flex flex-col items-center mb-8">
+                <div class="bg-[#FBFAF5] border-2 border-dashed border-primary/40 text-primary font-label-caps text-label-caps px-6 py-2 rounded-lg z-10">
+                    ${careerData.phase2.title}
+                </div>
+            </div>
+            <div class="max-w-2xl mx-auto bg-white/40 border border-primary/10 p-8 rounded-xl backdrop-blur-sm relative">
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-secondary text-white text-[10px] px-3 py-1 font-bold uppercase tracking-widest rounded-full">Gap Year Pathway</div>
+                <div class="text-center mb-6">
+                    <p class="font-body-md text-body-md text-on-surface-variant">${careerData.phase2.desc}</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    ${careerData.phase2.skills.map(s => `
+                    <div class="p-4 bg-[#FBFAF5] border border-primary/10 text-center">
+                        <span class="material-symbols-outlined text-primary mb-2">${s.icon}</span>
+                        <p class="font-label-caps text-label-caps">${s.name}</p>
+                    </div>`).join('')}
+                </div>
+            </div>
+        </section>
+
+        <!-- Phase 3 -->
+        <section class="mb-24">
+            <div class="flex flex-col items-center mb-8">
+                <div class="bg-secondary text-white font-label-caps text-label-caps px-6 py-2 rounded-lg hard-shadow z-10">
+                    ${careerData.phase3.title}
+                </div>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Year 1-2 Uni -->
+                <div class="bg-[#FBFAF5] border border-primary/20 p-6 hard-shadow">
+                    <h4 class="font-headline-md text-headline-md text-primary mb-4">Tahun 1 - 2</h4>
+                    <p class="font-label-caps text-label-caps text-on-surface-variant mb-4">${careerData.phase3.y12.title}</p>
+                    <div class="space-y-4">
+                        <div class="bg-surface-container p-3 rounded">
+                            <p class="font-stats-sm text-stats-sm text-secondary">SEMESTER 1-2</p>
+                            <p class="font-bold text-body-sm">${careerData.phase3.y12.sem12}</p>
+                        </div>
+                        <div class="bg-surface-container p-3 rounded">
+                            <p class="font-stats-sm text-stats-sm text-secondary">SEMESTER 3-4</p>
+                            <p class="font-bold text-body-sm">${careerData.phase3.y12.sem34}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Year 3 Uni -->
+                <div class="bg-[#FBFAF5] border border-primary/20 p-6 hard-shadow">
+                    <h4 class="font-headline-md text-headline-md text-primary mb-4">Tahun 3</h4>
+                    <p class="font-label-caps text-label-caps text-on-surface-variant mb-4">${careerData.phase3.y3.title}</p>
+                    <div class="space-y-4">
+                        <div class="bg-surface-container p-3 rounded">
+                            <p class="font-stats-sm text-stats-sm text-secondary">SEMESTER 5-6</p>
+                            <p class="font-bold text-body-sm">${careerData.phase3.y3.sem56}</p>
+                        </div>
+                        <div class="border border-dashed border-secondary p-3 rounded bg-secondary/5">
+                            <p class="font-stats-sm text-stats-sm text-secondary">MAGANG KERJA</p>
+                            <p class="font-bold text-body-sm">${careerData.phase3.y3.magang}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Year 4 Uni -->
+                <div class="bg-primary text-white p-6 hard-shadow">
+                    <h4 class="font-headline-md text-headline-md mb-4">Tahun 4</h4>
+                    <p class="font-label-caps text-label-caps opacity-70 mb-4">${careerData.phase3.y4.title}</p>
+                    <div class="space-y-4">
+                        <div class="bg-white/10 p-3 rounded border border-white/20">
+                            <p class="font-stats-sm text-stats-sm text-secondary-container">SEMESTER 7</p>
+                            <p class="font-bold text-body-sm">${careerData.phase3.y4.sem7}</p>
+                        </div>
+                        <div class="bg-secondary-container text-on-secondary-container p-3 rounded">
+                            <p class="font-stats-sm text-stats-sm opacity-80">FINAL MILESTONE</p>
+                            <p class="font-bold text-body-sm">${careerData.phase3.y4.ta}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        `;
+
+        container.innerHTML = html;
+        
+        // Setup fade-in observers
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('opacity-100');
+                    entry.target.classList.remove('opacity-0', 'translate-y-10');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        container.querySelectorAll('section').forEach(section => {
+            section.classList.add('transition-all', 'duration-700', 'opacity-0', 'translate-y-10');
+            observer.observe(section);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        let careerTitle = localStorage.getItem('selectedCareer') || 'Arsitek';
+        const careerData = careerRoadmaps[careerTitle.toLowerCase()] || defaultCareer;
+        
+        // Populate Title and Quote
+        document.getElementById('roadmap-title').innerText = `Roadmap Karier: ${careerTitle}`;
+        document.getElementById('sidebar-career-title').innerText = `Jalur ${careerTitle}`;
+        document.getElementById('roadmap-quote').innerText = careerData.quote;
+        
+        // Populate Dashboard image
+        const dashImg = document.getElementById('dashboard-image');
+        if(dashImg) dashImg.src = careerData.img;
+        
+        // Populate Phase Content
+        renderPhases(careerData);
+        
+        // Try to add AI badge info if exists
+        const aiDataStr = localStorage.getItem('aiDiagnosisResult');
+        if (aiDataStr) {
+            try { 
+                const aiData = JSON.parse(aiDataStr); 
+                const badgeEl = document.getElementById('roadmap-ai-badge');
+                if (badgeEl && aiData.source) {
+                    badgeEl.innerText = `✨ Rencana Strategis ${aiData.source}`;
+                }
+            } catch (e) {}
         }
     });
 </script>
