@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Login - Flexa Cendekia x UNIPDU</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        body {
+            background-color: #EAEDE2;
+            /* Level 0: The Cream Base */
+            font-family: 'Libre Franklin', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .academic-ledger-card {
+            background-color: #FBFAF5;
+            /* Level 1: Ivory White */
+            border: 1px solid rgba(23, 34, 59, 0.20);
+            /* Hairline Border */
+            box-shadow: none;
+            /* Strict flat design */
+        }
+
+        .paper-stack-effect {
+            position: relative;
+        }
+
+        .paper-stack-effect::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            right: -4px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid rgba(23, 34, 59, 0.20);
+            background-color: #FBFAF5;
+            z-index: -1;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .role-chip:hover {
+            background-color: rgba(2, 11, 36, 0.05);
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#614000",
+                        "secondary-fixed-dim": "#f7bc60",
+                        "error-container": "#ffdad6",
+                        "surface": "#fbf8fb",
+                        "on-tertiary-container": "#549589",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#ffddaf",
+                        "secondary-container": "#fdc265",
+                        "outline": "#76777e",
+                        "inverse-primary": "#bbc6e7",
+                        "inverse-on-surface": "#f3f0f2",
+                        "background": "#fbf8fb",
+                        "tertiary-fixed-dim": "#91d3c5",
+                        "tertiary": "#000f0c",
+                        "on-tertiary-fixed": "#00201b",
+                        "on-surface-variant": "#45464d",
+                        "on-primary-fixed-variant": "#3c4661",
+                        "primary-fixed": "#d9e2ff",
+                        "inverse-surface": "#303032",
+                        "error": "#ba1a1a",
+                        "primary-container": "#17223b",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#dcd9dc",
+                        "on-background": "#1b1b1d",
+                        "on-secondary-fixed": "#281800",
+                        "surface-variant": "#e4e2e4",
+                        "surface-container": "#f0edf0",
+                        "on-tertiary-fixed-variant": "#005046",
+                        "surface-container-highest": "#e4e2e4",
+                        "on-primary-fixed": "#101b34",
+                        "tertiary-fixed": "#adefe1",
+                        "outline-variant": "#c6c6ce",
+                        "surface-container-high": "#eae7ea",
+                        "on-error": "#ffffff",
+                        "primary": "#020b24",
+                        "on-secondary-container": "#754e00",
+                        "primary-fixed-dim": "#bbc6e7",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f5f3f5",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#fbf8fb",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#002822",
+                        "on-surface": "#1b1b1d",
+                        "surface-tint": "#535e7a",
+                        "secondary": "#805600",
+                        "on-primary-container": "#7f89a8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "margin-desktop": "32px",
+                        "gutter": "16px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "stats-lg": ["JetBrains Mono"],
+                        "label-caps": ["Libre Franklin"],
+                        "body-md": ["Libre Franklin"],
+                        "display-lg-mobile": ["\"Source Serif 4\""],
+                        "display-lg": ["\"Source Serif 4\""],
+                        "stats-sm": ["JetBrains Mono"],
+                        "headline-md": ["\"Source Serif 4\""],
+                        "body-sm": ["Libre Franklin"]
+                    },
+                    "fontSize": {
+                        "stats-lg": ["20px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "stats-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden">
+    <div
+        style="background:#17223B;color:#EAEDE2;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+        <span>1. Onboarding &middot; 01/18 &middot; Login (SSO)</span>
+        <span>&larr; sebelumnya <a target="_top" href="./01_login.html" style="color:#EAEDE2;margin:0 10px;">Peta alur</a> <a
+                target="_top" href="#" style="color:#EAEDE2;">Intro tes diagnosis &rarr;</a></span>
+    </div>
+
+    <!-- Subtle Background Pattern (Simulating Grid Paper) -->
+    <div class="fixed inset-0 opacity-[0.03] pointer-events-none"
+        style="background-image: radial-gradient(#17223B 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
+    <!-- Top Navigation Anchor -->
+    <header class="w-full bg-surface border-b border-primary/20">
+        <div
+            class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+            <div class="font-headline-md text-headline-md font-bold text-primary">
+                Flexa Cendekia x UNIPDU
+            </div>
+            <div class="hidden md:flex gap-8">
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
+                    href="./01_login_panduan.html">Panduan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
+                    href="./01_login_bantuan.html">Bantuan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
+                    href="./01_login_kontak.html">Kontak</a>
+            </div>
+            <!-- Mobile menu button -->
+            <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center p-2 text-primary">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-primary/10 bg-surface">
+            <div class="flex flex-col px-margin-mobile py-4 gap-4">
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors" href="./01_login_panduan.html">Panduan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors" href="./01_login_bantuan.html">Bantuan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors" href="./01_login_kontak.html">Kontak</a>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content Area -->
+    <main class="flex-grow flex items-center justify-center p-6">
+        <div class="w-full max-w-lg">
+            <!-- The Academic Ledger Card -->
+            <div class="academic-ledger-card paper-stack-effect p-8 md:p-12 relative">
+                <!-- Brand Lockup -->
+                <div class="flex justify-center mb-8">
+                    <div class="h-12 w-12 border-2 border-primary flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-3xl"
+                            data-icon="menu_book">menu_book</span>
+                    </div>
+                </div>
+                <!-- Headline -->
+                <div class="text-center mb-8">
+                    <h1 class="font-headline-md text-headline-md text-primary mb-2">Selamat Datang Kembali</h1>
+                    <p class="font-body-md text-body-md text-on-surface-variant max-w-sm mx-auto">
+                        Akses roadmap belajar 6 tahun menuju cita-cita profesi Anda.
+                    </p>
+                </div>
+                <!-- Primary Action -->
+                <button
+                    class="w-full bg-primary text-on-primary py-4 px-6 flex items-center justify-center gap-3 hover:opacity-90 transition-all active:scale-[0.98] border border-primary">
+                    <span class="material-symbols-outlined text-xl" data-icon="vpn_key">vpn_key</span>
+                    <span class="font-label-caps text-label-caps uppercase tracking-wider">Masuk via SSO Flexa
+                        Cendekia</span>
+                </button>
+                <!-- Divider -->
+                <div class="relative flex items-center my-10">
+                    <div class="flex-grow border-t border-primary/10"></div>
+                    <span
+                        class="flex-shrink mx-4 font-label-caps text-[10px] text-on-surface-variant/60 uppercase tracking-widest">Atau
+                        masuk sebagai</span>
+                    <div class="flex-grow border-t border-primary/10"></div>
+                </div>
+                <!-- Secondary Role Actions -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <button
+                        class="role-chip py-3 border border-primary/20 text-primary font-label-caps text-label-caps transition-colors flex flex-col items-center gap-1 group">
+                        <span
+                            class="material-symbols-outlined text-lg opacity-40 group-hover:opacity-100 transition-opacity"
+                            data-icon="school">school</span>
+                        Siswa
+                    </button>
+                    <button
+                        class="role-chip py-3 border border-primary/20 text-primary font-label-caps text-label-caps transition-colors flex flex-col items-center gap-1 group">
+                        <span
+                            class="material-symbols-outlined text-lg opacity-40 group-hover:opacity-100 transition-opacity"
+                            data-icon="history_edu">history_edu</span>
+                        Guru
+                    </button>
+                    <button
+                        class="role-chip py-3 border border-primary/20 text-primary font-label-caps text-label-caps transition-colors flex flex-col items-center gap-1 group">
+                        <span
+                            class="material-symbols-outlined text-lg opacity-40 group-hover:opacity-100 transition-opacity"
+                            data-icon="family_restroom">family_restroom</span>
+                        Orang Tua
+                    </button>
+                </div>
+                <!-- Numeric Context / Metadata (Academic Feel) -->
+                <div class="mt-12 pt-8 border-t border-dashed border-primary/10 flex justify-between items-end">
+                    <div class="text-left">
+                        <p class="font-stats-sm text-stats-sm text-on-surface-variant/50">SESSION_ID</p>
+                        <p class="font-stats-lg text-stats-lg text-primary/30 tracking-tight">FC-2026-UP</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-stats-sm text-stats-sm text-on-surface-variant/50">TIMESTAMP</p>
+                        <p class="font-stats-lg text-stats-lg text-primary/30 tracking-tight" id="live-clock">00:00:00
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Supporting Imagery (Bento Minimal) -->
+            <div class="grid grid-cols-2 gap-4 mt-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
+                <div class="h-24 border border-primary/10 overflow-hidden">
+                    <img class="w-full h-full object-cover"
+                        alt="A macro close-up of a high-quality fountain pen nib touching textured ivory cream paper"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjkE9Afo9IQcVxwk1is23XMh15Kx0snEeZLzV62e6ERGdSvURwTtqhdwq7qTsQiqN9RpUCy9LvnSu3VO_9OsUokF5T-DyVBb-k7YNzj8--wE-Sza0xlkPFGIihzztnTdGspBlcp8ARsrvM5lZCGkk5S4Rw-KRuWkodRVy1e_EZdH3HFRqfVu3zhIrbcNRBixvh8SWSkw6Bfv5qJQeRssOjmNzdkQsflR9ECHBA-RBo5st2XeBE6St0yytO_C2UWzPPpRhJPZoVZI4" />
+                </div>
+                <div class="h-24 border border-primary/10 overflow-hidden">
+                    <img class="w-full h-full object-cover"
+                        alt="A clean, minimalist workspace featuring a vintage wooden desk"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJZYXcAiS588LlaHz_7dNk2D_eLWkCrVkijJg3bO-kWY8-0TNc9EzxUYcV5I_ioZusdxJ6UpUW1s5W_OG-RQloRnIM6qOlOm_I9856Hi-Al-OIJld19QIea7WnPK9HBYGdAmbzbmPicrsdiiKgtnDpYABPWgJiIZLc3D_NMpSlENjqboEjIldg6tBtD_0g3PupyPLT_u-n1WxH9whRC4QcTAnupr0QvFEb1ZGE7x373jR_otxmS0sSRIqeJmPcKPbTDkEfVw0fGoM" />
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full bg-surface-container border-t border-primary/10">
+        <div
+            class="flex flex-col md:flex-row justify-between items-center gap-4 px-margin-mobile md:px-margin-desktop py-8 max-w-container-max mx-auto">
+            <div class="flex flex-col items-center md:items-start gap-1">
+                <span class="font-label-caps text-label-caps uppercase tracking-widest text-primary">Kolaborasi
+                    Akademik</span>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Flexa Cendekia &amp; Universitas
+                    Pesantren Tinggi Darul Ulum</span>
+            </div>
+            <div class="flex gap-6">
+                <a class="text-on-surface-variant font-body-sm text-body-sm hover:underline decoration-1 underline-offset-4"
+                    href="#">Kebijakan Privasi</a>
+                <a class="text-on-surface-variant font-body-sm text-body-sm hover:underline decoration-1 underline-offset-4"
+                    href="#">Syarat &amp; Ketentuan</a>
+            </div>
+            <div class="font-body-sm text-body-sm text-on-surface-variant">
+                © 2026 Flexa Cendekia x UNIPDU. Hak Cipta Dilindungi.
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Micro-interaction for the live clock to reinforce the ledger/timestamp feel
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' +
+                now.getMinutes().toString().padStart(2, '0') + ':' +
+                now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('live-clock').textContent = timeStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Subtle hover interaction for the card to shift the "paper stack" effect
+        const card = document.querySelector('.paper-stack-effect');
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const deltaX = (x - centerX) / 50;
+            const deltaY = (y - centerY) / 50;
+
+            card.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `translate3d(0, 0, 0)`;
+        });
+
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>

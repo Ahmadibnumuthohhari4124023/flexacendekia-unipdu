@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Notifications | ScholarsLedger</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Libre+Franklin:wght@400;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Design System Theme Overrides -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-container": "#002822",
+                      "surface-container": "#f0edf0",
+                      "inverse-primary": "#bbc6e7",
+                      "on-secondary-fixed-variant": "#614000",
+                      "on-error": "#ffffff",
+                      "on-secondary-container": "#754e00",
+                      "on-primary-fixed-variant": "#3c4661",
+                      "tertiary-fixed": "#adefe1",
+                      "on-tertiary": "#ffffff",
+                      "primary-container": "#17223b",
+                      "secondary": "#805600",
+                      "secondary-fixed-dim": "#f7bc60",
+                      "outline": "#76777e",
+                      "on-tertiary-fixed": "#00201b",
+                      "on-surface-variant": "#45464d",
+                      "on-tertiary-container": "#549589",
+                      "outline-variant": "#c6c6ce",
+                      "primary": "#020b24",
+                      "on-background": "#1b1b1d",
+                      "secondary-container": "#fdc265",
+                      "tertiary": "#000f0c",
+                      "on-tertiary-fixed-variant": "#005046",
+                      "surface-variant": "#e4e2e4",
+                      "secondary-fixed": "#ffddaf",
+                      "surface-container-low": "#f5f3f5",
+                      "on-primary-container": "#7f89a8",
+                      "surface-container-lowest": "#ffffff",
+                      "on-surface": "#1b1b1d",
+                      "on-primary": "#ffffff",
+                      "surface-dim": "#dcd9dc",
+                      "on-secondary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "background": "#fbf8fb",
+                      "on-error-container": "#93000a",
+                      "on-primary-fixed": "#101b34",
+                      "surface-container-high": "#eae7ea",
+                      "inverse-on-surface": "#f3f0f2",
+                      "primary-fixed": "#d9e2ff",
+                      "surface-tint": "#535e7a",
+                      "surface": "#fbf8fb",
+                      "error-container": "#ffdad6",
+                      "tertiary-fixed-dim": "#91d3c5",
+                      "surface-container-highest": "#e4e2e4",
+                      "inverse-surface": "#303032",
+                      "surface-bright": "#fbf8fb",
+                      "on-secondary-fixed": "#281800",
+                      "primary-fixed-dim": "#bbc6e7"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-max": "1280px",
+                      "unit": "4px",
+                      "margin-desktop": "32px",
+                      "gutter": "16px",
+                      "margin-mobile": "16px"
+              },
+              "fontFamily": {
+                      "stats-sm": ["JetBrains Mono"],
+                      "display-lg": ["\"Source Serif 4\""],
+                      "body-md": ["Libre Franklin"],
+                      "label-caps": ["Libre Franklin"],
+                      "headline-md": ["\"Source Serif 4\""],
+                      "display-lg-mobile": ["\"Source Serif 4\""],
+                      "stats-lg": ["JetBrains Mono"],
+                      "body-sm": ["Libre Franklin"]
+              },
+              "fontSize": {
+                      "stats-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                      "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "stats-lg": ["20px", {"lineHeight": "24px", "fontWeight": "500"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #EAEDE2; /* Level 0: Background Cream from Style Guidance */
+            color: #1b1b1d;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Ledger "Paper" Aesthetic */
+        .ledger-card {
+            background-color: #FBFAF5; /* Level 1: Ivory White */
+            border: 1px solid rgba(23, 34, 59, 0.15); /* Hairline Dark Navy */
+        }
+        .ledger-row:nth-child(even) {
+            background-color: rgba(2, 11, 36, 0.02); /* Zebra striping */
+        }
+        .sidebar-active {
+            background-color: rgba(128, 86, 0, 0.1);
+            color: #805600;
+            border-right: 4px solid #805600;
+        }
+    </style>
+</head>
+<body class="flex min-h-screen overflow-x-hidden">
+<!-- Sidebar (SideNavBar Anchor) -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant/20 py-8">
+<div class="px-6 mb-10">
+<h1 class="font-headline-md text-headline-md text-primary">Homeschool Portal</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant opacity-70">Academic Year 2024</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span> Dashboard
+            </a>
+<a class="flex items-center px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined mr-3">menu_book</span> Study Plans
+            </a>
+<a class="flex items-center px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined mr-3">grade</span> Grades
+            </a>
+<!-- Notifications isn't a top tab in JSON but is our active page context -->
+<a class="flex items-center px-6 py-3 font-label-caps text-label-caps sidebar-active translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">notifications</span> Notifications
+            </a>
+<a class="flex items-center px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined mr-3">settings</span> Settings
+            </a>
+</nav>
+<div class="px-6 mt-auto space-y-2">
+<button class="w-full py-3 bg-primary text-on-primary font-label-caps text-label-caps hover:opacity-90 transition-opacity">
+                Add New Lesson
+            </button>
+<div class="pt-4 border-t border-outline-variant/20">
+<a class="flex items-center py-2 font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-2">contact_support</span> Support
+                </a>
+<a class="flex items-center py-2 font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mr-2">inventory_2</span> Archive
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 flex flex-col min-h-screen">
+<!-- TopNavBar Anchor -->
+<header class="sticky top-0 z-10 bg-surface-container-lowest border-b border-outline-variant/20 flex justify-between items-center w-full px-8 h-16">
+<div class="flex items-center gap-4">
+<span class="font-display-lg text-display-lg text-primary">ScholarsLedger</span>
+<div class="hidden md:flex ml-8 items-center bg-surface-container rounded px-3 py-1">
+<span class="material-symbols-outlined text-outline text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 font-body-sm text-body-sm w-48" placeholder="Cari notifikasi..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-error rounded-full"></span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded transition-colors cursor-pointer">help</span>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A professional academic profile portrait of a university student against a neutral studio background. The lighting is soft and directional, emphasizing clarity and focus. The overall aesthetic is clean and studious, utilizing a muted color palette that blends cream and dark navy tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLXxo1iaaPH30zetHyodyBQqQX8vTTeoNHxgUFMfRFsbWY1zwajIU7n_9xAQ4e5j9y8v4kx1xTgFDqn5oXap7tig06vx-JuApQCynDLNBLqTYHBYhLbRP4y-vLzV8HkLSiudLe4Ul6Zj1hbhOsiqSwcIDYJyY0OXGYPu56tR71wyoD1q7xR-OsqozVPquyBZRvcnVaRMWjqhf5oPXWdMvE38QQUqK5dJ7fuwtJM1RTwNbdgvo4XPZi-W-0hLKP2hnEo2Hem5wmw5I"/>
+</div>
+</div>
+</header>
+<!-- Notification Content -->
+<section class="flex-1 px-8 py-10 max-w-5xl">
+<header class="mb-8">
+<h2 class="font-headline-md text-headline-md text-primary mb-2">Notification Ledger</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Stay updated with academic alerts, feedback, and system announcements.</p>
+</header>
+<!-- Filtering Tabs (Binder Aesthetic) -->
+<div class="flex items-end border-b border-outline-variant/20 mb-6">
+<button class="px-6 py-2 bg-secondary text-on-primary font-label-caps text-label-caps border-t border-x border-outline-variant/20 rounded-t-sm -mb-[1px]">
+                    Terbaru (4)
+                </button>
+<button class="px-6 py-2 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-low transition-colors">
+                    Sudah Dibaca
+                </button>
+<div class="ml-auto flex gap-4 mb-2">
+<button class="text-stats-sm font-stats-sm text-secondary hover:underline transition-all">Mark all as read</button>
+<button class="text-stats-sm font-stats-sm text-on-surface-variant hover:underline transition-all">Archive ledger</button>
+</div>
+</div>
+<!-- Bento Grid of Highlighted Alerts -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="ledger-card p-5 md:col-span-2 relative overflow-hidden group hover:border-secondary transition-colors cursor-pointer">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-6xl">school</span>
+</div>
+<span class="inline-block px-2 py-1 bg-secondary-fixed/30 text-on-secondary-fixed-variant font-stats-sm text-stats-sm rounded mb-3">Academic Alert</span>
+<h3 class="font-headline-md text-headline-md text-primary mb-2">Final Exam Registration Opening</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Registration for the 2024 End-of-Year Examinations starts in 48 hours. Ensure your KRS is fully approved before the deadline.</p>
+<div class="flex items-center gap-2 text-secondary font-label-caps text-label-caps">
+<span>Check Requirements</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</div>
+</div>
+<div class="ledger-card p-5 border-l-4 border-l-secondary flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-3">
+<span class="material-symbols-outlined text-secondary">verified_user</span>
+<span class="font-stats-sm text-stats-sm text-outline">10:45 AM</span>
+</div>
+<h4 class="font-label-caps text-label-caps text-primary mb-1">KRS Approval Status</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Your Academic Advisor (Dosen PA) has approved your Semester Plan.</p>
+</div>
+<button class="mt-4 py-2 border border-primary text-primary font-label-caps text-label-caps hover:bg-primary hover:text-white transition-all">
+                        View Plan
+                    </button>
+</div>
+</div>
+<!-- Notification List (The Ledger) -->
+<div class="ledger-card overflow-hidden">
+<div class="px-6 py-3 bg-surface-container border-b border-outline-variant/20 flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-primary">Notification History</span>
+<span class="font-stats-sm text-stats-sm text-on-surface-variant">Displaying 4 records</span>
+</div>
+<!-- Latest Section -->
+<div class="divide-y divide-outline-variant/10">
+<!-- Notification Row 1 -->
+<div class="ledger-row p-6 flex gap-6 hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0 border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary">feedback</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h5 class="font-body-md text-body-md font-bold text-primary">New Feedback: Advanced Calculus</h5>
+<span class="font-stats-sm text-stats-sm text-outline">Today, 09:12</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Prof. Aris has left a comment on your Week 8 Assignment: "Excellent derivation on the second problem."</p>
+</div>
+<div class="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:text-secondary"><span class="material-symbols-outlined text-sm">visibility</span></button>
+<button class="p-1 hover:text-error"><span class="material-symbols-outlined text-sm">archive</span></button>
+</div>
+</div>
+<!-- Notification Row 2 -->
+<div class="ledger-row p-6 flex gap-6 hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center shrink-0 border border-secondary/20">
+<span class="material-symbols-outlined text-secondary">campaign</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h5 class="font-body-md text-body-md font-bold text-primary">System Maintenance Notice</h5>
+<span class="font-stats-sm text-stats-sm text-outline">Yesterday, 22:00</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">The portal will be offline for routine database optimization this Sunday from 01:00 to 03:00 GMT+7.</p>
+</div>
+<div class="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1 hover:text-secondary"><span class="material-symbols-outlined text-sm">visibility</span></button>
+<button class="p-1 hover:text-error"><span class="material-symbols-outlined text-sm">archive</span></button>
+</div>
+</div>
+<!-- Notification Row 3 (Unread indicator) -->
+<div class="ledger-row p-6 flex gap-6 hover:bg-surface-container-low transition-colors cursor-pointer group bg-secondary/5 border-l-4 border-l-secondary">
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-primary">assignment_late</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h5 class="font-body-md text-body-md font-bold text-primary">Late Submission Alert: Organic Chemistry</h5>
+<span class="font-stats-sm text-stats-sm text-secondary font-bold">New</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Your lab report for Experiment 4 is past due. Please contact your teaching assistant immediately.</p>
+</div>
+</div>
+<!-- Notification Row 4 -->
+<div class="ledger-row p-6 flex gap-6 hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0 border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary">group</span>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-1">
+<h5 class="font-body-md text-body-md font-bold text-primary">Study Group Invitation</h5>
+<span class="font-stats-sm text-stats-sm text-outline">2 days ago</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Sarah J. invited you to join the "Calculus Study Lounge" group. Join to share notes and resources.</p>
+</div>
+</div>
+</div>
+<!-- Footer of List -->
+<div class="px-6 py-4 bg-surface-container-low border-t border-outline-variant/20 flex justify-center">
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2">
+                        Load more ledger entries <span class="material-symbols-outlined text-sm">expand_more</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Footer Anchor -->
+<footer class="mt-auto bg-surface-container-lowest border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center w-full px-8 py-4">
+<span class="font-stats-sm text-stats-sm text-on-surface-variant">© 2024 ScholarsLedger Academic Systems</span>
+<div class="flex gap-6 mt-4 md:mt-0">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors hover:underline decoration-secondary" href="#">Academic Integrity</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors hover:underline decoration-secondary" href="#">Support Center</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors hover:underline decoration-secondary" href="#">Privacy Ledger</a>
+</div>
+</footer>
+</main>
+<!-- Mobile Bottom Navigation (Responsive Pivot) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest border-t border-outline-variant/20 flex justify-around items-center h-16 px-4 z-20">
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-label-caps">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="text-[10px] font-label-caps">Study</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+<span class="text-[10px] font-label-caps">Alerts</span>
+</button>
+<button class="flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-label-caps">Profile</span>
+</button>
+</nav>
+<script>
+        // Micro-interaction for notification rows
+        document.querySelectorAll('.ledger-row').forEach(row => {
+            row.addEventListener('click', function() {
+                this.classList.remove('bg-secondary/5', 'border-l-4', 'border-l-secondary');
+                // Simulate "Read" state
+                const badge = this.querySelector('.text-secondary.font-bold');
+                if(badge) badge.remove();
+            });
+        });
+    </script>
+
+<script>
+(function(){
+  function bindClick(selectors, handler) {
+    document.querySelectorAll(selectors).forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
+            return;
+        }
+        e.preventDefault();
+        handler(e, el);
+      });
+    });
+  }
+
+  // 1. Top Navbar Role Tabs
+  bindClick('header nav a', function(e, a) {
+    var text = a.textContent.trim().toLowerCase();
+    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
+    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
+  });
+
+  // 2. Header Icons & Avatar
+  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
+    var iconText = '';
+    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
+    else {
+      var icon = b.querySelector('.material-symbols-outlined');
+      if (icon) iconText = icon.textContent.trim();
+    }
+    
+    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
+      window.location.href = '/?page=18_profil';
+    }
+  });
+
+  // 3. Sidebar, Bottom Nav, and generic # links
+  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
+    var text = el.textContent.trim().toLowerCase();
+    if (!text) {
+        var icon = el.querySelector('.material-symbols-outlined');
+        if (icon) text = icon.textContent.trim().toLowerCase();
+    }
+    
+    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
+    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
+    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
+    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
+    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
+    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
+    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
+    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
+    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
+  });
+  
+  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
+})();
+</script>
+
+</body></html>

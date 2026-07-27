@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html class="light" lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Panduan Login - Flexa Cendekia x UNIPDU</title>
+    <meta name="description"
+        content="Panduan lengkap cara login menggunakan Akun Flexa Cendekia di platform Flexa Cendekia x UNIPDU." />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        body {
+            background-color: #EAEDE2;
+            font-family: 'Libre Franklin', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .academic-ledger-card {
+            background-color: #FBFAF5;
+            border: 1px solid rgba(23, 34, 59, 0.20);
+            box-shadow: none;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .step-card {
+            background-color: #FBFAF5;
+            border: 1px solid rgba(23, 34, 59, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover {
+            border-color: rgba(23, 34, 59, 0.40);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(23, 34, 59, 0.08);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background-color: #17223B;
+            color: #EAEDE2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .tip-box {
+            background-color: rgba(23, 34, 59, 0.04);
+            border-left: 3px solid #17223B;
+        }
+
+        .warning-box {
+            background-color: rgba(186, 26, 26, 0.04);
+            border-left: 3px solid #ba1a1a;
+        }
+
+        .connector-line {
+            width: 2px;
+            height: 24px;
+            background: repeating-linear-gradient(to bottom,
+                    rgba(23, 34, 59, 0.2) 0px,
+                    rgba(23, 34, 59, 0.2) 4px,
+                    transparent 4px,
+                    transparent 8px);
+            margin-left: 19px;
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#614000",
+                        "secondary-fixed-dim": "#f7bc60",
+                        "error-container": "#ffdad6",
+                        "surface": "#fbf8fb",
+                        "on-tertiary-container": "#549589",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#ffddaf",
+                        "secondary-container": "#fdc265",
+                        "outline": "#76777e",
+                        "inverse-primary": "#bbc6e7",
+                        "inverse-on-surface": "#f3f0f2",
+                        "background": "#fbf8fb",
+                        "tertiary-fixed-dim": "#91d3c5",
+                        "tertiary": "#000f0c",
+                        "on-tertiary-fixed": "#00201b",
+                        "on-surface-variant": "#45464d",
+                        "on-primary-fixed-variant": "#3c4661",
+                        "primary-fixed": "#d9e2ff",
+                        "inverse-surface": "#303032",
+                        "error": "#ba1a1a",
+                        "primary-container": "#17223b",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#dcd9dc",
+                        "on-background": "#1b1b1d",
+                        "on-secondary-fixed": "#281800",
+                        "surface-variant": "#e4e2e4",
+                        "surface-container": "#f0edf0",
+                        "on-tertiary-fixed-variant": "#005046",
+                        "surface-container-highest": "#e4e2e4",
+                        "on-primary-fixed": "#101b34",
+                        "tertiary-fixed": "#adefe1",
+                        "outline-variant": "#c6c6ce",
+                        "surface-container-high": "#eae7ea",
+                        "on-error": "#ffffff",
+                        "primary": "#020b24",
+                        "on-secondary-container": "#754e00",
+                        "primary-fixed-dim": "#bbc6e7",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f5f3f5",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#fbf8fb",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#002822",
+                        "on-surface": "#1b1b1d",
+                        "surface-tint": "#535e7a",
+                        "secondary": "#805600",
+                        "on-primary-container": "#7f89a8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "margin-desktop": "32px",
+                        "gutter": "16px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "stats-lg": ["JetBrains Mono"],
+                        "label-caps": ["Libre Franklin"],
+                        "body-md": ["Libre Franklin"],
+                        "display-lg-mobile": ["\"Source Serif 4\""],
+                        "display-lg": ["\"Source Serif 4\""],
+                        "stats-sm": ["JetBrains Mono"],
+                        "headline-md": ["\"Source Serif 4\""],
+                        "body-sm": ["Libre Franklin"]
+                    },
+                    "fontSize": {
+                        "stats-lg": ["20px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "stats-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden">
+    <!-- Subtle Background Pattern -->
+    <div class="fixed inset-0 opacity-[0.03] pointer-events-none"
+        style="background-image: radial-gradient(#17223B 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
+
+    <!-- Top Navigation -->
+    <header class="w-full bg-surface border-b border-primary/20">
+        <div
+            class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+            <a target="_top" href="<?= getWebAppUrl() ?>?page=01_login"
+                class="font-headline-md text-headline-md font-bold text-primary hover:opacity-80 transition-opacity"
+                style="text-decoration:none;">
+                Flexa Cendekia x UNIPDU
+            </a>
+            <div class="hidden md:flex gap-8">
+                <a class="text-primary font-body-md text-body-md font-semibold border-b-2 border-primary pb-1"
+                    target="_top" href="<?= getWebAppUrl() ?>?page=01_login_panduan">Panduan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
+                    target="_top" href="<?= getWebAppUrl() ?>?page=01_login_bantuan">Bantuan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
+                    target="_top" href="<?= getWebAppUrl() ?>?page=01_login_kontak">Kontak</a>
+            </div>
+            <!-- Mobile menu button -->
+            <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center p-2 text-primary">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-primary/10 bg-surface">
+            <div class="flex flex-col px-margin-mobile py-4 gap-4">
+                <a class="text-primary font-body-md text-body-md font-semibold" target="_top" href="<?= getWebAppUrl() ?>?page=01_login_panduan">Panduan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md" target="_top" href="<?= getWebAppUrl() ?>?page=01_login_bantuan">Bantuan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md" target="_top" href="<?= getWebAppUrl() ?>?page=01_login_kontak">Kontak</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow py-12 px-6">
+        <div class="w-full max-w-3xl mx-auto">
+
+            <!-- Breadcrumb -->
+            <nav class="mb-8 flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant">
+                <a target="_top" href="<?= getWebAppUrl() ?>?page=01_login" class="hover:text-primary transition-colors">Beranda</a>
+                <span class="material-symbols-outlined text-sm opacity-40">chevron_right</span>
+                <span class="text-primary font-semibold">Panduan Login</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="academic-ledger-card p-8 md:p-12 mb-10">
+                <div class="flex items-start gap-5">
+                    <div class="h-14 w-14 border-2 border-primary flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-primary text-3xl">auto_stories</span>
+                    </div>
+                    <div>
+                        <h1 class="font-headline-md text-headline-md text-primary mb-2">Panduan Login</h1>
+                        <p class="font-body-md text-body-md text-on-surface-variant max-w-xl">
+                            Ikuti langkah-langkah berikut untuk masuk ke platform <strong>Flexa Cendekia x
+                                UNIPDU</strong> menggunakan akun Flexa Cendekia Anda. Pastikan Anda telah memiliki akun
+                            yang terdaftar.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prerequisite -->
+            <div class="tip-box p-5 mb-10">
+                <div class="flex items-start gap-3">
+                    <span class="material-symbols-outlined text-primary text-xl mt-0.5">info</span>
+                    <div>
+                        <p class="font-body-md text-body-md text-primary font-semibold mb-1">Persyaratan Sebelum Login
+                        </p>
+                        <ul class="font-body-sm text-body-sm text-on-surface-variant list-disc ml-4 space-y-1">
+                            <li>Anda harus memiliki <strong>Akun Flexa Cendekia</strong> yang sudah terdaftar dan aktif.
+                            </li>
+                            <li>Pastikan email yang digunakan saat pendaftaran masih aktif.</li>
+                            <li>Gunakan browser terbaru (Chrome, Firefox, Edge, atau Safari) untuk pengalaman terbaik.
+                            </li>
+                            <li>Pastikan koneksi internet Anda stabil.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Steps -->
+            <div class="mb-10">
+                <p class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant mb-6">
+                    Langkah-langkah Login</p>
+
+                <!-- Step 1 -->
+                <div class="step-card p-6 flex items-start gap-5">
+                    <div class="step-number">01</div>
+                    <div class="flex-1">
+                        <h2 class="font-headline-md text-[18px] font-semibold text-primary mb-2"
+                            style="font-family:'Source Serif 4',serif;">Buka Halaman Login</h2>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            Buka browser Anda dan akses halaman login Flexa Cendekia x UNIPDU. Anda akan melihat halaman
+                            dengan judul <strong>"Selamat Datang Kembali"</strong> beserta tombol login utama dan
+                            pilihan peran.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="connector-line"></div>
+
+                <!-- Step 2 -->
+                <div class="step-card p-6 flex items-start gap-5">
+                    <div class="step-number">02</div>
+                    <div class="flex-1">
+                        <h2 class="font-headline-md text-[18px] font-semibold text-primary mb-2"
+                            style="font-family:'Source Serif 4',serif;">Klik Tombol "Masuk via SSO Flexa Cendekia"</h2>
+                        <p class="font-body-md text-body-md text-on-surface-variant mb-3">
+                            Di tengah halaman, klik tombol utama berwarna gelap bertuliskan <strong>"MASUK VIA SSO FLEXA
+                                CENDEKIA"</strong>. Ini adalah metode login utama menggunakan sistem Single Sign-On
+                            (SSO).
+                        </p>
+                        <div class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-on-primary text-sm">
+                            <span class="material-symbols-outlined text-base">vpn_key</span>
+                            <span class="font-label-caps text-[11px] uppercase tracking-wider">Masuk via SSO Flexa
+                                Cendekia</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connector-line"></div>
+
+                <!-- Step 3 -->
+                <div class="step-card p-6 flex items-start gap-5">
+                    <div class="step-number">03</div>
+                    <div class="flex-1">
+                        <h2 class="font-headline-md text-[18px] font-semibold text-primary mb-2"
+                            style="font-family:'Source Serif 4',serif;">Masukkan Kredensial Akun Flexa Cendekia</h2>
+                        <p class="font-body-md text-body-md text-on-surface-variant mb-3">
+                            Anda akan diarahkan ke halaman otentikasi SSO Flexa Cendekia. Masukkan kredensial Anda:
+                        </p>
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3 p-3 bg-surface-container-low border border-primary/10">
+                                <span class="material-symbols-outlined text-primary text-lg mt-0.5">mail</span>
+                                <div>
+                                    <p class="font-body-sm text-body-sm text-primary font-semibold">Email / Username</p>
+                                    <p class="font-body-sm text-body-sm text-on-surface-variant">Masukkan email atau
+                                        username yang terdaftar di akun Flexa Cendekia Anda.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3 p-3 bg-surface-container-low border border-primary/10">
+                                <span class="material-symbols-outlined text-primary text-lg mt-0.5">lock</span>
+                                <div>
+                                    <p class="font-body-sm text-body-sm text-primary font-semibold">Password</p>
+                                    <p class="font-body-sm text-body-sm text-on-surface-variant">Masukkan password akun
+                                        Flexa Cendekia Anda. Password bersifat case-sensitive.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="connector-line"></div>
+
+                <!-- Step 4 -->
+                <div class="step-card p-6 flex items-start gap-5">
+                    <div class="step-number">04</div>
+                    <div class="flex-1">
+                        <h2 class="font-headline-md text-[18px] font-semibold text-primary mb-2"
+                            style="font-family:'Source Serif 4',serif;">Verifikasi & Otorisasi</h2>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            Jika ini pertama kali Anda login, sistem mungkin meminta Anda untuk memverifikasi identitas
+                            melalui email atau kode OTP. Periksa inbox email Anda dan masukkan kode verifikasi yang
+                            diterima.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="connector-line"></div>
+
+                <!-- Step 5 -->
+                <div class="step-card p-6 flex items-start gap-5">
+                    <div class="step-number">05</div>
+                    <div class="flex-1">
+                        <h2 class="font-headline-md text-[18px] font-semibold text-primary mb-2"
+                            style="font-family:'Source Serif 4',serif;">Berhasil Masuk!</h2>
+                        <p class="font-body-md text-body-md text-on-surface-variant">
+                            Setelah kredensial terverifikasi, Anda akan diarahkan kembali ke platform Flexa Cendekia x
+                            UNIPDU. Anda kini dapat mengakses <strong>roadmap belajar 6 tahun</strong>, tes diagnosis,
+                            dan seluruh fitur sesuai peran Anda (Siswa, Guru, atau Orang Tua).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alternative Login -->
+            <div class="academic-ledger-card p-8 mb-10">
+                <p class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant mb-5">Login
+                    Alternatif Berdasarkan Peran</p>
+                <p class="font-body-md text-body-md text-on-surface-variant mb-5">
+                    Selain menggunakan SSO, Anda juga dapat login langsung sesuai peran Anda dengan mengklik salah satu
+                    tombol peran di halaman login:
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="p-4 border border-primary/15 text-center">
+                        <span class="material-symbols-outlined text-primary text-2xl mb-2 opacity-60">school</span>
+                        <p class="font-label-caps text-label-caps text-primary mb-1">Siswa</p>
+                        <p class="font-body-sm text-[12px] text-on-surface-variant">Untuk peserta didik aktif SMA/SMK
+                            Darul Ulum.</p>
+                    </div>
+                    <div class="p-4 border border-primary/15 text-center">
+                        <span class="material-symbols-outlined text-primary text-2xl mb-2 opacity-60">history_edu</span>
+                        <p class="font-label-caps text-label-caps text-primary mb-1">Guru</p>
+                        <p class="font-body-sm text-[12px] text-on-surface-variant">Untuk tenaga pengajar dan pembina
+                            akademik.</p>
+                    </div>
+                    <div class="p-4 border border-primary/15 text-center">
+                        <span
+                            class="material-symbols-outlined text-primary text-2xl mb-2 opacity-60">family_restroom</span>
+                        <p class="font-label-caps text-label-caps text-primary mb-1">Orang Tua</p>
+                        <p class="font-body-sm text-[12px] text-on-surface-variant">Untuk wali murid yang memantau
+                            perkembangan anak.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Troubleshooting -->
+            <div class="academic-ledger-card p-8 mb-10">
+                <p class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant mb-5">
+                    Masalah Umum Saat Login</p>
+
+                <div class="space-y-4">
+                    <div class="border-b border-primary/10 pb-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="material-symbols-outlined text-error text-lg">error</span>
+                            <p class="font-body-md text-body-md text-primary font-semibold">Lupa Password</p>
+                        </div>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant ml-7">
+                            Klik link <strong>"Lupa Password?"</strong> di halaman SSO, kemudian ikuti instruksi untuk
+                            mereset password melalui email terdaftar Anda.
+                        </p>
+                    </div>
+                    <div class="border-b border-primary/10 pb-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="material-symbols-outlined text-error text-lg">error</span>
+                            <p class="font-body-md text-body-md text-primary font-semibold">Akun Belum Terdaftar</p>
+                        </div>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant ml-7">
+                            Jika Anda belum memiliki akun Flexa Cendekia, hubungi pihak administrasi sekolah atau
+                            daftarkan diri Anda melalui portal pendaftaran resmi Flexa Cendekia.
+                        </p>
+                    </div>
+                    <div class="pb-2">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="material-symbols-outlined text-error text-lg">error</span>
+                            <p class="font-body-md text-body-md text-primary font-semibold">Halaman Tidak Merespons</p>
+                        </div>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant ml-7">
+                            Coba refresh halaman (Ctrl+R atau F5). Pastikan koneksi internet stabil. Jika masalah
+                            berlanjut, coba gunakan browser lain atau hubungi tim bantuan.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Warning -->
+            <div class="warning-box p-5 mb-10">
+                <div class="flex items-start gap-3">
+                    <span class="material-symbols-outlined text-error text-xl mt-0.5">warning</span>
+                    <div>
+                        <p class="font-body-md text-body-md text-error font-semibold mb-1">Peringatan Keamanan</p>
+                        <ul class="font-body-sm text-body-sm text-on-surface-variant list-disc ml-4 space-y-1">
+                            <li>Jangan pernah membagikan password Anda kepada siapa pun, termasuk pihak yang mengaku
+                                dari Flexa Cendekia.</li>
+                            <li>Selalu pastikan URL yang Anda akses benar dan resmi.</li>
+                            <li>Logout dari akun Anda setelah selesai menggunakan perangkat bersama.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <div class="text-center">
+                <a target="_top" href="<?= getWebAppUrl() ?>?page=01_login"
+                    class="inline-flex items-center gap-3 bg-primary text-on-primary py-4 px-8 hover:opacity-90 transition-all active:scale-[0.98] border border-primary"
+                    style="text-decoration:none;">
+                    <span class="material-symbols-outlined text-xl">arrow_back</span>
+                    <span class="font-label-caps text-label-caps uppercase tracking-wider">Kembali ke Halaman
+                        Login</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full bg-surface-container border-t border-primary/10 mt-12">
+        <div
+            class="flex flex-col md:flex-row justify-between items-center gap-4 px-margin-mobile md:px-margin-desktop py-8 max-w-container-max mx-auto">
+            <div class="flex flex-col items-center md:items-start gap-1">
+                <span class="font-label-caps text-label-caps uppercase tracking-widest text-primary">Kolaborasi
+                    Akademik</span>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Flexa Cendekia &amp; Universitas
+                    Pesantren Tinggi Darul Ulum</span>
+            </div>
+            <div class="flex gap-6">
+                <a class="text-on-surface-variant font-body-sm text-body-sm hover:underline decoration-1 underline-offset-4"
+                    href="#">Kebijakan Privasi</a>
+                <a class="text-on-surface-variant font-body-sm text-body-sm hover:underline decoration-1 underline-offset-4"
+                    href="#">Syarat &amp; Ketentuan</a>
+            </div>
+            <div class="font-body-sm text-body-sm text-on-surface-variant">
+                © 2026 Flexa Cendekia x UNIPDU. Hak Cipta Dilindungi.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+
+</html>

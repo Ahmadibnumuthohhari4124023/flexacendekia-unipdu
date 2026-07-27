@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Akademika | Pilih Cita-cita Profesi</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#f7bc60",
+                        "tertiary": "#000f0c",
+                        "inverse-on-surface": "#f3f0f2",
+                        "surface-container": "#f0edf0",
+                        "on-secondary-fixed": "#281800",
+                        "inverse-primary": "#bbc6e7",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#002822",
+                        "surface-tint": "#535e7a",
+                        "on-surface": "#1b1b1d",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#101b34",
+                        "surface-variant": "#e4e2e4",
+                        "primary": "#020b24",
+                        "on-tertiary-container": "#549589",
+                        "secondary-fixed": "#ffddaf",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#7f89a8",
+                        "on-tertiary-fixed-variant": "#005046",
+                        "error": "#ba1a1a",
+                        "on-surface-variant": "#45464d",
+                        "on-background": "#1b1b1d",
+                        "secondary-container": "#fdc265",
+                        "primary-fixed-dim": "#bbc6e7",
+                        "on-secondary-fixed-variant": "#614000",
+                        "background": "#fbf8fb",
+                        "tertiary-fixed-dim": "#91d3c5",
+                        "surface-dim": "#dcd9dc",
+                        "surface-container-low": "#f5f3f5",
+                        "surface-container-highest": "#e4e2e4",
+                        "surface-container-high": "#eae7ea",
+                        "on-primary-fixed-variant": "#3c4661",
+                        "primary-container": "#17223b",
+                        "tertiary-fixed": "#adefe1",
+                        "secondary": "#805600",
+                        "outline-variant": "#c6c6ce",
+                        "on-secondary-container": "#754e00",
+                        "inverse-surface": "#303032",
+                        "surface": "#fbf8fb",
+                        "primary-fixed": "#d9e2ff",
+                        "on-tertiary-fixed": "#00201b",
+                        "surface-bright": "#fbf8fb",
+                        "outline": "#76777e",
+                        "on-tertiary": "#ffffff",
+                        "student-gold": "#B9862F"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "margin-desktop": "32px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "stats-sm": ["JetBrains Mono"],
+                        "headline-md": ["\"Source Serif 4\""],
+                        "label-caps": ["Libre Franklin"],
+                        "display-lg": ["\"Source Serif 4\""],
+                        "display-lg-mobile": ["\"Source Serif 4\""],
+                        "body-sm": ["Libre Franklin"],
+                        "stats-lg": ["JetBrains Mono"],
+                        "body-md": ["Libre Franklin"]
+                    },
+                    "fontSize": {
+                        "stats-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "stats-lg": ["20px", {"lineHeight": "24px", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .ledger-border { border: 1px solid rgba(2, 11, 36, 0.15); }
+        .active-tab-indicator { border-bottom: 2px solid #805600; font-weight: 700; color: #805600; }
+        .hard-shadow { box-shadow: 4px 4px 0px 0px #020b24; }
+        .zebra-row:nth-child(even) { background-color: rgba(185, 134, 47, 0.03); }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #B9862F; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+<div style="background:#17223B;color:#EAEDE2;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.04em;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+<span>1. Onboarding &middot; 05/18 &middot; Pilih cita-cita</span>
+<span><a href="../04_hasil-diagnosis/code.html" style="color:#EAEDE2;">&larr; Hasil tes diagnosis</a> <a href="../index.html" style="color:#EAEDE2;margin:0 10px;">Peta alur</a> <a href="../06_roadmap-disusun/code.html" style="color:#EAEDE2;">Roadmap sedang disusun &rarr;</a></span>
+</div>
+
+<!-- TopNavBar -->
+<nav class="bg-background dark:bg-surface border-b border-primary/20 sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold text-primary">Flexa Cendekia x UNIPDU</span>
+<div class="hidden md:flex gap-6 items-center h-full pt-1">
+<a class="font-label-caps text-label-caps text-secondary font-bold border-b-2 border-secondary pb-1 tracking-wider" href="#">SISWA</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:bg-primary/5 transition-colors px-2 py-1" href="#">GURU</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:bg-primary/5 transition-colors px-2 py-1" href="#">ORANG TUA</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary-fixed-variant hover:bg-primary/5 p-2 rounded-full transition-colors" data-icon="notifications">notifications</button>
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant/30">
+<div class="text-right">
+<p class="font-label-caps text-[10px] text-on-surface-variant leading-none">Selamat Datang,</p>
+<p class="font-bold text-sm text-primary">Ahmad Fauzi</p>
+</div>
+<span class="material-symbols-outlined text-3xl text-primary" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-container-max mx-auto px-margin-desktop py-12">
+<!-- Header -->
+<header class="max-w-3xl mb-12">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-container/20 border border-secondary/30 rounded-full mb-6">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-caps text-[10px] text-secondary tracking-widest uppercase">Hasil Diagnostik Tersedia</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-primary mb-4">Langkah Terakhir: Pilih Cita-cita Profesimu</h1>
+<p class="font-body-md text-on-surface-variant leading-relaxed">
+                Berdasarkan hasil asesmen RIASEC, profilmu sangat kuat pada area <strong class="text-primary italic">Investigative</strong> dan <strong class="text-primary italic">Artistic</strong>. 
+                Pilihan profesi di bawah ini akan menentukan peta jalan pendidikan (Roadmap) selama 6 tahun ke depan, mulai dari tingkat SMA hingga Perguruan Tinggi.
+            </p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+<!-- Left Column: Recommendations & Search -->
+<div class="lg:col-span-7 space-y-10">
+<!-- Recommendation Section -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-headline-md text-headline-md text-primary">Rekomendasi Berdasarkan Profilmu</h2>
+<span class="font-stats-sm text-stats-sm text-on-surface-variant bg-surface-container px-2 py-1 border border-outline-variant/30">RIASEC: I &amp; A</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+<!-- Arsitek Card (Active Default) -->
+<div class="bg-surface-container-lowest border-2 border-student-gold p-5 cursor-pointer relative group transition-all" onclick="selectCareer('arsitek')">
+<div class="absolute top-0 right-0 bg-student-gold text-white px-2 py-1 text-[10px] font-bold">TERPILIH</div>
+<span class="material-symbols-outlined text-student-gold mb-3 block" data-icon="architecture" style="font-size: 32px;">architecture</span>
+<h3 class="font-bold text-primary mb-1">Arsitek</h3>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Gabungan presisi sains dan kebebasan seni visual.</p>
+</div>
+<!-- Data Scientist Card -->
+<div class="bg-surface-container-lowest ledger-border p-5 cursor-pointer hover:border-primary/40 transition-all" onclick="selectCareer('data_scientist')">
+<span class="material-symbols-outlined text-primary/60 mb-3 block" data-icon="query_stats" style="font-size: 32px;">query_stats</span>
+<h3 class="font-bold text-primary mb-1">Data Scientist</h3>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Menganalisis pola kompleks dengan narasi data kreatif.</p>
+</div>
+<!-- Arsitek Sistem Card -->
+<div class="bg-surface-container-lowest ledger-border p-5 cursor-pointer hover:border-primary/40 transition-all" onclick="selectCareer('system_architect')">
+<span class="material-symbols-outlined text-primary/60 mb-3 block" data-icon="hub" style="font-size: 32px;">hub</span>
+<h3 class="font-bold text-primary mb-1">Arsitek Sistem</h3>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Merancang struktur digital yang efisien dan estetik.</p>
+</div>
+</div>
+</section>
+<!-- Career Explorer -->
+<section class="bg-surface-container-low p-8 border border-outline-variant/20">
+<h3 class="font-label-caps text-label-caps text-primary mb-6">TELUSURI PROFESI LAIN</h3>
+<div class="flex gap-4 mb-6">
+<div class="relative flex-grow">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full bg-white border-outline-variant/50 focus:border-student-gold focus:ring-0 pl-10 h-12 font-body-sm" placeholder="Cari profesi (e.g. Dokter, Desainer...)" type="text"/>
+</div>
+<button class="bg-primary text-white px-6 h-12 font-label-caps text-[12px] hover:bg-primary-container transition-colors">FILTER</button>
+</div>
+<div class="flex flex-wrap gap-2">
+<button class="px-4 py-2 bg-white ledger-border text-[12px] font-medium hover:bg-primary hover:text-white transition-all">Sains</button>
+<button class="px-4 py-2 bg-white ledger-border text-[12px] font-medium hover:bg-primary hover:text-white transition-all">Teknologi</button>
+<button class="px-4 py-2 bg-white ledger-border text-[12px] font-medium hover:bg-primary hover:text-white transition-all">Seni</button>
+<button class="px-4 py-2 bg-white ledger-border text-[12px] font-medium hover:bg-primary hover:text-white transition-all">Sosio-Humaniora</button>
+<button class="px-4 py-2 bg-white ledger-border text-[12px] font-medium hover:bg-primary hover:text-white transition-all">Kesehatan</button>
+</div>
+</section>
+</div>
+<!-- Right Column: Career Details / Backward Mapping -->
+<div class="lg:col-span-5">
+<div class="sticky top-24 bg-surface-container-lowest border border-primary/10 p-8 hard-shadow flex flex-col min-h-[600px]">
+<div class="mb-8 border-b border-primary/5 pb-6">
+<div class="flex items-start justify-between mb-4">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary" id="detail-title">Arsitek</h2>
+<p class="text-student-gold font-stats-sm text-stats-sm">LEVEL: PROFESIONAL</p>
+</div>
+<span class="material-symbols-outlined text-4xl text-student-gold" data-icon="architecture">architecture</span>
+</div>
+<div class="w-full h-40 bg-cover bg-center mb-4 border border-outline-variant/20" data-alt="A high-resolution architectural photograph showing a minimalist modern building with clean lines, large glass windows, and a warm interior glow. The image is taken at twilight, emphasizing the structured geometry and professional aesthetic. The color palette is composed of soft creams, deep navy shadows, and golden lighting, perfectly matching the academic ledger design system." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDMdQFmQvWCQYj_gJk6r_XX61HdZfmhzBfzc_y2asBiQph3DZCxiFkmdK5Ju2tC8yTU8Rx2zQBL5HCMdwf9sF6Qdl0ul05q3RIOetVZZFcSRXhGy5vw67BsSPTICMgIZhqEx9lc-IrwT4VTuEnicP_xqyQbyclUQoX1L_SsH2wJ-5rcSfGmbXtCXBFRJ2oYHIoB7A6c5YXLt00gwJseRlvyM_qob0j2aG6m7Kl6BykBlAC30UGAq5I5Ey_Zmtwtk6y9pZ7z54vK8RM')"></div>
+</div>
+<div class="flex-grow space-y-6">
+<h4 class="font-label-caps text-[11px] text-primary tracking-widest border-l-2 border-student-gold pl-3">BACKWARD MAPPING PREVIEW</h4>
+<!-- Timeline/Mapping -->
+<div class="relative pl-6 space-y-8 before:content-[''] before:absolute before:left-[7px] before:top-2 before:bottom-2 before:w-[1px] before:bg-outline-variant/50">
+<!-- Higher Ed -->
+<div class="relative">
+<div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-student-gold border-4 border-white"></div>
+<h5 class="font-bold text-sm text-primary mb-1">Pendidikan Tinggi (4-5 Tahun)</h5>
+<p class="text-[13px] text-on-surface-variant">S1 Arsitektur. Fokus: Perancangan Ruang, Struktur Bangunan, &amp; Estetika Lingkungan.</p>
+</div>
+<!-- Senior High -->
+<div class="relative">
+<div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-student-gold border-4 border-white"></div>
+<h5 class="font-bold text-sm text-primary mb-1">Sekolah Menengah Atas (3 Tahun)</h5>
+<p class="text-[13px] text-on-surface-variant">Fokus: Matematika Terapan, Fisika Mekanika, &amp; Seni Rupa/Desain Grafis.</p>
+<div class="mt-2 flex gap-2">
+<span class="bg-surface-container px-2 py-1 text-[10px] font-stats-sm text-primary">Klub Gambar</span>
+<span class="bg-surface-container px-2 py-1 text-[10px] font-stats-sm text-primary">Olimpiade Fisika</span>
+</div>
+</div>
+</div>
+<div class="bg-student-gold/5 p-4 border-l-4 border-student-gold mt-auto">
+<p class="font-body-sm text-[12px] italic text-on-secondary-container">
+                                "Arsitek tidak hanya menggambar bangunan, tapi menciptakan solusi hidup bagi manusia."
+                            </p>
+</div>
+</div>
+<div class="mt-10">
+<button class="w-full bg-student-gold text-white h-16 font-label-caps text-sm tracking-widest hover:brightness-90 transition-all flex items-center justify-center gap-3">
+                            KONFIRMASI &amp; SUSUN ROADMAP SAYA
+                            <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-highest dark:bg-tertiary-container border-t border-primary/10">
+<div class="w-full py-8 px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-6">
+<span class="font-label-caps text-label-caps font-bold text-primary">AKADEMIKA LEDGER SYSTEM</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant opacity-80">© 2024 Seluruh Hak Cipta Dilindungi.</p>
+</div>
+<div class="flex gap-8">
+<a class="font-label-caps text-[11px] text-on-surface-variant hover:text-secondary transition-colors" href="#">PANDUAN PENGGUNA</a>
+<a class="font-label-caps text-[11px] text-on-surface-variant hover:text-secondary transition-colors" href="#">KEBIJAKAN PRIVASI</a>
+<a class="font-label-caps text-[11px] text-on-surface-variant hover:text-secondary transition-colors" href="#">KONTAK KAMI</a>
+</div>
+</div>
+</footer>
+<script>
+        function selectCareer(careerId) {
+            const details = {
+                'arsitek': {
+                    title: 'Arsitek',
+                    icon: 'architecture',
+                    desc: 'S1 Arsitektur. Fokus: Perancangan Ruang, Struktur Bangunan, & Estetika Lingkungan.'
+                },
+                'data_scientist': {
+                    title: 'Data Scientist',
+                    icon: 'query_stats',
+                    desc: 'S1 Ilmu Data / Statistika. Fokus: Algoritma Machine Learning, Analisis Statistik, & Visualisasi Data.'
+                },
+                'system_architect': {
+                    title: 'Arsitek Sistem',
+                    icon: 'hub',
+                    desc: 'S1 Teknik Informatika. Fokus: Arsitektur Perangkat Lunak, Keamanan Jaringan, & Skalabilitas Sistem.'
+                }
+            };
+
+            const data = details[careerId];
+            if (data) {
+                document.getElementById('detail-title').innerText = data.title;
+                // Interaction logic could expand here to change icons and specific roadmap items
+            }
+        }
+    </script>
+</body></html>

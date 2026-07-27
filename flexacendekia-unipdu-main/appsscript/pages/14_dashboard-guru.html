@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&amp;family=Source+Serif+4:wght@600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        try {
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        "colors": {
+                            "on-tertiary-container": "#549589",
+                            "background": "#EAEDE2",
+                            "on-primary": "#ffffff",
+                            "secondary-fixed-dim": "#f7bc60",
+                            "on-background": "#17223B",
+                            "surface-container-lowest": "#FBFAF5",
+                            "on-secondary-fixed-variant": "#614000",
+                            "on-surface": "#17223B",
+                            "on-surface-variant": "#45464d",
+                            "on-primary-container": "#7f89a8",
+                            "surface-container-low": "#f5f3f5",
+                            "inverse-surface": "#303032",
+                            "on-tertiary": "#ffffff",
+                            "on-error": "#ffffff",
+                            "secondary-container": "#fdc265",
+                            "secondary-fixed": "#ffddaf",
+                            "error-container": "#ffdad6",
+                            "on-primary-fixed": "#101b34",
+                            "error": "#ba1a1a",
+                            "inverse-on-surface": "#f3f0f2",
+                            "surface-variant": "#e4e2e4",
+                            "surface-dim": "#dcd9dc",
+                            "surface-container-highest": "#e4e2e4",
+                            "secondary": "#805600",
+                            "surface-container-high": "#eae7ea",
+                            "surface-tint": "#535e7a",
+                            "primary-fixed-dim": "#bbc6e7",
+                            "primary-container": "#17223B",
+                            "tertiary-container": "#002822",
+                            "on-primary-fixed-variant": "#3c4661",
+                            "on-secondary-fixed": "#281800",
+                            "on-tertiary-fixed": "#00201b",
+                            "primary": "#17223B",
+                            "surface-container": "#f0edf0",
+                            "on-secondary": "#ffffff",
+                            "tertiary-fixed": "#adefe1",
+                            "surface": "#FBFAF5",
+                            "on-tertiary-fixed-variant": "#005046",
+                            "surface-bright": "#fbf8fb",
+                            "on-error-container": "#93000a",
+                            "outline-variant": "#c6c6ce",
+                            "outline": "#76777e",
+                            "tertiary-fixed-dim": "#91d3c5",
+                            "primary-fixed": "#d9e2ff",
+                            "inverse-primary": "#bbc6e7",
+                            "on-secondary-container": "#754e00",
+                            "tertiary": "#000f0c",
+                            "role-teacher": "#2B6E63"
+                        },
+                        "borderRadius": {
+                            "DEFAULT": "0.25rem",
+                            "lg": "0.5rem",
+                            "xl": "0.75rem",
+                            "full": "9999px"
+                        },
+                        "spacing": {
+                            "unit": "4px",
+                            "margin-desktop": "32px",
+                            "container-max": "1280px",
+                            "gutter": "16px",
+                            "margin-mobile": "16px"
+                        },
+                        "fontFamily": {
+                            "display-lg": ["\"Source Serif 4\""],
+                            "body-sm": ["Libre Franklin"],
+                            "label-caps": ["Libre Franklin"],
+                            "stats-lg": ["JetBrains Mono"],
+                            "stats-sm": ["JetBrains Mono"],
+                            "body-md": ["Libre Franklin"],
+                            "display-lg-mobile": ["\"Source Serif 4\""],
+                            "headline-md": ["\"Source Serif 4\""]
+                        },
+                        "fontSize": {
+                            "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                            "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                            "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                            "stats-lg": ["20px", {"lineHeight": "24px", "fontWeight": "500"}],
+                            "stats-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                            "display-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                            "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                        }
+                    },
+                },
+            }
+        } catch (_e) {}
+    </script>
+<style>
+        .ledger-card {
+            background-color: #FBFAF5;
+            border: 1px solid rgba(23, 34, 59, 0.1);
+            box-shadow: 2px 2px 0px rgba(23, 34, 59, 0.05);
+        }
+        .hard-shadow {
+            box-shadow: 4px 4px 0px #17223B;
+        }
+    </style>
+</head>
+<body class="min-h-screen font-body-md text-on-surface bg-background selection:bg-role-teacher/20">
+<!-- Top Navigation (Unified Style) -->
+<nav class="bg-surface-container-lowest border-b border-on-surface/10 sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-12 h-full">
+<span class="font-display-lg text-2xl font-bold text-primary">Flexa Cendekia x UNIPDU</span>
+<div class="hidden md:flex items-center h-full gap-8">
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md py-2" href="#">Siswa</a>
+<a class="text-role-teacher border-b-4 border-role-teacher font-bold h-full flex items-center px-2" href="#">Guru</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md py-2" href="#">Orang Tua</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-on-surface/5 transition-all">
+<span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-on-surface/5 transition-all">
+<span class="material-symbols-outlined text-primary" data-icon="settings">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-role-teacher/20">
+<img alt="Ibu Sari Rahayu" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxBT34oA63VV8aYM0CjcnmsritZsSh9CsxFQRauujDwh6z4_64CQ4VV0XnX-Zz2j6r2ajNtHsvLsHVIWXy8xEr6fdfubBq4LffLi4yVgdYCsNV5i6JemzzrMS0D9Bt0VzG4ZgR4KQDD9BkEbn3uXNHKy00Mujo2SGCWohVy0onk1Veq_CXn9iNn3Kja0M80NsyY5aWsNYLcJhDE9dKG2ln1t5H9xEQ0iq2BuUe-MpgLjbiwEjuTr3KJAkNcoRGwvMkj9Ou2Fy6msQ"/>
+</div>
+</div>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="max-w-container-max mx-auto px-margin-desktop py-12">
+<!-- Dashboard Header -->
+<header class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<h1 class="font-display-lg text-display-lg text-primary">Selamat Datang, <?= (typeof userData !== 'undefined' && userData) ? userData.nama : 'Ibu Sari Rahayu' ?></h1>
+<span class="px-3 py-1 bg-role-teacher/10 text-role-teacher text-label-caps font-bold rounded-full border border-role-teacher/20">PEMBIMBING AKADEMIK</span>
+</div>
+<p class="font-body-md text-on-surface-variant">
+                    NIP: 19820412200903 • Saat ini membimbing <span class="font-bold text-primary">24 Siswa Binaan</span>.
+                </p>
+</div>
+<button class="bg-role-teacher text-white px-8 py-3 font-bold rounded-lg hover:brightness-90 transition-all flex items-center gap-2 hard-shadow">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                TAMBAH TUGAS
+            </button>
+</header>
+<!-- Stats Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<div class="ledger-card p-8 border-l-4 border-l-secondary flex flex-col justify-between relative group overflow-hidden">
+<div>
+<p class="font-label-caps text-on-surface-variant mb-4">APPROVAL KRS</p>
+<p class="font-stats-lg text-5xl text-secondary mb-2">08</p>
+<p class="font-stats-sm text-on-surface">Siswa Menunggu</p>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-secondary/5 text-9xl group-hover:scale-110 transition-transform" data-icon="assignment">assignment</span>
+</div>
+<div class="ledger-card p-8 border-l-4 border-l-role-teacher flex flex-col justify-between relative group overflow-hidden">
+<div>
+<p class="font-label-caps text-on-surface-variant mb-4">CHECKPOINT</p>
+<p class="font-stats-lg text-5xl text-role-teacher mb-2">12</p>
+<p class="font-stats-sm text-on-surface">Perlu Ditinjau</p>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-role-teacher/5 text-9xl group-hover:scale-110 transition-transform" data-icon="verified">verified</span>
+</div>
+<div class="ledger-card p-8 border-l-4 border-l-error flex flex-col justify-between relative group overflow-hidden">
+<div>
+<p class="font-label-caps text-on-surface-variant mb-4">RISIKO AKADEMIK</p>
+<p class="font-stats-lg text-5xl text-error mb-2">03</p>
+<p class="font-stats-sm text-on-surface">Tertinggal Target</p>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-error/5 text-9xl group-hover:scale-110 transition-transform" data-icon="warning">warning</span>
+</div>
+</div>
+<!-- Working Queues -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<!-- KRS Approval Section -->
+<section class="ledger-card flex flex-col">
+<div class="p-6 border-b border-on-surface/10 bg-surface-container-low/30 flex justify-between items-center">
+<h3 class="font-headline-md text-primary flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="how_to_reg">how_to_reg</span>
+                        Persetujuan KRS
+                    </h3>
+<span class="font-stats-sm text-xs bg-secondary/10 text-secondary border border-secondary/20 px-3 py-1 rounded-full font-bold">3 ANTRIAN</span>
+</div>
+<div class="divide-y divide-on-surface/5">
+<div class="px-6 py-5 flex items-center justify-between hover:bg-on-surface/5 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">B</div>
+<div>
+<p class="font-bold">Budi Santoso</p>
+<p class="text-xs text-on-surface-variant">Semester 5 • Teknik Informatika</p>
+</div>
+</div>
+<button class="text-role-teacher font-bold border-2 border-role-teacher px-4 py-1.5 rounded hover:bg-role-teacher hover:text-white transition-all text-xs">Tinjau/Setujui</button>
+</div>
+<div class="px-6 py-5 flex items-center justify-between hover:bg-on-surface/5 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">S</div>
+<div>
+<p class="font-bold">Sinta Permata</p>
+<p class="text-xs text-secondary font-bold">Semester 3 • Mendatang</p>
+</div>
+</div>
+<button class="text-role-teacher font-bold border-2 border-role-teacher px-4 py-1.5 rounded hover:bg-role-teacher hover:text-white transition-all text-xs">Tinjau/Setujui</button>
+</div>
+<div class="px-6 py-5 flex items-center justify-between hover:bg-on-surface/5 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">R</div>
+<div>
+<p class="font-bold">Rio Pratama</p>
+<p class="text-xs text-on-surface-variant">Semester 1 • Sistem Informasi</p>
+</div>
+</div>
+<button class="text-role-teacher font-bold border-2 border-role-teacher px-4 py-1.5 rounded hover:bg-role-teacher hover:text-white transition-all text-xs">Tinjau/Setujui</button>
+</div>
+</div>
+<a class="p-4 text-center font-label-caps text-on-surface-variant hover:text-primary transition-colors border-t border-on-surface/10 bg-on-surface/5 font-bold" href="#">LIHAT SEMUA PENGAJUAN</a>
+</section>
+<!-- Checkpoint Section -->
+<section class="ledger-card flex flex-col">
+<div class="p-6 border-b border-on-surface/10 bg-surface-container-low/30 flex justify-between items-center">
+<h3 class="font-headline-md text-primary flex items-center gap-3">
+<span class="material-symbols-outlined text-role-teacher" data-icon="task_alt">task_alt</span>
+                        Checkpoint Jumat
+                    </h3>
+<span class="font-stats-sm text-xs bg-role-teacher/10 text-role-teacher border border-role-teacher/20 px-3 py-1 rounded-full font-bold">2 TUGAS</span>
+</div>
+<div class="p-6 space-y-4">
+<div class="p-5 border border-outline/15 bg-background/50 flex justify-between items-center group hover:border-role-teacher transition-colors">
+<div class="flex gap-4">
+<div class="w-12 h-12 ledger-card flex items-center justify-center text-role-teacher">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+</div>
+<div>
+<p class="font-bold text-primary">Laporan Magang - Minggu 4</p>
+<p class="text-body-sm text-on-surface-variant">Oleh: Anisa Rahmawati</p>
+</div>
+</div>
+<button class="bg-primary text-white px-5 py-2 text-xs font-bold rounded-lg hard-shadow">BERI FEEDBACK</button>
+</div>
+<div class="p-5 border border-outline/15 bg-background/50 flex justify-between items-center group hover:border-role-teacher transition-colors">
+<div class="flex gap-4">
+<div class="w-12 h-12 ledger-card flex items-center justify-center text-role-teacher">
+<span class="material-symbols-outlined" data-icon="video_library">video_library</span>
+</div>
+<div>
+<p class="font-bold text-primary">Video Presentasi Proposal</p>
+<p class="text-body-sm text-on-surface-variant">Oleh: Dimas Surya</p>
+</div>
+</div>
+<button class="bg-primary text-white px-5 py-2 text-xs font-bold rounded-lg hard-shadow">BERI FEEDBACK</button>
+</div>
+</div>
+</section>
+<!-- Aspiration Changes (Wide Section) -->
+<section class="ledger-card lg:col-span-2">
+<div class="p-6 border-b border-on-surface/10 bg-surface-container-low/30">
+<h3 class="font-headline-md text-primary flex items-center gap-3">
+<span class="material-symbols-outlined text-role-teacher" data-icon="auto_awesome" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                        Pengajuan Cita-cita &amp; Aspirasi
+                    </h3>
+</div>
+<div class="p-8 flex flex-col md:flex-row items-center gap-12">
+<div class="w-32 h-32 rounded-full border-4 border-role-teacher p-1 flex-shrink-0">
+<img alt="Ahmad Fauzi" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgDjhjw1ZLKZ__J3ObtvMhmo1iqJsyQi8zn0qnX9RHd3kjOwkkvgw1_zXMbRK6aZp5OdpnD5hhUwH7AmWsD4k5rlrzG5XfypE88qQ0JiMOj0fLyP3qs6JTQOdJ3BOhCrUxegrkhIZW4FxHKSUIMgbFBLS0rq3-wOacVdHgJTqBMH0PD0iucGv3Q4Of4U_Y6ZoydwrPDVhfMECVLhzVti1HjtTLe2zwKO1fNhNdYlrmfBNhkW0m0gpWup3dzDKWXytzkWQ5BNVrPLY"/>
+</div>
+<div class="flex-1 text-center md:text-left">
+<div class="flex flex-col md:flex-row md:items-center gap-4 mb-4">
+<span class="font-display-lg text-3xl text-primary">Ahmad Fauzi</span>
+<span class="text-stats-sm text-on-surface-variant bg-on-surface/5 px-3 py-1 font-bold">NISN: 12938475</span>
+</div>
+<p class="text-lg text-on-surface-variant italic leading-relaxed mb-6">"Saya ingin fokus pada arsitektur berkelanjutan untuk membangun desa digital di masa depan."</p>
+<div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
+<span class="text-label-caps bg-role-teacher text-white px-4 py-1.5 font-bold rounded">ASPIRASI: ARSITEK</span>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+<span class="text-label-caps font-bold">POSISI: BACKWARD MAPPING</span>
+<span class="material-symbols-outlined text-sm cursor-help" data-icon="info" title="Kurikulum disesuaikan dengan target karir akhir.">info</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4 w-full md:w-auto">
+<button class="px-8 py-3 bg-role-teacher text-white font-bold rounded-lg hard-shadow hover:brightness-110 transition-all text-center">Setujui Aspirasi</button>
+<button class="px-8 py-3 border-2 border-error text-error font-bold rounded-lg hover:bg-error/5 transition-all text-center">Tolak</button>
+</div>
+</div>
+</section>
+<!-- Risk List -->
+<section class="ledger-card lg:col-span-2">
+<div class="p-6 border-b border-on-surface/10 bg-error/5">
+<h3 class="font-headline-md text-error flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="error_outline">error_outline</span>
+                        Perlu Perhatian Segera (Risiko Tertinggal)
+                    </h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-on-surface/10">
+<div class="p-8 group hover:bg-error/5 transition-colors">
+<div class="flex justify-between items-start mb-4">
+<p class="font-bold text-lg">Eka Wijaya</p>
+<span class="font-stats-sm text-error font-bold">-15% Target</span>
+</div>
+<div class="w-full bg-on-surface/5 h-2 rounded-full mb-4">
+<div class="bg-error h-full rounded-full" style="width: 45%;"></div>
+</div>
+<p class="text-stats-sm text-on-surface-variant">Belum submit 3 checkpoint terakhir. Terakhir aktif: 4 hari lalu.</p>
+</div>
+<div class="p-8 group hover:bg-error/5 transition-colors">
+<div class="flex justify-between items-start mb-4">
+<p class="font-bold text-lg">Larasati</p>
+<span class="font-stats-sm text-error font-bold">-8% Target</span>
+</div>
+<div class="w-full bg-on-surface/5 h-2 rounded-full mb-4">
+<div class="bg-error h-full rounded-full" style="width: 62%;"></div>
+</div>
+<p class="text-stats-sm text-on-surface-variant">Kehadiran sesi mentoring menurun drastis minggu ini.</p>
+</div>
+<div class="p-8 group hover:bg-error/5 transition-colors">
+<div class="flex justify-between items-start mb-4">
+<p class="font-bold text-lg">Hadi Kusuma</p>
+<span class="font-stats-sm text-on-surface-variant font-bold">STAGNAN</span>
+</div>
+<div class="w-full bg-on-surface/5 h-2 rounded-full mb-4">
+<div class="bg-primary/20 h-full rounded-full" style="width: 50%;"></div>
+</div>
+<p class="text-stats-sm text-on-surface-variant">Kecepatan penyelesaian modul berkurang 30% dari bulan lalu.</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+<footer class="max-w-container-max mx-auto px-margin-desktop py-12 border-t border-on-surface/10 text-center">
+<p class="text-label-caps text-on-surface-variant font-bold">Panel Pembimbing Akademik • Flexa Cendekia x UNIPDU</p>
+<p class="text-xs text-on-surface-variant mt-2">© 2024 Arsitektur Kurikulum Masa Depan.</p>
+</footer>
+
+<script>
+(function(){
+  var BASE = '<?= getWebAppUrl() ?>';
+  
+  function bindClick(selectors, handler) {
+    document.querySelectorAll(selectors).forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
+            return;
+        }
+        e.preventDefault();
+        handler(e, el);
+      });
+    });
+  }
+
+  // 1. Top Navbar Role Tabs
+  bindClick('header nav a', function(e, a) {
+    var text = a.textContent.trim().toLowerCase();
+    if (text === 'siswa') window.top.location.href = BASE + '?page=08_dashboard-siswa';
+    else if (text === 'guru') window.top.location.href = BASE + '?page=14_dashboard-guru';
+    else if (text === 'orang tua') window.top.location.href = BASE + '?page=16_dashboard-ortu';
+  });
+
+  // 2. Header Icons & Avatar
+  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
+    var iconText = '';
+    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
+    else {
+      var icon = b.querySelector('.material-symbols-outlined');
+      if (icon) iconText = icon.textContent.trim();
+    }
+    
+    if (iconText === 'notifications') window.top.location.href = BASE + '?page=17_notifikasi';
+    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
+      window.top.location.href = BASE + '?page=18_profil';
+    }
+  });
+
+  // 3. Sidebar, Bottom Nav, and generic # links
+  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
+    var text = el.textContent.trim().toLowerCase();
+    if (!text) {
+        var icon = el.querySelector('.material-symbols-outlined');
+        if (icon) text = icon.textContent.trim().toLowerCase();
+    }
+    
+    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.top.location.href = BASE + '?page=08_dashboard-siswa';
+    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.top.location.href = BASE + '?page=09_krs-siswa';
+    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.top.location.href = BASE + '?page=10_detail-roadmap';
+    else if (text.includes('checkpoint') || text.includes('jumat')) window.top.location.href = BASE + '?page=11_checkpoint-jumat';
+    else if (text.includes('riwayat') || text === 'grades') window.top.location.href = BASE + '?page=13_riwayat-semester';
+    else if (text.includes('ganti cita')) window.top.location.href = BASE + '?page=12_ganti-cita-cita';
+    else if (text.includes('profil') || text === 'settings' || text === 'person') window.top.location.href = BASE + '?page=18_profil';
+    else if (text.includes('notifikasi') || text === 'notifications') window.top.location.href = BASE + '?page=17_notifikasi';
+    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.top.location.href = BASE + '?page=15_tinjauan-guru';
+    else if (text.includes('keluar') || text.includes('logout')) window.top.location.href = BASE + '?page=01_login';
+    else if (text.includes('tes diagnostik')) window.top.location.href = BASE + '?page=02_intro-diagnosis';
+  });
+  
+  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
+})();
+</script>
+
+</body></html>
