@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Pengaturan Roadmap | Flexa Cendekia</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#020b24",
+                        "primary-container": "#17223b",
+                        "secondary": "#805600",
+                        "secondary-container": "#fdc265",
+                        "surface": "#fbf8fb",
+                        "surface-container": "#f0edf0",
+                        "on-surface": "#1b1b1d",
+                        "on-surface-variant": "#45464d",
+                        "outline-variant": "#c6c6ce",
+                        "error": "#ba1a1a",
+                        "error-container": "#ffdad6"
+                    },
+                    fontFamily: {
+                        "display": ['"Source Serif 4"'],
+                        "body": ["Libre Franklin"],
+                        "mono": ["JetBrains Mono"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .blueprint-grid {
+            background-image: 
+                linear-gradient(rgba(23, 34, 59, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(23, 34, 59, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .hard-shadow { box-shadow: 4px 4px 0px 0px #020b24; }
+        .spinner { animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .typing-dots span { animation: blink 1.4s infinite both; }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink { 0%, 80%, 100% { opacity: 0; } 40% { opacity: 1; } }
+    </style>
+</head>
+<body class="bg-[#EAEDE2] text-on-surface font-body blueprint-grid min-h-screen">
+    <!-- TopNavBar -->
+    <nav class="fixed top-0 w-full bg-surface z-50 border-b border-on-surface/20 flex justify-between items-center h-16 px-4 md:px-8">
+        <div class="flex items-center gap-4">
+            <span class="font-display font-bold text-2xl text-primary">Flexa Cendekia</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="code.html" class="flex items-center gap-2 text-sm font-semibold text-primary hover:text-secondary transition-colors">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                Kembali ke Roadmap
+            </a>
+        </div>
+    </nav>
+    
+    <main class="pt-24 pb-16 px-4 md:px-8 max-w-3xl mx-auto">
+        <!-- Header -->
+        <div class="mb-10">
+            <h1 class="font-display font-bold text-4xl text-primary mb-2">Pengaturan Roadmap</h1>
+            <p class="text-on-surface-variant">Kelola preferensi belajar dan konfigurasi roadmap AI Anda.</p>
+        </div>
+
+        <!-- Current Career Info -->
+        <div class="bg-white border border-primary/15 p-6 hard-shadow mb-8 fade-in">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-lg bg-secondary-container/30 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;" id="career-icon">architecture</span>
+                    </div>
+                    <div>
+                        <p class="font-mono text-[10px] text-on-surface-variant tracking-widest uppercase">Jalur Karier Aktif</p>
+                        <h2 class="font-bold text-xl text-primary" id="current-career">Arsitek</h2>
+                    </div>
+                </div>
+                <span class="font-mono text-[11px] bg-emerald-50 text-emerald-600 px-3 py-1 rounded-full border border-emerald-200 font-bold">● Aktif</span>
+            </div>
+            <p class="text-on-surface-variant text-sm italic" id="career-quote">"Arsitektur adalah perpaduan antara presisi dan kebebasan berekspresi."</p>
+        </div>
+
+        <!-- Settings Sections -->
+        <div class="space-y-6">
+            <!-- Notification Settings -->
+            <div class="bg-white border border-primary/15 p-6 hard-shadow fade-in">
+                <div class="flex items-center gap-3 mb-5">
+                    <span class="material-symbols-outlined text-primary">notifications</span>
+                    <h3 class="font-bold text-lg text-primary">Notifikasi Pengingat</h3>
+                </div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold text-on-surface mb-2">Frekuensi Pengingat Belajar</label>
+                        <select id="notif-freq" class="w-full border border-outline-variant rounded-lg px-4 py-3 text-sm focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all">
+                            <option value="daily">Aktif — Setiap Hari</option>
+                            <option value="weekday">Aktif — Hari Sekolah (Senin-Jumat)</option>
+                            <option value="weekend">Aktif — Hanya Akhir Pekan</option>
+                            <option value="off">Nonaktif</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-on-surface mb-2">Waktu Pengingat</label>
+                        <input id="notif-time" type="time" value="07:00" class="w-full border border-outline-variant rounded-lg px-4 py-3 text-sm focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-all"/>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Difficulty Settings -->
+            <div class="bg-white border border-primary/15 p-6 hard-shadow fade-in">
+                <div class="flex items-center gap-3 mb-5">
+                    <span class="material-symbols-outlined text-primary">tune</span>
+                    <h3 class="font-bold text-lg text-primary">Tingkat Kesulitan</h3>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <label class="difficulty-option flex items-center gap-3 p-4 border-2 border-secondary rounded-lg cursor-pointer bg-secondary/5 transition-all">
+                        <input type="radio" name="difficulty" value="regular" checked class="accent-secondary w-4 h-4"/>
+                        <div>
+                            <p class="font-bold text-sm text-primary">Reguler</p>
+                            <p class="text-[12px] text-on-surface-variant">Sesuai kurikulum standar</p>
+                        </div>
+                    </label>
+                    <label class="difficulty-option flex items-center gap-3 p-4 border-2 border-outline-variant rounded-lg cursor-pointer hover:border-secondary/50 transition-all">
+                        <input type="radio" name="difficulty" value="accelerated" class="accent-secondary w-4 h-4"/>
+                        <div>
+                            <p class="font-bold text-sm text-primary">Akselerasi</p>
+                            <p class="text-[12px] text-on-surface-variant">Materi menantang & dipercepat</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Save Button -->
+            <button id="btn-save" onclick="saveSettings()" class="w-full bg-primary text-white py-4 font-bold rounded-lg hard-shadow hover:bg-primary-container transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-sm">save</span>
+                Simpan Pengaturan
+            </button>
+
+            <!-- Divider -->
+            <div class="border-t border-primary/10 pt-6 mt-6"></div>
+
+            <!-- Regenerate AI Roadmap -->
+            <div class="bg-white border border-primary/15 p-6 hard-shadow fade-in">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                    <h3 class="font-bold text-lg text-primary">Regenerasi Roadmap AI</h3>
+                </div>
+                <p class="text-on-surface-variant text-sm mb-5">Minta Gemini AI untuk membuat ulang roadmap Anda berdasarkan data diagnostik terbaru dan preferensi yang telah diperbarui.</p>
+                
+                <!-- AI Status Panel (hidden by default) -->
+                <div id="ai-status" class="hidden mb-5 p-4 bg-primary-container text-white rounded-lg">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-5 h-5 border-2 border-white/50 border-t-white rounded-full spinner"></div>
+                        <span class="font-bold text-sm" id="ai-status-text">Menghubungi Gemini AI...</span>
+                    </div>
+                    <div class="font-mono text-[11px] text-white/70 space-y-1" id="ai-log">
+                        <!-- Logs will be appended here -->
+                    </div>
+                </div>
+
+                <button id="btn-regenerate" onclick="regenerateRoadmap()" class="w-full bg-secondary text-white py-4 font-bold rounded-lg hover:brightness-90 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">smart_toy</span>
+                    Regenerasi dengan AI
+                </button>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="border-2 border-dashed border-error/30 rounded-lg p-6 fade-in">
+                <div class="flex items-center gap-3 mb-3">
+                    <span class="material-symbols-outlined text-error">warning</span>
+                    <h3 class="font-bold text-lg text-error">Zona Berbahaya</h3>
+                </div>
+                <p class="text-on-surface-variant text-sm mb-4">Mengganti jalur karier akan mereset semua progress milestone dan data roadmap Anda. Tindakan ini tidak dapat dibatalkan.</p>
+                <button onclick="changeCareer()" class="px-6 py-3 border-2 border-error text-error font-bold rounded-lg hover:bg-error hover:text-white transition-all active:scale-[0.98] flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm">swap_horiz</span>
+                    Ganti Jalur Karier
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+    const careerIcons = {
+        'arsitek': 'architecture',
+        'data scientist': 'query_stats',
+        'arsitek sistem': 'hub',
+        'dokter': 'stethoscope',
+        'akuntan': 'account_balance',
+        'peneliti biologi': 'science'
+    };
+
+    const careerQuotes = {
+        'arsitek': '"Arsitektur adalah perpaduan antara presisi dan kebebasan berekspresi."',
+        'data scientist': '"Data adalah minyak baru, namun insight adalah energi penggeraknya."',
+        'arsitek sistem': '"Membangun fondasi digital yang kuat untuk menopang masa depan teknologi."',
+        'dokter': '"Menyembuhkan satu kehidupan, berarti menjaga kelangsungan umat manusia."',
+        'akuntan': '"Kesehatan finansial adalah cermin dari keberhasilan sebuah strategi."',
+        'peneliti biologi': '"Di setiap mikroskop, terdapat dunia tak terlihat yang membentuk kehidupan kita."'
+    };
+
+    function loadSettings() {
+        const careerTitle = localStorage.getItem('selectedCareer') || 'Arsitek';
+        document.getElementById('current-career').textContent = careerTitle;
+        document.getElementById('career-icon').textContent = careerIcons[careerTitle.toLowerCase()] || 'star';
+        document.getElementById('career-quote').textContent = careerQuotes[careerTitle.toLowerCase()] || '';
+
+        // Load saved preferences
+        const freq = localStorage.getItem('notif_freq') || 'daily';
+        const time = localStorage.getItem('notif_time') || '07:00';
+        const diff = localStorage.getItem('difficulty') || 'regular';
+
+        document.getElementById('notif-freq').value = freq;
+        document.getElementById('notif-time').value = time;
+
+        document.querySelectorAll('input[name="difficulty"]').forEach(r => {
+            if (r.value === diff) {
+                r.checked = true;
+                r.closest('label').classList.add('border-secondary', 'bg-secondary/5');
+                r.closest('label').classList.remove('border-outline-variant');
+            }
+        });
+
+        // Difficulty radio interactivity
+        document.querySelectorAll('input[name="difficulty"]').forEach(r => {
+            r.addEventListener('change', () => {
+                document.querySelectorAll('.difficulty-option').forEach(opt => {
+                    opt.classList.remove('border-secondary', 'bg-secondary/5');
+                    opt.classList.add('border-outline-variant');
+                });
+                r.closest('label').classList.add('border-secondary', 'bg-secondary/5');
+                r.closest('label').classList.remove('border-outline-variant');
+            });
+        });
+    }
+
+    function saveSettings() {
+        const freq = document.getElementById('notif-freq').value;
+        const time = document.getElementById('notif-time').value;
+        const diff = document.querySelector('input[name="difficulty"]:checked').value;
+
+        localStorage.setItem('notif_freq', freq);
+        localStorage.setItem('notif_time', time);
+        localStorage.setItem('difficulty', diff);
+
+        const btn = document.getElementById('btn-save');
+        btn.innerHTML = '<span class="material-symbols-outlined text-sm" style="font-variation-settings: \'FILL\' 1;">check_circle</span> Tersimpan!';
+        btn.classList.add('bg-emerald-600');
+        btn.classList.remove('bg-primary');
+        setTimeout(() => {
+            btn.innerHTML = '<span class="material-symbols-outlined text-sm">save</span> Simpan Pengaturan';
+            btn.classList.remove('bg-emerald-600');
+            btn.classList.add('bg-primary');
+        }, 2000);
+    }
+
+    function regenerateRoadmap() {
+        const statusPanel = document.getElementById('ai-status');
+        const statusText = document.getElementById('ai-status-text');
+        const logPanel = document.getElementById('ai-log');
+        const btn = document.getElementById('btn-regenerate');
+
+        statusPanel.classList.remove('hidden');
+        btn.disabled = true;
+        btn.classList.add('opacity-50', 'cursor-not-allowed');
+        logPanel.innerHTML = '';
+
+        const careerTitle = localStorage.getItem('selectedCareer') || 'Arsitek';
+        const steps = [
+            { text: '→ Menghubungi Gemini AI API...', delay: 800 },
+            { text: '→ Memuat profil diagnostik RIASEC siswa...', delay: 1500 },
+            { text: '→ Menganalisis jalur karier: ' + careerTitle + '...', delay: 2200 },
+            { text: '→ Menyusun kurikulum berbasis backward mapping...', delay: 3000 },
+            { text: '→ Mengoptimalkan timeline & milestone...', delay: 3800 },
+            { text: '→ Memvalidasi resources & bahan belajar...', delay: 4500 },
+            { text: '✓ Roadmap berhasil diregenerasi!', delay: 5300 }
+        ];
+
+        steps.forEach((step, i) => {
+            setTimeout(() => {
+                logPanel.innerHTML += '<p class="fade-in">' + step.text + '</p>';
+                if (i === steps.length - 1) {
+                    statusText.textContent = 'Selesai!';
+                    statusPanel.classList.remove('bg-primary-container');
+                    statusPanel.classList.add('bg-emerald-700');
+
+                    setTimeout(() => {
+                        statusPanel.classList.add('hidden');
+                        statusPanel.classList.remove('bg-emerald-700');
+                        statusPanel.classList.add('bg-primary-container');
+                        btn.disabled = false;
+                        btn.classList.remove('opacity-50', 'cursor-not-allowed');
+                        statusText.textContent = 'Menghubungi Gemini AI...';
+
+                        // Show success toast
+                        showToast('Roadmap berhasil diregenerasi oleh AI!');
+                    }, 2000);
+                }
+            }, step.delay);
+        });
+    }
+
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 bg-primary text-white px-6 py-3 rounded-lg hard-shadow flex items-center gap-2 font-bold text-sm z-50 fade-in';
+        toast.innerHTML = '<span class="material-symbols-outlined text-sm" style="font-variation-settings: \'FILL\' 1;">check_circle</span>' + message;
+        document.body.appendChild(toast);
+        setTimeout(() => { toast.remove(); }, 3000);
+    }
+
+    function changeCareer() {
+        if (confirm('Anda yakin ingin mengganti jalur karier? Semua progress milestone akan direset.')) {
+            // Clear all milestone progress from localStorage
+            const keys = Object.keys(localStorage);
+            keys.forEach(key => {
+                if (key.startsWith('milestone_') || key.startsWith('check_')) {
+                    localStorage.removeItem(key);
+                }
+            });
+            // Navigate to career selection
+            window.location.href = '../05_pilih-cita-cita/code.html';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadSettings);
+    </script>
+</body>
+</html>

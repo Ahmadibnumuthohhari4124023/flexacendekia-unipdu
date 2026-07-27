@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Timeline Perjalanan | Flexa Cendekia</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#020b24",
+                        "primary-container": "#17223b",
+                        "secondary": "#805600",
+                        "secondary-container": "#fdc265",
+                        "surface": "#fbf8fb",
+                        "surface-container": "#f0edf0",
+                        "surface-container-low": "#f5f3f5",
+                        "on-surface": "#1b1b1d",
+                        "on-surface-variant": "#45464d",
+                        "outline-variant": "#c6c6ce",
+                        "on-secondary-container": "#754e00"
+                    },
+                    fontFamily: {
+                        "display": ['"Source Serif 4"'],
+                        "body": ["Libre Franklin"],
+                        "mono": ["JetBrains Mono"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .blueprint-grid {
+            background-image: 
+                linear-gradient(rgba(23, 34, 59, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(23, 34, 59, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .hard-shadow { box-shadow: 4px 4px 0px 0px #020b24; }
+        .timeline-item { opacity: 0; transform: translateY(30px); transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .timeline-item.visible { opacity: 1; transform: translateY(0); }
+        .pulse-dot { animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(128, 86, 0, 0.4); } 50% { box-shadow: 0 0 0 8px rgba(128, 86, 0, 0); } }
+    </style>
+</head>
+<body class="bg-[#EAEDE2] text-on-surface font-body blueprint-grid min-h-screen">
+    <!-- TopNavBar -->
+    <nav class="fixed top-0 w-full bg-surface z-50 border-b border-on-surface/20 flex justify-between items-center h-16 px-4 md:px-8">
+        <div class="flex items-center gap-4">
+            <span class="font-display font-bold text-2xl text-primary">Flexa Cendekia</span>
+        </div>
+        <div class="flex items-center gap-4">
+            <a href="/?page=07_hasil-roadmap" class="flex items-center gap-2 text-sm font-semibold text-primary hover:text-secondary transition-colors">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                Kembali ke Roadmap
+            </a>
+        </div>
+    </nav>
+    
+    <main class="pt-24 pb-16 px-4 md:px-8 max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary-container/30 border border-secondary rounded-full mb-4">
+                <span class="material-symbols-outlined text-secondary text-sm">auto_awesome</span>
+                <span class="font-mono text-[11px] text-secondary font-bold tracking-widest uppercase">AI-Generated Timeline</span>
+            </div>
+            <h1 class="font-display font-bold text-4xl md:text-5xl text-primary mb-3" id="page-title">Timeline Perjalanan Anda</h1>
+            <p class="text-on-surface-variant max-w-xl mx-auto" id="page-subtitle">Peta waktu lengkap dari langkah-langkah strategis menuju profesi impian Anda.</p>
+        </div>
+
+        <!-- Timeline Container -->
+        <div class="relative" id="timeline-container">
+            <!-- Vertical line -->
+            <div class="absolute left-5 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-secondary via-primary/30 to-primary/10 md:-translate-x-px"></div>
+        </div>
+    </main>
+
+    <script>
+    const careerTimelineMap = {
+        'arsitek': [
+            { year: 'Kelas 10', label: 'Tahun 1', desc: 'Membangun fondasi geometri ruang, menguasai SketchUp dasar, dan eksplorasi seni rupa visual.', status: 'active', icon: 'looks_one' },
+            { year: 'Kelas 11', label: 'Tahun 2', desc: 'Proyek desain rumah ramah lingkungan, workshop perspektif 2 titik hilang, dan studi material bangunan.', status: 'active', icon: 'looks_two' },
+            { year: 'Kelas 12', label: 'Tahun 3', desc: 'Finalisasi 10 karya portfolio, simulasi tes spasial, dan persiapan ujian masuk S1 Arsitektur.', status: 'upcoming', icon: 'looks_3' },
+            { year: 'Gap Year', label: 'Opsional', desc: 'Pendalaman advanced drafting, struktur dasar bangunan, dan seni rupa murni.', status: 'optional', icon: 'hourglass_empty' },
+            { year: 'Universitas Tahun 1-2', label: 'Tahun 4-5', desc: 'Pengantar Arsitektur, Studio 1, Sejarah Arsitektur, dan Teknologi Bangunan.', status: 'upcoming', icon: 'school' },
+            { year: 'Universitas Tahun 3-4', label: 'Tahun 6-7', desc: 'Sains Bangunan, magang di biro arsitek, dan Tugas Akhir: Desain Kompleks Arsitektural.', status: 'upcoming', icon: 'emoji_events' }
+        ],
+        'data scientist': [
+            { year: 'Kelas 10', label: 'Tahun 1', desc: 'Fondasi logika matematika, probabilitas, dan pengenalan bahasa Python.', status: 'active', icon: 'looks_one' },
+            { year: 'Kelas 11', label: 'Tahun 2', desc: 'Proyek analisis data sederhana, eksplorasi dataset publik, dan workshop Machine Learning dasar.', status: 'active', icon: 'looks_two' },
+            { year: 'Kelas 12', label: 'Tahun 3', desc: 'Sertifikasi Python, proyek akhir data analysis, dan persiapan ujian masuk S1 Ilmu Komputer.', status: 'upcoming', icon: 'looks_3' },
+            { year: 'Gap Year', label: 'Opsional', desc: 'Bootcamp intensif: SQL mastery, data visualization, dan pengenalan AI models.', status: 'optional', icon: 'hourglass_empty' },
+            { year: 'Universitas Tahun 1-2', label: 'Tahun 4-5', desc: 'Kalkulus, Struktur Data, Aljabar Linier, dan Statistika Inferensial.', status: 'upcoming', icon: 'school' },
+            { year: 'Universitas Tahun 3-4', label: 'Tahun 6-7', desc: 'Deep Learning, Cloud Computing, magang Data Analyst, NLP, dan Tugas Akhir: AI Predictive Model.', status: 'upcoming', icon: 'emoji_events' }
+        ],
+        'arsitek sistem': [
+            { year: 'Kelas 10', label: 'Tahun 1', desc: 'Fondasi jaringan komputer, TCP/IP, dan pengenalan Linux CLI.', status: 'active', icon: 'looks_one' },
+            { year: 'Kelas 11', label: 'Tahun 2', desc: 'Membangun web server, pengenalan cloud computing, dan scripting otomasi.', status: 'active', icon: 'looks_two' },
+            { year: 'Kelas 12', label: 'Tahun 3', desc: 'Sertifikasi Linux, proyek cloud deployment, dan persiapan masuk S1 Teknik Informatika.', status: 'upcoming', icon: 'looks_3' },
+            { year: 'Gap Year', label: 'Opsional', desc: 'Bootcamp DevOps: Docker, Kubernetes, dan arsitektur cloud.', status: 'optional', icon: 'hourglass_empty' },
+            { year: 'Universitas Tahun 1-2', label: 'Tahun 4-5', desc: 'Algoritma, Struktur Data, Sistem Operasi, dan Basis Data relasional.', status: 'upcoming', icon: 'school' },
+            { year: 'Universitas Tahun 3-4', label: 'Tahun 6-7', desc: 'Arsitektur Perangkat Lunak, Microservices, magang DevOps, dan Tugas Akhir Desain Cloud-Native.', status: 'upcoming', icon: 'emoji_events' }
+        ],
+        'dokter': [
+            { year: 'Kelas 10', label: 'Tahun 1', desc: 'Fondasi biologi sel, genetika, dan pengenalan anatomi sistem organ tubuh manusia.', status: 'active', icon: 'looks_one' },
+            { year: 'Kelas 11', label: 'Tahun 2', desc: 'Riset kesehatan masyarakat, workshop P3K bersertifikat, dan pendalaman kimia organik.', status: 'active', icon: 'looks_two' },
+            { year: 'Kelas 12', label: 'Tahun 3', desc: 'Olimpiade Biologi, simulasi tes kedokteran, dan persiapan UTBK masuk FK.', status: 'upcoming', icon: 'looks_3' },
+            { year: 'Gap Year', label: 'Opsional', desc: 'Pendalaman biokimia lanjut, psikologi medis, dan kegiatan komunitas kesehatan.', status: 'optional', icon: 'hourglass_empty' },
+            { year: 'Universitas Tahun 1-2', label: 'Tahun 4-5', desc: 'Pre-Klinik: Anatomi, Fisiologi, Biokimia, dan Histologi.', status: 'upcoming', icon: 'school' },
+            { year: 'Universitas Tahun 3-5+', label: 'Tahun 6-8+', desc: 'Klinik: Patologi, Farmakologi, rotasi RS, Ko-Asistensi, dan UKMPPD.', status: 'upcoming', icon: 'emoji_events' }
+        ],
+        'akuntan': [
+            { year: 'Kelas 10', label: 'Tahun 1', desc: 'Pengantar akuntansi, siklus debit-kredit, dan penguasaan Microsoft Excel.', status: 'active', icon: 'looks_one' },
+            { year: 'Kelas 11', label: 'Tahun 2', desc: 'Praktik pembukuan UMKM, workshop perpajakan dasar, dan ekonomi makro.', status: 'active', icon: 'looks_two' },
+            { year: 'Kelas 12', label: 'Tahun 3', desc: 'Sertifikasi Excel, simulasi audit koperasi, dan persiapan masuk S1 Akuntansi.', status: 'upcoming', icon: 'looks_3' },
+            { year: 'Gap Year', label: 'Opsional', desc: 'Intensif financial modeling, software akuntansi, dan hukum bisnis.', status: 'optional', icon: 'hourglass_empty' },
+            { year: 'Universitas Tahun 1-2', label: 'Tahun 4-5', desc: 'Pengantar Akuntansi, Ekonomi Mikro, Akuntansi Menengah, dan Hukum Bisnis.', status: 'upcoming', icon: 'school' },
+            { year: 'Universitas Tahun 3-4', label: 'Tahun 6-7', desc: 'Audit, Perpajakan, magang di KAP, Akuntansi Forensik, dan Tugas Akhir.', status: 'upcoming', icon: 'emoji_events' }
+        ],
+        'peneliti biologi': [
+            { year: 'Kelas 10', label: 'Tahun 1', desc: 'Fondasi ekologi, keanekaragaman hayati, dan praktikum pengamatan sel dengan mikroskop.', status: 'active', icon: 'looks_one' },
+            { year: 'Kelas 11', label: 'Tahun 2', desc: 'Riset biodiversitas lokal, workshop teknik laboratorium, dan pendalaman genetika.', status: 'active', icon: 'looks_two' },
+            { year: 'Kelas 12', label: 'Tahun 3', desc: 'Karya ilmiah biologi, koleksi herbarium, dan persiapan masuk S1 Biologi.', status: 'upcoming', icon: 'looks_3' },
+            { year: 'Gap Year', label: 'Opsional', desc: 'Ekspedisi riset lapangan, pengenalan bioteknologi, dan kegiatan konservasi.', status: 'optional', icon: 'hourglass_empty' },
+            { year: 'Universitas Tahun 1-2', label: 'Tahun 4-5', desc: 'Biologi Umum, Kimia Organik, Mikrobiologi, dan Genetika.', status: 'upcoming', icon: 'school' },
+            { year: 'Universitas Tahun 3-4', label: 'Tahun 6-7', desc: 'Biologi Molekuler, Bioinformatika, riset di lab, dan Tugas Akhir Riset.', status: 'upcoming', icon: 'emoji_events' }
+        ]
+    };
+
+    function renderTimeline(timelineData) {
+        const container = document.getElementById('timeline-container');
+        let html = '<div class="absolute left-5 md:left-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-secondary via-primary/30 to-primary/10 md:-translate-x-px"></div>';
+
+        timelineData.forEach((item, index) => {
+            const isLeft = index % 2 === 0;
+            const statusColors = {
+                'active': { dot: 'bg-emerald-500 pulse-dot', badge: 'bg-emerald-500 text-white', text: 'Sedang Berjalan' },
+                'upcoming': { dot: 'bg-primary/30', badge: 'bg-primary/10 text-primary', text: 'Akan Datang' },
+                'optional': { dot: 'bg-secondary border-2 border-dashed border-secondary', badge: 'bg-secondary/10 text-secondary', text: 'Opsional' }
+            };
+            const status = statusColors[item.status] || statusColors['upcoming'];
+
+            html += `
+            <div class="timeline-item relative flex items-start mb-8 md:mb-12 ${isLeft ? 'md:flex-row' : 'md:flex-row-reverse'}" style="transition-delay: ${index * 120}ms">
+                <div class="absolute left-5 md:left-1/2 w-4 h-4 rounded-full ${status.dot} border-4 border-[#EAEDE2] z-10 -translate-x-1/2 mt-6"></div>
+                <div class="ml-12 md:ml-0 ${isLeft ? 'md:pr-12 md:w-1/2 md:text-right' : 'md:pl-12 md:w-1/2'}">
+                    <div class="bg-white border border-primary/15 p-6 hard-shadow hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_#020b24] transition-all duration-300 group">
+                        <div class="flex items-center gap-3 mb-3 ${isLeft ? 'md:flex-row-reverse' : ''}">
+                            <div class="w-10 h-10 rounded-lg bg-primary/5 flex items-center justify-center shrink-0 group-hover:bg-secondary/10 transition-colors">
+                                <span class="material-symbols-outlined text-primary group-hover:text-secondary transition-colors">${item.icon}</span>
+                            </div>
+                            <div class="${isLeft ? 'md:text-right' : ''}">
+                                <h3 class="font-bold text-primary text-lg">${item.year}</h3>
+                                <span class="font-mono text-[11px] ${status.badge} px-2 py-0.5 rounded-full">${item.label} · ${status.text}</span>
+                            </div>
+                        </div>
+                        <p class="text-on-surface-variant text-sm leading-relaxed">${item.desc}</p>
+                    </div>
+                </div>
+            </div>`;
+        });
+
+        container.innerHTML = html;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.15 });
+        container.querySelectorAll('.timeline-item').forEach(item => observer.observe(item));
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const careerTitle = localStorage.getItem('selectedCareer') || 'Arsitek';
+        const timeline = careerTimelineMap[careerTitle.toLowerCase()] || careerTimelineMap['arsitek'];
+        
+        document.getElementById('page-title').textContent = 'Timeline: Jalur ' + careerTitle;
+        document.getElementById('page-subtitle').textContent = 'Peta waktu strategis dari Kelas 10 hingga Universitas untuk menjadi seorang ' + careerTitle + ' profesional.';
+        
+        renderTimeline(timeline);
+    });
+    </script>
+
+<script>
+(function(){
+  function bindClick(selectors, handler) {
+    document.querySelectorAll(selectors).forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
+            return;
+        }
+        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
+            return;
+        }
+        e.preventDefault();
+        handler(e, el);
+      });
+    });
+  }
+
+  // 1. Top Navbar Role Tabs
+  bindClick('header nav a', function(e, a) {
+    var text = a.textContent.trim().toLowerCase();
+    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
+    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
+  });
+
+  // 2. Header Icons & Avatar
+  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
+    var iconText = '';
+    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
+    else {
+      var icon = b.querySelector('.material-symbols-outlined');
+      if (icon) iconText = icon.textContent.trim();
+    }
+    
+    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
+      window.location.href = '/?page=18_profil';
+    }
+  });
+
+  // 3. Sidebar, Bottom Nav, and generic # links
+  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
+    var text = el.textContent.trim().toLowerCase();
+    if (!text) {
+        var icon = el.querySelector('.material-symbols-outlined');
+        if (icon) text = icon.textContent.trim().toLowerCase();
+    }
+    
+    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
+    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
+    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
+    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
+    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
+    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
+    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
+    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
+    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
+  });
+  
+  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
+})();
+</script>
+
+</body>
+</html>

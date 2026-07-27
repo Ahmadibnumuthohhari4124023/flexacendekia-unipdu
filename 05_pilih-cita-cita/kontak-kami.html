@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Akademika | Kontak Kami</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#020b24",
+                        "student-gold": "#B9862F",
+                        "background": "#fbf8fb",
+                        "surface": "#fbf8fb",
+                        "on-surface": "#1b1b1d",
+                        "on-surface-variant": "#45464d",
+                        "outline-variant": "#c6c6ce"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["\"Source Serif 4\""],
+                        "label-caps": ["Libre Franklin"],
+                        "display-lg": ["\"Source Serif 4\""],
+                        "body-md": ["Libre Franklin"]
+                    }
+                }
+            }
+        }
+</script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+<nav class="bg-surface border-b border-primary/20 sticky top-0 z-50 p-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <a href="code.html" class="flex items-center gap-2 text-primary hover:text-student-gold transition-colors">
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span class="font-label-caps font-bold">KEMBALI</span>
+        </a>
+        <span class="font-headline-md font-bold text-primary">Kontak Kami</span>
+    </div>
+</nav>
+<main class="flex-grow max-w-3xl mx-auto p-8 w-full">
+    <h1 class="font-display-lg text-primary mb-6">Hubungi Kami</h1>
+    <p class="text-on-surface-variant mb-8">Punya pertanyaan atau masukan? Silakan isi formulir di bawah ini, dan tim kami akan segera menghubungi Anda kembali.</p>
+    
+    <div class="bg-white p-6 border border-outline-variant/30 rounded-lg shadow-sm">
+        <form class="space-y-6">
+            <div>
+                <label class="block font-label-caps text-xs font-bold text-primary mb-2">NAMA LENGKAP</label>
+                <input type="text" class="w-full border-outline-variant/50 focus:border-student-gold focus:ring-0 rounded p-3" placeholder="Masukkan nama Anda">
+            </div>
+            <div>
+                <label class="block font-label-caps text-xs font-bold text-primary mb-2">EMAIL</label>
+                <input type="email" class="w-full border-outline-variant/50 focus:border-student-gold focus:ring-0 rounded p-3" placeholder="Masukkan alamat email aktif">
+            </div>
+            <div>
+                <label class="block font-label-caps text-xs font-bold text-primary mb-2">PESAN</label>
+                <textarea class="w-full border-outline-variant/50 focus:border-student-gold focus:ring-0 rounded p-3 h-32 resize-none" placeholder="Tuliskan pesan atau pertanyaan Anda di sini..."></textarea>
+            </div>
+            <button type="button" class="w-full bg-primary text-white h-12 font-label-caps font-bold text-sm hover:bg-student-gold transition-colors rounded">
+                KIRIM PESAN
+            </button>
+        </form>
+    </div>
+
+    <div class="mt-12 text-center text-sm text-on-surface-variant">
+        <p>Atau hubungi kami via email di <a href="mailto:support@flexacendekia.edu" class="text-student-gold font-bold hover:underline">support@flexacendekia.edu</a></p>
+    </div>
+</main>
+<footer class="bg-surface border-t border-primary/10 p-8 text-center mt-auto">
+    <p class="font-label-caps text-xs text-on-surface-variant">© 2024 AKADEMIKA LEDGER SYSTEM. SELURUH HAK CIPTA DILINDUNGI.</p>
+</footer>
+</body></html>

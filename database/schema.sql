@@ -79,6 +79,10 @@ CREATE TABLE IF NOT EXISTS Semester_KRS (
   roadmapId CHAR(36) NOT NULL,
   semesterKe INT NOT NULL,
   status ENUM('Menunggu Persetujuan','Disetujui','Ditolak','Selesai') NOT NULL DEFAULT 'Menunggu Persetujuan',
+<<<<<<< HEAD
+=======
+  catatanGuru TEXT DEFAULT NULL,
+>>>>>>> d9987a26ee64d14bf5c2746ff3efc2d734945487
   disetujuiOlehId CHAR(36) DEFAULT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (roadmapId) REFERENCES Roadmap(id) ON DELETE CASCADE,

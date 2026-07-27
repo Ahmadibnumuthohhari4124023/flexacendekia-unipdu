@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Halaman Soal - Tes Diagnostik SMP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&amp;family=Libre+Franklin:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#fbf8fb",
+                        "primary-fixed": "#d9e2ff",
+                        "surface-container-highest": "#e4e2e4",
+                        "primary-container": "#17223b",
+                        "on-secondary": "#ffffff",
+                        "primary": "#020b24",
+                        "on-secondary-fixed": "#281800",
+                        "on-primary-fixed-variant": "#3c4661",
+                        "surface-container": "#f0edf0",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#e4e2e4",
+                        "surface-container-high": "#eae7ea",
+                        "on-tertiary-container": "#549589",
+                        "on-error-container": "#93000a",
+                        "on-primary-container": "#7f89a8",
+                        "secondary": "#805600",
+                        "on-background": "#1b1b1d",
+                        "inverse-primary": "#bbc6e7",
+                        "on-surface": "#1b1b1d",
+                        "on-surface-variant": "#45464d",
+                        "on-primary": "#ffffff",
+                        "primary-fixed-dim": "#bbc6e7",
+                        "inverse-on-surface": "#f3f0f2",
+                        "surface-bright": "#fbf8fb",
+                        "surface-dim": "#dcd9dc",
+                        "on-primary-fixed": "#101b34",
+                        "surface-container-low": "#f5f3f5",
+                        "secondary-fixed-dim": "#f7bc60",
+                        "on-secondary-container": "#754e00",
+                        "outline": "#76777e",
+                        "surface": "#fbf8fb",
+                        "on-secondary-fixed-variant": "#614000",
+                        "tertiary-container": "#002822",
+                        "tertiary-fixed-dim": "#91d3c5",
+                        "secondary-fixed": "#ffddaf",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#c6c6ce",
+                        "inverse-surface": "#303032",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#fdc265",
+                        "on-tertiary-fixed": "#00201b",
+                        "on-tertiary-fixed-variant": "#005046",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary": "#000f0c",
+                        "surface-tint": "#535e7a",
+                        "tertiary-fixed": "#adefe1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "margin-desktop": "32px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "stats-sm": ["JetBrains Mono"],
+                        "headline-md": ["\"Source Serif 4\""],
+                        "display-lg-mobile": ["\"Source Serif 4\""],
+                        "body-md": ["Libre Franklin"],
+                        "display-lg": ["\"Source Serif 4\""],
+                        "label-caps": ["Libre Franklin"],
+                        "body-sm": ["Libre Franklin"],
+                        "stats-lg": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "stats-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "stats-lg": ["20px", { "lineHeight": "24px", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .ledger-border { border: 1px solid rgba(2, 11, 36, 0.15); }
+        .ledger-shadow { box-shadow: 4px 4px 0px 0px #020b24; }
+        .ledger-striping tr:nth-child(even) { background-color: rgba(253, 194, 101, 0.05); }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab { border-bottom: 2px solid #805600; color: #805600; }
+        input[type="radio"]:checked + label { background-color: rgba(128, 86, 0, 0.1); border-color: #805600; }
+    </style>
+</head>
+<body class="bg-[#EAEDE2] font-body-md text-on-surface min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest border-b border-primary/20 flex justify-between items-center w-full px-gutter md:px-margin-desktop h-16 sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-bold text-primary">Flexa Cendekia x UNIPDU</span>
+</div>
+<nav class="hidden md:flex items-center gap-8 h-full">
+<a class="font-label-caps text-label-caps text-secondary border-b-2 border-secondary pb-1 h-full flex items-center" href="#">Siswa</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200 h-full flex items-center" href="#">Guru</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200 h-full flex items-center" href="#">Orang Tua</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<button class="p-2 rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">account_circle</span>
+</button>
+</div>
+</header>
+<div class="max-w-[1280px] mx-auto flex flex-col md:flex-row">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-[calc(100vh-64px)] w-64 sticky top-16 border-r border-primary/10 bg-surface-container-low py-6 px-4">
+<div class="flex items-center gap-3 mb-8 px-2">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center border border-primary/10 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of a focused high school student in a neat uniform, looking directly at the camera with a confident expression. The lighting is soft and academic, set against a backdrop of a blurred library with wooden bookshelves and warm tones, maintaining the academic ledger aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAA5GEUhRNZmbd9I2Y5uexlmtFaWQNh1M_2BXKVbxect_R5qH8Nph755oOB6ojuOh3badOp6NMZv-F6KwBtJ8Ewb3y02A3amohn5_I0YGitgKhuTvnziqdr72juzYNKIUt6AFcw-HYM8kzS3EQf5MpQtMgrUvf5zfnjpssYDjFM84nVrZjo1hGql5vdtp6T2PZ6tWEtblN8eExVl-Q1UALOFLZbEWCbitMsnf1a6tSDwSM0aeFhBPT6zvJ5APfW6p4tHPqUpoZG80"/>
+</div>
+<div>
+<h3 class="font-label-caps text-[10px] text-primary uppercase tracking-wider">Akademik Siswa</h3>
+<p class="font-body-sm text-[12px] text-on-surface-variant">Flexa Cendekia</p>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container transition-all duration-150" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-caps text-label-caps">Beranda</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded bg-secondary/10 text-secondary border-r-4 border-secondary translate-x-1 transition-all duration-150" href="#">
+<span class="material-symbols-outlined">quiz</span>
+<span class="font-label-caps text-label-caps">Tes Diagnostik</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container transition-all duration-150" href="#">
+<span class="material-symbols-outlined">timeline</span>
+<span class="font-label-caps text-label-caps">Roadmap</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container transition-all duration-150" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-caps text-label-caps">Profil</span>
+</a>
+</nav>
+<div class="mt-auto pt-6 border-t border-primary/5 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:bg-surface-container transition-all" href="../01_login/bantuan.html">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-caps text-label-caps">Bantuan</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded text-error hover:bg-error-container/20 transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-caps text-label-caps">Keluar</span>
+</a>
+</div>
+</aside>
+
+
+<!-- Main Content Canvas -->
+<main class="flex-1 p-6 md:p-margin-desktop bg-[#FBFAF5] min-h-[calc(100vh-64px)]">
+<div class="max-w-4xl mx-auto" id="app-container">
+<!-- UI will be rendered here via JS -->
+</div>
+</main>
+</div>
+<script>
+    const questions = [
+    // Minat & Ketertarikan (1-10)
+    {id:1, category:"Minat & Ketertarikan", text:"Aktivitas ekstrakurikuler mana yang paling menarik buatmu?", options:["Klub olahraga atau bela diri.", "PMR atau pramuka yang membantu orang lain.", "Klub komputer, robotik, atau sains.", "Klub teater, mading, atau paduan suara."]},
+    {id:2, category:"Minat & Ketertarikan", text:"Saat berselancar di internet atau YouTube, video apa yang sering kamu tonton?", options:["Vlog jalan-jalan atau kuliner.", "Tutorial game atau cara memperbaiki sesuatu.", "Video lucu atau podcast bareng teman-teman.", "Review buku, film, atau teori konspirasi."]},
+    {id:3, category:"Minat & Ketertarikan", text:"Kalau ada tugas kelompok membuat majalah dinding, peran apa yang kamu pilih?", options:["Mendesain tata letak dan menggambar.", "Menulis artikel dan cerita.", "Mencari data dan informasi penting.", "Menjadi ketua yang mengatur tugas teman-teman."]},
+    {id:4, category:"Minat & Ketertarikan", text:"Jenis bacaan apa yang paling sering kamu nikmati?", options:["Novel fiksi remaja atau komik.", "Buku tentang fakta sains atau teknologi.", "Biografi orang-orang sukses.", "Aku lebih suka membaca berita atau artikel pendek."]},
+    {id:5, category:"Minat & Ketertarikan", text:"Ketika melihat gadget baru rilis, apa yang pertama kali kamu perhatikan?", options:["Bentuk dan warnanya yang keren.", "Kecanggihan spesifikasi dan kameranya.", "Berapa harganya dan apakah itu murah.", "Aku tidak terlalu peduli dengan gadget baru."]},
+    {id:6, category:"Minat & Ketertarikan", text:"Apa yang paling kamu sukai saat bekerja dalam kelompok?", options:["Bertemu dan ngobrol seru dengan teman-teman.", "Menyelesaikan tantangan atau soal yang susah.", "Bisa memimpin dan mengarahkan kelompok.", "Aku sebenarnya lebih suka bekerja sendiri."]},
+    {id:7, category:"Minat & Ketertarikan", text:"Topik obrolan apa yang paling bikin kamu bersemangat?", options:["Ngomongin film, musik, atau artis idola.", "Berdiskusi soal isu lingkungan atau sosial.", "Membicarakan hobi, game, atau olahraga.", "Membahas teknologi atau hal-hal ilmiah baru."]},
+    {id:8, category:"Minat & Ketertarikan", text:"Kalau kamu dikasih hadiah tiket liburan, kamu pilih ke mana?", options:["Ke pantai atau gunung untuk bertualang.", "Ke museum sejarah atau pusat teknologi.", "Ke taman hiburan bareng sahabat.", "Ke galeri seni atau konser musik besar."]},
+    {id:9, category:"Minat & Ketertarikan", text:"Bagaimana caramu menghabiskan uang jajan berlebih?", options:["Kutabung untuk membeli barang yang sudah lama kuincar.", "Kubelikan makanan atau traktir teman.", "Kubelikan buku, komik, atau voucher game.", "Kubelikan aksesoris atau baju yang lucu."]},
+    {id:10, category:"Minat & Ketertarikan", text:"Jika sekolah mengadakan pameran, stand apa yang akan kamu buat?", options:["Stand makanan dan minuman kreatif.", "Stand pameran seni atau mading kelas.", "Stand percobaan sains yang meledak-ledak.", "Stand game ketangkasan atau olahraga."]},
+    // Bakat Alami (11-20)
+    {id:11, category:"Bakat Alami", text:"Saat berdebat dengan teman, apakah kamu mudah mencari alasan yang masuk akal?", options:["Sangat mudah, aku sering menang debat.", "Bisa, tapi kadang kehabisan kata-kata.", "Aku lebih sering diam dan mengalah.", "Aku lebih suka menengahi daripada berdebat."]},
+    {id:12, category:"Bakat Alami", text:"Seberapa cepat kamu bisa menemukan barang yang hilang di kamar yang berantakan?", options:["Cepat, mataku tajam mencari celah.", "Lumayan, asalkan aku yang menaruhnya terakhir.", "Sangat lama, harus dibantu orang tua.", "Aku jarang kehilangan barang."]},
+    {id:13, category:"Bakat Alami", text:"Apakah kamu mudah membaca suasana hati orang lain dari ekspresi wajahnya?", options:["Iya, aku langsung tahu kalau ada teman yang sedih atau marah.", "Bisa, kalau perubahannya jelas.", "Sering salah menebak perasaan orang.", "Aku jarang memperhatikan wajah orang."]},
+    {id:14, category:"Bakat Alami", text:"Bagaimana kemampuanmu dalam merakit barang atau membaca peta arah?", options:["Sangat bagus, aku jarang tersesat.", "Cukup bagus jika ada petunjuk jalan.", "Bingung kalau harus merakit sendiri.", "Sangat buruk dalam hal arah dan ruang."]},
+    {id:15, category:"Bakat Alami", text:"Apakah tulisanmu rapi dan tertata dengan baik di buku catatan?", options:["Iya, aku suka membuat catatan warna-warni dan rapi.", "Rapi, tapi biasa saja.", "Agak berantakan tapi masih terbaca.", "Sangat berantakan, aku sendiri susah membacanya."]},
+    {id:16, category:"Bakat Alami", text:"Saat main game yang butuh strategi (seperti catur atau game MOBA), seberapa jago kamu?", options:["Sangat jago, aku suka memikirkan langkah ke depan.", "Biasa saja, kadang menang kadang kalah.", "Kurang jago, aku main asal jalan saja.", "Aku lebih suka game santai daripada game strategi."]},
+    {id:17, category:"Bakat Alami", text:"Apakah kamu punya ritme yang pas saat bernyanyi atau bermain alat musik?", options:["Iya, nadaku tidak pernah fals.", "Bisa sedikit kalau berlatih lama.", "Tidak, aku sering kebalik temponya.", "Sangat buruk dalam hal musik."]},
+    {id:18, category:"Bakat Alami", text:"Bagaimana reaksimu saat menghadapi masalah dadakan (misal: tugas tertinggal)?", options:["Tetap tenang dan mencari solusi (misal: pinjam buku teman).", "Panik sebentar lalu baru bertindak.", "Menangis atau sangat ketakutan.", "Pasrah dan diam saja."]},
+    {id:19, category:"Bakat Alami", text:"Apakah kamu mudah menghafal rumus matematika atau sains?", options:["Mudah, karena aku paham konsepnya.", "Bisa hafal kalau terus diulang-ulang.", "Sulit, aku sering tertukar rumusnya.", "Sangat susah, aku benci rumus."]},
+    {id:20, category:"Bakat Alami", text:"Berapa lama kamu bisa fokus mengerjakan satu hal tanpa memegang HP?", options:["Berjam-jam kalau kegiatannya seru.", "Sekitar 30 menit, lalu butuh istirahat.", "Hanya beberapa menit, cepat terdistraksi.", "Sangat sulit lepas dari HP."]},
+    // Gaya Belajar (21-30)
+    {id:21, category:"Gaya Belajar", text:"Saat belajar untuk ulangan, cara mana yang paling efektif buatmu?", options:["Membaca rangkuman dan menandai dengan stabilo.", "Berdiskusi atau tanya jawab dengan teman.", "Menulis ulang catatan di kertas kosong.", "Mengerjakan latihan soal terus-menerus."]},
+    {id:22, category:"Gaya Belajar", text:"Jika guru menjelaskan di depan kelas, apa yang membuatmu cepat paham?", options:["Guru yang menggunakan slide presentasi yang menarik.", "Guru yang suaranya lantang dan bercerita dengan seru.", "Guru yang mengajak siswa mempraktikkan langsung.", "Guru yang memberikan catatan rapi di papan tulis."]},
+    {id:23, category:"Gaya Belajar", text:"Ketika menghafal kosa kata bahasa Inggris, kamu...", options:["Melihat gambar dan tulisannya berulang kali.", "Mengucapkannya dengan keras berulang kali.", "Menuliskannya berkali-kali di buku.", "Menggunakannya langsung dalam percakapan."]},
+    {id:24, category:"Gaya Belajar", text:"Pilih suasana belajar yang paling kamu sukai:", options:["Sepi dan tenang di kamar sendiri.", "Sambil mendengarkan musik instrumen atau lo-fi.", "Di kafe atau perpustakaan yang ada sedikit suara orang.", "Belajar kelompok bareng sahabat di rumah."]},
+    {id:25, category:"Gaya Belajar", text:"Jika diberi tugas merakit prakarya, kamu akan...", options:["Membaca buku panduannya dari awal sampai akhir dulu.", "Meminta teman menjelaskan cara merakitnya.", "Langsung memegang bahannya dan mencoba-coba.", "Melihat contoh jadinya saja."]},
+    {id:26, category:"Gaya Belajar", text:"Apa yang paling mengganggumu saat sedang fokus belajar?", options:["Kamar yang berantakan atau cahaya redup.", "Suara TV atau obrolan orang di luar kamar.", "Duduk terlalu lama bikin badanku pegal.", "Pikiran yang melayang kemana-mana."]},
+    {id:27, category:"Gaya Belajar", text:"Saat menonton film subtitle, kamu lebih fokus pada...", options:["Membaca subtitle dan ekspresi wajah aktornya.", "Mendengarkan nada suara aktornya berbicara.", "Action atau gerakan-gerakan dalam film tersebut.", "Jalan ceritanya secara keseluruhan."]},
+    {id:28, category:"Gaya Belajar", text:"Bagaimana bentuk catatanmu di buku tulis?", options:["Sangat rapi, warna-warni, dan ada gambarnya.", "Biasa saja, yang penting aku bisa baca.", "Penuh dengan coretan panah atau mind map.", "Berantakan, kadang hanya separuh halaman."]},
+    {id:29, category:"Gaya Belajar", text:"Saat disuruh mengingat sebuah nomor telepon, kamu akan...", options:["Membayangkan angka-angkanya dalam pikiran.", "Menggumamkan angkanya berulang-ulang.", "Mengingat pola gerakan jari saat mengetik di HP.", "Langsung menyimpannya di kontak."]},
+    {id:30, category:"Gaya Belajar", text:"Pelajaran apa yang paling tidak membosankan bagimu?", options:["Pelajaran yang banyak gambarnya (Geografi/Biologi).", "Pelajaran yang butuh banyak diskusi (Sejarah/PKN).", "Pelajaran yang ada praktikumnya (Olaharaga/IPA).", "Pelajaran hitung-hitungan (Matematika/Fisika)."]},
+    // Kompetensi Dasar (31-40)
+    {id:31, category:"Kompetensi Dasar", text:"Berapakah hasil dari 15 + 5 x 2?", options:["25", "40", "30", "35"]},
+    {id:32, category:"Kompetensi Dasar", text:"Manakah dari kalimat berikut yang merupakan kalimat aktif?", options:["Buku dibaca oleh Budi.", "Budi membaca buku.", "Oleh Budi, buku dibaca.", "Buku itu telah dibaca."]},
+    {id:33, category:"Kompetensi Dasar", text:"Planet ketiga dari matahari di tata surya kita adalah...", options:["Mars", "Venus", "Bumi", "Jupiter"]},
+    {id:34, category:"Kompetensi Dasar", text:"Jika sebuah buku harganya Rp50.000 dan mendapat diskon 20%, berapa harga buku sekarang?", options:["Rp40.000", "Rp10.000", "Rp30.000", "Rp45.000"]},
+    {id:35, category:"Kompetensi Dasar", text:"Pilihlah pasangan sinonim (persamaan kata) yang benar:", options:["Besar = Kecil", "Cepat = Lambat", "Pintar = Cerdas", "Tinggi = Rendah"]},
+    {id:36, category:"Kompetensi Dasar", text:"Air yang dipanaskan terus-menerus akan mengalami proses...", options:["Membeku", "Mencair", "Menguap", "Menyublim"]},
+    {id:37, category:"Kompetensi Dasar", text:"Sebuah segitiga memiliki alas 10 cm dan tinggi 5 cm. Berapakah luasnya?", options:["25 cm2", "50 cm2", "15 cm2", "20 cm2"]},
+    {id:38, category:"Kompetensi Dasar", text:"Tokoh yang membacakan teks Proklamasi Kemerdekaan Indonesia adalah...", options:["Moh. Hatta", "Soekarno", "Ki Hajar Dewantara", "Sudirman"]},
+    {id:39, category:"Kompetensi Dasar", text:"Lengkapi deret angka ini: 2, 4, 8, 16, ...", options:["24", "32", "20", "40"]},
+    {id:40, category:"Kompetensi Dasar", text:"Organ tubuh manusia yang berfungsi untuk memompa darah adalah...", options:["Paru-paru", "Lambung", "Jantung", "Ginjal"]}
+];
+    let currentQuestion = 1;
+    let answers = {};
+    let timeInSeconds = 30 * 60; // 30 minutes
+    let timerInterval = null;
+
+    const container = document.getElementById('app-container');
+
+    function render() {
+        const q = questions[currentQuestion - 1];
+        const answeredCount = Object.keys(answers).length;
+        const progressPercent = Math.round((answeredCount / 40) * 100);
+        
+        let optionsHtml = '';
+        const labels = ['A', 'B', 'C', 'D'];
+        q.options.forEach((opt, idx) => {
+            const isChecked = answers[currentQuestion] === idx ? 'checked' : '';
+            const activeClass = isChecked ? 'bg-secondary/10 border-secondary' : '';
+            optionsHtml += `
+            <div class="group">
+                <input class="hidden" id="opt${idx}" name="diagnostic_option" type="radio" ${isChecked} onchange="selectOption(${idx})"/>
+                <label class="flex items-start gap-4 p-5 border border-primary/10 hover:bg-surface-container transition-all cursor-pointer group-active:translate-x-1 ${activeClass}" for="opt${idx}">
+                <span class="w-6 h-6 rounded-full border-2 border-primary/20 flex items-center justify-center flex-shrink-0 group-hover:border-secondary transition-colors">
+                <span class="font-stats-sm text-xs font-bold text-on-surface-variant">${labels[idx]}</span>
+                </span>
+                <span class="font-body-md text-on-surface">${opt}</span>
+                </label>
+            </div>
+            `;
+        });
+
+        let paginationHtml = '';
+        // Smart pagination logic (showing surrounding pages)
+        let startPage = Math.max(1, currentQuestion - 2);
+        let endPage = Math.min(40, currentQuestion + 2);
+        if (startPage > 1) {
+            paginationHtml += `<button onclick="goTo(1)" class="w-8 h-8 flex items-center justify-center border border-primary/20 text-xs font-stats-sm hover:bg-secondary/10 ${answers[1]!==undefined?'bg-green-100':''}">1</button>`;
+            if (startPage > 2) paginationHtml += `<div class="w-8 h-8 flex items-center justify-center text-xs font-stats-sm">...</div>`;
+        }
+        for (let i = startPage; i <= endPage; i++) {
+            const btnClass = (i === currentQuestion) 
+                ? 'bg-secondary text-white' 
+                : `border border-primary/20 hover:bg-secondary/10 ${answers[i]!==undefined?'bg-green-100':''}`;
+            paginationHtml += `<button onclick="goTo(${i})" class="w-8 h-8 flex items-center justify-center text-xs font-stats-sm ${btnClass}">${i}</button>`;
+        }
+        if (endPage < 40) {
+            if (endPage < 39) paginationHtml += `<div class="w-8 h-8 flex items-center justify-center text-xs font-stats-sm">...</div>`;
+            paginationHtml += `<button onclick="goTo(40)" class="w-8 h-8 flex items-center justify-center border border-primary/20 text-xs font-stats-sm hover:bg-secondary/10 ${answers[40]!==undefined?'bg-green-100':''}">40</button>`;
+        }
+
+        const noteHtml = q.note ? `<div class="bg-background/50 border-l-4 border-secondary p-4 italic text-on-surface-variant font-body-sm">${q.note}</div>` : '';
+
+        const minutes = Math.floor(timeInSeconds / 60);
+        const seconds = timeInSeconds % 60;
+        const timeStr = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+        container.innerHTML = `
+        <!-- Progress Header -->
+        <div class="mb-10">
+        <div class="flex justify-between items-end mb-4">
+        <div>
+        <h1 class="font-headline-md text-headline-md text-primary mb-1">Tes Diagnostik SMP - ${q.category}</h1>
+        <p class="font-body-sm text-on-surface-variant">Soal ${currentQuestion} dari 40</p>
+        </div>
+        <div class="text-right">
+        <div class="font-stats-lg text-stats-lg text-secondary mb-1" id="timer">${timeStr}</div>
+        <p class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest">Sisa Waktu</p>
+        </div>
+        </div>
+        <div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden border border-primary/10">
+        <div class="h-full bg-secondary-container transition-all duration-500" style="width: ${progressPercent}%;"></div>
+        </div>
+        <div class="flex justify-between mt-2">
+        <span class="font-stats-sm text-stats-sm text-on-surface-variant">Status <span class="text-primary font-bold">${answeredCount}</span> terjawab</span>
+        <span class="font-stats-sm text-stats-sm text-on-surface-variant">${progressPercent}% Selesai</span>
+        </div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="bg-surface-container-lowest ledger-border p-8 rounded-none relative overflow-hidden mb-8">
+        <div class="absolute top-0 right-0 w-24 h-24 pointer-events-none opacity-10">
+        <span class="material-symbols-outlined text-[120px] -rotate-12 translate-x-8 -translate-y-8">description</span>
+        </div>
+        <article class="relative z-10">
+        <span class="font-label-caps text-label-caps text-secondary mb-6 block">${q.category}</span>
+        <div class="space-y-6">
+        <p class="font-headline-md text-xl text-primary leading-relaxed">${q.text}</p>
+        ${noteHtml}
+        </div>
+        <div class="mt-10 space-y-4">
+        ${optionsHtml}
+        </div>
+        </article>
+        </div>
+
+        <!-- Footer Navigation -->
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 py-8 border-t border-primary/10">
+        <button onclick="prev()" class="w-full sm:w-auto px-8 py-3 border border-primary text-primary font-label-caps text-label-caps hover:bg-surface-container transition-all flex items-center justify-center gap-2 ${currentQuestion === 1 ? 'opacity-50 cursor-not-allowed' : ''}">
+        <span class="material-symbols-outlined text-sm">arrow_back</span> Sebelumnya
+        </button>
+        <div class="flex gap-2 order-3 sm:order-2">${paginationHtml}</div>
+        <button onclick="${currentQuestion === 40 ? 'finish()' : 'next()'}" class="w-full sm:w-auto px-10 py-3 bg-primary text-white font-label-caps text-label-caps ledger-shadow hover:translate-y-[-2px] hover:translate-x-[-2px] active:translate-y-0 active:translate-x-0 transition-all flex items-center justify-center gap-2 order-2 sm:order-3">
+        ${currentQuestion === 40 ? 'Selesai' : 'Lanjutkan'}
+        <span class="material-symbols-outlined text-sm">${currentQuestion === 40 ? 'check' : 'arrow_forward'}</span>
+        </button>
+        </div>
+
+        <!-- Shortcut Legend -->
+        <div class="mt-12 flex justify-center gap-8 opacity-40">
+        <div class="flex items-center gap-2">
+        <span class="px-1.5 py-0.5 border border-primary rounded text-[10px] font-stats-sm">ALT + N</span>
+        <span class="font-label-caps text-[10px]">Next</span>
+        </div>
+        <div class="flex items-center gap-2">
+        <span class="px-1.5 py-0.5 border border-primary rounded text-[10px] font-stats-sm">ALT + P</span>
+        <span class="font-label-caps text-[10px]">Prev</span>
+        </div>
+        <div class="flex items-center gap-2">
+        <span class="px-1.5 py-0.5 border border-primary rounded text-[10px] font-stats-sm">1-4</span>
+        <span class="font-label-caps text-[10px]">Pilih Opsi</span>
+        </div>
+        </div>
+        `;
+    }
+
+    function selectOption(idx) {
+        answers[currentQuestion] = idx;
+        render();
+    }
+
+    function prev() {
+        if (currentQuestion > 1) {
+            currentQuestion--;
+            render();
+        }
+    }
+
+    function next() {
+        if (currentQuestion < 40) {
+            currentQuestion++;
+            render();
+        }
+    }
+
+    function goTo(page) {
+        currentQuestion = page;
+        render();
+    }
+    
+    function finish() {
+        localStorage.setItem('diagnosisAnswers', JSON.stringify(answers));
+        window.location.href = '/?page=04_hasil-diagnosis';
+    }
+
+    function updateTimer() {
+        if (timeInSeconds > 0) {
+            timeInSeconds--;
+            const timerElement = document.getElementById('timer');
+            if (timerElement) {
+                const minutes = Math.floor(timeInSeconds / 60);
+                const seconds = timeInSeconds % 60;
+                timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }
+        } else {
+            clearInterval(timerInterval);
+            alert('Waktu ujian telah berakhir!');
+            finish();
+        }
+    }
+
+    // Key bindings for navigation simulation
+    document.addEventListener('keydown', (e) => {
+        if (e.altKey && e.key.toLowerCase() === 'n') {
+            e.preventDefault();
+            next();
+        } else if (e.altKey && e.key.toLowerCase() === 'p') {
+            e.preventDefault();
+            prev();
+        } else if (e.key >= '1' && e.key <= '4') {
+            const idx = parseInt(e.key) - 1;
+            selectOption(idx);
+        }
+    });
+
+    render();
+    timerInterval = setInterval(updateTimer, 1000);
+</script>
+
+<script>
+(function(){
+  function bindClick(selectors, handler) {
+    document.querySelectorAll(selectors).forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
+            return;
+        }
+        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
+            return;
+        }
+        e.preventDefault();
+        handler(e, el);
+      });
+    });
+  }
+
+  // 1. Top Navbar Role Tabs
+  bindClick('header nav a', function(e, a) {
+    var text = a.textContent.trim().toLowerCase();
+    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
+    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
+  });
+
+  // 2. Header Icons & Avatar
+  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
+    var iconText = '';
+    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
+    else {
+      var icon = b.querySelector('.material-symbols-outlined');
+      if (icon) iconText = icon.textContent.trim();
+    }
+    
+    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
+      window.location.href = '/?page=18_profil';
+    }
+  });
+
+  // 3. Sidebar, Bottom Nav, and generic # links
+  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
+    var text = el.textContent.trim().toLowerCase();
+    if (!text) {
+        var icon = el.querySelector('.material-symbols-outlined');
+        if (icon) text = icon.textContent.trim().toLowerCase();
+    }
+    
+    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
+    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
+    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
+    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
+    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
+    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
+    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
+    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
+    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
+  });
+  
+  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
+})();
+</script>
+
+</body></html>
+

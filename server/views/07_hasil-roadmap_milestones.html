@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Milestones Pencapaian | Flexa Cendekia</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#020b24",
+                        "primary-container": "#17223b",
+                        "secondary": "#805600",
+                        "secondary-container": "#fdc265",
+                        "surface": "#fbf8fb",
+                        "surface-container": "#f0edf0",
+                        "on-surface": "#1b1b1d",
+                        "on-surface-variant": "#45464d",
+                        "outline-variant": "#c6c6ce",
+                        "on-secondary-container": "#754e00"
+                    },
+                    fontFamily: {
+                        "display": ['"Source Serif 4"'],
+                        "body": ["Libre Franklin"],
+                        "mono": ["JetBrains Mono"]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .blueprint-grid {
+            background-image: 
+                linear-gradient(rgba(23, 34, 59, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(23, 34, 59, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .hard-shadow { box-shadow: 4px 4px 0px 0px #020b24; }
+        .milestone-card { opacity: 0; transform: translateY(20px) scale(0.97); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .milestone-card.visible { opacity: 1; transform: translateY(0) scale(1); }
+        .check-bounce { animation: checkBounce 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes checkBounce { 0% { transform: scale(0.5); } 60% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        .confetti { position: fixed; pointer-events: none; z-index: 100; }
+    </style>
+</head>
+<body class="bg-[#EAEDE2] text-on-surface font-body blueprint-grid min-h-screen">
+    <!-- TopNavBar -->
+    <nav class="fixed top-0 w-full bg-surface z-50 border-b border-on-surface/20 flex justify-between items-center h-16 px-4 md:px-8">
+        <div class="flex items-center gap-4">
+            <span class="font-display font-bold text-2xl text-primary">Flexa Cendekia</span>
+        </div>
+        <div class="flex items-center gap-6">
+            <!-- Progress Counter -->
+            <div class="hidden sm:flex items-center gap-2 bg-secondary-container/20 border border-secondary/30 px-3 py-1.5 rounded-full">
+                <span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">trophy</span>
+                <span class="font-mono text-[11px] text-secondary font-bold" id="progress-counter">0/0 Selesai</span>
+            </div>
+            <a href="/?page=07_hasil-roadmap" class="flex items-center gap-2 text-sm font-semibold text-primary hover:text-secondary transition-colors">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                Kembali ke Roadmap
+            </a>
+        </div>
+    </nav>
+    
+    <main class="pt-24 pb-16 px-4 md:px-8 max-w-5xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-secondary-container/30 border border-secondary rounded-full mb-4">
+                <span class="material-symbols-outlined text-secondary text-sm">auto_awesome</span>
+                <span class="font-mono text-[11px] text-secondary font-bold tracking-widest uppercase">AI-Generated Milestones</span>
+            </div>
+            <h1 class="font-display font-bold text-4xl md:text-5xl text-primary mb-3" id="page-title">Pencapaian (Milestones)</h1>
+            <p class="text-on-surface-variant max-w-xl mx-auto" id="page-subtitle">Tandai setiap pencapaian yang telah Anda raih dalam perjalanan menuju profesi impian.</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="bg-white border border-primary/15 p-5 hard-shadow mb-10">
+            <div class="flex items-center justify-between mb-3">
+                <span class="font-mono text-[11px] text-on-surface-variant font-bold tracking-widest uppercase">Progress Keseluruhan</span>
+                <span class="font-mono text-sm text-secondary font-bold" id="progress-percent">0%</span>
+            </div>
+            <div class="w-full h-3 bg-primary/5 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-secondary to-amber-400 rounded-full transition-all duration-700 ease-out" id="progress-bar" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Milestones Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="milestones-container">
+            <!-- Items will be rendered by JS -->
+        </div>
+    </main>
+
+    <script>
+    function getCareerData() {
+        const careerTitle = localStorage.getItem('selectedCareer') || 'Arsitek';
+        return careerTitle;
+    }
+
+    // Default milestones (fallback)
+    const defaultMilestones = [
+        { id: 'def1', title: 'Fondasi Akademik', desc: 'Menyelesaikan fondasi mata pelajaran inti.', target: 'Kelas 10', icon: 'school' },
+        { id: 'def2', title: 'Proyek Pertama', desc: 'Menyelesaikan proyek praktik pertama.', target: 'Kelas 11', icon: 'assignment' },
+        { id: 'def3', title: 'Lulus Seleksi PTN', desc: 'Diterima di perguruan tinggi pilihan.', target: 'Kelas 12', icon: 'emoji_events' }
+    ];
+
+    // Career milestone data (will be read from careerRoadmaps if available, otherwise use inline)
+    const careerMilestonesMap = {
+        'arsitek': [
+            { id: 'am1', title: 'Menguasai SketchUp 3D', desc: 'Mampu membuat model 3D bangunan sederhana secara mandiri.', target: 'Kelas 10 - Semester 2', icon: 'view_in_ar' },
+            { id: 'am2', title: 'Proyek Desain Pertama', desc: 'Menyelesaikan desain rumah ramah lingkungan dengan konsep sustainable.', target: 'Kelas 11 - Semester 1', icon: 'home_work' },
+            { id: 'am3', title: '10 Karya Portfolio', desc: 'Mengumpulkan 10 karya desain terbaik untuk portfolio masuk universitas.', target: 'Kelas 12 - Semester 1', icon: 'collections' },
+            { id: 'am4', title: 'Lulus Seleksi PTN', desc: 'Diterima di program S1 Arsitektur perguruan tinggi pilihan.', target: 'Kelas 12 - Semester 2', icon: 'school' },
+            { id: 'am5', title: 'Magang Biro Arsitek', desc: 'Menyelesaikan program magang profesional di biro arsitek ternama.', target: 'Universitas Tahun 3', icon: 'work' },
+            { id: 'am6', title: 'Tugas Akhir: Desain Kompleks', desc: 'Menyelesaikan proyek akhir berupa desain kompleks arsitektural skala besar.', target: 'Universitas Tahun 4', icon: 'emoji_events' }
+        ],
+        'data scientist': [
+            { id: 'dm1', title: 'Sertifikasi Python Dasar', desc: 'Menyelesaikan sertifikasi resmi bahasa pemrograman Python.', target: 'Kelas 10 - Semester 2', icon: 'code' },
+            { id: 'dm2', title: 'Proyek Data Analysis', desc: 'Menganalisis dataset publik dan membuat visualisasi data interaktif.', target: 'Kelas 11 - Semester 1', icon: 'analytics' },
+            { id: 'dm3', title: 'ML Model Pertama', desc: 'Membangun model machine learning regresi dan klasifikasi sederhana.', target: 'Kelas 11 - Semester 2', icon: 'smart_toy' },
+            { id: 'dm4', title: 'Lulus Seleksi PTN', desc: 'Diterima di program S1 Ilmu Komputer / Data Science.', target: 'Kelas 12 - Semester 2', icon: 'school' },
+            { id: 'dm5', title: 'Magang Data Analyst', desc: 'Menyelesaikan internship sebagai Data Analyst di perusahaan teknologi.', target: 'Universitas Tahun 3', icon: 'work' },
+            { id: 'dm6', title: 'Tugas Akhir: AI Predictive Model', desc: 'Membangun sistem prediksi berbasis AI untuk studi kasus nyata.', target: 'Universitas Tahun 4', icon: 'emoji_events' }
+        ],
+        'arsitek sistem': [
+            { id: 'sm1', title: 'Sertifikasi Linux Essentials', desc: 'Menguasai operasi dasar Linux dan administrasi sistem.', target: 'Kelas 10 - Semester 2', icon: 'terminal' },
+            { id: 'sm2', title: 'Web Server Deployment', desc: 'Berhasil membangun dan men-deploy web server dari nol.', target: 'Kelas 11 - Semester 1', icon: 'dns' },
+            { id: 'sm3', title: 'Cloud Architecture Project', desc: 'Menyelesaikan proyek arsitektur cloud menggunakan AWS/GCP.', target: 'Kelas 12 - Semester 1', icon: 'cloud' },
+            { id: 'sm4', title: 'Lulus Seleksi PTN', desc: 'Diterima di S1 Teknik Informatika perguruan tinggi pilihan.', target: 'Kelas 12 - Semester 2', icon: 'school' },
+            { id: 'sm5', title: 'Magang DevOps Engineer', desc: 'Internship sebagai DevOps Engineer di perusahaan teknologi.', target: 'Universitas Tahun 3', icon: 'work' },
+            { id: 'sm6', title: 'TA: Desain Cloud-Native', desc: 'Merancang arsitektur sistem cloud-native berskala enterprise.', target: 'Universitas Tahun 4', icon: 'emoji_events' }
+        ],
+        'dokter': [
+            { id: 'dm1_doc', title: 'Sertifikat P3K & CPR', desc: 'Menyelesaikan pelatihan pertolongan pertama dan CPR bersertifikat resmi.', target: 'Kelas 11 - Semester 1', icon: 'medical_services' },
+            { id: 'dm2_doc', title: 'Olimpiade Biologi', desc: 'Berpartisipasi dalam Olimpiade Sains Nasional bidang Biologi.', target: 'Kelas 11 - Semester 2', icon: 'science' },
+            { id: 'dm3_doc', title: 'Riset Kesehatan', desc: 'Menyelesaikan proyek riset kesehatan masyarakat dengan metodologi ilmiah.', target: 'Kelas 12 - Semester 1', icon: 'biotech' },
+            { id: 'dm4_doc', title: 'Lulus Seleksi FK', desc: 'Diterima di Fakultas Kedokteran perguruan tinggi pilihan.', target: 'Kelas 12 - Semester 2', icon: 'school' },
+            { id: 'dm5_doc', title: 'Rotasi Klinik RS', desc: 'Menyelesaikan rotasi klinik di berbagai departemen RS Pendidikan.', target: 'Universitas Tahun 3', icon: 'local_hospital' },
+            { id: 'dm6_doc', title: 'Lulus UKMPPD', desc: 'Lulus Ujian Kompetensi Mahasiswa Program Profesi Dokter.', target: 'Universitas Tahun 5+', icon: 'emoji_events' }
+        ],
+        'akuntan': [
+            { id: 'akm1', title: 'Sertifikasi Excel Intermediate', desc: 'Menguasai formula lanjut, pivot table, dan macro di Excel.', target: 'Kelas 10 - Semester 2', icon: 'grid_on' },
+            { id: 'akm2', title: 'Pembukuan UMKM', desc: 'Menyelesaikan proyek pembukuan nyata untuk UMKM lokal.', target: 'Kelas 11 - Semester 1', icon: 'storefront' },
+            { id: 'akm3', title: 'Simulasi Audit', desc: 'Melakukan simulasi audit pada koperasi sekolah.', target: 'Kelas 12 - Semester 1', icon: 'fact_check' },
+            { id: 'akm4', title: 'Lulus Seleksi PTN', desc: 'Diterima di S1 Akuntansi perguruan tinggi pilihan.', target: 'Kelas 12 - Semester 2', icon: 'school' },
+            { id: 'akm5', title: 'Magang di KAP', desc: 'Menyelesaikan internship sebagai Junior Auditor di Kantor Akuntan Publik.', target: 'Universitas Tahun 3', icon: 'work' },
+            { id: 'akm6', title: 'TA: Analisis Laporan Keuangan', desc: 'Menyelesaikan tugas akhir berupa analisis mendalam laporan keuangan perusahaan publik.', target: 'Universitas Tahun 4', icon: 'emoji_events' }
+        ],
+        'peneliti biologi': [
+            { id: 'pm1', title: 'Praktikum Mikroskop', desc: 'Mampu mengoperasikan mikroskop cahaya dan mendokumentasikan pengamatan sel.', target: 'Kelas 10 - Semester 2', icon: 'biotech' },
+            { id: 'pm2', title: 'Riset Biodiversitas', desc: 'Menyelesaikan survei keanekaragaman hayati dengan metodologi ilmiah.', target: 'Kelas 11 - Semester 1', icon: 'forest' },
+            { id: 'pm3', title: 'Karya Ilmiah Remaja', desc: 'Menulis dan mempresentasikan karya ilmiah biologi di tingkat kabupaten/kota.', target: 'Kelas 12 - Semester 1', icon: 'description' },
+            { id: 'pm4', title: 'Lulus Seleksi PTN', desc: 'Diterima di program S1 Biologi perguruan tinggi pilihan.', target: 'Kelas 12 - Semester 2', icon: 'school' },
+            { id: 'pm5', title: 'Research Assistant', desc: 'Menjadi asisten riset di laboratorium biologi universitas.', target: 'Universitas Tahun 3', icon: 'work' },
+            { id: 'pm6', title: 'Publikasi Ilmiah', desc: 'Mempublikasikan hasil riset tugas akhir di jurnal ilmiah nasional.', target: 'Universitas Tahun 4', icon: 'emoji_events' }
+        ]
+    };
+
+    function toggleMilestone(id) {
+        const isChecked = localStorage.getItem(`milestone_${id}`) === 'true';
+        localStorage.setItem(`milestone_${id}`, !isChecked);
+        renderAll();
+        
+        if (!isChecked) {
+            // Show a small celebration
+            const card = document.getElementById(`card-${id}`);
+            if (card) {
+                const icon = card.querySelector('.check-icon');
+                if (icon) icon.classList.add('check-bounce');
+                setTimeout(() => { if (icon) icon.classList.remove('check-bounce'); }, 500);
+            }
+        }
+    }
+
+    function updateProgress(milestones) {
+        const completed = milestones.filter(m => localStorage.getItem(`milestone_${m.id}`) === 'true').length;
+        const total = milestones.length;
+        const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+        
+        document.getElementById('progress-counter').textContent = `${completed}/${total} Selesai`;
+        document.getElementById('progress-percent').textContent = `${percent}%`;
+        document.getElementById('progress-bar').style.width = `${percent}%`;
+    }
+
+    function renderMilestones(milestones) {
+        const container = document.getElementById('milestones-container');
+        
+        container.innerHTML = milestones.map((m, index) => {
+            const isChecked = localStorage.getItem(`milestone_${m.id}`) === 'true';
+            const cardBg = isChecked ? 'bg-emerald-50 border-emerald-300' : 'bg-white border-primary/15';
+            const iconBg = isChecked ? 'bg-emerald-500 text-white' : 'bg-primary/5 text-primary';
+            const checkIcon = isChecked ? 'check_circle' : 'radio_button_unchecked';
+            const checkColor = isChecked ? 'text-emerald-500' : 'text-primary/20';
+            const titleDecor = isChecked ? 'line-through text-on-surface-variant' : 'text-primary';
+            
+            return `
+            <div class="milestone-card border ${cardBg} p-6 hard-shadow cursor-pointer hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_#020b24] transition-all duration-300 relative group"
+                 id="card-${m.id}" onclick="toggleMilestone('${m.id}')" style="transition-delay: ${index * 80}ms">
+                
+                <!-- Check Button -->
+                <div class="absolute top-4 right-4">
+                    <span class="material-symbols-outlined check-icon ${checkColor} text-2xl transition-colors" style="font-variation-settings: 'FILL' ${isChecked ? 1 : 0};">${checkIcon}</span>
+                </div>
+                
+                <!-- Icon -->
+                <div class="w-12 h-12 rounded-lg ${iconBg} flex items-center justify-center mb-4 transition-colors">
+                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">${m.icon}</span>
+                </div>
+                
+                <!-- Content -->
+                <h3 class="font-bold text-lg ${titleDecor} mb-2 pr-8 transition-colors">${m.title}</h3>
+                <p class="text-on-surface-variant text-sm mb-4 leading-relaxed">${m.desc}</p>
+                
+                <!-- Target Badge -->
+                <div class="flex items-center gap-2 mt-auto">
+                    <span class="material-symbols-outlined text-secondary text-sm">schedule</span>
+                    <span class="font-mono text-[11px] text-secondary font-bold tracking-wider">${m.target}</span>
+                </div>
+            </div>`;
+        }).join('');
+
+        // Animate cards on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        container.querySelectorAll('.milestone-card').forEach(card => observer.observe(card));
+    }
+
+    function renderAll() {
+        const careerTitle = getCareerData();
+        const milestones = careerMilestonesMap[careerTitle.toLowerCase()] || defaultMilestones;
+        
+        document.getElementById('page-title').textContent = `Milestones: Jalur ${careerTitle}`;
+        document.getElementById('page-subtitle').textContent = `Tandai setiap pencapaian yang telah Anda raih dalam perjalanan menjadi ${careerTitle} profesional.`;
+        
+        renderMilestones(milestones);
+        updateProgress(milestones);
+    }
+
+    document.addEventListener('DOMContentLoaded', renderAll);
+    </script>
+
+<script>
+(function(){
+  function bindClick(selectors, handler) {
+    document.querySelectorAll(selectors).forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
+            return;
+        }
+        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
+            return;
+        }
+        e.preventDefault();
+        handler(e, el);
+      });
+    });
+  }
+
+  // 1. Top Navbar Role Tabs
+  bindClick('header nav a', function(e, a) {
+    var text = a.textContent.trim().toLowerCase();
+    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
+    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
+  });
+
+  // 2. Header Icons & Avatar
+  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
+    var iconText = '';
+    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
+    else {
+      var icon = b.querySelector('.material-symbols-outlined');
+      if (icon) iconText = icon.textContent.trim();
+    }
+    
+    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
+      window.location.href = '/?page=18_profil';
+    }
+  });
+
+  // 3. Sidebar, Bottom Nav, and generic # links
+  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
+    var text = el.textContent.trim().toLowerCase();
+    if (!text) {
+        var icon = el.querySelector('.material-symbols-outlined');
+        if (icon) text = icon.textContent.trim().toLowerCase();
+    }
+    
+    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
+    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
+    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
+    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
+    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
+    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
+    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
+    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
+    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
+  });
+  
+  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
+})();
+</script>
+
+</body>
+</html>

@@ -4,6 +4,10 @@
 const express = require('express');
 const router = express.Router();
 const { getRecords, getRecordByField, addRecord, updateRecord } = require('../models');
+<<<<<<< HEAD
+=======
+const pool = require('../config/database');
+>>>>>>> d9987a26ee64d14bf5c2746ff3efc2d734945487
 const { generateDiagnosis, generateRoadmap } = require('../services/geminiService');
 
 // ==========================================
@@ -199,4 +203,118 @@ router.post('/ai/generate-roadmap', async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
+=======
+// ==========================================
+// GET /api/krs/pending — Ambil antrean KRS
+// ==========================================
+router.get('/krs/pending', async (req, res) => {
+  try {
+    const [rows] = await pool.query(`
+      SELECT krs.id as krsId, krs.semesterKe, krs.status, u.nama, u.id as studentId,
+             c.profesiTarget, r.tahunMulai
+      FROM Semester_KRS krs
+      JOIN Roadmap r ON krs.roadmapId = r.id
+      JOIN Cita_Cita c ON r.citaCitaId = c.id
+      JOIN Users u ON r.userId = u.id
+      WHERE krs.status = 'Menunggu Persetujuan'
+    `);
+    res.json({ success: true, data: rows });
+  } catch (err) {
+    console.error('Get pending KRS error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ==========================================
+// GET /api/krs/:krsId — Ambil detail KRS
+// ==========================================
+router.get('/krs/:krsId', async (req, res) => {
+  try {
+    const { krsId } = req.params;
+    const [rows] = await pool.query(`
+      SELECT krs.id as krsId, krs.semesterKe, krs.status, krs.catatanGuru, u.nama, u.id as studentId,
+             c.profesiTarget, r.tahunMulai
+      FROM Semester_KRS krs
+      JOIN Roadmap r ON krs.roadmapId = r.id
+      JOIN Cita_Cita c ON r.citaCitaId = c.id
+      JOIN Users u ON r.userId = u.id
+      WHERE krs.id = ?
+    `, [krsId]);
+    if (rows.length === 0) return res.status(404).json({ error: 'KRS not found' });
+    res.json({ success: true, data: rows[0] });
+  } catch (err) {
+    console.error('Get KRS detail error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ==========================================
+// PUT /api/krs/approve/:krsId — Approve/Reject KRS
+// ==========================================
+router.put('/krs/approve/:krsId', async (req, res) => {
+  try {
+    const { krsId } = req.params;
+    const { status, catatanGuru } = req.body;
+    await updateRecord('Semester_KRS', krsId, { status, catatanGuru });
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Approve KRS error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ==========================================
+// GET /api/krs/student/:userId — Ambil KRS aktif siswa
+// ==========================================
+router.get('/krs/student/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const [rows] = await pool.query(`
+      SELECT krs.id as krsId, krs.semesterKe, krs.status, krs.catatanGuru,
+             c.profesiTarget, u.nama, u.id as studentId
+      FROM Semester_KRS krs
+      JOIN Roadmap r ON krs.roadmapId = r.id
+      JOIN Cita_Cita c ON r.citaCitaId = c.id
+      JOIN Users u ON r.userId = u.id
+      WHERE r.userId = ?
+      ORDER BY krs.semesterKe DESC LIMIT 1
+    `, [userId]);
+    if (rows.length === 0) return res.json({ success: true, data: null });
+    
+    let data = rows[0];
+    
+    // Mapping Modul Dinamis Sederhana
+    const moduleMap = {
+      'Arsitek': [
+        { kode: 'MAT-101', nama: 'Geometri Ruang', kompetensi: 'Analisis Spasial', pacing: 'Menengah', status: 'WAJIB' },
+        { kode: 'ARS-202', nama: 'Sejarah Arsitektur Dunia', kompetensi: 'Literasi Budaya', pacing: 'Tinggi', status: 'PILIHAN' },
+        { kode: 'DSN-105', nama: 'Sketsa Dasar', kompetensi: 'Teknik Visualisasi', pacing: 'Menengah', status: 'WAJIB' },
+        { kode: 'FIS-103', nama: 'Fisika Bangunan I', kompetensi: 'Mekanika Struktur', pacing: 'Tinggi', status: 'WAJIB' }
+      ],
+      'Data Scientist': [
+        { kode: 'MAT-201', nama: 'Aljabar Linier', kompetensi: 'Matematika Dasar', pacing: 'Tinggi', status: 'WAJIB' },
+        { kode: 'KOM-101', nama: 'Algoritma & Pemrograman', kompetensi: 'Logika Komputasi', pacing: 'Menengah', status: 'WAJIB' },
+        { kode: 'DS-101', nama: 'Pengantar Data Science', kompetensi: 'Analitik Data', pacing: 'Menengah', status: 'WAJIB' },
+        { kode: 'STT-202', nama: 'Statistika Inferensial', kompetensi: 'Analitik Lanjut', pacing: 'Tinggi', status: 'PILIHAN' }
+      ],
+      'UI/UX Design': [
+        { kode: 'DSN-101', nama: 'Prinsip Desain Visual', kompetensi: 'Estetika', pacing: 'Menengah', status: 'WAJIB' },
+        { kode: 'UX-201', nama: 'Riset Pengguna', kompetensi: 'Psikologi Interaksi', pacing: 'Tinggi', status: 'WAJIB' },
+        { kode: 'KOM-105', nama: 'HTML/CSS Dasar', kompetensi: 'Teknologi Web', pacing: 'Rendah', status: 'PILIHAN' }
+      ]
+    };
+    
+    data.modules = moduleMap[data.profesiTarget] || [
+      { kode: 'UM-101', nama: 'Mata Pelajaran Umum Dasar', kompetensi: 'Pengetahuan Umum', pacing: 'Menengah', status: 'WAJIB' }
+    ];
+
+    res.json({ success: true, data: data });
+  } catch (err) {
+    console.error('Get Student KRS error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+>>>>>>> d9987a26ee64d14bf5c2746ff3efc2d734945487
 module.exports = router;

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Akademika | Panduan Pengguna</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#020b24",
+                        "student-gold": "#B9862F",
+                        "background": "#fbf8fb",
+                        "surface": "#fbf8fb",
+                        "on-surface": "#1b1b1d",
+                        "on-surface-variant": "#45464d",
+                        "outline-variant": "#c6c6ce"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["\"Source Serif 4\""],
+                        "label-caps": ["Libre Franklin"],
+                        "display-lg": ["\"Source Serif 4\""],
+                        "body-md": ["Libre Franklin"]
+                    }
+                }
+            }
+        }
+</script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+<nav class="bg-surface border-b border-primary/20 sticky top-0 z-50 p-4">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <a href="code.html" class="flex items-center gap-2 text-primary hover:text-student-gold transition-colors">
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span class="font-label-caps font-bold">KEMBALI</span>
+        </a>
+        <span class="font-headline-md font-bold text-primary">Panduan Pengguna</span>
+    </div>
+</nav>
+<main class="flex-grow max-w-3xl mx-auto p-8 w-full">
+    <h1 class="font-display-lg text-primary mb-6">Panduan Pengguna</h1>
+    <div class="space-y-6 text-on-surface-variant">
+        <p>Selamat datang di platform Flexa Cendekia x UNIPDU. Panduan ini akan membantu Anda menavigasi alur pemilihan cita-cita dan penyusunan roadmap.</p>
+        <h2 class="text-xl font-bold text-primary mt-8">1. Tes Diagnostik</h2>
+        <p>Sebelum memilih cita-cita, Anda telah menyelesaikan tes diagnostik RIASEC yang memberikan gambaran tentang minat dan bakat Anda. Sistem menggunakan data ini untuk merekomendasikan profesi yang sesuai.</p>
+        
+        <h2 class="text-xl font-bold text-primary mt-8">2. Memilih Cita-Cita</h2>
+        <p>Di halaman utama, Anda akan melihat beberapa kartu profesi. Jika rekomendasi AI tersedia, mereka akan ditandai. Anda dapat:</p>
+        <ul class="list-disc pl-6 space-y-2 mt-2">
+            <li>Mengklik kartu profesi untuk melihat detailnya di panel sebelah kanan.</li>
+            <li>Menggunakan kotak pencarian untuk mencari profesi spesifik.</li>
+            <li>Menggunakan tombol filter kategori (Sains, Teknologi, Seni, dll.) untuk menelusuri berdasarkan bidang.</li>
+        </ul>
+
+        <h2 class="text-xl font-bold text-primary mt-8">3. Preview Roadmap (Backward Mapping)</h2>
+        <p>Setelah memilih profesi, perhatikan panel kanan. Ini menunjukkan pratinjau jalur pendidikan yang diperlukan (S1, SMA) beserta fokus pelajaran dan rekomendasi kegiatan ekstrakurikuler.</p>
+    </div>
+</main>
+<footer class="bg-surface border-t border-primary/10 p-8 text-center mt-auto">
+    <p class="font-label-caps text-xs text-on-surface-variant">© 2024 AKADEMIKA LEDGER SYSTEM. SELURUH HAK CIPTA DILINDUNGI.</p>
+</footer>
+</body></html>
