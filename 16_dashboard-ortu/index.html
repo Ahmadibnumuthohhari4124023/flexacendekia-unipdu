@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>To-Do List SPA</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+    }
+
+    button {
+      padding: 8px 12px;
+      margin: 5px;
+      cursor: pointer;
+    }
+
+    #halamanTambah {
+      display: none;
+      margin-top: 20px;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HALAMAN LIST -->
+<div id="halamanList">
+  <h2>📋 Daftar Tugas</h2>
+
+  <button onclick="bukaHalamanTambah()">+ TAMBAH TUGAS</button>
+
+  <ul id="listTugas"></ul>
+</div>
+
+<!-- HALAMAN TAMBAH -->
+<div id="halamanTambah">
+  <h2>➕ Tambah Tugas</h2>
+
+  <input type="text" id="inputTugas" placeholder="Masukkan tugas..." />
+  <br><br>
+
+  <button onclick="simpanTugas()">Simpan</button>
+  <button onclick="kembali()">Kembali</button>
+</div>
+
+<script>
+// Navigasi SPA
+function bukaHalamanTambah() {
+  document.getElementById("halamanList").style.display = "none";
+  document.getElementById("halamanTambah").style.display = "block";
+}
+
+function kembali() {
+  document.getElementById("halamanTambah").style.display = "none";
+  document.getElementById("halamanList").style.display = "block";
+}
+
+// Simpan tugas
+function simpanTugas() {
+  let input = document.getElementById("inputTugas");
+
+  if (input.value.trim() === "") {
+    alert("Tugas tidak boleh kosong!");
+    return;
+  }
+
+  let semuaTugas = JSON.parse(localStorage.getItem("tugas")) || [];
+  semuaTugas.push(input.value);
+
+  localStorage.setItem("tugas", JSON.stringify(semuaTugas));
+
+  input.value = "";
+  kembali();
+  tampilkanTugas();
+}
+
+// Tampilkan tugas
+function tampilkanTugas() {
+  let list = document.getElementById("listTugas");
+  list.innerHTML = "";
+
+  let semuaTugas = JSON.parse(localStorage.getItem("tugas")) || [];
+
+  semuaTugas.forEach(function(tugas, index) {
+    let li = document.createElement("li");
+
+    li.innerHTML = `
+      ${tugas}
+      <button onclick="hapusTugas(${index})">❌</button>
+    `;
+
+    list.appendChild(li);
+  });
+}
+
+// Hapus tugas
+function hapusTugas(index) {
+  let semuaTugas = JSON.parse(localStorage.getItem("tugas")) || [];
+  semuaTugas.splice(index, 1);
+  localStorage.setItem("tugas", JSON.stringify(semuaTugas));
+  tampilkanTugas();
+}
+
+// Load awal
+window.onload = tampilkanTugas;
+</script>
+
+</body>
+</html>

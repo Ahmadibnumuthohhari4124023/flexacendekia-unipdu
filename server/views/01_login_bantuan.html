@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html class="light" lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Pusat Bantuan - Flexa Cendekia x UNIPDU</title>
+    <meta name="description"
+        content="Pusat bantuan dan FAQ Flexa Cendekia x UNIPDU. Temukan jawaban atas pertanyaan umum seputar platform." />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
+    <style>
+        body {
+            background-color: #EAEDE2;
+            font-family: 'Libre Franklin', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .academic-ledger-card {
+            background-color: #FBFAF5;
+            border: 1px solid rgba(23, 34, 59, 0.20);
+            box-shadow: none;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .faq-item {
+            background-color: #FBFAF5;
+            border: 1px solid rgba(23, 34, 59, 0.12);
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(23, 34, 59, 0.30);
+        }
+
+        .faq-item[open] {
+            border-color: rgba(23, 34, 59, 0.30);
+            box-shadow: 0 2px 8px rgba(23, 34, 59, 0.06);
+        }
+
+        .faq-item summary {
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .faq-item summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .faq-item summary::marker {
+            display: none;
+            content: '';
+        }
+
+        .faq-item[open] .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .category-card {
+            background-color: #FBFAF5;
+            border: 1px solid rgba(23, 34, 59, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            border-color: rgba(23, 34, 59, 0.40);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(23, 34, 59, 0.08);
+        }
+
+        .search-box {
+            background-color: #FBFAF5;
+            border: 1px solid rgba(23, 34, 59, 0.20);
+            transition: border-color 0.3s ease;
+        }
+
+        .search-box:focus-within {
+            border-color: rgba(23, 34, 59, 0.50);
+        }
+    </style>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#614000",
+                        "secondary-fixed-dim": "#f7bc60",
+                        "error-container": "#ffdad6",
+                        "surface": "#fbf8fb",
+                        "on-tertiary-container": "#549589",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#ffddaf",
+                        "secondary-container": "#fdc265",
+                        "outline": "#76777e",
+                        "inverse-primary": "#bbc6e7",
+                        "inverse-on-surface": "#f3f0f2",
+                        "background": "#fbf8fb",
+                        "tertiary-fixed-dim": "#91d3c5",
+                        "tertiary": "#000f0c",
+                        "on-tertiary-fixed": "#00201b",
+                        "on-surface-variant": "#45464d",
+                        "on-primary-fixed-variant": "#3c4661",
+                        "primary-fixed": "#d9e2ff",
+                        "inverse-surface": "#303032",
+                        "error": "#ba1a1a",
+                        "primary-container": "#17223b",
+                        "on-tertiary": "#ffffff",
+                        "surface-dim": "#dcd9dc",
+                        "on-background": "#1b1b1d",
+                        "on-secondary-fixed": "#281800",
+                        "surface-variant": "#e4e2e4",
+                        "surface-container": "#f0edf0",
+                        "on-tertiary-fixed-variant": "#005046",
+                        "surface-container-highest": "#e4e2e4",
+                        "on-primary-fixed": "#101b34",
+                        "tertiary-fixed": "#adefe1",
+                        "outline-variant": "#c6c6ce",
+                        "surface-container-high": "#eae7ea",
+                        "on-error": "#ffffff",
+                        "primary": "#020b24",
+                        "on-secondary-container": "#754e00",
+                        "primary-fixed-dim": "#bbc6e7",
+                        "on-error-container": "#93000a",
+                        "surface-container-low": "#f5f3f5",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#fbf8fb",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#002822",
+                        "on-surface": "#1b1b1d",
+                        "surface-tint": "#535e7a",
+                        "secondary": "#805600",
+                        "on-primary-container": "#7f89a8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "margin-desktop": "32px",
+                        "gutter": "16px",
+                        "container-max": "1280px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "stats-lg": ["JetBrains Mono"],
+                        "label-caps": ["Libre Franklin"],
+                        "body-md": ["Libre Franklin"],
+                        "display-lg-mobile": ["\"Source Serif 4\""],
+                        "display-lg": ["\"Source Serif 4\""],
+                        "stats-sm": ["JetBrains Mono"],
+                        "headline-md": ["\"Source Serif 4\""],
+                        "body-sm": ["Libre Franklin"]
+                    },
+                    "fontSize": {
+                        "stats-lg": ["20px", { "lineHeight": "24px", "fontWeight": "500" }],
+                        "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "stats-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden">
+    <!-- Subtle Background Pattern -->
+    <div class="fixed inset-0 opacity-[0.03] pointer-events-none"
+        style="background-image: radial-gradient(#17223B 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
+
+    <!-- Top Navigation -->
+    <header class="w-full bg-surface border-b border-primary/20">
+        <div
+            class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+            <a href="/?page=01_login"
+                class="font-headline-md text-headline-md font-bold text-primary hover:opacity-80 transition-opacity"
+                style="text-decoration:none;">
+                Flexa Cendekia x UNIPDU
+            </a>
+            <div class="hidden md:flex gap-8">
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
+                    href="/?page=01_login_panduan">Panduan</a>
+                <a class="text-primary font-body-md text-body-md font-semibold border-b-2 border-primary pb-1"
+                    href="/?page=01_login_bantuan">Bantuan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
+                    href="/?page=01_login_kontak">Kontak</a>
+            </div>
+            <!-- Mobile menu button -->
+            <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center p-2 text-primary">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-primary/10 bg-surface">
+            <div class="flex flex-col px-margin-mobile py-4 gap-4">
+                <a class="text-on-surface-variant font-body-md text-body-md" href="/?page=01_login_panduan">Panduan</a>
+                <a class="text-primary font-body-md text-body-md font-semibold" href="/?page=01_login_bantuan">Bantuan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md" href="/?page=01_login_kontak">Kontak</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow py-12 px-6">
+        <div class="w-full max-w-3xl mx-auto">
+
+            <!-- Breadcrumb -->
+            <nav class="mb-8 flex items-center gap-2 font-body-sm text-body-sm text-on-surface-variant">
+                <a href="/?page=01_login" class="hover:text-primary transition-colors">Beranda</a>
+                <span class="material-symbols-outlined text-sm opacity-40">chevron_right</span>
+                <span class="text-primary font-semibold">Pusat Bantuan</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="academic-ledger-card p-8 md:p-12 mb-10">
+                <div class="flex items-start gap-5">
+                    <div class="h-14 w-14 border-2 border-primary flex items-center justify-center flex-shrink-0">
+                        <span class="material-symbols-outlined text-primary text-3xl">help_center</span>
+                    </div>
+                    <div>
+                        <h1 class="font-headline-md text-headline-md text-primary mb-2">Pusat Bantuan</h1>
+                        <p class="font-body-md text-body-md text-on-surface-variant max-w-xl">
+                            Temukan jawaban atas pertanyaan umum seputar platform Flexa Cendekia x UNIPDU. Jika Anda
+                            tidak menemukan jawaban yang dicari, jangan ragu untuk menghubungi kami.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="search-box flex items-center gap-3 px-5 py-4 mb-10">
+                <span class="material-symbols-outlined text-on-surface-variant text-xl">search</span>
+                <input id="search-input" type="text" placeholder="Cari pertanyaan atau topik bantuan..."
+                    class="flex-1 bg-transparent border-none outline-none font-body-md text-body-md text-primary placeholder:text-on-surface-variant/50"
+                    oninput="filterFAQ()" />
+            </div>
+
+            <!-- Quick Links Categories -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+                <a href="#akun" class="category-card p-5 text-center" style="text-decoration:none;">
+                    <span class="material-symbols-outlined text-primary text-2xl mb-2">person</span>
+                    <p class="font-label-caps text-label-caps text-primary mb-1">Akun & Login</p>
+                    <p class="font-body-sm text-[12px] text-on-surface-variant">Masalah akun, password, dan otentikasi
+                    </p>
+                </a>
+                <a href="#platform" class="category-card p-5 text-center" style="text-decoration:none;">
+                    <span class="material-symbols-outlined text-primary text-2xl mb-2">dashboard</span>
+                    <p class="font-label-caps text-label-caps text-primary mb-1">Platform & Fitur</p>
+                    <p class="font-body-sm text-[12px] text-on-surface-variant">Navigasi, fitur, dan penggunaan platform
+                    </p>
+                </a>
+                <a href="#teknis" class="category-card p-5 text-center" style="text-decoration:none;">
+                    <span class="material-symbols-outlined text-primary text-2xl mb-2">build</span>
+                    <p class="font-label-caps text-label-caps text-primary mb-1">Teknis</p>
+                    <p class="font-body-sm text-[12px] text-on-surface-variant">Browser, perangkat, dan masalah teknis
+                    </p>
+                </a>
+            </div>
+
+            <!-- FAQ Section: Akun & Login -->
+            <div id="akun" class="mb-10">
+                <p
+                    class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant mb-5 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">person</span>
+                    Akun & Login
+                </p>
+
+                <div class="space-y-3 faq-section">
+                    <details class="faq-item p-0">
+                        <summary class="p-5 flex items-center justify-between gap-4">
+                            <span class="font-body-md text-body-md text-primary font-semibold flex-1">Bagaimana cara
+                                membuat akun Flexa Cendekia?</span>
+                            <span class="material-symbols-outlined text-on-surface-variant faq-icon">expand_more</span>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 border-t border-primary/10">
+                            <p class="font-body-sm text-body-sm text-on-surface-variant pt-4">
+                                Akun Flexa Cendekia didaftarkan melalui pihak sekolah/lembaga pendidikan. Hubungi bagian
+                                administrasi sekolah Anda untuk mendapatkan akses akun. Setelah pendaftaran, Anda akan
+                                menerima email berisi kredensial login (email/username dan password sementara).
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="faq-item p-0">
+                        <summary class="p-5 flex items-center justify-between gap-4">
+                            <span class="font-body-md text-body-md text-primary font-semibold flex-1">Saya lupa
+                                password, bagaimana cara meresetnya?</span>
+                            <span class="material-symbols-outlined text-on-surface-variant faq-icon">expand_more</span>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 border-t border-primary/10">
+                            <p class="font-body-sm text-body-sm text-on-surface-variant pt-4">
+                                Pada halaman login SSO Flexa Cendekia, klik link <strong>"Lupa Password?"</strong>.
+                                Masukkan alamat email yang terdaftar, lalu periksa inbox email Anda (termasuk folder
+                                spam) untuk link reset password. Ikuti instruksi di email untuk membuat password baru.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="faq-item p-0">
+                        <summary class="p-5 flex items-center justify-between gap-4">
+                            <span class="font-body-md text-body-md text-primary font-semibold flex-1">Apa itu SSO dan
+                                bagaimana cara kerjanya?</span>
+                            <span class="material-symbols-outlined text-on-surface-variant faq-icon">expand_more</span>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 border-t border-primary/10">
+                            <p class="font-body-sm text-body-sm text-on-surface-variant pt-4">
+                                SSO (Single Sign-On) adalah sistem otentikasi yang memungkinkan Anda menggunakan satu
+                                akun untuk mengakses berbagai layanan Flexa Cendekia. Dengan SSO, Anda cukup login
+                                sekali dan dapat mengakses semua fitur tanpa perlu login ulang di setiap layanan.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="faq-item p-0">
+                        <summary class="p-5 flex items-center justify-between gap-4">
+                            <span class="font-body-md text-body-md text-primary font-semibold flex-1">Apakah saya bisa
+                                mengubah email akun saya?</span>
+                            <span class="material-symbols-outlined text-on-surface-variant faq-icon">expand_more</span>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 border-t border-primary/10">
+                            <p class="font-body-sm text-body-sm text-on-surface-variant pt-4">
+                                Perubahan email akun harus dilakukan melalui administrator sekolah. Hubungi bagian
+                                administrasi atau tim IT sekolah Anda untuk meminta perubahan email akun Flexa Cendekia.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="faq-item p-0">
+                        <summary class="p-5 flex items-center justify-between gap-4">
+                            <span class="font-body-md text-body-md text-primary font-semibold flex-1">Bagaimana jika
+                                akun saya terkunci?</span>
+                            <span class="material-symbols-outlined text-on-surface-variant faq-icon">expand_more</span>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 border-t border-primary/10">
+                            <p class="font-body-sm text-body-sm text-on-surface-variant pt-4">
+                                Akun dapat terkunci jika terjadi beberapa kali percobaan login gagal. Tunggu selama 15
+                                menit, lalu coba login kembali. Jika masih terkunci, hubungi tim bantuan melalui halaman
+                                <a href="/?page=01_login_kontak" class="text-primary underline">Kontak</a> untuk membuka kunci akun
+                                Anda.
+                            </p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- FAQ Section: Platform & Fitur -->
+            <div id="platform" class="mb-10">
+                <p
+                    class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant mb-5 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">dashboard</span>
+                    Platform & Fitur
+                </p>
+
+                <div class="space-y-3 faq-section">
+                    <details class="faq-item p-0">
+                        <summary class="p-5 flex items-center justify-between gap-4">
+                            <span class="font-body-md text-body-md text-primary font-semibold flex-1">Apa itu Roadmap
+                                Belajar 6 Tahun?</span>
+                            <span class="material-symbols-outlined text-on-surface-variant faq-icon">expand_more</span>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 border-t border-primary/10">
+                            <p class="font-body-sm text-body-sm text-on-surface-variant pt-4">
+                                Roadmap Belajar 6 Tahun adalah peta perjalanan akademik personal yang dirancang
+                                berdasarkan hasil tes diagnosis awal. Roadmap ini memetakan jalur belajar mulai dari
+                                kelas 10 hingga perguruan tinggi, mencakup penguatan kompetensi, persiapan ujian, dan
+                                pengembangan karir menuju cita-cita profesi Anda.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="faq-item p-0">
+                        <summary class="p-5 flex items-center justify-between gap-4">
+                            <span class="font-body-md text-body-md text-primary font-semibold flex-1">Apa itu Tes
+                                Diagnosis?</span>
+                            <span class="material-symbols-outlined text-on-surface-variant faq-icon">expand_more</span>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 border-t border-primary/10">
+                            <p class="font-body-sm text-body-sm text-on-surface-variant pt-4">
+                                Tes Diagnosis adalah asesmen awal yang dilakukan setelah login pertama kali. Tes ini
+                                mengukur kemampuan akademik, minat, dan bakat Anda untuk menghasilkan roadmap belajar
+                                yang dipersonalisasi. Tes ini bukan ujian, sehingga tidak ada nilai benar atau salah —
+                                jawablah sesuai kemampuan dan preferensi Anda.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="faq-item p-0">
+                        <summary class="p-5 flex items-center justify-between gap-4">
+                            <span class="font-body-md text-body-md text-primary font-semibold flex-1">Peran apa saja
+                                yang tersedia di platform?</span>
+                            <span class="material-symbols-outlined text-on-surface-variant faq-icon">expand_more</span>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 border-t border-primary/10">
+                            <div class="font-body-sm text-body-sm text-on-surface-variant pt-4 space-y-2">
+                                <p>Platform Flexa Cendekia x UNIPDU mendukung tiga peran pengguna:</p>
+                                <ul class="list-disc ml-4 space-y-1">
+                                    <li><strong>Siswa</strong> — Peserta didik yang mengikuti roadmap belajar personal,
+                                        mengerjakan tes, dan melacak progres akademik.</li>
+                                    <li><strong>Guru</strong> — Tenaga pengajar yang memantau progres siswa, memberikan
+                                        materi, dan menyesuaikan kurikulum.</li>
+                                    <li><strong>Orang Tua</strong> — Wali murid yang memantau perkembangan belajar anak
+                                        secara real-time.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+
+                    <details class="faq-item p-0">
+                        <summary class="p-5 flex items-center justify-between gap-4">
+                            <span class="font-body-md text-body-md text-primary font-semibold flex-1">Apakah data saya
+                                aman di platform ini?</span>
+                            <span class="material-symbols-outlined text-on-surface-variant faq-icon">expand_more</span>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 border-t border-primary/10">
+                            <p class="font-body-sm text-body-sm text-on-surface-variant pt-4">
+                                Ya. Flexa Cendekia x UNIPDU menggunakan enkripsi data dan sistem otentikasi SSO yang
+                                aman. Data pribadi dan akademik Anda dilindungi sesuai dengan kebijakan privasi dan
+                                hanya dapat diakses oleh pihak yang berwenang (guru, wali kelas, dan orang tua yang
+                                terdaftar).
+                            </p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- FAQ Section: Teknis -->
+            <div id="teknis" class="mb-10">
+                <p
+                    class="font-label-caps text-label-caps uppercase tracking-widest text-on-surface-variant mb-5 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-base">build</span>
+                    Teknis
+                </p>
+
+                <div class="space-y-3 faq-section">
+                    <details class="faq-item p-0">
+                        <summary class="p-5 flex items-center justify-between gap-4">
+                            <span class="font-body-md text-body-md text-primary font-semibold flex-1">Browser apa yang
+                                didukung?</span>
+                            <span class="material-symbols-outlined text-on-surface-variant faq-icon">expand_more</span>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 border-t border-primary/10">
+                            <div class="font-body-sm text-body-sm text-on-surface-variant pt-4 space-y-2">
+                                <p>Platform ini mendukung browser modern terbaru:</p>
+                                <ul class="list-disc ml-4 space-y-1">
+                                    <li>Google Chrome (versi 90+)</li>
+                                    <li>Mozilla Firefox (versi 88+)</li>
+                                    <li>Microsoft Edge (versi 90+)</li>
+                                    <li>Apple Safari (versi 14+)</li>
+                                </ul>
+                                <p>Kami menyarankan menggunakan Google Chrome untuk pengalaman terbaik.</p>
+                            </div>
+                        </div>
+                    </details>
+
+                    <details class="faq-item p-0">
+                        <summary class="p-5 flex items-center justify-between gap-4">
+                            <span class="font-body-md text-body-md text-primary font-semibold flex-1">Apakah platform
+                                bisa diakses dari HP?</span>
+                            <span class="material-symbols-outlined text-on-surface-variant faq-icon">expand_more</span>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 border-t border-primary/10">
+                            <p class="font-body-sm text-body-sm text-on-surface-variant pt-4">
+                                Ya! Platform Flexa Cendekia x UNIPDU dirancang dengan desain responsif yang dapat
+                                diakses dari smartphone, tablet, maupun komputer/laptop. Untuk pengalaman terbaik pada
+                                perangkat mobile, gunakan browser Chrome atau Safari terbaru.
+                            </p>
+                        </div>
+                    </details>
+
+                    <details class="faq-item p-0">
+                        <summary class="p-5 flex items-center justify-between gap-4">
+                            <span class="font-body-md text-body-md text-primary font-semibold flex-1">Halaman tidak bisa
+                                dimuat / error. Apa yang harus saya lakukan?</span>
+                            <span class="material-symbols-outlined text-on-surface-variant faq-icon">expand_more</span>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 border-t border-primary/10">
+                            <div class="font-body-sm text-body-sm text-on-surface-variant pt-4 space-y-2">
+                                <p>Coba langkah-langkah berikut:</p>
+                                <ol class="list-decimal ml-4 space-y-1">
+                                    <li>Refresh halaman dengan menekan <strong>Ctrl+R</strong> (Windows) atau
+                                        <strong>Cmd+R</strong> (Mac).
+                                    </li>
+                                    <li>Hapus cache browser: <strong>Ctrl+Shift+Delete</strong> → pilih "Cached images
+                                        and files" → Clear.</li>
+                                    <li>Coba buka halaman menggunakan mode Incognito/Private.</li>
+                                    <li>Pastikan koneksi internet Anda stabil.</li>
+                                    <li>Jika masalah berlanjut, <a href="/?page=01_login_kontak"
+                                            class="text-primary underline">hubungi tim bantuan</a>.</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </details>
+
+                    <details class="faq-item p-0">
+                        <summary class="p-5 flex items-center justify-between gap-4">
+                            <span class="font-body-md text-body-md text-primary font-semibold flex-1">Apakah ada
+                                aplikasi mobile khusus?</span>
+                            <span class="material-symbols-outlined text-on-surface-variant faq-icon">expand_more</span>
+                        </summary>
+                        <div class="px-5 pb-5 pt-0 border-t border-primary/10">
+                            <p class="font-body-sm text-body-sm text-on-surface-variant pt-4">
+                                Saat ini platform Flexa Cendekia x UNIPDU diakses melalui web browser. Aplikasi mobile
+                                khusus sedang dalam tahap pengembangan dan akan diinformasikan melalui pengumuman resmi
+                                sekolah jika sudah tersedia.
+                            </p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- Still Need Help -->
+            <div class="academic-ledger-card p-8 text-center">
+                <span class="material-symbols-outlined text-primary text-4xl mb-3 opacity-40">support_agent</span>
+                <p class="font-headline-md text-[20px] text-primary mb-2" style="font-family:'Source Serif 4',serif;">
+                    Masih butuh bantuan?</p>
+                <p class="font-body-md text-body-md text-on-surface-variant mb-6 max-w-md mx-auto">
+                    Jika Anda tidak menemukan jawaban yang dicari, tim kami siap membantu Anda.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <a href="/?page=01_login_kontak"
+                        class="inline-flex items-center justify-center gap-3 bg-primary text-on-primary py-3 px-6 hover:opacity-90 transition-all active:scale-[0.98] border border-primary"
+                        style="text-decoration:none;">
+                        <span class="material-symbols-outlined text-lg">mail</span>
+                        <span class="font-label-caps text-label-caps uppercase tracking-wider">Hubungi Kami</span>
+                    </a>
+                    <a href="/?page=01_login"
+                        class="inline-flex items-center justify-center gap-3 bg-transparent text-primary py-3 px-6 hover:bg-primary/5 transition-all active:scale-[0.98] border border-primary/20"
+                        style="text-decoration:none;">
+                        <span class="material-symbols-outlined text-lg">arrow_back</span>
+                        <span class="font-label-caps text-label-caps uppercase tracking-wider">Kembali ke Login</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full bg-surface-container border-t border-primary/10 mt-12">
+        <div
+            class="flex flex-col md:flex-row justify-between items-center gap-4 px-margin-mobile md:px-margin-desktop py-8 max-w-container-max mx-auto">
+            <div class="flex flex-col items-center md:items-start gap-1">
+                <span class="font-label-caps text-label-caps uppercase tracking-widest text-primary">Kolaborasi
+                    Akademik</span>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Flexa Cendekia &amp; Universitas
+                    Pesantren Tinggi Darul Ulum</span>
+            </div>
+            <div class="flex gap-6">
+                <a class="text-on-surface-variant font-body-sm text-body-sm hover:underline decoration-1 underline-offset-4"
+                    href="#">Kebijakan Privasi</a>
+                <a class="text-on-surface-variant font-body-sm text-body-sm hover:underline decoration-1 underline-offset-4"
+                    href="#">Syarat &amp; Ketentuan</a>
+            </div>
+            <div class="font-body-sm text-body-sm text-on-surface-variant">
+                © 2026 Flexa Cendekia x UNIPDU. Hak Cipta Dilindungi.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // FAQ Search / Filter
+        function filterFAQ() {
+            const query = document.getElementById('search-input').value.toLowerCase().trim();
+            const allFAQItems = document.querySelectorAll('.faq-item');
+
+            allFAQItems.forEach(item => {
+                const questionText = item.querySelector('summary span').textContent.toLowerCase();
+                const answerText = item.querySelector('summary + div').textContent.toLowerCase();
+
+                if (query === '' || questionText.includes(query) || answerText.includes(query)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
