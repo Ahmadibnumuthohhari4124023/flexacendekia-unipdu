@@ -138,6 +138,7 @@
             border-bottom: 2px solid #805600;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <body class="min-h-screen flex flex-col">
@@ -218,6 +219,7 @@
                     class="w-full bg-primary text-on-primary py-3 font-label-caps text-label-caps hover:opacity-90 transition-opacity">
                     Add New Lesson
                 </button>
+<<<<<<< Updated upstream
                 <div class="pt-4 border-t border-outline-variant/20">
                     <a class="flex items-center gap-3 py-2 text-on-surface-variant hover:text-primary font-body-sm text-body-sm"
                         href="#">
@@ -525,6 +527,274 @@
         </div>
     </footer>
     <script>
+=======
+<div class="pt-4 border-t border-outline-variant/20">
+<a class="flex items-center gap-3 py-2 text-on-surface-variant hover:text-primary font-body-sm text-body-sm" href="../01_login/bantuan.html">
+<span class="material-symbols-outlined text-sm">contact_support</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 py-2 text-on-surface-variant hover:text-primary font-body-sm text-body-sm" href="../13_riwayat-semester/code.html">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+<span>Archive</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop">
+<div class="max-w-container-max mx-auto">
+<!-- Header & Stats -->
+<div class="mb-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+<div>
+<nav class="flex gap-2 mb-2">
+<span class="font-label-caps text-[10px] text-on-surface-variant">PLANNER</span>
+<span class="font-label-caps text-[10px] text-outline">/</span>
+<span class="font-label-caps text-[10px] text-primary">ARCHITECTURAL ROADMAP</span>
+</nav>
+<h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary">6-Year Strategic Path</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-2xl">A comprehensive academic ledger detailing the transition from secondary education to professional architectural studies.</p>
+</div>
+<div class="flex gap-4">
+<div class="bg-ledger-ivory border border-primary/20 p-4 min-w-[140px]">
+<p class="font-label-caps text-[10px] text-outline mb-1">COMPLETION</p>
+<p class="font-stats-lg text-stats-lg text-secondary">38%</p>
+<div class="w-full h-1 bg-surface-container mt-2">
+<div class="bg-secondary h-full" style="width: 38%"></div>
+</div>
+</div>
+<div class="bg-ledger-ivory border border-primary/20 p-4 min-w-[140px]">
+<p class="font-label-caps text-[10px] text-outline mb-1">CREDITS</p>
+<p class="font-stats-lg text-stats-lg text-primary">42/144</p>
+</div>
+</div>
+</div>
+<!-- Roadmap Layout -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+<!-- Phase 1: SMA (Left Side) -->
+<div class="xl:col-span-4 space-y-6">
+<div class="flex items-center gap-3 mb-4">
+<div class="bg-primary text-on-primary px-3 py-1 font-stats-sm text-stats-sm">PHASE 01</div>
+<h3 class="font-headline-md text-headline-md">SMA Foundation</h3>
+</div>
+<!-- Year 10 -->
+<div class="bg-ledger-ivory border border-outline-variant/30 p-6 hard-shadow relative">
+<div class="absolute top-4 right-4 flex gap-1">
+<span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h4 class="font-label-caps text-label-caps text-secondary mb-4">YEAR 10: EXPLORATION</h4>
+<ul class="space-y-4 ledger-line">
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Geometri Ruang I</span>
+<span class="font-stats-sm text-stats-sm text-secondary">DONE</span>
+</li>
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Sketsa Dasar</span>
+<span class="font-stats-sm text-stats-sm text-secondary">DONE</span>
+</li>
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Sejarah Seni Rupa</span>
+<span class="font-stats-sm text-stats-sm text-secondary">DONE</span>
+</li>
+</ul>
+</div>
+<!-- Year 11 -->
+<div class="bg-ledger-ivory border border-outline-variant/30 p-6 relative">
+<div class="absolute top-4 right-4 text-outline">
+<span class="material-symbols-outlined text-lg">pending</span>
+</div>
+<h4 class="font-label-caps text-label-caps text-primary mb-4">YEAR 11: CORE SKILLS</h4>
+<ul class="space-y-4 ledger-line">
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Fisika Bangunan</span>
+<span class="font-stats-sm text-stats-sm text-outline">70%</span>
+</li>
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Perspektif 2 Titik Hilang</span>
+<span class="font-stats-sm text-stats-sm text-secondary">DONE</span>
+</li>
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Matematika Kalkulus</span>
+<span class="font-stats-sm text-stats-sm text-outline">45%</span>
+</li>
+</ul>
+</div>
+<!-- Year 12 -->
+<div class="bg-ledger-ivory border border-outline-variant/30 p-6 opacity-60">
+<h4 class="font-label-caps text-label-caps text-outline mb-4">YEAR 12: PORTFOLIO PREP</h4>
+<ul class="space-y-4 ledger-line">
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Maket Studi I</span>
+<span class="font-stats-sm text-stats-sm text-outline">LOCK</span>
+</li>
+<li class="flex justify-between items-center py-1">
+<span class="font-body-md text-body-md">Komposisi Warna</span>
+<span class="font-stats-sm text-stats-sm text-outline">LOCK</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Phase 2: Gap Year (Middle Column) -->
+<div class="xl:col-span-3 space-y-6">
+<div class="flex items-center gap-3 mb-4">
+<div class="bg-secondary text-on-secondary px-3 py-1 font-stats-sm text-stats-sm">PHASE 02</div>
+<h3 class="font-headline-md text-headline-md">The Gap Year</h3>
+</div>
+<div class="bg-secondary-container/10 border-2 border-secondary p-1">
+<div class="bg-ledger-ivory border border-secondary p-6">
+<p class="font-body-sm text-body-sm italic text-on-surface-variant mb-6">"A dedicated interval for intensive portfolio curation and professional internship."</p>
+<div class="space-y-8">
+<div>
+<h5 class="font-label-caps text-[10px] text-secondary mb-3">MILESTONES</h5>
+<div class="space-y-4">
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-8 h-8 rounded-full border border-secondary flex items-center justify-center text-secondary font-stats-sm">01</div>
+<div>
+<p class="font-label-caps text-label-caps">Portfolio Review</p>
+<p class="font-body-sm text-body-sm text-outline">12 Selected Works</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex-shrink-0 w-8 h-8 rounded-full border border-outline flex items-center justify-center text-outline font-stats-sm">02</div>
+<div>
+<p class="font-label-caps text-label-caps text-outline">Studio Internship</p>
+<p class="font-body-sm text-body-sm text-outline">3 Months Duration</p>
+</div>
+</div>
+</div>
+</div>
+<div class="border-t border-secondary/20 pt-6">
+<h5 class="font-label-caps text-[10px] text-secondary mb-3">TOOLS MASTERY</h5>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 bg-surface-container text-primary font-stats-sm text-[10px] border border-outline-variant">AUTOCAD</span>
+<span class="px-2 py-1 bg-surface-container text-primary font-stats-sm text-[10px] border border-outline-variant">SKETCHUP</span>
+<span class="px-2 py-1 bg-surface-container text-primary font-stats-sm text-[10px] border border-outline-variant opacity-50">REVIT</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Vision Image -->
+<div class="relative group cursor-pointer overflow-hidden border border-outline-variant/30">
+<img class="w-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A sophisticated architectural sketch of a modern pavilion, drawn in a professional technical style with fine black ink lines on textured ivory paper. The composition includes hand-drawn annotations, scale figures, and a minimalist landscaping plan. The lighting is bright and airy, reflecting a studio environment with warm wooden drafting tables visible in the soft-focus background, maintaining the academic and studious tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlUwJvYGIgQmdjJkSHSyPtvQJiduTZSzGL6ZrqNWfkwiCdMEIiaxEM_ulEA4byNi0aCMmEq7EUJoT-xLerVk02PIoEanHwvgkUPTu3oNkLgjqtCwQbPYWIDdl_SrfZhqGTFzSSTvQJb0sH7c_AUC8diSqkwWfehUcKLunxXTVIk9CQ2SCsgHlDfbARfiacTZgKzLVRaHOpRfj51M40aK91rjDrT3n1OLTBfnxfxjAz9KCLb5boFRn86g2hCkY7dRZ9N8m3E_nSv6A"/>
+<div class="absolute bottom-0 left-0 right-0 bg-primary/90 p-4 translate-y-full group-hover:translate-y-0 transition-transform">
+<p class="font-label-caps text-[10px] text-on-primary">CURATED VISION</p>
+<p class="font-body-sm text-body-sm text-on-primary-container">Residential Pavilion Study 2024</p>
+</div>
+</div>
+</div>
+<!-- Phase 3: Higher Ed (Right Column) -->
+<div class="xl:col-span-5 space-y-6">
+<div class="flex items-center gap-3 mb-4">
+<div class="bg-tertiary text-on-tertiary px-3 py-1 font-stats-sm text-stats-sm">PHASE 03</div>
+<h3 class="font-headline-md text-headline-md">S1 Architecture</h3>
+</div>
+<div class="bg-ledger-ivory border border-outline-variant/30 overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-primary text-on-primary">
+<th class="p-4 font-label-caps text-label-caps">SEMESTER</th>
+<th class="p-4 font-label-caps text-label-caps">CORE MODULES</th>
+<th class="p-4 font-label-caps text-label-caps text-right">STATUS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 align-top">
+<p class="font-stats-lg text-stats-lg">01</p>
+</td>
+<td class="p-4">
+<p class="font-body-md text-body-md font-bold mb-1">Studio Perancangan I</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Dasar-dasar komposisi dan organisasi ruang.</p>
+</td>
+<td class="p-4 text-right">
+<span class="inline-block px-2 py-1 bg-secondary/10 text-secondary font-stats-sm text-[10px] border border-secondary/20">UPCOMING</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 align-top">
+<p class="font-stats-lg text-stats-lg">02</p>
+</td>
+<td class="p-4">
+<p class="font-body-md text-body-md font-bold mb-1">Sains Bangunan</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Penghawaan alami dan pencahayaan.</p>
+</td>
+<td class="p-4 text-right">
+<span class="material-symbols-outlined text-outline">lock</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors bg-surface-container-lowest">
+<td class="p-4 align-top">
+<p class="font-stats-lg text-stats-lg">03</p>
+</td>
+<td class="p-4">
+<p class="font-body-md text-body-md font-bold mb-1">Struktur &amp; Konstruksi II</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Sistem bentang lebar dan material komposit.</p>
+</td>
+<td class="p-4 text-right">
+<span class="material-symbols-outlined text-outline">lock</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 align-top">
+<p class="font-stats-lg text-stats-lg">04</p>
+</td>
+<td class="p-4">
+<p class="font-body-md text-body-md font-bold mb-1">Teori Arsitektur</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Kritik arsitektur dan perkembangan desain modern.</p>
+</td>
+<td class="p-4 text-right">
+<span class="material-symbols-outlined text-outline">lock</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="bg-primary p-6 text-on-primary relative overflow-hidden">
+<div class="relative z-10">
+<h4 class="font-label-caps text-label-caps mb-4 text-primary-fixed">CAREER PROJECTION</h4>
+<div class="flex items-center gap-6">
+<div class="text-center">
+<p class="font-stats-lg text-stats-lg">2027</p>
+<p class="font-label-caps text-[10px] opacity-70">GRADUATION</p>
+</div>
+<div class="h-8 w-px bg-on-primary/20"></div>
+<div class="text-center">
+<p class="font-stats-lg text-stats-lg">2029</p>
+<p class="font-label-caps text-[10px] opacity-70">PROFESSIONAL (PPAr)</p>
+</div>
+</div>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'wght' 200;">architecture</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Action -->
+<div class="mt-12 py-8 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary">verified</span>
+<p class="font-body-sm text-body-sm">Last verified by Academic Counselor on Oct 24, 2023</p>
+</div>
+<div class="flex gap-4">
+<button id="download-pdf-btn" class="px-6 py-2 border border-primary font-label-caps text-label-caps hover:bg-surface-container transition-all">Download PDF</button>
+<button id="sync-calendar-btn" class="px-6 py-2 bg-primary text-on-primary font-label-caps text-label-caps hover:opacity-90 shadow-sm">Sync with Calendar</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Global Footer -->
+<footer class="bg-surface-container-lowest dark:bg-primary border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center w-full px-margin-desktop py-4 z-40">
+<p class="font-stats-sm text-stats-sm text-on-surface-variant">© 2024 ScholarsLedger Academic Systems</p>
+<div class="flex gap-8 mt-4 md:mt-0">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="../01_login/bantuan.html">Academic Integrity</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="../01_login/kontak.html">Support Center</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="../05_pilih-cita-cita/kebijakan-privasi.html">Privacy Ledger</a>
+</div>
+</footer>
+<script>
+>>>>>>> Stashed changes
         // Micro-interactions for hover effects on ledger cards
         document.querySelectorAll('.bg-ledger-ivory').forEach(card => {
             card.addEventListener('mouseenter', () => {
@@ -536,7 +806,79 @@
                 card.style.transform = 'translate(0, 0)';
             });
         });
+<<<<<<< Updated upstream
     </script>
 </body>
 
 </html>
+=======
+        const downloadPdfBtn = document.getElementById('download-pdf-btn');
+        const syncCalendarBtn = document.getElementById('sync-calendar-btn');
+
+        const downloadFile = (filename, content, mimeType) => {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        };
+
+        if (downloadPdfBtn) {
+            downloadPdfBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                if (!window.jspdf?.jsPDF) {
+                    alert('Gagal membuat PDF. Library jsPDF tidak tersedia.');
+                    return;
+                }
+
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+                doc.setFontSize(18);
+                doc.text('ScholarsLedger Roadmap Overview', 40, 60);
+                doc.setFontSize(12);
+                const contentLines = [
+                    'Phase 1: SMA Foundation - 38% complete',
+                    'Phase 2: University Prep - In progress',
+                    'Next checkpoint: Checkpoint Jumat',
+                    'Target Graduation: 2027',
+                    'Professional track: PPAr by 2029',
+                    'Plan: Sync this roadmap to your calendar for milestone reminders.'
+                ];
+                doc.text(contentLines, 40, 90, { maxWidth: 520, lineHeightFactor: 1.4 });
+                doc.save('scholarsledger-roadmap.pdf');
+            });
+        }
+
+        if (syncCalendarBtn) {
+            syncCalendarBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                const now = new Date();
+                const eventStart = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
+                const eventEnd = new Date(eventStart.getTime() + 60 * 60 * 1000);
+                const toIcsDate = (date) => date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+
+                const icsContent = [
+                    'BEGIN:VCALENDAR',
+                    'VERSION:2.0',
+                    'PRODID:-//ScholarsLedger//Roadmap Sync//ID',
+                    'BEGIN:VEVENT',
+                    'UID:' + Date.now() + '@scholarsledger.edu',
+                    'DTSTAMP:' + toIcsDate(now),
+                    'DTSTART:' + toIcsDate(eventStart),
+                    'DTEND:' + toIcsDate(eventEnd),
+                    'SUMMARY:Roadmap Review - Checkpoint Jumat',
+                    'LOCATION:ScholarsLedger Portal',
+                    'DESCRIPTION:Phase 1 complete 38%\\nPhase 2 in progress\\nNext checkpoint: Checkpoint Jumat\\nSync your six-year academic roadmap for milestone reminders.',
+                    'END:VEVENT',
+                    'END:VCALENDAR'
+                ].join('\n');
+                downloadFile('scholarsledger-roadmap-sync.ics', icsContent, 'text/calendar');
+                alert('File kalender roadmap telah dibuat. Impor ke aplikasi kalender Anda.');
+            });
+        }    </script>
+</body></html>
+>>>>>>> Stashed changes
