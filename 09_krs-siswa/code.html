@@ -5,6 +5,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Kartu Rencana Studi (KRS) - Ahmad Fauzi</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=Libre+Franklin:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100..900&family=Source+Serif+4:wght@100..900&display=swap" rel="stylesheet"/>
@@ -127,7 +128,7 @@
 <h1 class="font-headline-md text-headline-md text-primary mb-2">Kartu Rencana Studi (KRS)</h1>
 <p class="font-body-md text-on-surface-variant italic">Semester Ganjil 2023/2024</p>
 </div>
-<div class="inline-flex items-center px-4 py-2 bg-secondary/10 border border-secondary text-secondary rounded-sm">
+<div id="krs-status-badge" class="inline-flex items-center px-4 py-2 bg-secondary/10 border border-secondary text-secondary rounded-sm">
 <span class="material-symbols-outlined text-[20px] mr-2">pending_actions</span>
 <span class="font-label-caps text-label-caps">Menunggu Persetujuan Guru</span>
 </div>
@@ -153,8 +154,8 @@
 <div>
 <p class="font-label-caps text-label-caps text-on-surface-variant mb-1">CITA-CITA STRATEGIS</p>
 <div class="flex items-center text-secondary font-bold">
-<span class="material-symbols-outlined mr-2">precision_manufacturing</span>
-<span>Arsitek</span>
+<span class="material-symbols-outlined mr-2">work</span>
+<span id="krs-cita-cita">Memuat...</span>
 </div>
 </div>
 </div>
@@ -199,50 +200,9 @@
 <th class="px-6 py-4 font-label-caps text-label-caps border-b border-outline-variant text-right">STATUS</th>
 </tr>
 </thead>
-<tbody>
+<tbody id="modul-list">
 <tr>
-<td class="px-6 py-4 font-stats-sm text-stats-sm">MAT-101</td>
-<td class="px-6 py-4 font-body-md font-bold text-primary">Geometri Ruang</td>
-<td class="px-6 py-4 font-body-sm text-on-surface-variant">Analisis Spasial</td>
-<td class="px-6 py-4">
-<span class="px-2 py-1 bg-primary/5 text-primary border border-primary/10 text-[11px] font-bold uppercase">Menengah</span>
-</td>
-<td class="px-6 py-4 text-right">
-<span class="font-label-caps text-[10px] text-secondary">WAJIB</span>
-</td>
-</tr>
-<tr>
-<td class="px-6 py-4 font-stats-sm text-stats-sm">ARS-202</td>
-<td class="px-6 py-4 font-body-md font-bold text-primary">Sejarah Arsitektur Dunia</td>
-<td class="px-6 py-4 font-body-sm text-on-surface-variant">Literasi Budaya</td>
-<td class="px-6 py-4">
-<span class="px-2 py-1 bg-primary/5 text-primary border border-primary/10 text-[11px] font-bold uppercase">Tinggi</span>
-</td>
-<td class="px-6 py-4 text-right">
-<span class="font-label-caps text-[10px] text-on-surface-variant">PILIHAN</span>
-</td>
-</tr>
-<tr>
-<td class="px-6 py-4 font-stats-sm text-stats-sm">DSN-105</td>
-<td class="px-6 py-4 font-body-md font-bold text-primary">Sketsa Dasar</td>
-<td class="px-6 py-4 font-body-sm text-on-surface-variant">Teknik Visualisasi</td>
-<td class="px-6 py-4">
-<span class="px-2 py-1 bg-primary/5 text-primary border border-primary/10 text-[11px] font-bold uppercase">Menengah</span>
-</td>
-<td class="px-6 py-4 text-right">
-<span class="font-label-caps text-[10px] text-secondary">WAJIB</span>
-</td>
-</tr>
-<tr>
-<td class="px-6 py-4 font-stats-sm text-stats-sm">FIS-103</td>
-<td class="px-6 py-4 font-body-md font-bold text-primary">Fisika Bangunan I</td>
-<td class="px-6 py-4 font-body-sm text-on-surface-variant">Mekanika Struktur</td>
-<td class="px-6 py-4">
-<span class="px-2 py-1 bg-primary/5 text-primary border border-primary/10 text-[11px] font-bold uppercase">Tinggi</span>
-</td>
-<td class="px-6 py-4 text-right">
-<span class="font-label-caps text-[10px] text-secondary">WAJIB</span>
-</td>
+<td colspan="5" class="px-6 py-8 text-center text-on-surface-variant font-body-sm">Memuat modul belajar...</td>
 </tr>
 </tbody>
 </table>
@@ -267,8 +227,8 @@
 <p class="font-stats-sm text-stats-sm text-on-surface-variant">Wali Kelas & Mentor</p>
 </div>
 </div>
-<p class="font-body-sm italic text-on-surface leading-relaxed border-l-2 border-secondary pl-4">
-                            "Ahmad, pemilihan modul Geometri Ruang sangat tepat untuk dasar Arsitektur. Namun, perhatikan beban 'Tinggi' pada Fisika Bangunan. Pastikan jadwal belajarmu teratur."
+<p id="krs-catatan-guru" class="font-body-sm italic text-on-surface leading-relaxed border-l-2 border-secondary pl-4">
+                            "Menunggu ulasan dari pembimbing akademik Anda."
                         </p>
 </div>
 </div>
@@ -276,11 +236,11 @@
 <div class="bg-primary p-8 ledger-shadow">
 <h3 class="font-headline-md text-headline-md text-surface-container-lowest mb-6">Aksi Studi</h3>
 <div class="space-y-4">
-<button class="w-full py-4 bg-secondary text-surface-container-lowest font-bold text-label-caps hover:bg-secondary/90 transition-all duration-150 flex items-center justify-center">
+<button id="btn-revisi" class="w-full py-4 bg-secondary text-surface-container-lowest font-bold text-label-caps hover:bg-secondary/90 transition-all duration-150 flex items-center justify-center">
 <span class="material-symbols-outlined mr-2">edit_note</span>
                             AJUKAN REVISI
                         </button>
-<button class="w-full py-4 bg-transparent border border-surface-container-lowest text-surface-container-lowest font-bold text-label-caps hover:bg-surface-container-lowest/10 transition-all duration-150 flex items-center justify-center">
+<button id="btn-cetak" class="w-full py-4 bg-transparent border border-surface-container-lowest text-surface-container-lowest font-bold text-label-caps hover:bg-surface-container-lowest/10 transition-all duration-150 flex items-center justify-center">
 <span class="material-symbols-outlined mr-2">download</span>
                             UNDUH DRAFT KRS
                         </button>
@@ -329,6 +289,97 @@
                 row.style.transform = 'translateX(0)';
                 row.style.borderLeft = 'none';
             });
+        });
+
+        // Fetch KRS Status
+        async function loadKrsStatus() {
+            try {
+                // Menggunakan userId simulasi Ahmad Fauzi = 'mock-id'
+                const res = await fetch('/api/krs/student/mock-id');
+                const result = await res.json();
+                
+                if (result.success && result.data) {
+                    const krs = result.data;
+                    const badge = document.getElementById('krs-status-badge');
+                    const badgeIcon = badge.querySelector('.material-symbols-outlined');
+                    const badgeText = badge.querySelector('span:nth-child(2)');
+                    const catatanText = document.getElementById('krs-catatan-guru');
+                    
+                    // Update Cita-Cita
+                    document.getElementById('krs-cita-cita').textContent = krs.profesiTarget;
+                    
+                    // Update Modul List
+                    if (krs.modules && krs.modules.length > 0) {
+                        const tbody = document.getElementById('modul-list');
+                        let html = '';
+                        krs.modules.forEach(m => {
+                            const wajibClass = m.status === 'WAJIB' ? 'text-secondary' : 'text-on-surface-variant';
+                            html += `
+                            <tr>
+                                <td class="px-6 py-4 font-stats-sm text-stats-sm">${m.kode}</td>
+                                <td class="px-6 py-4 font-body-md font-bold text-primary">${m.nama}</td>
+                                <td class="px-6 py-4 font-body-sm text-on-surface-variant">${m.kompetensi}</td>
+                                <td class="px-6 py-4">
+                                    <span class="px-2 py-1 bg-primary/5 text-primary border border-primary/10 text-[11px] font-bold uppercase">${m.pacing}</span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <span class="font-label-caps text-[10px] ${wajibClass}">${m.status}</span>
+                                </td>
+                            </tr>`;
+                        });
+                        tbody.innerHTML = html;
+                    }
+                    
+                    // Update Badge Visuals
+                    if (krs.status === 'Disetujui') {
+                        badge.className = "inline-flex items-center px-4 py-2 bg-[#adefe1] border border-[#005046] text-[#005046] rounded-sm";
+                        badgeIcon.textContent = "check_circle";
+                        badgeText.textContent = "Disetujui Guru";
+                        
+                        document.getElementById('btn-revisi').style.display = 'none';
+                        document.getElementById('btn-cetak').innerHTML = '<span class="material-symbols-outlined mr-2">print</span>CETAK KRS RESMI';
+                        document.getElementById('btn-cetak').className = "w-full py-4 bg-[#005046] text-surface-container-lowest font-bold text-label-caps hover:brightness-110 transition-all duration-150 flex items-center justify-center cursor-pointer";
+                    } else if (krs.status === 'Ditolak') {
+                        badge.className = "inline-flex items-center px-4 py-2 bg-error/10 border border-error text-error rounded-sm";
+                        badgeIcon.textContent = "cancel";
+                        badgeText.textContent = "Ditolak - Perlu Revisi";
+                    }
+                    
+                    // Update Notes
+                    if (krs.catatanGuru) {
+                        catatanText.textContent = `"${krs.catatanGuru}"`;
+                    }
+                }
+            } catch (e) {
+                console.error('Error fetching KRS:', e);
+            }
+        }
+        
+        loadKrsStatus();
+
+        // Download Action
+        document.getElementById('btn-cetak').addEventListener('click', function() {
+            const element = document.querySelector('main');
+            const opt = {
+              margin:       0.5,
+              filename:     'KRS_Siswa.pdf',
+              image:        { type: 'jpeg', quality: 0.98 },
+              html2canvas:  { scale: 2 },
+              jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Tambahkan text loading
+            const originalText = this.innerHTML;
+            this.innerHTML = '<span class="material-symbols-outlined mr-2 animate-spin">sync</span>MENGUNDUH...';
+            
+            html2pdf().set(opt).from(element).save().then(() => {
+                this.innerHTML = originalText;
+            });
+        });
+
+        // Revisi Action
+        document.getElementById('btn-revisi').addEventListener('click', function() {
+            alert('Permintaan revisi telah diajukan ke pembimbing Anda. Anda akan menerima notifikasi segera.');
         });
     </script>
 </body></html>

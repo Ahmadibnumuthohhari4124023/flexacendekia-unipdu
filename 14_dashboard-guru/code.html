@@ -195,39 +195,10 @@
 <span class="material-symbols-outlined text-secondary" data-icon="how_to_reg">how_to_reg</span>
                         Persetujuan KRS
                     </h3>
-<span class="font-stats-sm text-xs bg-secondary/10 text-secondary border border-secondary/20 px-3 py-1 rounded-full font-bold">3 ANTRIAN</span>
+<span id="krs-queue-count" class="font-stats-sm text-xs bg-secondary/10 text-secondary border border-secondary/20 px-3 py-1 rounded-full font-bold">MEMUAT...</span>
 </div>
-<div class="divide-y divide-on-surface/5">
-<div class="px-6 py-5 flex items-center justify-between hover:bg-on-surface/5 transition-colors">
-<div class="flex items-center gap-4">
-<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">B</div>
-<div>
-<p class="font-bold">Budi Santoso</p>
-<p class="text-xs text-on-surface-variant">Semester 5 • Teknik Informatika</p>
-</div>
-</div>
-<a href="../15_tinjauan-guru/code.html" class="text-role-teacher font-bold border-2 border-role-teacher px-4 py-1.5 rounded hover:bg-role-teacher hover:text-white transition-all text-xs inline-block text-center mt-2 md:mt-0">Tinjau/Setujui</a>
-</div>
-<div class="px-6 py-5 flex items-center justify-between hover:bg-on-surface/5 transition-colors">
-<div class="flex items-center gap-4">
-<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">S</div>
-<div>
-<p class="font-bold">Sinta Permata</p>
-<p class="text-xs text-secondary font-bold">Semester 3 • Mendatang</p>
-</div>
-</div>
-<a href="../15_tinjauan-guru/code.html" class="text-role-teacher font-bold border-2 border-role-teacher px-4 py-1.5 rounded hover:bg-role-teacher hover:text-white transition-all text-xs inline-block text-center mt-2 md:mt-0">Tinjau/Setujui</a>
-</div>
-<div class="px-6 py-5 flex items-center justify-between hover:bg-on-surface/5 transition-colors">
-<div class="flex items-center gap-4">
-<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">R</div>
-<div>
-<p class="font-bold">Rio Pratama</p>
-<p class="text-xs text-on-surface-variant">Semester 1 • Sistem Informasi</p>
-</div>
-</div>
-<a href="../15_tinjauan-guru/code.html" class="text-role-teacher font-bold border-2 border-role-teacher px-4 py-1.5 rounded hover:bg-role-teacher hover:text-white transition-all text-xs inline-block text-center mt-2 md:mt-0">Tinjau/Setujui</a>
-</div>
+<div id="krs-pending-list" class="divide-y divide-on-surface/5 min-h-[100px] flex flex-col justify-center">
+    <div class="text-center text-sm text-on-surface-variant py-8">Memuat data antrean...</div>
 </div>
 <a class="p-4 text-center font-label-caps text-on-surface-variant hover:text-primary transition-colors border-t border-on-surface/10 bg-on-surface/5 font-bold block" href="../15_tinjauan-guru/code.html">LIHAT SEMUA PENGAJUAN</a>
 </section>
@@ -347,4 +318,51 @@
 <p class="text-label-caps text-on-surface-variant font-bold">Panel Pembimbing Akademik • Flexa Cendekia x UNIPDU</p>
 <p class="text-xs text-on-surface-variant mt-2">© 2024 Arsitektur Kurikulum Masa Depan.</p>
 </footer>
+<script>
+    // Fetch pending KRS
+    async function loadPendingKRS() {
+        try {
+            const res = await fetch('/api/krs/pending');
+            const result = await res.json();
+            
+            const listContainer = document.getElementById('krs-pending-list');
+            const countBadge = document.getElementById('krs-queue-count');
+            
+            if (result.success) {
+                const data = result.data;
+                countBadge.textContent = `${data.length} ANTRIAN`;
+                
+                if (data.length === 0) {
+                    listContainer.innerHTML = '<div class="text-center text-sm text-on-surface-variant py-8">Tidak ada antrean KRS saat ini.</div>';
+                    return;
+                }
+                
+                let html = '';
+                data.forEach(item => {
+                    const initial = item.nama.charAt(0).toUpperCase();
+                    html += `
+                    <div class="px-6 py-5 flex items-center justify-between hover:bg-on-surface/5 transition-colors">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">${initial}</div>
+                            <div>
+                                <p class="font-bold">${item.nama}</p>
+                                <p class="text-xs text-on-surface-variant">Semester ${item.semesterKe} • ${item.profesiTarget}</p>
+                            </div>
+                        </div>
+                        <a href="../15_tinjauan-guru/code.html?krsId=${item.krsId}" class="text-role-teacher font-bold border-2 border-role-teacher px-4 py-1.5 rounded hover:bg-role-teacher hover:text-white transition-all text-xs inline-block text-center mt-2 md:mt-0">Tinjau/Setujui</a>
+                    </div>
+                    `;
+                });
+                
+                listContainer.innerHTML = html;
+            }
+        } catch (err) {
+            console.error('Failed to load pending KRS:', err);
+            document.getElementById('krs-pending-list').innerHTML = '<div class="text-center text-sm text-error py-8">Gagal memuat data.</div>';
+        }
+    }
+    
+    // Auto load on mount
+    loadPendingKRS();
+</script>
 </body></html>

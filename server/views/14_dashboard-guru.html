@@ -118,21 +118,21 @@
 <div class="flex items-center gap-12 h-full">
 <span class="font-display-lg text-2xl font-bold text-primary">Flexa Cendekia x UNIPDU</span>
 <div class="hidden md:flex items-center h-full gap-8">
-<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md py-2" href="#">Siswa</a>
-<a class="text-role-teacher border-b-4 border-role-teacher font-bold h-full flex items-center px-2" href="#">Guru</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md py-2" href="#">Orang Tua</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md py-2" href="/?page=08_dashboard-siswa">Siswa</a>
+<a class="text-role-teacher border-b-4 border-role-teacher font-bold h-full flex items-center px-2" href="code.html">Guru</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md py-2" href="/?page=16_dashboard-ortu">Orang Tua</a>
 </div>
 </div>
 <div class="flex items-center gap-4">
-<button class="p-2 rounded-full hover:bg-on-surface/5 transition-all">
+<a href="/?page=17_notifikasi" class="p-2 rounded-full hover:bg-on-surface/5 transition-all">
 <span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
-</button>
-<button class="p-2 rounded-full hover:bg-on-surface/5 transition-all">
+</a>
+<a href="/?page=18_profil" class="p-2 rounded-full hover:bg-on-surface/5 transition-all">
 <span class="material-symbols-outlined text-primary" data-icon="settings">settings</span>
-</button>
-<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-role-teacher/20">
+</a>
+<a href="/?page=18_profil" class="w-10 h-10 rounded-full overflow-hidden border-2 border-role-teacher/20 hover:ring-2 hover:ring-role-teacher/50 transition-all block">
 <img alt="Ibu Sari Rahayu" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxBT34oA63VV8aYM0CjcnmsritZsSh9CsxFQRauujDwh6z4_64CQ4VV0XnX-Zz2j6r2ajNtHsvLsHVIWXy8xEr6fdfubBq4LffLi4yVgdYCsNV5i6JemzzrMS0D9Bt0VzG4ZgR4KQDD9BkEbn3uXNHKy00Mujo2SGCWohVy0onk1Veq_CXn9iNn3Kja0M80NsyY5aWsNYLcJhDE9dKG2ln1t5H9xEQ0iq2BuUe-MpgLjbiwEjuTr3KJAkNcoRGwvMkj9Ou2Fy6msQ"/>
-</div>
+</a>
 </div>
 </div>
 </nav>
@@ -149,10 +149,10 @@
                     NIP: 19820412200903 • Saat ini membimbing <span class="font-bold text-primary">24 Siswa Binaan</span>.
                 </p>
 </div>
-<button class="bg-role-teacher text-white px-8 py-3 font-bold rounded-lg hover:brightness-90 transition-all flex items-center gap-2 hard-shadow">
+<a href="/?page=15_tinjauan-guru" class="bg-role-teacher text-white px-8 py-3 font-bold rounded-lg hover:brightness-90 transition-all flex items-center gap-2 hard-shadow">
 <span class="material-symbols-outlined" data-icon="add">add</span>
                 TAMBAH TUGAS
-            </button>
+            </a>
 </header>
 <!-- Stats Bento Grid -->
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
@@ -190,41 +190,12 @@
 <span class="material-symbols-outlined text-secondary" data-icon="how_to_reg">how_to_reg</span>
                         Persetujuan KRS
                     </h3>
-<span class="font-stats-sm text-xs bg-secondary/10 text-secondary border border-secondary/20 px-3 py-1 rounded-full font-bold">3 ANTRIAN</span>
+<span id="krs-queue-count" class="font-stats-sm text-xs bg-secondary/10 text-secondary border border-secondary/20 px-3 py-1 rounded-full font-bold">MEMUAT...</span>
 </div>
-<div class="divide-y divide-on-surface/5">
-<div class="px-6 py-5 flex items-center justify-between hover:bg-on-surface/5 transition-colors">
-<div class="flex items-center gap-4">
-<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">B</div>
-<div>
-<p class="font-bold">Budi Santoso</p>
-<p class="text-xs text-on-surface-variant">Semester 5 • Teknik Informatika</p>
+<div id="krs-pending-list" class="divide-y divide-on-surface/5 min-h-[100px] flex flex-col justify-center">
+    <div class="text-center text-sm text-on-surface-variant py-8">Memuat data antrean...</div>
 </div>
-</div>
-<button class="text-role-teacher font-bold border-2 border-role-teacher px-4 py-1.5 rounded hover:bg-role-teacher hover:text-white transition-all text-xs">Tinjau/Setujui</button>
-</div>
-<div class="px-6 py-5 flex items-center justify-between hover:bg-on-surface/5 transition-colors">
-<div class="flex items-center gap-4">
-<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">S</div>
-<div>
-<p class="font-bold">Sinta Permata</p>
-<p class="text-xs text-secondary font-bold">Semester 3 • Mendatang</p>
-</div>
-</div>
-<button class="text-role-teacher font-bold border-2 border-role-teacher px-4 py-1.5 rounded hover:bg-role-teacher hover:text-white transition-all text-xs">Tinjau/Setujui</button>
-</div>
-<div class="px-6 py-5 flex items-center justify-between hover:bg-on-surface/5 transition-colors">
-<div class="flex items-center gap-4">
-<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">R</div>
-<div>
-<p class="font-bold">Rio Pratama</p>
-<p class="text-xs text-on-surface-variant">Semester 1 • Sistem Informasi</p>
-</div>
-</div>
-<button class="text-role-teacher font-bold border-2 border-role-teacher px-4 py-1.5 rounded hover:bg-role-teacher hover:text-white transition-all text-xs">Tinjau/Setujui</button>
-</div>
-</div>
-<a class="p-4 text-center font-label-caps text-on-surface-variant hover:text-primary transition-colors border-t border-on-surface/10 bg-on-surface/5 font-bold" href="#">LIHAT SEMUA PENGAJUAN</a>
+<a class="p-4 text-center font-label-caps text-on-surface-variant hover:text-primary transition-colors border-t border-on-surface/10 bg-on-surface/5 font-bold block" href="/?page=15_tinjauan-guru">LIHAT SEMUA PENGAJUAN</a>
 </section>
 <!-- Checkpoint Section -->
 <section class="ledger-card flex flex-col">
@@ -342,6 +313,53 @@
 <p class="text-label-caps text-on-surface-variant font-bold">Panel Pembimbing Akademik • Flexa Cendekia x UNIPDU</p>
 <p class="text-xs text-on-surface-variant mt-2">© 2024 Arsitektur Kurikulum Masa Depan.</p>
 </footer>
+<script>
+    // Fetch pending KRS
+    async function loadPendingKRS() {
+        try {
+            const res = await fetch('/api/krs/pending');
+            const result = await res.json();
+            
+            const listContainer = document.getElementById('krs-pending-list');
+            const countBadge = document.getElementById('krs-queue-count');
+            
+            if (result.success) {
+                const data = result.data;
+                countBadge.textContent = `${data.length} ANTRIAN`;
+                
+                if (data.length === 0) {
+                    listContainer.innerHTML = '<div class="text-center text-sm text-on-surface-variant py-8">Tidak ada antrean KRS saat ini.</div>';
+                    return;
+                }
+                
+                let html = '';
+                data.forEach(item => {
+                    const initial = item.nama.charAt(0).toUpperCase();
+                    html += `
+                    <div class="px-6 py-5 flex items-center justify-between hover:bg-on-surface/5 transition-colors">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">${initial}</div>
+                            <div>
+                                <p class="font-bold">${item.nama}</p>
+                                <p class="text-xs text-on-surface-variant">Semester ${item.semesterKe} • ${item.profesiTarget}</p>
+                            </div>
+                        </div>
+                        <a href="../15_tinjauan-guru/code.html?krsId=${item.krsId}" class="text-role-teacher font-bold border-2 border-role-teacher px-4 py-1.5 rounded hover:bg-role-teacher hover:text-white transition-all text-xs inline-block text-center mt-2 md:mt-0">Tinjau/Setujui</a>
+                    </div>
+                    `;
+                });
+                
+                listContainer.innerHTML = html;
+            }
+        } catch (err) {
+            console.error('Failed to load pending KRS:', err);
+            document.getElementById('krs-pending-list').innerHTML = '<div class="text-center text-sm text-error py-8">Gagal memuat data.</div>';
+        }
+    }
+    
+    // Auto load on mount
+    loadPendingKRS();
+</script>
 
 <script>
 (function(){
