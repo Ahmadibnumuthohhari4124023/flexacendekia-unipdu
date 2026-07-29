@@ -213,9 +213,10 @@
 <!-- Filtering Tabs (Binder Aesthetic) -->
 <div class="flex items-end border-b border-outline-variant/20 mb-6">
 
-<button onclick="tampilkanTerbaru()" 
+<button id="btnTerbaru"
+onclick="tampilkanTerbaru()"
 class="px-6 py-2 bg-secondary text-on-primary font-label-caps text-label-caps border-t border-x border-outline-variant/20 rounded-t-sm -mb-[1px]">
-    Terbaru (4)
+    Terbaru (0)
 </button>
 
 <button onclick="tampilkanDibaca()" 
@@ -780,5 +781,14 @@ function kembaliKeMenuArsip(){
     document.getElementById("menuArsip").classList.remove("hidden");
 
 }
+
+function updateJumlahTerbaru() {
+    const jumlah = document.querySelectorAll("#notifikasiTerbaru .ledger-row").length;
+
+    document.getElementById("btnTerbaru").innerHTML =
+        `Terbaru (${jumlah})`;
+}
+
+updateJumlahTerbaru();
     </script>
 </body></html>
