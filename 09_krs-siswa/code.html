@@ -6,6 +6,7 @@
 <title>Kartu Rencana Studi (KRS) - Ahmad Fauzi</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="../sso-sync.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=Libre+Franklin:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100..900&family=Source+Serif+4:wght@100..900&display=swap" rel="stylesheet"/>
@@ -121,7 +122,7 @@
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
 <div>
 <h1 class="font-headline-md text-headline-md text-primary mb-2">Kartu Rencana Studi (KRS)</h1>
-<p class="font-body-md text-on-surface-variant italic">Semester Ganjil 2023/2024</p>
+<p id="semester-info" class="font-body-md text-on-surface-variant italic">Semester Ganjil 2023/2024</p>
 </div>
 <div id="krs-status-badge" class="inline-flex items-center px-4 py-2 bg-secondary/10 border border-secondary text-secondary rounded-sm">
 <span class="material-symbols-outlined text-[20px] mr-2">pending_actions</span>
@@ -266,8 +267,8 @@
 <p class="font-stats-sm text-stats-sm text-on-surface-variant">Data disinkronkan via SSO Flexa Cendekia</p>
 </div>
 <div class="flex gap-6 font-label-caps text-[10px] text-on-surface-variant">
-<a class="hover:text-primary" href="#">KEBIJAKAN PRIVASI</a>
-<a class="hover:text-primary" href="#">BANTUAN</a>
+<a class="hover:text-primary" href="kebijakan-privasi.html">KEBIJAKAN PRIVASI</a>
+<a class="hover:text-primary" href="bantuan.html">BANTUAN</a>
 <span class="font-stats-sm">V.2.4.0-STABLE</span>
 </div>
 </div>
@@ -285,6 +286,9 @@
                 row.style.borderLeft = 'none';
             });
         });
+
+        // Update semester
+        document.getElementById('semester-info').textContent = SSOSync.getCurrentSemester();
 
         // Fetch KRS Status
         async function loadKrsStatus() {

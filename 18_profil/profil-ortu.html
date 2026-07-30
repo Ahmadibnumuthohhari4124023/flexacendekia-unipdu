@@ -152,7 +152,7 @@
     Elsa Dwi Listari
 </p>
 <p style="color:gray; font-size:14px;">
-    Siswa
+    Orang Tua
 </p>
     <hr class="my-3">
     <a href="/flexacendekia-unipdu-main/18_profil/code.html" class="block py-2 hover:bg-gray-100">
@@ -262,7 +262,7 @@ onchange="gantiFoto(event)">
 <p id="profileName" style="color:black; font-weight:bold;">
 </p>
 <p id="roleDropdownTop" style="color:gray; font-size:14px;">
-    Siswa
+    Orang Tua
 </p>
 <div class="w-full border-t border-outline-variant/20 pt-4 mt-2">
 <div class="flex justify-between py-2">
@@ -495,12 +495,12 @@ class="w-full text-left font-label-caps text-label-caps text-error hover:opacity
     });
 
     document.getElementById("btnUpdate").addEventListener("click", function () {
-        const siswaList = SSOSync.getSiswaList();
-        if (siswaList.length > 0) {
-            siswaList[0].nama = document.getElementById("fullName").value;
-            siswaList[0].nisn = document.getElementById("nisn").value;
-            siswaList[0].email = document.getElementById("email").value;
-            SSOSync.set('siswa', siswaList);
+        const ortu = SSOSync.getOrtu();
+        if (ortu) {
+            ortu.nama = document.getElementById("fullName").value;
+            // No NISN for ortu, just standard info
+            ortu.email = document.getElementById("email").value;
+            SSOSync.set('ortu', ortu);
         }
 
         let nama = document.getElementById("fullName").value;
@@ -597,14 +597,13 @@ class="w-full text-left font-label-caps text-label-caps text-error hover:opacity
     }
 
     window.onload = function(){
-        const siswaList = SSOSync.getSiswaList();
-        if(siswaList.length > 0) {
-            const siswa = siswaList[0];
-            document.getElementById("profileName").textContent = siswa.nama;
-            document.querySelector("#dropdownProfil p").textContent = siswa.nama;
-            document.getElementById("fullName").value = siswa.nama;
-            document.getElementById("nisn").value = siswa.nisn || "202301044";
-            document.getElementById("email").value = siswa.email || "siswa@flexacendekia.ac.id";
+        const ortu = SSOSync.getOrtu();
+        if(ortu) {
+            document.getElementById("profileName").textContent = ortu.nama;
+            document.querySelector("#dropdownProfil p").textContent = ortu.nama;
+            document.getElementById("fullName").value = ortu.nama;
+            document.getElementById("nisn").value = "-";
+            document.getElementById("email").value = ortu.email || "ortu@flexacendekia.ac.id";
             document.getElementById("institution").value = "SMA Cendekia";
         }
 

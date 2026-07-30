@@ -147,7 +147,7 @@ notifications
 <div class="flex items-center gap-3 pl-4 border-l border-outline-variant/30">
 <div class="text-right">
 <p class="font-label-caps text-[10px] text-on-surface-variant leading-none">Selamat Datang,</p>
-<p class="font-bold text-sm text-primary">Ahmad Fauzi</p>
+<p id="user-name-display" class="font-bold text-sm text-primary">Ahmad Fauzi</p>
 </div>
 <span class="material-symbols-outlined text-3xl text-primary" data-icon="account_circle">account_circle</span>
 </div>
@@ -255,7 +255,7 @@ notifications
 <div class="w-full py-8 px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
 <div class="flex items-center gap-6">
 <span class="font-label-caps text-label-caps font-bold text-primary">AKADEMIKA LEDGER SYSTEM</span>
-<p class="font-body-sm text-body-sm text-on-surface-variant opacity-80">© 2024 Seluruh Hak Cipta Dilindungi.</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant opacity-80">© 2026 Seluruh Hak Cipta Dilindungi.</p>
 </div>
 <div class="flex gap-8">
 <a class="font-label-caps text-[11px] text-on-surface-variant hover:text-secondary transition-colors" href="panduan-pengguna.html">PANDUAN PENGGUNA</a>
@@ -264,6 +264,7 @@ notifications
 </div>
 </div>
 </footer>
+<script src="../sso-sync.js"></script>
 <script>
         let selectedCareerTitle = 'Arsitek';
 
@@ -359,6 +360,11 @@ notifications
             const notifBtn = document.getElementById('notification-btn');
             const notifDropdown = document.getElementById('notification-dropdown');
             
+            const siswa = SSOSync.getSiswaList()[0];
+            if (siswa) {
+                document.getElementById('user-name-display').innerText = siswa.nama;
+            }
+
             if(notifBtn && notifDropdown) {
                 notifBtn.addEventListener('click', (e) => {
                     e.stopPropagation();

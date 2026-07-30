@@ -12,6 +12,7 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block"
         rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script src="../sso-sync.js"></script>
     <script id="tailwind-config">
         try {
             tailwind.config = {
@@ -156,7 +157,7 @@
             <div>
                 <div class="flex items-center gap-3 mb-2">
                     <h1 class="font-display-lg text-display-lg text-primary">Selamat Datang,
-                        <?= (typeof userData !== 'undefined' && userData) ? userData.nama : 'Ibu Sari Rahayu' ?>
+                        <span id="guru-name">Ibu Sari Rahayu</span>
                     </h1>
                     <span
                         class="px-3 py-1 bg-role-teacher/10 text-role-teacher text-label-caps font-bold rounded-full border border-role-teacher/20">PEMBIMBING
@@ -253,21 +254,7 @@
                                 <p class="text-body-sm text-on-surface-variant">Oleh: Anisa Rahmawati</p>
                             </div>
                         </div>
-                        <button class="bg-primary text-white px-5 py-2 text-xs font-bold rounded-lg hard-shadow">BERI
-                            FEEDBACK</button>
-                    </div>
-                    <div
-                        class="p-5 border border-outline/15 bg-background/50 flex justify-between items-center group hover:border-role-teacher transition-colors">
-                        <div class="flex gap-4">
-                            <div class="w-12 h-12 ledger-card flex items-center justify-center text-role-teacher">
-                                <span class="material-symbols-outlined" data-icon="video_library">video_library</span>
-                            </div>
-                            <div>
-                                <p class="font-bold text-primary">Video Presentasi Proposal</p>
-                                <p class="text-body-sm text-on-surface-variant">Oleh: Dimas Surya</p>
-                            </div>
-                        </div>
-                        <button class="bg-primary text-white px-5 py-2 text-xs font-bold rounded-lg hard-shadow">BERI
+                        <button onclick="alert('Membuka halaman feedback...')" class="bg-primary text-white px-5 py-2 text-xs font-bold rounded-lg hard-shadow">BERI
                             FEEDBACK</button>
                     </div>
                 </div>
@@ -308,10 +295,10 @@
                         </div>
                     </div>
                     <div class="flex flex-col gap-4 w-full md:w-auto">
-                        <button
+                        <button onclick="alert('Aspirasi disetujui!')"
                             class="px-8 py-3 bg-role-teacher text-white font-bold rounded-lg hard-shadow hover:brightness-110 transition-all text-center">Setujui
                             Aspirasi</button>
-                        <button
+                        <button onclick="alert('Aspirasi ditolak.')"
                             class="px-8 py-3 border-2 border-error text-error font-bold rounded-lg hover:bg-error/5 transition-all text-center">Tolak</button>
                     </div>
                 </div>
@@ -444,43 +431,52 @@
         <p class="text-xs text-on-surface-variant mt-2">© 2024 Arsitektur Kurikulum Masa Depan.</p>
     </footer>
     <script>
-        // Fetch pending KRS
-        async function loadPendingKRS() {
+        // Sync Guru data
+        document.addEventListener('DOMContentLoaded', () => {
+            const guru = SSOSync.getGuru();
+            if(guru) {
+                document.getElementById('guru-name').textContent = guru.nama;
+            }
+        });
+
+        // Fetch pending KRS using SSOSync mock data instead of API
+        function loadPendingKRS() {
             try {
-                const res = await fetch('/api/krs/pending');
-                const result = await res.json();
+                // Mock data since API doesn't exist
+                const data = [
+                    { krsId: '1', nama: 'Budi Santoso', semesterKe: 3, profesiTarget: 'Software Engineer' },
+                    { krsId: '2', nama: 'Siti Aminah', semesterKe: 5, profesiTarget: 'Data Scientist' },
+                    { krsId: '3', nama: 'Arif Hidayat', semesterKe: 1, profesiTarget: 'Desainer Grafis' }
+                ];
 
                 const listContainer = document.getElementById('krs-pending-list');
                 const countBadge = document.getElementById('krs-queue-count');
 
-                if (result.success) {
-                    const data = result.data;
-                    countBadge.textContent = `${data.length} ANTRIAN`;
+                countBadge.textContent = `${data.length} ANTRIAN`;
 
-                    if (data.length === 0) {
-                        listContainer.innerHTML = '<div class="text-center text-sm text-on-surface-variant py-8">Tidak ada antrean KRS saat ini.</div>';
-                        return;
-                    }
-
-                    let html = '';
-                    data.forEach(item => {
-                        const initial = item.nama.charAt(0).toUpperCase();
-                        html += `
-                    <div class="px-6 py-5 flex items-center justify-between hover:bg-on-surface/5 transition-colors">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">${initial}</div>
-                            <div>
-                                <p class="font-bold">${item.nama}</p>
-                                <p class="text-xs text-on-surface-variant">Semester ${item.semesterKe} • ${item.profesiTarget}</p>
-                            </div>
-                        </div>
-                        <a href="../15_tinjauan-guru/code.html?krsId=${item.krsId}" class="text-role-teacher font-bold border-2 border-role-teacher px-4 py-1.5 rounded hover:bg-role-teacher hover:text-white transition-all text-xs inline-block text-center mt-2 md:mt-0">Tinjau/Setujui</a>
-                    </div>
-                    `;
-                    });
-
-                    listContainer.innerHTML = html;
+                if (data.length === 0) {
+                    listContainer.innerHTML = '<div class="text-center text-sm text-on-surface-variant py-8">Tidak ada antrean KRS saat ini.</div>';
+                    return;
                 }
+
+                let html = '';
+                data.forEach(item => {
+                    const initial = item.nama.charAt(0).toUpperCase();
+                    html += `
+                <div class="px-6 py-5 flex items-center justify-between hover:bg-on-surface/5 transition-colors">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">${initial}</div>
+                        <div>
+                            <p class="font-bold">${item.nama}</p>
+                            <p class="text-xs text-on-surface-variant">Semester ${item.semesterKe} • ${item.profesiTarget}</p>
+                        </div>
+                    </div>
+                    <a href="../15_tinjauan-guru/code.html?krsId=${item.krsId}" class="text-role-teacher font-bold border-2 border-role-teacher px-4 py-1.5 rounded hover:bg-role-teacher hover:text-white transition-all text-xs inline-block text-center mt-2 md:mt-0">Tinjau/Setujui</a>
+                </div>
+                `;
+                });
+
+                listContainer.innerHTML = html;
             } catch (err) {
                 console.error('Failed to load pending KRS:', err);
                 document.getElementById('krs-pending-list').innerHTML = '<div class="text-center text-sm text-error py-8">Gagal memuat data.</div>';
