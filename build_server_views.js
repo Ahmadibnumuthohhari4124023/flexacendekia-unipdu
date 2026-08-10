@@ -20,6 +20,19 @@ if (!fs.existsSync(destDir)) {
 }
 
 // ==========================================
+// Copy global JS files (data-store & notification-sync)
+// ==========================================
+const globalJsFiles = ['data-store.js', 'notification-sync.js'];
+globalJsFiles.forEach(jsFile => {
+    const srcJs = path.join(srcDir, jsFile);
+    const destJs = path.join(destDir, jsFile);
+    if (fs.existsSync(srcJs)) {
+        fs.copyFileSync(srcJs, destJs);
+        console.log(`✓ ${jsFile} — copied to views/`);
+    }
+});
+
+// ==========================================
 // Navigation script (pengganti GLOBAL_NAV_SCRIPT)
 // Menggunakan link biasa, bukan google.script.run
 // ==========================================
@@ -206,6 +219,10 @@ folders.forEach(folder => {
         
         // 4. Remove target="_top" (not needed in Express)
         content = content.replace(/\s*target="_top"\s*/g, ' ');
+
+        // 5b. Rewrite data-store.js & notification-sync.js paths to be root-relative
+        content = content.replace(/src="\.\.\/data-store\.js"/g, 'src="/data-store.js"');
+        content = content.replace(/src="\.\.\/notification-sync\.js"/g, 'src="/notification-sync.js"');
         
         // 5. Inject navigation scripts
         const navScript = GLOBAL_NAV_SCRIPT + (SPECIFIC_NAV_SCRIPT[folder] || '');

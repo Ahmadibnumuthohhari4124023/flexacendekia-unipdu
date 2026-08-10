@@ -183,6 +183,10 @@
                         class="w-full md:w-auto border border-primary text-primary px-6 py-2.5 hover:bg-primary/5 transition-all font-mono text-xs font-bold tracking-wider text-center flex items-center justify-center">
                         LIHAT DETAIL ROADMAP
                     </a>
+                    <a href="/?page=13_riwayat-semester"
+                        class="w-full md:w-auto border border-brand-gold text-brand-gold-dark px-6 py-2.5 hover:bg-brand-gold hover:text-white transition-all font-mono text-xs font-bold tracking-wider text-center flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">grade</span> GRADES
+                    </a>
                 </div>
             </div>
         </section>
@@ -469,6 +473,11 @@
         // Delay slight to allow UI render before calculation
         setTimeout(updateWeeklyTarget, 300);
     </script>
+
+    <!-- Central Data Store & Notification Sync -->
+    <script src="/data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+
 
 <script>
 (function(){

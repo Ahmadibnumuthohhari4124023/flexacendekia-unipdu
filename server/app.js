@@ -22,6 +22,9 @@ app.use(express.urlencoded({ extended: true }));
 // Static files (CSS, images, etc.)
 app.use('/public', express.static(path.join(__dirname, 'public')));
 
+// Serve global data-layer JS files at root level
+app.use(express.static(path.join(__dirname, 'views'), { index: false }));
+
 // ==========================================
 // Routes
 // ==========================================

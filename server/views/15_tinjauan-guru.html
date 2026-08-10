@@ -357,7 +357,8 @@
 <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Ledger</a>
 </div>
 </footer>
-<script>
+
+    <script>
         // Simple micro-interaction for button states
         document.querySelectorAll('button').forEach(btn => {
             btn.addEventListener('mousedown', () => {
@@ -368,79 +369,69 @@
             });
         });
 
-        // Backend Integration
-        const urlParams = new URLSearchParams(window.location.search);
-        let krsId = urlParams.get('krsId');
-        
-        // Buat dummy fallback jika tidak ada krsId
-        if (!krsId) {
-            console.warn('krsId tidak ditemukan di URL. Menggunakan mode demonstrasi/fallback.');
-        }
+        const currentUser = DataStore.getCurrentUser('Guru');
+        let activeKrsId = null;
+        let activeSiswaId = null;
 
-        async function loadKrsDetail() {
-            if (!krsId) return;
-            try {
-                const res = await fetch(`/api/krs/${krsId}`);
-                const result = await res.json();
+        function loadPendingKrs() {
+            if (!currentUser) return;
+            
+            const pendingList = DataStore.getPendingKRSForGuru(currentUser.id);
+            if (pendingList.length > 0) {
+                const krs = pendingList[0]; // Just take the first pending one for demo
+                activeKrsId = krs.id;
+                activeSiswaId = krs.siswaId;
                 
-                if (result.success) {
-                    const data = result.data;
-                    document.getElementById('krs-status').textContent = `Status: ${data.status}`;
-                    document.getElementById('krs-title').textContent = `Persetujuan KRS Semester ${data.semesterKe}`;
-                    document.getElementById('student-name').textContent = data.nama;
-                    document.getElementById('student-year').textContent = data.tahunMulai;
-                    
-                    // Kita juga bisa mengupdate UI 'Rencana Pindah' dengan ProfesiTarget
+                const siswa = DataStore.getUserById(activeSiswaId);
+                
+                document.getElementById('krs-status').textContent = 'Status: ' + krs.status;
+                document.getElementById('krs-title').textContent = 'Persetujuan KRS Semester ' + (krs.semester || 3);
+                
+                if (siswa) {
+                    document.getElementById('student-name').textContent = siswa.nama;
                     const requestedProfessionEls = document.querySelectorAll('h4.text-role-teacher.mb-1');
                     if (requestedProfessionEls.length > 0) {
-                        requestedProfessionEls[0].textContent = data.profesiTarget;
+                        requestedProfessionEls[0].textContent = siswa.citaCita;
                     }
                 }
-            } catch(e) {
-                console.error(e);
+            } else {
+                // No pending KRS
+                document.getElementById('krs-title').textContent = 'Tidak Ada KRS Menunggu';
+                document.getElementById('krs-status').textContent = 'Status: Bersih';
+                document.getElementById('btn-approve').disabled = true;
+                document.getElementById('btn-reject').disabled = true;
             }
         }
 
-        async function submitApproval(status) {
-            if (!krsId) {
-                alert('Tidak ada ID KRS valid untuk disimpan.');
+        function submitApproval(status) {
+            if (!activeKrsId) {
+                alert('Tidak ada pengajuan KRS yang aktif.');
                 return;
             }
             const catatan = document.getElementById('catatan-guru').value;
-            const btnApprove = document.getElementById('btn-approve');
-            const btnReject = document.getElementById('btn-reject');
             
-            btnApprove.disabled = true;
-            btnReject.disabled = true;
+            // 1. Update KRS status
+            DataStore.updateKRSStatus(activeKrsId, status);
             
-            try {
-                const res = await fetch(`/api/krs/approve/${krsId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ status, catatanGuru: catatan })
-                });
-                
-                const result = await res.json();
-                if (result.success) {
-                    alert(`KRS berhasil ${status.toLowerCase()}!`);
-                    window.location.href = '?page=14_dashboard-guru';
-                } else {
-                    alert('Terjadi kesalahan saat menyimpan.');
-                }
-            } catch(e) {
-                console.error(e);
-                alert('Gagal menyambung ke server.');
-            } finally {
-                btnApprove.disabled = false;
-                btnReject.disabled = false;
+            // 2. Add Feedback note if not empty
+            if (catatan && catatan.trim() !== '') {
+                DataStore.tambahCatatanGuru(currentUser.id, activeSiswaId, catatan);
             }
+            
+            alert('KRS telah ' + status.toLowerCase() + '!');
+            window.location.reload();
         }
 
         document.getElementById('btn-approve').addEventListener('click', () => submitApproval('Disetujui'));
         document.getElementById('btn-reject').addEventListener('click', () => submitApproval('Ditolak'));
         
-        loadKrsDetail();
+        loadPendingKrs();
     </script>
+
+    <!-- Central Data Store & Notification Sync -->
+    <script src="/data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+
 
 <script>
 (function(){

@@ -6,6 +6,7 @@
 <title>Kartu Rencana Studi (KRS) - Ahmad Fauzi</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="../sso-sync.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;600;700&family=Libre+Franklin:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@100..900&family=Source+Serif+4:wght@100..900&display=swap" rel="stylesheet"/>
@@ -121,7 +122,7 @@
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
 <div>
 <h1 class="font-headline-md text-headline-md text-primary mb-2">Kartu Rencana Studi (KRS)</h1>
-<p class="font-body-md text-on-surface-variant italic">Semester Ganjil 2023/2024</p>
+<p id="semester-info" class="font-body-md text-on-surface-variant italic">Semester Ganjil 2023/2024</p>
 </div>
 <div id="krs-status-badge" class="inline-flex items-center px-4 py-2 bg-secondary/10 border border-secondary text-secondary rounded-sm">
 <span class="material-symbols-outlined text-[20px] mr-2">pending_actions</span>
@@ -140,7 +141,7 @@
 <div class="grid md:grid-cols-2 gap-8 mb-8">
 <div>
 <p class="font-label-caps text-label-caps text-on-surface-variant mb-1">NAMA SISWA</p>
-<p class="font-headline-md text-headline-md text-primary">Ahmad Fauzi</p>
+<p class="font-headline-md text-headline-md text-primary" id="display-student-name">Ahmad Fauzi</p>
 </div>
 <div>
 <p class="font-label-caps text-label-caps text-on-surface-variant mb-1">NISN / IDENTITAS</p>
@@ -266,13 +267,14 @@
 <p class="font-stats-sm text-stats-sm text-on-surface-variant">Data disinkronkan via SSO Flexa Cendekia</p>
 </div>
 <div class="flex gap-6 font-label-caps text-[10px] text-on-surface-variant">
-<a class="hover:text-primary" href="#">KEBIJAKAN PRIVASI</a>
-<a class="hover:text-primary" href="#">BANTUAN</a>
+<a class="hover:text-primary" href="kebijakan-privasi.html">KEBIJAKAN PRIVASI</a>
+<a class="hover:text-primary" href="/?page=01_login_bantuan">BANTUAN</a>
 <span class="font-stats-sm">V.2.4.0-STABLE</span>
 </div>
 </div>
 </footer>
-<script>
+
+    <script>
         // Micro-interaction for table rows
         document.querySelectorAll('tbody tr').forEach(row => {
             row.addEventListener('mouseenter', () => {
@@ -286,97 +288,127 @@
             });
         });
 
+        const currentUser = DataStore.getCurrentUser('Siswa');
+
         // Fetch KRS Status
-        async function loadKrsStatus() {
-            try {
-                // Menggunakan userId simulasi Ahmad Fauzi = 'mock-id'
-                const res = await fetch('/api/krs/student/mock-id');
-                const result = await res.json();
+        function loadKrsStatus() {
+            if (!currentUser) return;
+            
+            const nameEl = document.getElementById('display-student-name');
+            if (nameEl) nameEl.textContent = currentUser.nama;
+            
+            const listKRS = DataStore.getKRSSiswa(currentUser.id);
+            const activeKrs = listKRS.length > 0 ? listKRS[0] : null;
+
+            const badge = document.getElementById('krs-status-badge');
+            const badgeIcon = badge.querySelector('.material-symbols-outlined');
+            const badgeText = badge.querySelector('span:nth-child(2)');
+            const catatanText = document.getElementById('krs-catatan-guru');
+            
+            // Default mockup modules for display
+            const mockModules = [
+                { kode: 'TKA-201', nama: 'Matematika Terapan', kompetensi: 'Analisis Spasial', pacing: 'REGULAR', status: 'WAJIB' },
+                { kode: 'FIS-102', nama: 'Fisika Mekanika', kompetensi: 'Struktur Dasar', pacing: 'AKSELERASI', status: 'WAJIB' },
+                { kode: 'SEN-105', nama: 'Seni Rupa/Desain', kompetensi: 'Estetika Visual', pacing: 'REGULAR', status: 'PILIHAN' }
+            ];
+            
+            // Update Cita-Cita
+            document.getElementById('krs-cita-cita').textContent = currentUser.citaCita;
+            
+            // Update Modul List
+            const tbody = document.getElementById('modul-list');
+            let html = '';
+            mockModules.forEach(m => {
+                const wajibClass = m.status === 'WAJIB' ? 'text-secondary' : 'text-on-surface-variant';
+                html += `
+                <tr>
+                    <td class="px-6 py-4 font-stats-sm text-stats-sm">${m.kode}</td>
+                    <td class="px-6 py-4 font-body-md font-bold text-primary">${m.nama}</td>
+                    <td class="px-6 py-4 font-body-sm text-on-surface-variant">${m.kompetensi}</td>
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 bg-primary/5 text-primary border border-primary/10 text-[11px] font-bold uppercase">${m.pacing}</span>
+                    </td>
+                    <td class="px-6 py-4 text-right">
+                        <span class="font-label-caps text-[10px] ${wajibClass}">${m.status}</span>
+                    </td>
+                </tr>`;
+            });
+            tbody.innerHTML = html;
+
+            const btnRevisi = document.getElementById('btn-revisi');
+            const btnCetak = document.getElementById('btn-cetak');
+            
+            if (!activeKrs) {
+                // No KRS yet
+                badge.className = "inline-flex items-center px-4 py-2 bg-outline-variant/20 border border-outline-variant text-on-surface-variant rounded-sm";
+                badgeIcon.textContent = "pending_actions";
+                badgeText.textContent = "Belum Mengajukan";
                 
-                if (result.success && result.data) {
-                    const krs = result.data;
-                    const badge = document.getElementById('krs-status-badge');
-                    const badgeIcon = badge.querySelector('.material-symbols-outlined');
-                    const badgeText = badge.querySelector('span:nth-child(2)');
-                    const catatanText = document.getElementById('krs-catatan-guru');
+                btnRevisi.innerHTML = '<span class="material-symbols-outlined mr-2">send</span>AJUKAN KRS';
+                btnRevisi.style.display = 'flex';
+                btnRevisi.onclick = function() {
+                    const mk = mockModules.map(m => m.nama);
+                    DataStore.ajukanKRS(currentUser.id, mk, 3);
+                    alert('KRS berhasil diajukan!');
+                    window.location.reload();
+                };
+            } else {
+                // Has KRS
+                if (activeKrs.status === 'Disetujui') {
+                    badge.className = "inline-flex items-center px-4 py-2 bg-[#adefe1] border border-[#005046] text-[#005046] rounded-sm";
+                    badgeIcon.textContent = "check_circle";
+                    badgeText.textContent = "Disetujui Guru";
                     
-                    // Update Cita-Cita
-                    document.getElementById('krs-cita-cita').textContent = krs.profesiTarget;
+                    btnRevisi.style.display = 'none';
+                    btnCetak.innerHTML = '<span class="material-symbols-outlined mr-2">print</span>CETAK KRS RESMI';
+                    btnCetak.className = "w-full py-4 bg-[#005046] text-surface-container-lowest font-bold text-label-caps hover:brightness-110 transition-all duration-150 flex items-center justify-center cursor-pointer";
+                } else if (activeKrs.status === 'Ditolak') {
+                    badge.className = "inline-flex items-center px-4 py-2 bg-error/10 border border-error text-error rounded-sm";
+                    badgeIcon.textContent = "cancel";
+                    badgeText.textContent = "Ditolak - Perlu Revisi";
                     
-                    // Update Modul List
-                    if (krs.modules && krs.modules.length > 0) {
-                        const tbody = document.getElementById('modul-list');
-                        let html = '';
-                        krs.modules.forEach(m => {
-                            const wajibClass = m.status === 'WAJIB' ? 'text-secondary' : 'text-on-surface-variant';
-                            html += `
-                            <tr>
-                                <td class="px-6 py-4 font-stats-sm text-stats-sm">${m.kode}</td>
-                                <td class="px-6 py-4 font-body-md font-bold text-primary">${m.nama}</td>
-                                <td class="px-6 py-4 font-body-sm text-on-surface-variant">${m.kompetensi}</td>
-                                <td class="px-6 py-4">
-                                    <span class="px-2 py-1 bg-primary/5 text-primary border border-primary/10 text-[11px] font-bold uppercase">${m.pacing}</span>
-                                </td>
-                                <td class="px-6 py-4 text-right">
-                                    <span class="font-label-caps text-[10px] ${wajibClass}">${m.status}</span>
-                                </td>
-                            </tr>`;
-                        });
-                        tbody.innerHTML = html;
-                    }
+                    btnRevisi.innerHTML = '<span class="material-symbols-outlined mr-2">edit_note</span>AJUKAN REVISI';
+                    btnRevisi.style.display = 'flex';
+                    btnRevisi.onclick = function() {
+                        const mk = mockModules.map(m => m.nama);
+                        DataStore.ajukanKRS(currentUser.id, mk, 3);
+                        alert('Revisi KRS berhasil diajukan!');
+                        window.location.reload();
+                    };
+                } else {
+                    // Menunggu Persetujuan
+                    badge.className = "inline-flex items-center px-4 py-2 bg-[#FDC265]/20 border border-brand-gold text-brand-gold-dark rounded-sm";
+                    badgeIcon.textContent = "schedule";
+                    badgeText.textContent = "Menunggu Persetujuan";
                     
-                    // Update Badge Visuals
-                    if (krs.status === 'Disetujui') {
-                        badge.className = "inline-flex items-center px-4 py-2 bg-[#adefe1] border border-[#005046] text-[#005046] rounded-sm";
-                        badgeIcon.textContent = "check_circle";
-                        badgeText.textContent = "Disetujui Guru";
-                        
-                        document.getElementById('btn-revisi').style.display = 'none';
-                        document.getElementById('btn-cetak').innerHTML = '<span class="material-symbols-outlined mr-2">print</span>CETAK KRS RESMI';
-                        document.getElementById('btn-cetak').className = "w-full py-4 bg-[#005046] text-surface-container-lowest font-bold text-label-caps hover:brightness-110 transition-all duration-150 flex items-center justify-center cursor-pointer";
-                    } else if (krs.status === 'Ditolak') {
-                        badge.className = "inline-flex items-center px-4 py-2 bg-error/10 border border-error text-error rounded-sm";
-                        badgeIcon.textContent = "cancel";
-                        badgeText.textContent = "Ditolak - Perlu Revisi";
-                    }
-                    
-                    // Update Notes
-                    if (krs.catatanGuru) {
-                        catatanText.textContent = `"${krs.catatanGuru}"`;
-                    }
+                    btnRevisi.style.display = 'none';
                 }
-            } catch (e) {
-                console.error('Error fetching KRS:', e);
+            }
+
+            // Find feedback notes
+            const allNotes = DataStore.getCatatanSiswa(currentUser.id);
+            if (allNotes.length > 0) {
+                catatanText.textContent = '"' + allNotes[0].isi + '"';
+            } else {
+                catatanText.textContent = '"Menunggu ulasan dari pembimbing akademik Anda."';
             }
         }
         
         loadKrsStatus();
 
         // Download Action
-        document.getElementById('btn-cetak').addEventListener('click', function() {
-            const element = document.querySelector('main');
-            const opt = {
-              margin:       0.5,
-              filename:     'KRS_Siswa.pdf',
-              image:        { type: 'jpeg', quality: 0.98 },
-              html2canvas:  { scale: 2 },
-              jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
-            };
-
-            // Tambahkan text loading
-            const originalText = this.innerHTML;
-            this.innerHTML = '<span class="material-symbols-outlined mr-2 animate-spin">sync</span>MENGUNDUH...';
-            
-            html2pdf().set(opt).from(element).save().then(() => {
-                this.innerHTML = originalText;
+        const btnCetak = document.getElementById('btn-cetak');
+        if (btnCetak) {
+            btnCetak.addEventListener('click', function() {
+                alert('Fungsi cetak KRS sedang dinonaktifkan dalam mode sinkronisasi ini.');
             });
-        });
-
-        // Revisi Action
-        document.getElementById('btn-revisi').addEventListener('click', function() {
-            alert('Permintaan revisi telah diajukan ke pembimbing Anda. Anda akan menerima notifikasi segera.');
-        });
+        }
     </script>
+
+    <!-- Central Data Store & Notification Sync -->
+    <script src="/data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+
 
 <script>
 (function(){

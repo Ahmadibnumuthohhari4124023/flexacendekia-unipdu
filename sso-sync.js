@@ -90,6 +90,107 @@ const SSOSync = {
       gayaBelajar: 'Visual'
     };
     localStorage.setItem('diagnosisResult', JSON.stringify(diagnosisResult));
+
+    // Data Absensi per siswa (semester ini)
+    const absensiData = {
+      'S001': { hadir: 88, izin: 4,  alpa: 2, total: 94 },
+      'S002': { hadir: 80, izin: 6,  alpa: 8, total: 94 },
+      'S003': { hadir: 92, izin: 2,  alpa: 0, total: 94 },
+      'S004': { hadir: 90, izin: 3,  alpa: 1, total: 94 },
+      'S005': { hadir: 75, izin: 8,  alpa: 11, total: 94 }
+    };
+    localStorage.setItem('absensiData', JSON.stringify(absensiData));
+
+    // Data Nilai per Mapel per siswa
+    const nilaiMapel = {
+      'S001': [
+        { mapel: 'Matematika',  nilai: 88, trend: 'naik' },
+        { mapel: 'B. Indonesia', nilai: 92, trend: 'stabil' },
+        { mapel: 'Fisika',       nilai: 75, trend: 'turun' },
+        { mapel: 'Sejarah',      nilai: 85, trend: 'naik' },
+        { mapel: 'Seni Budaya',  nilai: 90, trend: 'naik' }
+      ],
+      'S002': [
+        { mapel: 'Matematika',  nilai: 64, trend: 'turun' },
+        { mapel: 'B. Indonesia', nilai: 80, trend: 'stabil' },
+        { mapel: 'Fisika',       nilai: 71, trend: 'stabil' },
+        { mapel: 'B. Inggris',   nilai: 88, trend: 'naik' },
+        { mapel: 'Informatika',  nilai: 95, trend: 'naik' }
+      ],
+      'S003': [
+        { mapel: 'Matematika',  nilai: 82, trend: 'naik' },
+        { mapel: 'Biologi',      nilai: 90, trend: 'naik' },
+        { mapel: 'Kimia',        nilai: 78, trend: 'stabil' },
+        { mapel: 'B. Indonesia', nilai: 85, trend: 'stabil' },
+        { mapel: 'Fisika',       nilai: 74, trend: 'turun' }
+      ],
+      'S004': [
+        { mapel: 'Ekonomi',      nilai: 93, trend: 'naik' },
+        { mapel: 'Akuntansi',    nilai: 91, trend: 'naik' },
+        { mapel: 'Matematika',   nilai: 88, trend: 'stabil' },
+        { mapel: 'B. Indonesia', nilai: 86, trend: 'stabil' },
+        { mapel: 'Sosiologi',    nilai: 79, trend: 'turun' }
+      ],
+      'S005': [
+        { mapel: 'Matematika',   nilai: 70, trend: 'stabil' },
+        { mapel: 'Fisika',        nilai: 65, trend: 'turun' },
+        { mapel: 'B. Inggris',    nilai: 75, trend: 'naik' },
+        { mapel: 'Geografi',      nilai: 68, trend: 'turun' },
+        { mapel: 'B. Indonesia',  nilai: 78, trend: 'stabil' }
+      ]
+    };
+    localStorage.setItem('nilaiMapel', JSON.stringify(nilaiMapel));
+
+    // Arsip Notifikasi (untuk tombol "Lihat Semua Arsip")
+    const notifikasiArsip = [
+      { id: 'N001', type: 'keterlambatan', judul: 'Terlambat target: Matematika Dasar', pesan: 'Ahmad belum mengumpulkan tugas Logaritma yang jatuh tempo kemarin.', waktu: '24 jam lalu', studentId: 'S002' },
+      { id: 'N002', type: 'pengajuan',     judul: 'Perubahan cita-cita dalam peninjauan', pesan: 'Draft perubahan minat karier menjadi Arsitek sedang ditinjau konselor.', waktu: '6 jam lalu', studentId: 'S002' },
+      { id: 'N003', type: 'info',          judul: 'KRS Semester Ganjil Disetujui', pesan: 'Rencana studi untuk semester mendatang telah divalidasi sistem.', waktu: '2 hari lalu', studentId: 'S002' },
+      { id: 'N004', type: 'info',          judul: 'Nilai Ujian Tengah Semester Keluar', pesan: 'Nilai UTS Ahmad telah diinput oleh guru mata pelajaran.', waktu: '3 hari lalu', studentId: 'S002' },
+      { id: 'N005', type: 'keterlambatan', judul: 'Peringatan Kehadiran', pesan: 'Tingkat kehadiran Ahmad bulan ini di bawah 85%. Harap perhatikan.', waktu: '5 hari lalu', studentId: 'S002' },
+      { id: 'N006', type: 'info',          judul: 'Jadwal Pertemuan Wali Murid', pesan: 'Pertemuan wali murid dijadwalkan pada 20 Oktober 2023 pukul 09.00 WIB.', waktu: '1 minggu lalu', studentId: 'S002' },
+      { id: 'N007', type: 'pengajuan',     judul: 'Pengajuan Izin Disetujui', pesan: 'Pengajuan izin Ahmad pada 12 Oktober 2023 telah disetujui wali kelas.', waktu: '1 minggu lalu', studentId: 'S002' },
+      { id: 'N008', type: 'info',          judul: 'Pengumuman Libur Sekolah', pesan: 'Sekolah libur pada 17-20 Oktober 2023 dalam rangka ujian akhir semester.', waktu: '2 minggu lalu', studentId: 'S002' },
+      { id: 'N009', type: 'keterlambatan', judul: 'Tugas Fisika Belum Dikumpulkan', pesan: 'Ahmad belum mengumpulkan laporan praktikum Fisika minggu lalu.', waktu: '2 minggu lalu', studentId: 'S002' },
+      { id: 'N010', type: 'info',          judul: 'Prestasi: Juara 2 Olimpiade Informatika', pesan: 'Selamat! Ahmad meraih juara 2 dalam Olimpiade Informatika Tingkat Kota.', waktu: '3 minggu lalu', studentId: 'S002' }
+    ];
+    localStorage.setItem('notifikasiArsip', JSON.stringify(notifikasiArsip));
+
+    // Balasan catatan guru (thread percakapan)
+    const guruNoteReplies = [];
+    localStorage.setItem('guruNoteReplies', JSON.stringify(guruNoteReplies));
+  },
+
+  // Helpers Data Baru
+  getAbsensi: function(studentId) {
+    const data = JSON.parse(localStorage.getItem('absensiData')) || {};
+    return data[studentId] || null;
+  },
+
+  getNilaiMapel: function(studentId) {
+    const data = JSON.parse(localStorage.getItem('nilaiMapel')) || {};
+    return data[studentId] || [];
+  },
+
+  getNotifikasiArsip: function(studentId) {
+    const data = JSON.parse(localStorage.getItem('notifikasiArsip')) || [];
+    if (studentId) return data.filter(n => n.studentId === studentId);
+    return data;
+  },
+
+  getGuruNoteReplies: function() {
+    return JSON.parse(localStorage.getItem('guruNoteReplies')) || [];
+  },
+
+  replyGuruNote: function(replyText, ortuNama) {
+    const replies = this.getGuruNoteReplies();
+    replies.push({
+      id: 'REPLY-' + Date.now(),
+      text: replyText,
+      pengirim: ortuNama || 'Orang Tua',
+      waktu: this.getRealtimeDate('long')
+    });
+    localStorage.setItem('guruNoteReplies', JSON.stringify(replies));
   },
 
   // Helpers
