@@ -125,8 +125,10 @@
             border-right: 4px solid #805600;
         }
     </style>
-</head>
+
+    </head>
 <body class="flex min-h-screen overflow-x-hidden">
+
 <!-- Sidebar (SideNavBar Anchor) -->
 <aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant/20 py-8">
 <div class="px-6 mb-10">
@@ -147,7 +149,7 @@
 <a class="flex items-center px-6 py-3 font-label-caps text-label-caps sidebar-active translate-x-1 duration-200" href="code.html">
 <span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">notifications</span> Notifications
             </a>
-<a class="flex items-center px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=18_profil">
+<a class="flex items-center px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=18_profil_profil-siswa">
 <span class="material-symbols-outlined mr-3">settings</span> Settings
             </a>
 </nav>
@@ -156,7 +158,7 @@
                 Add New Lesson
             </button>
 <div class="pt-4 border-t border-outline-variant/20">
-<a class="flex items-center py-2 font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="/?page=18_profil">
+<a class="flex items-center py-2 font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="/?page=18_profil_profil-siswa">
 <span class="material-symbols-outlined mr-2">contact_support</span> Support
                 </a>
 <a class="flex items-center py-2 font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">
@@ -185,7 +187,13 @@
 <div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant/30">
 <img class="w-full h-full object-cover" data-alt="A professional academic profile portrait of a university student against a neutral studio background. The lighting is soft and directional, emphasizing clarity and focus. The overall aesthetic is clean and studious, utilizing a muted color palette that blends cream and dark navy tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLXxo1iaaPH30zetHyodyBQqQX8vTTeoNHxgUFMfRFsbWY1zwajIU7n_9xAQ4e5j9y8v4kx1xTgFDqn5oXap7tig06vx-JuApQCynDLNBLqTYHBYhLbRP4y-vLzV8HkLSiudLe4Ul6Zj1hbhOsiqSwcIDYJyY0OXGYPu56tR71wyoD1q7xR-OsqozVPquyBZRvcnVaRMWjqhf5oPXWdMvE38QQUqK5dJ7fuwtJM1RTwNbdgvo4XPZi-W-0hLKP2hnEo2Hem5wmw5I"/>
 </div>
-</div>
+
+                <!-- Logout Button -->
+                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='../01_login/code.html');" class="ml-2 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-surface text-on-surface px-2 py-1 shadow-md rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border border-on-surface/10">Keluar</span>
+                </button>
+            </div>
 </header>
 <!-- Notification Content -->
 <section class="flex-1 px-8 py-10 max-w-5xl">
@@ -335,7 +343,7 @@
 <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
 <span class="text-[10px] font-label-caps">Alerts</span>
 </a>
-<a href="/?page=18_profil" class="flex flex-col items-center gap-1 text-on-surface-variant">
+<a href="/?page=18_profil_profil-siswa" class="flex flex-col items-center gap-1 text-on-surface-variant">
 <span class="material-symbols-outlined">person</span>
 <span class="text-[10px] font-label-caps">Profile</span>
 </a>
@@ -354,65 +362,65 @@
 
     
     <script>
-        const activeRole = localStorage.getItem('lastActiveRole') || 'Siswa';
-        const currentUser = DataStore.getCurrentUser(activeRole);
+        let currentUser = null;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            renderNotifikasi();
+        window.addEventListener('auth-ready', function(e) {
+            currentUser = e.detail;
+            setupNotifikasiListener();
         });
 
-        function renderNotifikasi() {
+        function setupNotifikasiListener() {
             const listContainer = document.getElementById('notifikasi-list');
             if (!listContainer || !currentUser) return;
             
-            const notifs = DataStore.getNotifikasi(activeRole, currentUser.id);
-            if (notifs.length === 0) {
-                listContainer.innerHTML = '<div class="p-6 text-center text-on-surface-variant font-body-sm">Tidak ada notifikasi.</div>';
-                document.querySelector('.font-stats-sm.text-stats-sm.text-on-surface-variant').textContent = 'Displaying 0 records';
-                return;
-            }
-            
-            document.querySelector('.font-stats-sm.text-stats-sm.text-on-surface-variant').textContent = 'Displaying ' + notifs.length + ' records';
+            // Listen real-time
+            DataStore.onNotifikasiUpdate(currentUser.uid || currentUser.id, function(notifs) {
+                if (notifs.length === 0) {
+                    listContainer.innerHTML = '<div class="p-6 text-center text-on-surface-variant font-body-sm">Tidak ada notifikasi.</div>';
+                    document.querySelector('.font-stats-sm.text-stats-sm.text-on-surface-variant').textContent = 'Displaying 0 records';
+                    return;
+                }
+                
+                document.querySelector('.font-stats-sm.text-stats-sm.text-on-surface-variant').textContent = 'Displaying ' + notifs.length + ' records';
 
-            listContainer.innerHTML = notifs.map(n => `
-                <div class="ledger-row p-6 flex gap-6 hover:bg-surface-container-low transition-colors cursor-pointer group ${n.dibaca ? '' : 'bg-secondary/5 border-l-4 border-l-secondary'}">
-                    <div class="w-10 h-10 rounded-full ${n.dibaca ? 'bg-surface-container border border-outline-variant/20' : 'bg-primary'} flex items-center justify-center shrink-0">
-                        <span class="material-symbols-outlined ${n.dibaca ? 'text-primary' : 'text-on-primary'}">notifications</span>
-                    </div>
-                    <div class="flex-1">
-                        <div class="flex justify-between items-start mb-1">
-                            <h5 class="font-body-md text-body-md font-bold text-primary">${n.judul}</h5>
-                            <span class="font-stats-sm text-stats-sm ${n.dibaca ? 'text-outline' : 'text-secondary font-bold'}">${new Date(n.tanggal).toLocaleTimeString()}</span>
+                listContainer.innerHTML = notifs.map(n => `
+                    <div class="ledger-row p-6 flex gap-6 hover:bg-surface-container-low transition-colors cursor-pointer group ${n.dibaca ? '' : 'bg-secondary/5 border-l-4 border-l-secondary'}">
+                        <div class="w-10 h-10 rounded-full ${n.dibaca ? 'bg-surface-container border border-outline-variant/20' : 'bg-primary'} flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined ${n.dibaca ? 'text-primary' : 'text-on-primary'}">notifications</span>
                         </div>
-                        <p class="font-body-sm text-body-sm text-on-surface-variant">${n.isi}</p>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start mb-1">
+                                <h5 class="font-body-md text-body-md font-bold text-primary">${n.judul}</h5>
+                                <span class="font-stats-sm text-stats-sm ${n.dibaca ? 'text-outline' : 'text-secondary font-bold'}">${n.tanggal ? (n.tanggal.toDate ? n.tanggal.toDate().toLocaleTimeString() : new Date(n.tanggal).toLocaleTimeString()) : ''}</span>
+                            </div>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant">${n.isi}</p>
+                        </div>
+                        <div class="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            ${n.dibaca ? '' : `<button class="p-1 hover:text-secondary" onclick="markRead('${n.id}')" title="Tandai Dibaca"><span class="material-symbols-outlined text-sm">visibility</span></button>`}
+                        </div>
                     </div>
-                    <div class="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        ${n.dibaca ? '' : `<button class="p-1 hover:text-secondary" onclick="markRead('${n.id}')" title="Tandai Dibaca"><span class="material-symbols-outlined text-sm">visibility</span></button>`}
-                    </div>
-                </div>
-            `).join('');
+                `).join('');
+            });
         }
 
-        window.markRead = function(id) {
-            DataStore.markNotifikasiRead(id);
-            renderNotifikasi();
-            // dispatch event so navbar bell updates
-            window.dispatchEvent(new Event('datastore-updated'));
+        window.markRead = async function(id) {
+            await DataStore.markNotifikasiRead(id);
+            // Listener will auto-update UI
         }
         
         // Expose a global mark all as read
         const btnMarkAll = Array.from(document.querySelectorAll('button')).find(b => b.textContent.includes('Mark all as read'));
         if (btnMarkAll) {
-            btnMarkAll.addEventListener('click', () => {
-                DataStore.markAllNotifikasiRead(activeRole, currentUser.id);
-                renderNotifikasi();
-                window.dispatchEvent(new Event('datastore-updated'));
+            btnMarkAll.addEventListener('click', async () => {
+                await DataStore.markAllNotifikasiRead(currentUser.role, currentUser.uid || currentUser.id);
+                // Listener will auto-update UI
             });
         }
     </script>
-
-    <!-- Central Data Store & Notification Sync -->
-    <script src="/data-store.js"></script>
+    <!-- Firebase SDK & Auth -->
+    <script src="../firebase-config.js"></script>
+    <script src="../firebase-auth-guard.js"></script>
+    <script src="../firebase-data-store.js"></script>
     <script src="/notification-sync.js"></script>
 
 

@@ -134,22 +134,19 @@
             background-size: 100% 24px;
         }
     </style>
-</head>
+
+    </head>
 
 <body class="min-h-screen flex flex-col">
+
     <!-- TopNavBar -->
     <nav
         class="bg-surface-container-lowest flex justify-between items-center w-full px-gutter md:px-margin-desktop h-16 border-b border-primary/20 sticky top-0 z-50">
         <div class="flex items-center gap-8">
             <span class="font-headline-md text-headline-md font-bold text-primary">Flexa Cendekia x UNIPDU</span>
-            <div class="hidden md:flex gap-6 h-full items-center">
-                <a class="font-label-caps text-label-caps text-secondary border-b-2 border-secondary pb-1 h-full flex items-center mt-1"
-                    href="#">Siswa</a>
-                <a class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200 h-full flex items-center mt-1"
-                    href="#">Guru</a>
-                <a class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:text-secondary transition-colors duration-200 h-full flex items-center mt-1"
-                    href="#">Orang Tua</a>
-            </div>
+            <div class="hidden md:flex items-center h-full">
+                    <span class="px-4 py-1.5 font-label-caps text-[11px] font-bold text-primary bg-primary/5 rounded-full border border-primary/10 tracking-widest uppercase">Aplikasi Aktif</span>
+                </div>
         </div>
         <div class="flex items-center gap-4">
             <a href="/?page=17_notifikasi" class="p-2 rounded-full hover:bg-surface-container transition-colors"
@@ -157,7 +154,7 @@
                 <span class="material-symbols-outlined text-on-surface-variant"
                     data-icon="notifications">notifications</span>
             </a>
-            <a href="/?page=18_profil" class="p-2 rounded-full hover:bg-surface-container transition-colors"
+            <a href="/?page=18_profil_profil-siswa" class="p-2 rounded-full hover:bg-surface-container transition-colors"
                 style="text-decoration:none;">
                 <span class="material-symbols-outlined text-on-surface-variant"
                     data-icon="account_circle">account_circle</span>
@@ -178,7 +175,7 @@
                     <div>
                         <p class="font-label-caps text-[10px] text-primary opacity-60 uppercase tracking-widest">
                             Akademik Siswa</p>
-                        <p class="font-body-md text-body-md font-bold text-primary">Flexa Cendekia</p>
+                        <p class="font-body-md text-body-md font-bold text-primary user-display-name">Siswa</p>
                     </div>
                 </div>
             </div>
@@ -207,7 +204,7 @@
                     </li>
                     <li>
                         <a class="flex items-center gap-4 px-4 py-3 rounded-sm text-on-surface-variant hover:bg-primary/5 transition-all duration-150 font-label-caps text-label-caps"
-                            href="/?page=18_profil" style="text-decoration:none;">
+                            href="/?page=18_profil_profil-siswa" style="text-decoration:none;">
                             <span class="material-symbols-outlined" data-icon="person">person</span>
                             <span>Profil</span>
                         </a>
@@ -444,7 +441,7 @@
             <span class="material-symbols-outlined" data-icon="timeline">timeline</span>
             <span class="text-[10px] font-medium">Roadmap</span>
         </button>
-        <a href="/?page=18_profil"
+        <a href="/?page=18_profil_profil-siswa"
             class="flex flex-col items-center gap-1 text-on-surface-variant hover:text-primary transition-colors"
             style="text-decoration:none;">
             <span class="material-symbols-outlined" data-icon="person">person</span>
@@ -496,6 +493,23 @@
             const countEl = document.getElementById('student-count');
             if (countEl) {
                 countEl.textContent = displayCount + ' Siswa Telah Menyelesaikan';
+            }
+        });
+    </script>
+
+    <!-- Firebase SDK & Auth -->
+    <script src="../firebase-config.js"></script>
+    <script src="../firebase-auth-guard.js"></script>
+    <script src="../firebase-data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+
+    <script>
+        window.addEventListener('auth-ready', function(e) {
+            const user = e.detail;
+            if (user && user.nama) {
+                document.querySelectorAll('.user-display-name').forEach(el => {
+                    el.textContent = user.nama;
+                });
             }
         });
     </script>

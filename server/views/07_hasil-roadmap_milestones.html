@@ -46,8 +46,10 @@
         @keyframes checkBounce { 0% { transform: scale(0.5); } 60% { transform: scale(1.2); } 100% { transform: scale(1); } }
         .confetti { position: fixed; pointer-events: none; z-index: 100; }
     </style>
-</head>
+
+    </head>
 <body class="bg-[#EAEDE2] text-on-surface font-body blueprint-grid min-h-screen">
+
     <!-- TopNavBar -->
     <nav class="fixed top-0 w-full bg-surface z-50 border-b border-on-surface/20 flex justify-between items-center h-16 px-4 md:px-8">
         <div class="flex items-center gap-4">
@@ -63,7 +65,13 @@
                 <span class="material-symbols-outlined text-sm">arrow_back</span>
                 Kembali ke Roadmap
             </a>
-        </div>
+        
+                <!-- Logout Button -->
+                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='../01_login/code.html');" class="ml-2 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-surface text-on-surface px-2 py-1 shadow-md rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border border-on-surface/10">Keluar</span>
+                </button>
+            </div>
     </nav>
     
     <main class="pt-24 pb-16 px-4 md:px-8 max-w-5xl mx-auto">

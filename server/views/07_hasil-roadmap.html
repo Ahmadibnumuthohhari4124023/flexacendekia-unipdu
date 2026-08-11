@@ -3,7 +3,7 @@
 <html lang="id"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Roadmap Karier: Ahmad Fauzi - Arsitek | Flexa Cendekia</title>
+<title>Roadmap Karier: Siswa - Arsitek | Flexa Cendekia</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -186,8 +186,10 @@
         line-height: 1;
       }
     </style>
-</head>
+
+    </head>
 <body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+
 <!-- TopNavBar -->
 <nav class="fixed top-0 w-full bg-surface z-50 border-b border-on-surface/20 flex justify-between items-center h-16 px-margin-mobile md:px-margin-desktop">
 <div class="flex items-center gap-4">
@@ -267,10 +269,16 @@ notifications
 </div>
 </div>
 <!-- Profile Avatar -->
-<a href="/?page=18_profil" class="w-8 h-8 rounded-full border border-primary/20 overflow-hidden block hover:ring-2 hover:ring-secondary/50 transition-all">
+<a href="/?page=18_profil_profil-siswa" class="w-8 h-8 rounded-full border border-primary/20 overflow-hidden block hover:ring-2 hover:ring-secondary/50 transition-all">
 <img class="w-full h-full object-cover" data-alt="A professional studio portrait of a young male student named Ahmad Fauzi, looking confident and focused. He is wearing a clean, modern navy blazer over a white shirt. The background is a soft, blurred library setting with warm, scholarly lighting, reflecting an academic and ambitious atmosphere. The overall style is clean, sharp, and high-quality photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYyODgzRK4CCp_SNxv5IJ6Wlf6Tnr8jFKI_qfGBrkfvk3UKT42fp75pqKJ7fqrq2qoC3Tsxtp5Ydwt-ggsbgs75gGUp5LjRYprk9Pe0247Wy5JS2WcWTBoEspHHJm_rjfqEJB_H6vGA0UC3mt461K2OKLUibytbZ3kNYuCM8WVWXZ_P-l0Uhjw5_QJy1f8Rd5Pkc8UpEktwhEXn3M8Py90COyMq6MWaNUQEr7tKhWqRUByvmdI4nig5qJ3GD3rYbvbO7mMxHh7cCw"/>
 </a>
-</div>
+
+                <!-- Logout Button -->
+                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='../01_login/code.html');" class="ml-2 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-surface text-on-surface px-2 py-1 shadow-md rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border border-on-surface/10">Keluar</span>
+                </button>
+            </div>
 </nav>
 <!-- SideNavBar (Collapsed/Hidden focus for Roadmap) -->
 <aside class="fixed left-0 top-16 bottom-0 z-40 w-16 md:w-64 bg-surface-container-low border-r border-on-surface/20 flex flex-col transition-all duration-300 transform -translate-x-full md:translate-x-0 overflow-hidden">
@@ -1061,6 +1069,23 @@ notifications
         }
     });
 </script>
+
+    <!-- Firebase SDK & Auth -->
+    <script src="../firebase-config.js"></script>
+    <script src="../firebase-auth-guard.js"></script>
+    <script src="../firebase-data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+
+    <script>
+        window.addEventListener('auth-ready', function(e) {
+            const user = e.detail;
+            if (user && user.nama) {
+                document.querySelectorAll('.user-display-name').forEach(el => {
+                    el.textContent = user.nama;
+                });
+            }
+        });
+    </script>
 
 <script>
 (function(){

@@ -147,7 +147,7 @@
     <div id="dropdownProfil" class="hidden absolute right-0 top-14 w-56 bg-white shadow-lg rounded-lg p-4 z-[999]">
     <p style="color:black; font-weight:bold;"><span class="user-display-name"></span></p>
 <p style="color:gray; font-size:14px;">
-    Guru
+    Siswa
 </p>
     <hr class="my-3">
     <a href="/flexacendekia-unipdu-main/18_profil/code.html" class="block py-2 hover:bg-gray-100">
@@ -256,8 +256,8 @@ onchange="gantiFoto(event)">
 </div>
 <p id="profileName" style="color:black; font-weight:bold;">
 </p>
-<p id="roleDropdownTop" style="color:gray; font-size:14px;">
-    Guru
+<p id="profileRole" style="color:gray; font-size:14px;">
+    Siswa
 </p>
 <div class="w-full border-t border-outline-variant/20 pt-4 mt-2">
 <div class="flex justify-between py-2">
@@ -456,159 +456,341 @@ class="w-full text-left font-label-caps text-label-caps text-error hover:opacity
 <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors hover:underline decoration-secondary" href="#" onclick="kebijakanPrivasi()">Kebijakan Privasi</a>
 </div>
 </footer>
-<script src="../sso-sync.js"></script>
 <script>
-    // Tombol Verifikasi Dua Langkah dan Notifikasi Login
-    document.querySelectorAll('[role="switch"]').forEach((toggle, index) => {
-        toggle.addEventListener("click", function () {
-            const dot = toggle.querySelector("span");
-            const aktif = dot.classList.contains("translate-x-5");
+        // Tombol Verifikasi Dua Langkah dan Notifikasi Login
+document.querySelectorAll('[role="switch"]').forEach((toggle, index) => {
 
-            if (aktif) {
-                dot.classList.replace("translate-x-5", "translate-x-0");
-                toggle.classList.replace("bg-secondary", "bg-outline-variant/40");
-                if (index === 0) document.getElementById("status2FA").textContent = "Verifikasi Dua Langkah Nonaktif";
-                if (index === 1) document.getElementById("statusNotif").textContent = "Notifikasi Login Nonaktif";
-            } else {
-                dot.classList.replace("translate-x-0", "translate-x-5");
-                toggle.classList.replace("bg-outline-variant/40", "bg-secondary");
-                if (index === 0) document.getElementById("status2FA").textContent = "Verifikasi Dua Langkah Aktif";
-                if (index === 1) document.getElementById("statusNotif").textContent = "Notifikasi Login Aktif";
+    toggle.addEventListener("click", function () {
+
+        const dot = toggle.querySelector("span");
+        const aktif = dot.classList.contains("translate-x-5");
+
+        if (aktif) {
+
+            dot.classList.replace("translate-x-5", "translate-x-0");
+            toggle.classList.replace("bg-secondary", "bg-outline-variant/40");
+
+            if (index === 0) {
+                document.getElementById("status2FA").textContent =
+                    "Verifikasi Dua Langkah Nonaktif";
             }
-        });
-    });
 
-    // Hover effects for card items
-    document.querySelectorAll('.ledger-card').forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.style.borderColor = 'rgba(128, 86, 0, 0.4)';
-            card.style.transition = 'border-color 0.3s ease';
-        });
-        card.addEventListener('mouseleave', () => {
-            card.style.borderColor = 'rgba(23, 34, 59, 0.2)';
-        });
-    });
+            if (index === 1) {
+                document.getElementById("statusNotif").textContent =
+                    "Notifikasi Login Nonaktif";
+            }
 
-    document.getElementById("btnUpdate").addEventListener("click", function () {
-        const guru = SSOSync.getGuru();
-        if (guru) {
-            guru.nama = document.getElementById("fullName").value;
-            guru.nip = document.getElementById("nisn").value;
-            guru.email = document.getElementById("email").value;
-            SSOSync.set('guru', guru);
+        } else {
+
+            dot.classList.replace("translate-x-0", "translate-x-5");
+            toggle.classList.replace("bg-outline-variant/40", "bg-secondary");
+
+            if (index === 0) {
+                document.getElementById("status2FA").textContent =
+                    "Verifikasi Dua Langkah Aktif";
+            }
+
+            if (index === 1) {
+                document.getElementById("statusNotif").textContent =
+                    "Notifikasi Login Aktif";
+            }
+
         }
 
-        let nama = document.getElementById("fullName").value;
-        let nisn = document.getElementById("nisn").value;
-        let institusi = document.getElementById("institution").value;
-        let email = document.getElementById("email").value;
-        
+    });
+
+});
+
+        // Hover effects for card items
+        document.querySelectorAll('.ledger-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.borderColor = 'rgba(128, 86, 0, 0.4)';
+                card.style.transition = 'border-color 0.3s ease';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.borderColor = 'rgba(23, 34, 59, 0.2)';
+            });
+        });
+
+       document.getElementById("btnUpdate").addEventListener("click", function () {
+
+    let nama = document.getElementById("fullName").value;
+    let nisn = document.getElementById("nisn").value;
+    let institusi = document.getElementById("institution").value;
+    let email = document.getElementById("email").value;
+    // ubah nama di kartu profil
+    document.getElementById("profileName").textContent = nama;
+    // ubah nama di dropdown kanan atas
+    document.querySelector("#profileName p").textContent = nama;
+    // simpan data
+    localStorage.setItem("namaProfil", nama);
+    localStorage.setItem("nisn", nisn);
+    localStorage.setItem("institusi", institusi);
+    localStorage.setItem("email", email);
+    alert("✅ Data pribadi berhasil disimpan!");
+
+    // Kosongkan form
+document.getElementById("fullName").value = "";
+document.getElementById("institution").value = "";
+document.getElementById("email").value = "";
+
+});
+document.getElementById("btnTambah").addEventListener("click", function () {
+    document.getElementById("formPelajaran").style.display = "block";
+});
+
+function tambahTujuan() {
+    document.getElementById("formTujuan").style.display = "block";
+}
+
+function simpanTujuan() {
+
+    let nama = document.getElementById("namaTujuan").value;
+    let periode = document.getElementById("periode").value;
+    let progress = document.getElementById("progress").value;
+    let target = document.getElementById("target").value;
+
+    document.getElementById("namaTujuanTampil").textContent = nama;
+    document.getElementById("periodeTampil").textContent = periode;
+    document.getElementById("progressText").textContent = progress + "%";
+    document.getElementById("progressBar").style.width = progress + "%";
+    document.getElementById("targetTampil").textContent =
+        "Target Pencapaian: " + target;
+
+    document.getElementById("formTujuan").style.display = "none";
+
+    document.getElementById("namaTujuan").value = "";
+    document.getElementById("periode").value = "";
+    document.getElementById("progress").value = "";
+    document.getElementById("target").value = "";
+
+    document.getElementById("formTujuan").style.display = "none";
+}
+
+function nonaktifkanAkun() {
+
+    let konfirmasi = confirm("Apakah Anda yakin ingin menonaktifkan akun?");
+
+    if (konfirmasi) {
+        alert("Akun berhasil dinonaktifkan.");
+    } else {
+        alert("Penonaktifan akun dibatalkan.");
+    }
+
+}
+
+function bukaPassword() {
+
+    let passwordLama = prompt("Masukkan kata sandi lama");
+
+    if(passwordLama == null){
+        return;
+    }
+
+    let passwordBaru = prompt("Masukkan kata sandi baru");
+
+    if(passwordBaru == null){
+        return;
+    }
+
+    alert("Kata sandi berhasil diubah.");
+
+}
+
+function panduanAkademik() {
+    alert("Panduan Akademik akan segera tersedia.");
+}
+
+function pusatBantuan() {
+    alert("Silakan hubungi admin di support@flexacendekia.ac.id");
+}
+
+function kebijakanPrivasi() {
+    alert("Halaman Kebijakan Privasi akan segera tersedia.");
+}
+
+function simpanPelajaran() {
+
+    let nama = document.getElementById("namaPelajaran").value;
+
+    if (nama == "") {
+        alert("Masukkan nama pelajaran terlebih dahulu.");
+        return;
+    }
+
+    alert("Pelajaran " + nama + " berhasil ditambahkan.");
+
+    document.getElementById("namaPelajaran").value = "";
+    document.getElementById("formPelajaran").style.display = "none";
+}
+
+function support() {
+    alert(
+        "Pusat Bantuan\n\n" +
+        "Email : support@flexacendekia.ac.id\n" +
+        "Telepon : (031) 123456789\n" +
+        "Jam Operasional : Senin - Jumat, 08.00 - 16.00"
+    );
+}
+
+function archive() {
+    alert(
+        "Arsip Akademik\n\n" +
+        "Belum ada data yang diarsipkan."
+    );
+}
+
+document.getElementById("btnNotifikasi").onclick = function(){
+    let notif = document.getElementById("popupNotifikasi");
+
+    if(notif.style.display === "none"){
+        notif.style.display = "block";
+    }else{
+        notif.style.display = "none";
+    }
+};
+document.getElementById("btnBantuan").onclick = function(){
+    alert("Membuka bantuan");
+};
+document.getElementById("btnProfil").onclick = function(){
+
+    let profil = document.getElementById("popupProfil");
+
+    if(profil.style.display === "none"){
+        profil.style.display = "block";
+    }else{
+        profil.style.display = "none";
+    }
+};
+
+function bukaProfil(){
+    alert("Membuka halaman Profil");
+}
+function bukaPengaturan(){
+    alert("Membuka Pengaturan");
+}
+function keluarAkun(){
+    alert("Berhasil keluar");
+}
+function toggleProfil(){
+
+    let menu = document.getElementById("profileName");
+
+    if(menu.classList.contains("hidden")){
+        menu.classList.remove("hidden");
+    }else{
+        menu.classList.add("hidden");
+    }
+
+}
+function logout(){
+    alert("Keluar dari sistem");
+}
+
+function pilihFoto(){
+    document.getElementById("inputFoto").click();
+}
+
+function gantiFoto(event){
+
+    let gambar = event.target.files[0];
+
+    if(gambar){
+        document.getElementById("fotoProfil").src =
+        URL.createObjectURL(gambar);
+    }
+
+}
+
+function gantiFoto(event){
+
+    let gambar = event.target.files[0];
+
+    if(gambar){
+
+        let reader = new FileReader();
+
+        reader.onload = function(e){
+
+            document.getElementById("fotoProfil").src = e.target.result;
+
+            // simpan foto
+            localStorage.setItem("fotoProfil", e.target.result);
+
+        }
+
+        reader.readAsDataURL(gambar);
+
+    }
+
+}function gantiFoto(event){
+
+    let gambar = event.target.files[0];
+
+    if(gambar){
+
+        let reader = new FileReader();
+
+        reader.onload = function(e){
+
+            document.getElementById("fotoProfil").src = e.target.result;
+            document.getElementById("fotoNavbar").src = e.target.result;
+
+            // simpan foto
+            localStorage.setItem("fotoProfil", e.target.result);
+
+        }
+
+        reader.readAsDataURL(gambar);
+
+    }
+
+}
+
+window.onload = function(){
+
+    let namaTersimpan = localStorage.getItem("namaProfil");
+
+if(namaTersimpan){
+
+    document.getElementById("profileName").textContent = namaTersimpan
+    }
+}
+let fotoTersimpan = localStorage.getItem("fotoProfil");
+
+if(fotoTersimpan){
+
+    document.getElementById("fotoProfil").src = fotoTersimpan;
+    document.getElementById("fotoNavbar").src = fotoTersimpan;
+
+}
+
+window.onload = function(){
+
+    let nama = localStorage.getItem("namaProfil");
+    let nisn = localStorage.getItem("nisn");
+    let institusi = localStorage.getItem("institusi");
+    let email = localStorage.getItem("email");
+
+
+    if(nama){
         document.getElementById("profileName").textContent = nama;
-        document.querySelector("#dropdownProfil p").textContent = nama;
-        
-        localStorage.setItem("namaProfil", nama);
-        localStorage.setItem("nisn", nisn);
-        localStorage.setItem("institusi", institusi);
-        localStorage.setItem("email", email);
-        alert("✅ Data pribadi berhasil disimpan!");
-    });
-
-    document.getElementById("btnTambah").addEventListener("click", function () {
-        document.getElementById("formPelajaran").style.display = "block";
-    });
-
-    function tambahTujuan() { document.getElementById("formTujuan").style.display = "block"; }
-
-    function simpanTujuan() {
-        let nama = document.getElementById("namaTujuan").value;
-        let periode = document.getElementById("periode").value;
-        let progress = document.getElementById("progress").value;
-        let target = document.getElementById("target").value;
-
-        document.getElementById("namaTujuanTampil").textContent = nama;
-        document.getElementById("periodeTampil").textContent = periode;
-        document.getElementById("progressText").textContent = progress + "%";
-        document.getElementById("progressBar").style.width = progress + "%";
-        document.getElementById("targetTampil").textContent = "Target Pencapaian: " + target;
-
-        document.getElementById("formTujuan").style.display = "none";
     }
 
-    function nonaktifkanAkun() {
-        if (confirm("Apakah Anda yakin ingin menonaktifkan akun?")) alert("Akun berhasil dinonaktifkan.");
+    if(nisn){
+        document.getElementById("nisn").value = nisn;
     }
 
-    function bukaPassword() {
-        let passwordLama = prompt("Masukkan kata sandi lama");
-        if(passwordLama == null) return;
-        let passwordBaru = prompt("Masukkan kata sandi baru");
-        if(passwordBaru == null) return;
-        alert("Kata sandi berhasil diubah.");
+    if(institusi){
+        document.getElementById("institution").value = institusi;
     }
 
-    function panduanAkademik() { alert("Panduan Akademik akan segera tersedia."); }
-    function pusatBantuan() { alert("Silakan hubungi admin di support@flexacendekia.ac.id"); }
-    function kebijakanPrivasi() { alert("Halaman Kebijakan Privasi akan segera tersedia."); }
-
-    function simpanPelajaran() {
-        let nama = document.getElementById("namaPelajaran").value;
-        if (nama == "") { alert("Masukkan nama pelajaran terlebih dahulu."); return; }
-        alert("Pelajaran " + nama + " berhasil ditambahkan.");
-        document.getElementById("namaPelajaran").value = "";
-        document.getElementById("formPelajaran").style.display = "none";
+    if(email){
+        document.getElementById("email").value = email;
     }
 
-    function support() { alert("Pusat Bantuan\\n\\nEmail : support@flexacendekia.ac.id\\nTelepon : (031) 123456789\\nJam Operasional : Senin - Jumat, 08.00 - 16.00"); }
-    function archive() { alert("Arsip Akademik\\n\\nBelum ada data yang diarsipkan."); }
-
-    document.getElementById("btnNotifikasi").onclick = function(){
-        let notif = document.getElementById("popupNotifikasi");
-        notif.style.display = notif.style.display === "none" ? "block" : "none";
-    };
-    document.getElementById("btnBantuan").onclick = function(){ alert("Membuka bantuan"); };
-
-    function toggleProfil(){
-        let menu = document.getElementById("dropdownProfil");
-        if(menu.classList.contains("hidden")){
-            menu.classList.remove("hidden");
-        }else{
-            menu.classList.add("hidden");
-        }
-    }
-    function logout(){ alert("Keluar dari sistem"); }
-    function pilihFoto(){ document.getElementById("inputFoto").click(); }
-
-    function gantiFoto(event){
-        let gambar = event.target.files[0];
-        if(gambar){
-            let reader = new FileReader();
-            reader.onload = function(e){
-                document.getElementById("fotoProfil").src = e.target.result;
-                document.getElementById("fotoNavbar").src = e.target.result;
-                localStorage.setItem("fotoProfil", e.target.result);
-            }
-            reader.readAsDataURL(gambar);
-        }
-    }
-
-    window.onload = function(){
-        const guru = SSOSync.getGuru();
-        if(guru) {
-            document.getElementById("profileName").textContent = guru.nama;
-            document.querySelector("#dropdownProfil p").textContent = guru.nama;
-            document.getElementById("fullName").value = guru.nama;
-            document.getElementById("nisn").value = guru.nip || "198001012005011003";
-            document.getElementById("email").value = guru.email || "guru@flexacendekia.ac.id";
-            document.getElementById("institution").value = "SMA Cendekia";
-        }
-
-        let fotoTersimpan = localStorage.getItem("fotoProfil");
-        if(fotoTersimpan){
-            document.getElementById("fotoProfil").src = fotoTersimpan;
-            document.getElementById("fotoNavbar").src = fotoTersimpan;
-        }
-    }
-</script>
+}
+    </script>
 
     <script>
         window.addEventListener('auth-ready', function(e) {

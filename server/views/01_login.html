@@ -204,6 +204,460 @@
                 <div class="text-center mb-8">
                     <h1 class="font-headline-md text-headline-md text-primary mb-2">Selamat Datang Kembali</h1>
                     <p class="font-body-md text-body-md text-on-surface-variant max-w-sm mx-auto">
+                        Masuk untuk mengakses roadmap belajar 6 tahun menuju cita-cita profesi Anda.
+                    </p>
+                </div>
+
+                <!-- Error Message -->
+                <div id="login-error" class="hidden mb-4 p-3 bg-error-container border border-error/30 text-on-error-container font-body-sm text-body-sm"></div>
+
+                <!-- Success Message (for password reset) -->
+                <div id="login-success" class="hidden mb-4 p-3 bg-tertiary-fixed border border-on-tertiary-fixed-variant/30 text-on-tertiary-fixed font-body-sm text-body-sm"></div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="space-y-4">
+                    <div>
+                        <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase tracking-wider">Masuk Sebagai</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <label class="relative flex flex-col items-center justify-center p-3 border border-primary/20 bg-surface-container-lowest cursor-pointer hover:bg-primary/5 transition-colors group">
+                                <input type="radio" name="login-role" value="Siswa" class="peer sr-only" required>
+                                <span class="material-symbols-outlined text-lg mb-1 opacity-60 peer-checked:opacity-100 peer-checked:text-primary transition-opacity" data-icon="school">school</span>
+                                <span class="font-label-caps text-[10px] text-on-surface-variant peer-checked:text-primary peer-checked:font-bold text-center leading-tight">Siswa</span>
+                                <div class="absolute inset-0 border-2 border-transparent peer-checked:border-primary pointer-events-none transition-colors"></div>
+                            </label>
+                            <label class="relative flex flex-col items-center justify-center p-3 border border-primary/20 bg-surface-container-lowest cursor-pointer hover:bg-primary/5 transition-colors group">
+                                <input type="radio" name="login-role" value="Guru" class="peer sr-only" required>
+                                <span class="material-symbols-outlined text-lg mb-1 opacity-60 peer-checked:opacity-100 peer-checked:text-primary transition-opacity" data-icon="history_edu">history_edu</span>
+                                <span class="font-label-caps text-[10px] text-on-surface-variant peer-checked:text-primary peer-checked:font-bold text-center leading-tight">Guru</span>
+                                <div class="absolute inset-0 border-2 border-transparent peer-checked:border-primary pointer-events-none transition-colors"></div>
+                            </label>
+                            <label class="relative flex flex-col items-center justify-center p-3 border border-primary/20 bg-surface-container-lowest cursor-pointer hover:bg-primary/5 transition-colors group">
+                                <input type="radio" name="login-role" value="OrangTua" class="peer sr-only" required>
+                                <span class="material-symbols-outlined text-lg mb-1 opacity-60 peer-checked:opacity-100 peer-checked:text-primary transition-opacity" data-icon="family_restroom">family_restroom</span>
+                                <span class="font-label-caps text-[10px] text-on-surface-variant peer-checked:text-primary peer-checked:font-bold text-center leading-tight">Orang Tua</span>
+                                <div class="absolute inset-0 border-2 border-transparent peer-checked:border-primary pointer-events-none transition-colors"></div>
+                            </label>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase tracking-wider">Email</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-lg">mail</span>
+                            <input id="login-email" type="email" required autocomplete="email"
+                                class="w-full pl-10 pr-4 py-3 border border-primary/20 bg-surface-container-lowest font-body-md text-body-md text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-colors"
+                                placeholder="nama@email.com" />
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase tracking-wider">Password</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-lg">lock</span>
+                            <input id="login-password" type="password" required autocomplete="current-password"
+                                class="w-full pl-10 pr-4 py-3 border border-primary/20 bg-surface-container-lowest font-body-md text-body-md text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-colors"
+                                placeholder="••••••••" />
+                        </div>
+                    </div>
+
+                    <!-- Login Button -->
+                    <button id="btn-login" type="submit"
+                        class="w-full bg-primary text-on-primary py-4 px-6 flex items-center justify-center gap-3 hover:opacity-90 transition-all active:scale-[0.98] border border-primary mt-6">
+                        <span class="material-symbols-outlined text-xl" data-icon="login">login</span>
+                        <span class="font-label-caps text-label-caps uppercase tracking-wider">Masuk</span>
+                    </button>
+                </form>
+
+                <!-- Forgot Password -->
+                <div class="text-center mt-4">
+                    <button id="btn-forgot" type="button"
+                        class="font-body-sm text-body-sm text-secondary hover:underline underline-offset-4 transition-colors">
+                        Lupa password?
+                    </button>
+                </div>
+
+                <!-- Numeric Context / Metadata (Academic Feel) -->
+                <div class="mt-12 pt-8 border-t border-dashed border-primary/10 flex justify-between items-end">
+                    <div class="text-left">
+                        <p class="font-stats-sm text-stats-sm text-on-surface-variant/50">SESSION_ID</p>
+                        <p class="font-stats-lg text-stats-lg text-primary/30 tracking-tight">FC-2026-UP</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="font-stats-sm text-stats-sm text-on-surface-variant/50">TIMESTAMP</p>
+                        <p class="font-stats-lg text-stats-lg text-primary/30 tracking-tight" id="live-clock">00:00:00
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <!-- Supporting Imagery (Bento Minimal) -->
+            <div class="grid grid-cols-2 gap-4 mt-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
+                <div class="h-24 border border-primary/10 overflow-hidden">
+                    <img class="w-full h-full object-cover"
+                        data-alt="A macro close-up of a high-quality fountain pen nib touching textured ivory cream paper."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjkE9Afo9IQcVxwk1is23XMh15Kx0snEeZLzV62e6ERGdSvURwTtqhdwq7qTsQiqN9RpUCy9LvnSu3VO_9OsUokF5T-DyVBb-k7YNzj8--wE-Sza0xlkPFGIihzztnTdGspBlcp8ARsrvM5lZCGkk5S4Rw-KRuWkodRVy1e_EZdH3HFRqfVu3zhIrbcNRBixvh8SWSkw6Bfv5qJQeRssOjmNzdkQsflR9ECHBA-RBo5st2XeBE6St0yytO_C2UWzPPpRhJPZoVZI4" />
+                </div>
+                <div class="h-24 border border-primary/10 overflow-hidden">
+                    <img class="w-full h-full object-cover"
+                        data-alt="A clean, minimalist workspace featuring a vintage wooden desk."
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJZYXcAiS588LlaHz_7dNk2D_eLWkCrVkijJg3bO-kWY8-0TNc9EzxUYcV5I_ioZusdxJ6UpUW1s5W_OG-RQloRnIM6qOlOm_I9856Hi-Al-OIJld19QIea7WnPK9HBYGdAmbzbmPicrsdiiKgtnDpYABPWgJiIZLc3D_NMpSlENjqboEjIldg6tBtD_0g3PupyPLT_u-n1WxH9whRC4QcTAnupr0QvFEb1ZGE7x373jR_otxmS0sSRIqeJmPcKPbTDkEfVw0fGoM" />
+                </div>
+            </div>
+        </div>
+    </main>
+    <!-- Footer -->
+    <footer class="w-full bg-surface-container border-t border-primary/10">
+        <div
+            class="flex flex-col md:flex-row justify-between items-center gap-4 px-margin-mobile md:px-margin-desktop py-8 max-w-container-max mx-auto">
+            <div class="flex flex-col items-center md:items-start gap-1">
+                <span class="font-label-caps text-label-caps uppercase tracking-widest text-primary">Kolaborasi
+                    Akademik</span>
+                <span class="font-body-sm text-body-sm text-on-surface-variant">Flexa Cendekia &amp; Universitas
+                    Pesantren Tinggi Darul Ulum</span>
+            </div>
+            <div class="flex gap-6">
+                <a class="text-on-surface-variant font-body-sm text-body-sm hover:underline decoration-1 underline-offset-4"
+                    href="#">Kebijakan Privasi</a>
+                <a class="text-on-surface-variant font-body-sm text-body-sm hover:underline decoration-1 underline-offset-4"
+                    href="#">Syarat &amp; Ketentuan</a>
+            </div>
+            <div class="font-body-sm text-body-sm text-on-surface-variant">
+                © 2026 Flexa Cendekia x UNIPDU. Hak Cipta Dilindungi.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <script>
+        // =============================================
+        // Firebase Init (login page — no auth guard needed)
+        // =============================================
+        if (firebase.apps.length === 0) {
+            firebase.initializeApp({
+                apiKey: "AIzaSyBybYZrGTpgjr0UXTfYozN0K5btCXlFiIg",
+                authDomain: "flexa-cendekia-960bf.firebaseapp.com",
+                projectId: "flexa-cendekia-960bf",
+                storageBucket: "flexa-cendekia-960bf.firebasestorage.app",
+                messagingSenderId: "630837588259",
+                appId: "1:630837588259:web:ab00ec0945b8eaad3adc96"
+            });
+        }
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // If already logged in, redirect immediately
+        auth.onAuthStateChanged(function(user) {
+            if (user) {
+                redirectByRole(user.uid);
+            }
+        });
+
+        // =============================================
+        // Helpers
+        // =============================================
+        function getBaseUrl() {
+            if (window.location.search.includes('page=') || window.location.pathname === '/') {
+                return '/?page=';
+            }
+            return '../';
+        }
+
+        function redirectByRole(uid) {
+            db.collection('users').doc(uid).get().then(function(doc) {
+                const base = getBaseUrl();
+                if (doc.exists) {
+                    const actualRole = doc.data().role;
+                    
+                    // NEW: Validation Check
+                    const selectedRole = sessionStorage.getItem('selectedLoginRole');
+                    if (selectedRole && selectedRole !== actualRole) {
+                        let displayRole = actualRole === 'OrangTua' ? 'Orang Tua' : actualRole;
+                        showError(`Akun ini terdaftar sebagai ${displayRole}, silakan pilih opsi yang sesuai.`);
+                        sessionStorage.removeItem('selectedLoginRole');
+                        auth.signOut();
+                        setLoading(false);
+                        return; // Abort redirect
+                    }
+                    
+                    // Clear the temp session storage after successful validation
+                    sessionStorage.removeItem('selectedLoginRole');
+
+                    if (actualRole === 'Guru') {
+                        window.location.href = base.includes('?page=') ? base + '14_dashboard-guru' : base + '14_dashboard-guru/code.html';
+                    } else if (actualRole === 'OrangTua') {
+                        window.location.href = base.includes('?page=') ? base + '16_dashboard-ortu' : base + '16_dashboard-ortu/code.html';
+                    } else {
+                        window.location.href = base.includes('?page=') ? base + '08_dashboard-siswa' : base + '08_dashboard-siswa/code.html';
+                    }
+                } else {
+                    // Default to siswa
+                    window.location.href = base.includes('?page=') ? base + '08_dashboard-siswa' : base + '08_dashboard-siswa/code.html';
+                }
+            }).catch(function() {
+                const base = getBaseUrl();
+                window.location.href = base.includes('?page=') ? base + '08_dashboard-siswa' : base + '08_dashboard-siswa/code.html';
+            });
+        }
+
+        function showError(msg) {
+            const el = document.getElementById('login-error');
+            el.textContent = msg;
+            el.classList.remove('hidden');
+            document.getElementById('login-success').classList.add('hidden');
+        }
+
+        function showSuccess(msg) {
+            const el = document.getElementById('login-success');
+            el.textContent = msg;
+            el.classList.remove('hidden');
+            document.getElementById('login-error').classList.add('hidden');
+        }
+
+        function setLoading(isLoading) {
+            const btn = document.getElementById('btn-login');
+            if (isLoading) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="material-symbols-outlined text-xl animate-spin">sync</span><span class="font-label-caps text-label-caps uppercase tracking-wider">Memproses...</span>';
+            } else {
+                btn.disabled = false;
+                btn.innerHTML = '<span class="material-symbols-outlined text-xl">login</span><span class="font-label-caps text-label-caps uppercase tracking-wider">Masuk</span>';
+            }
+        }
+
+        // =============================================
+        // Login Form
+        // =============================================
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value;
+            const selectedRole = document.querySelector('input[name="login-role"]:checked')?.value;
+
+            if (!email || !password || !selectedRole) {
+                showError('Email, password, dan pilihan role harus diisi.');
+                return;
+            }
+
+            // Store selected role for validation after auth succeeds
+            sessionStorage.setItem('selectedLoginRole', selectedRole);
+
+            setLoading(true);
+            auth.signInWithEmailAndPassword(email, password)
+                .then(function(cred) {
+                    // redirect and role validation handled by onAuthStateChanged -> redirectByRole
+                })
+                .catch(function(err) {
+                    setLoading(false);
+                    switch (err.code) {
+                        case 'auth/user-not-found':
+                            showError('Akun tidak ditemukan. Hubungi admin untuk pendaftaran.');
+                            break;
+                        case 'auth/wrong-password':
+                        case 'auth/invalid-credential':
+                            showError('Password salah. Silakan coba lagi atau gunakan "Lupa password".');
+                            break;
+                        case 'auth/invalid-email':
+                            showError('Format email tidak valid.');
+                            break;
+                        case 'auth/too-many-requests':
+                            showError('Terlalu banyak percobaan. Coba lagi beberapa menit.');
+                            break;
+                        default:
+                            showError('Terjadi kesalahan: ' + err.message);
+                    }
+                });
+        });
+
+        // =============================================
+        // Forgot Password
+        // =============================================
+        document.getElementById('btn-forgot').addEventListener('click', function() {
+            const email = document.getElementById('login-email').value.trim();
+            if (!email) {
+                showError('Masukkan email Anda di kolom di atas, lalu klik "Lupa password" lagi.');
+                return;
+            }
+            
+            auth.sendPasswordResetEmail(email)
+                .then(function() {
+                    showSuccess('Link reset password telah dikirim ke ' + email + '. Periksa inbox Anda.');
+                })
+                .catch(function(err) {
+                    if (err.code === 'auth/user-not-found') {
+                        showError('Email tidak terdaftar. Hubungi admin.');
+                    } else {
+                        showError('Gagal mengirim email reset: ' + err.message);
+                    }
+                });
+        });
+
+        // =============================================
+        // Clock & Micro-interactions
+        // =============================================
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' +
+                now.getMinutes().toString().padStart(2, '0') + ':' +
+                now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('live-clock').textContent = timeStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        const card = document.querySelector('.paper-stack-effect');
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const deltaX = (x - centerX) / 50;
+            const deltaY = (y - centerY) / 50;
+            card.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = `translate3d(0, 0, 0)`;
+        });
+
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+
+<script>
+(function(){
+  function bindClick(selectors, handler) {
+    document.querySelectorAll(selectors).forEach(function(el) {
+      el.addEventListener('click', function(e) {
+        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
+            return;
+        }
+        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
+            return;
+        }
+        e.preventDefault();
+        handler(e, el);
+      });
+    });
+  }
+
+  // 1. Top Navbar Role Tabs
+  bindClick('header nav a', function(e, a) {
+    var text = a.textContent.trim().toLowerCase();
+    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
+    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
+  });
+
+  // 2. Header Icons & Avatar
+  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
+    var iconText = '';
+    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
+    else {
+      var icon = b.querySelector('.material-symbols-outlined');
+      if (icon) iconText = icon.textContent.trim();
+    }
+    
+    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
+      window.location.href = '/?page=18_profil';
+    }
+  });
+
+  // 3. Sidebar, Bottom Nav, and generic # links
+  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
+    var text = el.textContent.trim().toLowerCase();
+    if (!text) {
+        var icon = el.querySelector('.material-symbols-outlined');
+        if (icon) text = icon.textContent.trim().toLowerCase();
+    }
+    
+    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
+    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
+    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
+    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
+    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
+    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
+    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
+    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
+    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
+    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
+    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
+  });
+  
+  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
+})();
+</script>
+
+    <script>
+    (function(){
+      var ssoBtn = document.querySelector('button.bg-primary');
+      if(ssoBtn) ssoBtn.addEventListener('click', function(){ window.location.href = '/?page=02_intro-diagnosis'; });
+      var roleChips = document.querySelectorAll('.role-chip');
+      if(roleChips[0]) roleChips[0].addEventListener('click', function(){ window.location.href = '/?page=02_intro-diagnosis'; });
+      if(roleChips[1]) roleChips[1].addEventListener('click', function(){ window.location.href = '/?page=14_dashboard-guru'; });
+      if(roleChips[2]) roleChips[2].addEventListener('click', function(){ window.location.href = '/?page=16_dashboard-ortu'; });
+    })();
+    </script>
+</body>
+
+</html>
+
+    <!-- Subtle Background Pattern (Simulating Grid Paper) -->
+    <div class="fixed inset-0 opacity-[0.03] pointer-events-none"
+        style="background-image: radial-gradient(#17223B 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
+    <!-- Top Navigation Anchor -->
+    <header class="w-full bg-surface border-b border-primary/20">
+        <div
+            class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+            <div class="font-headline-md text-headline-md font-bold text-primary">
+                Flexa Cendekia x UNIPDU
+            </div>
+            <div class="hidden md:flex gap-8">
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
+                    href="/?page=01_login_panduan">Panduan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
+                    href="/?page=01_login_bantuan">Bantuan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
+                    href="/?page=01_login_kontak">Kontak</a>
+            </div>
+            <!-- Mobile menu button -->
+            <button id="mobile-menu-btn" class="md:hidden flex items-center justify-center p-2 text-primary">
+                <span class="material-symbols-outlined">menu</span>
+            </button>
+        </div>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-primary/10 bg-surface">
+            <div class="flex flex-col px-margin-mobile py-4 gap-4">
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
+                    href="/?page=01_login_panduan">Panduan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
+                    href="/?page=01_login_bantuan">Bantuan</a>
+                <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
+                    href="/?page=01_login_kontak">Kontak</a>
+            </div>
+        </div>
+    </header>
+    <!-- Main Content Area -->
+    <main class="flex-grow flex items-center justify-center p-6">
+        <div class="w-full max-w-lg">
+            <!-- The Academic Ledger Card -->
+            <div class="academic-ledger-card paper-stack-effect p-8 md:p-12 relative">
+                <!-- Brand Lockup -->
+                <div class="flex justify-center mb-8">
+                    <div class="h-12 w-12 border-2 border-primary flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-3xl"
+                            data-icon="menu_book">menu_book</span>
+                    </div>
+                </div>
+                <!-- Headline -->
+                <div class="text-center mb-8">
+                    <h1 class="font-headline-md text-headline-md text-primary mb-2">Selamat Datang Kembali</h1>
+                    <p class="font-body-md text-body-md text-on-surface-variant max-w-sm mx-auto">
                         Akses roadmap belajar 6 tahun menuju cita-cita profesi Anda.
                     </p>
                 </div>
@@ -331,82 +785,6 @@
         menuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
         });
-    </script>
-
-<script>
-(function(){
-  function bindClick(selectors, handler) {
-    document.querySelectorAll(selectors).forEach(function(el) {
-      el.addEventListener('click', function(e) {
-        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
-            return;
-        }
-        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
-            return;
-        }
-        e.preventDefault();
-        handler(e, el);
-      });
-    });
-  }
-
-  // 1. Top Navbar Role Tabs
-  bindClick('header nav a', function(e, a) {
-    var text = a.textContent.trim().toLowerCase();
-    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
-    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
-  });
-
-  // 2. Header Icons & Avatar
-  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
-    var iconText = '';
-    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
-    else {
-      var icon = b.querySelector('.material-symbols-outlined');
-      if (icon) iconText = icon.textContent.trim();
-    }
-    
-    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
-      window.location.href = '/?page=18_profil';
-    }
-  });
-
-  // 3. Sidebar, Bottom Nav, and generic # links
-  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
-    var text = el.textContent.trim().toLowerCase();
-    if (!text) {
-        var icon = el.querySelector('.material-symbols-outlined');
-        if (icon) text = icon.textContent.trim().toLowerCase();
-    }
-    
-    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
-    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
-    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
-    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
-    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
-    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
-    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
-    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
-    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
-  });
-  
-  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
-})();
-</script>
-
-    <script>
-    (function(){
-      var ssoBtn = document.querySelector('button.bg-primary');
-      if(ssoBtn) ssoBtn.addEventListener('click', function(){ window.location.href = '/?page=02_intro-diagnosis'; });
-      var roleChips = document.querySelectorAll('.role-chip');
-      if(roleChips[0]) roleChips[0].addEventListener('click', function(){ window.location.href = '/?page=02_intro-diagnosis'; });
-      if(roleChips[1]) roleChips[1].addEventListener('click', function(){ window.location.href = '/?page=14_dashboard-guru'; });
-      if(roleChips[2]) roleChips[2].addEventListener('click', function(){ window.location.href = '/?page=16_dashboard-ortu'; });
-    })();
     </script>
 </body>
 

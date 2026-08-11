@@ -14,7 +14,9 @@ const ALLOWED_PAGES = [
   '08_dashboard-siswa',
   '09_krs-siswa', '10_detail-roadmap', '11_checkpoint-jumat', '12_ganti-cita-cita',
   '13_riwayat-semester', '14_dashboard-guru', '15_tinjauan-guru', '16_dashboard-ortu',
-  '17_notifikasi', '18_profil'
+  '17_notifikasi', '18_profil',
+  // Role-specific profil pages
+  '18_profil_profil-siswa', '18_profil_profil-guru', '18_profil_profil-ortu'
 ];
 
 router.get('/', (req, res) => {
@@ -44,6 +46,16 @@ router.get('/:folder/code.html', (req, res) => {
   const folder = req.params.folder;
   if (ALLOWED_PAGES.includes(folder)) {
     return res.redirect(`/?page=${folder}`);
+  }
+  res.redirect('/');
+});
+
+// Support direct links to profil sub-pages like /18_profil/profil-siswa.html
+router.get('/18_profil/:profilFile', (req, res) => {
+  const profilFile = req.params.profilFile.replace('.html', '');
+  const page = `18_profil_${profilFile}`;
+  if (ALLOWED_PAGES.includes(page)) {
+    return res.redirect(`/?page=${page}`);
   }
   res.redirect('/');
 });
