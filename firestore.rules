@@ -1,0 +1,105 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------------------------------------------------------
+    // Aturan Umum: Harus login untuk akses apapun
+    // ---------------------------------------------------------
+    function isAuth() {
+      return request.auth != null;
+    }
+
+    // Mengambil profil pengguna dari koleksi users
+    function getUserRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    // ---------------------------------------------------------
+    // Koleksi Users
+    // ---------------------------------------------------------
+    match /users/{userId} {
+      // Siswa hanya membaca profilnya sendiri
+      // Guru dan Orang Tua bisa membaca profil mana saja (atau batasi lebih ketat jika relasi field diperiksa)
+      allow read: if isAuth() && (
+        request.auth.uid == userId || 
+        getUserRole() == 'Guru' || 
+        getUserRole() == 'OrangTua'
+      );
+      
+      // Hanya pemilik akun yang bisa mengubah profilnya
+      allow write: if isAuth() && request.auth.uid == userId;
+    }
+
+    // ---------------------------------------------------------
+    // Koleksi Pengajuan KRS
+    // ---------------------------------------------------------
+    match /pengajuanKRS/{krsId} {
+      // Siswa hanya bisa membaca KRS miliknya.
+      // Guru bisa membaca KRS siswa yang dia bimbing (disederhanakan menjadi: guru bisa membaca semua, 
+      // bisa diperketat dengan memeriksa guruWaliId di profil siswa).
+      // OrangTua bisa membaca KRS anak (bisa diperketat dengan memeriksa anakIds di profil ortu).
+      allow read: if isAuth();
+
+      // Hanya Siswa yang boleh membuat KRS, dan hanya untuk dirinya sendiri
+      allow create: if isAuth() 
+                    && getUserRole() == 'Siswa' 
+                    && request.resource.data.siswaId == request.auth.uid;
+      
+      // Guru bisa mengupdate status KRS
+      allow update: if isAuth() 
+                    && (getUserRole() == 'Guru' || request.auth.uid == resource.data.siswaId);
+      
+      allow delete: if false; // Tidak boleh dihapus
+    }
+
+    // ---------------------------------------------------------
+    // Koleksi Catatan Guru
+    // ---------------------------------------------------------
+    match /catatanGuru/{catatanId} {
+      // Bisa dibaca oleh yang login (untuk Guru, Siswa, Ortu terkait)
+      allow read: if isAuth();
+
+      // Hanya Guru yang bisa membuat catatan
+      allow create: if isAuth() 
+                    && getUserRole() == 'Guru'
+                    && request.resource.data.guruId == request.auth.uid;
+
+      allow update, delete: if false; // Sekali dibuat, tidak bisa diubah/dihapus (atau sesuaikan kebutuhan)
+    }
+
+    // ---------------------------------------------------------
+    // Koleksi Balasan Catatan (Orang Tua)
+    // ---------------------------------------------------------
+    match /balasanCatatan/{balasanId} {
+      allow read: if isAuth();
+
+      // Hanya Orang Tua yang bisa membalas catatan
+      allow create: if isAuth() 
+                    && getUserRole() == 'OrangTua'
+                    && request.resource.data.orangTuaId == request.auth.uid;
+
+      allow update, delete: if false;
+    }
+
+    // ---------------------------------------------------------
+    // Koleksi Notifikasi
+    // ---------------------------------------------------------
+    match /notifikasi/{notifId} {
+      // Hanya pemilik notifikasi yang bisa membacanya
+      allow read: if isAuth() && resource.data.untukUserId == request.auth.uid;
+
+      // Sistem/trigger di sisi client saat ini membuat notifikasi.
+      // Di aplikasi production, idealnya notifikasi dibuat via Cloud Functions.
+      // Karena ini frontend-only, kita izinkan semua user terotentikasi membuat notifikasi.
+      allow create: if isAuth();
+
+      // User bisa menandai notifikasinya sendiri sebagai 'dibaca'
+      allow update: if isAuth() 
+                    && resource.data.untukUserId == request.auth.uid
+                    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['dibaca']);
+      
+      allow delete: if false;
+    }
+  }
+}

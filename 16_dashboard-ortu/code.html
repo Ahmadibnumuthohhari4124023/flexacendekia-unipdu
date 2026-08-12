@@ -91,27 +91,24 @@
           },
         },
       }
-    }catch(_e){}</script><meta charset="utf-8"></head><body class="min-h-screen">
+    }catch(_e){}</script><meta charset="utf-8">
+    </head><body class="min-h-screen">
+
 <!-- Top Navigation (The Binder Tabs) -->
 <nav class="bg-background w-full border-b border-on-surface/20 sticky top-0 z-50">
 <div class="max-w-container-max mx-auto px-margin-desktop h-16 flex justify-between items-center">
 <div class="flex items-center space-x-8 h-full">
 <span class="font-display-lg text-display-lg font-bold text-primary">Flexa Cendekia x UNIPDU</span>
-<div class="hidden md:flex h-full items-end">
-<!-- Nav Item: Siswa -->
-<a href="../08_dashboard-siswa/code.html" class="text-on-surface-variant hover:text-primary px-6 py-2 transition-colors font-label-caps text-label-caps border-b-2 border-transparent">Siswa</a>
-<!-- Nav Item: Guru -->
-<a href="../14_dashboard-guru/code.html" class="text-on-surface-variant hover:text-primary px-6 py-2 transition-colors font-label-caps text-label-caps border-b-2 border-transparent">Guru</a>
-<!-- Nav Item: Orang Tua (ACTIVE) -->
-<a href="code.html" class="text-white border-b-2 bg-role-parent px-6 py-2 rounded-t-lg transition-colors font-label-caps text-label-caps font-bold">Orang Tua</a>
-</div>
+<div class="hidden md:flex items-center h-full">
+                    <span class="px-4 py-1.5 font-label-caps text-[11px] font-bold text-primary bg-primary/5 rounded-full border border-primary/10 tracking-widest uppercase">Aplikasi Aktif</span>
+                </div>
 </div>
 <div class="flex items-center space-x-6">
 <a href="../17_notifikasi/code.html" class="relative group block">
 <span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-original-icon="notifications">notifications</span>
 <span class="absolute top-0 right-0 w-2 h-2 bg-error rounded-full"></span>
 </a>
-<a href="../18_profil/code.html" class="block">
+<a href="../18_profil/profil-ortu.html" class="block">
 <span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">settings</span>
 </a>
 <div class="flex items-center space-x-3 border-l pl-6 border-on-surface/10">
@@ -360,7 +357,7 @@ Data disinkronkan via SSO Flexa Cendekia
 <span class="material-symbols-outlined">analytics</span>
 <span class="text-[10px] font-label-caps">Laporan</span>
 </a>
-<a href="../18_profil/code.html" class="flex flex-col items-center text-on-surface-variant">
+<a href="../18_profil/profil-ortu.html" class="flex flex-col items-center text-on-surface-variant">
 <span class="material-symbols-outlined">person</span>
 <span class="text-[10px] font-label-caps">Profil</span>
 </a>
@@ -414,17 +411,16 @@ Data disinkronkan via SSO Flexa Cendekia
 
 
     <script>
-        const currentUser = DataStore.getCurrentUser('OrangTua');
+        let currentUser = null;
         let activeStudentId = null;
         let activeCatatanId = null;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            if (currentUser) {
-                document.getElementById('header-ortu-name').textContent = currentUser.nama;
-                document.getElementById('navbar-ortu-name').textContent = currentUser.nama;
-                if (currentUser.anakIds && currentUser.anakIds.length > 0) {
-                    activeStudentId = currentUser.anakIds[0];
-                }
+        window.addEventListener('auth-ready', function(e) {
+            currentUser = e.detail;
+            document.getElementById('header-ortu-name').textContent = currentUser.nama;
+            document.getElementById('navbar-ortu-name').textContent = currentUser.nama;
+            if (currentUser.anakIds && currentUser.anakIds.length > 0) {
+                activeStudentId = currentUser.anakIds[0];
             }
 
             renderDashboard();
@@ -432,18 +428,18 @@ Data disinkronkan via SSO Flexa Cendekia
             renderNotifikasi();
         });
 
-        function renderDashboard() {
-            // Kita biarkan statistik dummy agar UI tidak kosong (karena ini fokus pada Data Layer integrasi Catatan & Notif)
-            const anak = DataStore.getUserById(activeStudentId);
+        async function renderDashboard() {
+            if (!activeStudentId) return;
+            const anak = await DataStore.getUserById(activeStudentId);
             if (anak) {
                 // Update nama anak jika diperlukan
             }
         }
 
-        function renderCatatanAndReplies() {
+        async function renderCatatanAndReplies() {
             if (!activeStudentId) return;
             
-            const catatanList = DataStore.getCatatanSiswa(activeStudentId);
+            const catatanList = await DataStore.getCatatanSiswa(activeStudentId);
             const container = document.getElementById('catatan-guru-container');
             const replyContainer = document.getElementById('reply-thread');
             const btnBalas = document.getElementById('btn-balas');
@@ -452,7 +448,7 @@ Data disinkronkan via SSO Flexa Cendekia
                 const catatan = catatanList[0]; // Ambil yang paling baru
                 activeCatatanId = catatan.id;
                 
-                const guru = DataStore.getUserById(catatan.guruId);
+                const guru = await DataStore.getUserById(catatan.guruId);
                 
                 document.getElementById('catatan-guru-isi').textContent = '"' + catatan.isi + '"';
                 document.getElementById('catatan-guru-nama').textContent = '- ' + (guru ? guru.nama : 'Guru') + ' (Pembimbing)';
@@ -489,12 +485,12 @@ Data disinkronkan via SSO Flexa Cendekia
             document.getElementById('reply-input').value = '';
         }
 
-        function submitReply() {
+        async function submitReply() {
             const input = document.getElementById('reply-input');
             const text = input.value.trim();
             if (!text || !activeCatatanId) return;
 
-            DataStore.balasCatatanOrtu(activeCatatanId, currentUser.id, text);
+            await DataStore.balasCatatanOrtu(activeCatatanId, currentUser.uid || currentUser.id, text);
 
             input.value = '';
             cancelReply();
@@ -505,11 +501,11 @@ Data disinkronkan via SSO Flexa Cendekia
             setTimeout(() => toast.classList.add('hidden'), 3000);
         }
 
-        function renderNotifikasi() {
+        async function renderNotifikasi() {
             const list = document.getElementById('notifikasi-list');
             if (!list || !currentUser) return;
             
-            const notifs = DataStore.getNotifikasi('OrangTua', currentUser.id);
+            const notifs = await DataStore.getNotifikasi('OrangTua', currentUser.uid || currentUser.id);
             if (notifs.length === 0) {
                 list.innerHTML = '<p class="font-body-sm text-on-surface-variant">Belum ada notifikasi.</p>';
                 return;
@@ -523,7 +519,7 @@ Data disinkronkan via SSO Flexa Cendekia
             `).join('');
             
             // Tandai sudah dibaca
-            setTimeout(() => { DataStore.markAllNotifikasiRead('OrangTua', currentUser.id); }, 2000);
+            setTimeout(() => { DataStore.markAllNotifikasiRead('OrangTua', currentUser.uid || currentUser.id); }, 2000);
         }
 
         // Dummy fungsi filter dan modal
@@ -532,9 +528,10 @@ Data disinkronkan via SSO Flexa Cendekia
         function closeArsipModal() {}
         function filterArsip() {}
     </script>
-
-    <!-- Central Data Store & Notification Sync -->
-    <script src="../data-store.js"></script>
+    <!-- Firebase SDK & Auth -->
+    <script src="../firebase-config.js"></script>
+    <script src="../firebase-auth-guard.js"></script>
+    <script src="../firebase-data-store.js"></script>
     <script src="../notification-sync.js"></script>
 
 </body></html>

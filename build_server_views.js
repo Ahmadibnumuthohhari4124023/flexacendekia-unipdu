@@ -22,7 +22,7 @@ if (!fs.existsSync(destDir)) {
 // ==========================================
 // Copy global JS files (data-store & notification-sync)
 // ==========================================
-const globalJsFiles = ['data-store.js', 'notification-sync.js'];
+const globalJsFiles = ['data-store.js', 'notification-sync.js', 'firebase-config.js', 'firebase-auth-guard.js', 'firebase-data-store.js'];
 globalJsFiles.forEach(jsFile => {
     const srcJs = path.join(srcDir, jsFile);
     const destJs = path.join(destDir, jsFile);
@@ -183,56 +183,74 @@ const folders = fs.readdirSync(srcDir).filter(f => {
 let processedCount = 0;
 
 folders.forEach(folder => {
-    const codeFile = path.join(srcDir, folder, 'code.html');
-    if (fs.existsSync(codeFile)) {
-        let content = fs.readFileSync(codeFile, 'utf8');
-        
-        // 1. Remove dev nav
-        content = content.replace(/<div style="background:#17223B;color:#EAEDE2;font-family:'JetBrains Mono'[^>]*>[\s\S]*?<\/div>\s*\n?/i, '');
-        
-        // 2. Replace relative paths with Express routing (/?page=xxx)
-        content = content.replace(/href="\.\.\/(\d{2}_[a-zA-Z0-9-]+)\/code\.html"/g, 'href="/?page=$1"');
-        content = content.replace(/href="(\d{2}_[a-zA-Z0-9-]+)\/code\.html"/g, 'href="/?page=$1"');
-        content = content.replace(/href="\.\.\/index\.html"/g, 'href="/?page=01_login"');
-        content = content.replace(/href="panduan\.html"/g, 'href="/?page=01_login_panduan"');
-        content = content.replace(/href="bantuan\.html"/g, 'href="/?page=01_login_bantuan"');
-        content = content.replace(/href="kontak\.html"/g, 'href="/?page=01_login_kontak"');
-        content = content.replace(/href="\.\.\/01_login\/panduan\.html"/g, 'href="/?page=01_login_panduan"');
-        content = content.replace(/href="\.\.\/01_login\/bantuan\.html"/g, 'href="/?page=01_login_bantuan"');
-        content = content.replace(/href="\.\.\/01_login\/kontak\.html"/g, 'href="/?page=01_login_kontak"');
-
-        if (folder === '07_hasil-roadmap') {
-            content = content.replace(/href="timeline\.html"/g, 'href="/?page=07_hasil-roadmap_timeline"');
-            content = content.replace(/href="milestones\.html"/g, 'href="/?page=07_hasil-roadmap_milestones"');
-            content = content.replace(/href="resources\.html"/g, 'href="/?page=07_hasil-roadmap_resources"');
-            content = content.replace(/href="settings\.html"/g, 'href="/?page=07_hasil-roadmap_settings"');
-        }
-
-        if (folder === '03_soal-diagnosis') {
-            content = content.replace(/href="sd\.html"/g, 'href="/?page=03_soal-diagnosis_sd"');
-            content = content.replace(/href="smp\.html"/g, 'href="/?page=03_soal-diagnosis_smp"');
-        }
-
-        // 3. Remove Apps Script template tags (<?= ... ?>)
-        content = content.replace(/<\?=\s*getWebAppUrl\(\)\s*\?>/g, '');
-        content = content.replace(/<\?=\s*[^?]*\s*\?>/g, '');
-        
-        // 4. Remove target="_top" (not needed in Express)
-        content = content.replace(/\s*target="_top"\s*/g, ' ');
-
-        // 5b. Rewrite data-store.js & notification-sync.js paths to be root-relative
-        content = content.replace(/src="\.\.\/data-store\.js"/g, 'src="/data-store.js"');
-        content = content.replace(/src="\.\.\/notification-sync\.js"/g, 'src="/notification-sync.js"');
-        
-        // 5. Inject navigation scripts
-        const navScript = GLOBAL_NAV_SCRIPT + (SPECIFIC_NAV_SCRIPT[folder] || '');
-        content = content.replace('</body>', navScript + '\n</body>');
-
-        const destFile = path.join(destDir, `${folder}.html`);
-        fs.writeFileSync(destFile, content);
-        console.log(`✓ ${folder}.html — processed`);
-        processedCount++;
+    let filesToProcess = ['code.html'];
+    if (folder === '18_profil') {
+        filesToProcess = ['profil-siswa.html', 'profil-guru.html', 'profil-ortu.html'];
     }
+
+    filesToProcess.forEach(fileName => {
+        const codeFile = path.join(srcDir, folder, fileName);
+        if (fs.existsSync(codeFile)) {
+            let content = fs.readFileSync(codeFile, 'utf8');
+            
+            // 1. Remove dev nav
+            content = content.replace(/<div style="background:#17223B;color:#EAEDE2;font-family:'JetBrains Mono'[^>]*>[\s\S]*?<\/div>\s*\n?/i, '');
+            
+            // 2. Replace relative paths with Express routing (/?page=xxx)
+            content = content.replace(/href="\.\.\/(\d{2}_[a-zA-Z0-9-]+)\/code\.html"/g, 'href="/?page=$1"');
+            content = content.replace(/href="(\d{2}_[a-zA-Z0-9-]+)\/code\.html"/g, 'href="/?page=$1"');
+            
+            // Perbaikan untuk path profil
+            content = content.replace(/href="\.\.\/18_profil\/profil-siswa\.html"/g, 'href="/?page=18_profil_profil-siswa"');
+            content = content.replace(/href="\.\.\/18_profil\/profil-guru\.html"/g, 'href="/?page=18_profil_profil-guru"');
+            content = content.replace(/href="\.\.\/18_profil\/profil-ortu\.html"/g, 'href="/?page=18_profil_profil-ortu"');
+
+            content = content.replace(/href="\.\.\/index\.html"/g, 'href="/?page=01_login"');
+            content = content.replace(/href="panduan\.html"/g, 'href="/?page=01_login_panduan"');
+            content = content.replace(/href="bantuan\.html"/g, 'href="/?page=01_login_bantuan"');
+            content = content.replace(/href="kontak\.html"/g, 'href="/?page=01_login_kontak"');
+            content = content.replace(/href="\.\.\/01_login\/panduan\.html"/g, 'href="/?page=01_login_panduan"');
+            content = content.replace(/href="\.\.\/01_login\/bantuan\.html"/g, 'href="/?page=01_login_bantuan"');
+            content = content.replace(/href="\.\.\/01_login\/kontak\.html"/g, 'href="/?page=01_login_kontak"');
+
+            if (folder === '07_hasil-roadmap') {
+                content = content.replace(/href="timeline\.html"/g, 'href="/?page=07_hasil-roadmap_timeline"');
+                content = content.replace(/href="milestones\.html"/g, 'href="/?page=07_hasil-roadmap_milestones"');
+                content = content.replace(/href="resources\.html"/g, 'href="/?page=07_hasil-roadmap_resources"');
+                content = content.replace(/href="settings\.html"/g, 'href="/?page=07_hasil-roadmap_settings"');
+            }
+
+            if (folder === '03_soal-diagnosis') {
+                content = content.replace(/href="sd\.html"/g, 'href="/?page=03_soal-diagnosis_sd"');
+                content = content.replace(/href="smp\.html"/g, 'href="/?page=03_soal-diagnosis_smp"');
+            }
+
+            // 3. Remove Apps Script template tags (<?= ... ?>)
+            content = content.replace(/<\?=\s*getWebAppUrl\(\)\s*\?>/g, '');
+            content = content.replace(/<\?=\s*[^?]*\s*\?>/g, '');
+            
+            // 4. Remove target="_top" (not needed in Express)
+            content = content.replace(/\s*target="_top"\s*/g, ' ');
+
+            // 5b. Rewrite data-store.js & notification-sync.js paths to be root-relative
+            content = content.replace(/src="\.\.\/data-store\.js"/g, 'src="/data-store.js"');
+            content = content.replace(/src="\.\.\/notification-sync\.js"/g, 'src="/notification-sync.js"');
+            
+            // 5. Inject navigation scripts
+            const navScript = GLOBAL_NAV_SCRIPT + (SPECIFIC_NAV_SCRIPT[folder] || '');
+            content = content.replace('</body>', navScript + '\n</body>');
+
+            let destFileName = `${folder}.html`;
+            if (folder === '18_profil') {
+                destFileName = `18_profil_${fileName}`; // e.g. 18_profil_profil-siswa.html
+            }
+
+            const destFile = path.join(destDir, destFileName);
+            fs.writeFileSync(destFile, content);
+            console.log(`✓ ${destFileName} — processed`);
+            processedCount++;
+        }
+    });
 });
 
 // ==========================================

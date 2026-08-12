@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Seed Database Flexa Cendekia</title>
+    <style>
+        body { font-family: sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #020b24; color: white; border: none; border-radius: 4px; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        #log { margin-top: 20px; background: #f4f4f4; padding: 10px; border-radius: 4px; font-family: monospace; white-space: pre-wrap; height: 300px; overflow-y: auto; }
+    </style>
+</head>
+<body>
+    <h1>Data Seeder (Satu Kali)</h1>
+    <p>Skrip ini akan membuat 3 akun contoh dan beberapa data dummy di Firestore untuk tujuan testing. <strong>Skrip ini HANYA BISA JALAN jika Anda mendaftarkan akun secara manual, ATAU Firebase Auth mengizinkan pembuatan akun via API tanpa admin SDK.</strong></p>
+    
+    <p><strong>Akun yang akan dibuat:</strong><br>
+    Siswa: siswa@flexa.test / password123<br>
+    Guru: guru@flexa.test / password123<br>
+    Ortu: ortu@flexa.test / password123</p>
+
+    <button id="btn-seed">Mulai Seeding Data</button>
+
+    <div id="log">Siap...</div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        const btn = document.getElementById('btn-seed');
+        const logEl = document.getElementById('log');
+
+        function log(msg) {
+            logEl.textContent += msg + '\n';
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        btn.addEventListener('click', async () => {
+            if (!window.firebaseAuth || !window.firebaseDb) {
+                alert('Firebase belum siap!');
+                return;
+            }
+            btn.disabled = true;
+            log('Memulai proses seeding...');
+
+            const auth = window.firebaseAuth;
+            const db = window.firebaseDb;
+
+            const users = [
+                { email: 'siswa@flexa.test', password: 'password123', nama: 'Ahmad Siswa', role: 'Siswa', citaCita: 'Arsitek' },
+                { email: 'siswa2@flexa.test', password: 'password123', nama: 'Budi Siswa Dua', role: 'Siswa', citaCita: 'Programmer' },
+                { email: 'guru@flexa.test', password: 'password123', nama: 'Bapak Budi', role: 'Guru' },
+                { email: 'ortu@flexa.test', password: 'password123', nama: 'Ibu Siti', role: 'OrangTua' }
+            ];
+
+            const createdUids = {};
+
+            // 1. Buat Akun Auth & Profil User
+            for (const u of users) {
+                try {
+                    log(`Mendaftarkan ${u.email}...`);
+                    // Firebase akan login otomatis setelah create
+                    const cred = await auth.createUserWithEmailAndPassword(u.email, u.password);
+                    const uid = cred.user.uid;
+                    if (u.role === 'Siswa') {
+                        if (!createdUids['Siswa']) createdUids['Siswa'] = [];
+                        createdUids['Siswa'].push(uid);
+                    } else {
+                        createdUids[u.role] = uid;
+                    }
+
+                    log(`Menyimpan profil ${u.role}...`);
+                    const profileData = {
+                        email: u.email,
+                        nama: u.nama,
+                        role: u.role
+                    };
+                    
+                    if (u.role === 'Siswa') profileData.citaCita = u.citaCita;
+
+                    await db.collection('users').doc(uid).set(profileData);
+                    log(`✅ Akun ${u.role} berhasil dibuat!`);
+                } catch (e) {
+                    if (e.code === 'auth/email-already-in-use') {
+                        log(`⚠️ Akun ${u.email} sudah ada. Melakukan login...`);
+                        const cred = await auth.signInWithEmailAndPassword(u.email, u.password);
+                        const uid = cred.user.uid;
+                        if (u.role === 'Siswa') {
+                            if (!createdUids['Siswa']) createdUids['Siswa'] = [];
+                            createdUids['Siswa'].push(uid);
+                        } else {
+                            createdUids[u.role] = uid;
+                        }
+                    } else {
+                        log(`❌ Error mendaftarkan ${u.email}: ${e.message}`);
+                    }
+                }
+            }
+
+            // 2. Kaitkan Siswa, Guru, dan Ortu & Buat Data Spesifik Siswa
+            if (createdUids['Siswa'] && createdUids['Siswa'].length > 0 && createdUids['Guru'] && createdUids['OrangTua']) {
+                log('Mengaitkan relasi data & membuat data Siswa...');
+                try {
+                    const siswa1Id = createdUids['Siswa'][0];
+                    const siswa2Id = createdUids['Siswa'][1];
+                    
+                    await db.collection('users').doc(siswa1Id).update({
+                        guruWaliId: createdUids['Guru'],
+                        orangTuaId: createdUids['OrangTua'],
+                        kelas: 'SMA Kelas 11',
+                        jenjang: 'SMA',
+                        tahunAjaran: '2024/2025',
+                        poinAkademik: 1250,
+                        avatar: 'AS'
+                    });
+                    
+                    if (siswa2Id) {
+                        await db.collection('users').doc(siswa2Id).update({
+                            guruWaliId: createdUids['Guru'],
+                            orangTuaId: createdUids['OrangTua'],
+                            kelas: 'SMA Kelas 10',
+                            jenjang: 'SMA',
+                            tahunAjaran: '2024/2025',
+                            poinAkademik: 500,
+                            avatar: 'BS'
+                        });
+                    }
+
+                    await db.collection('users').doc(createdUids['OrangTua']).update({
+                        anakIds: createdUids['Siswa']
+                    });
+                    
+                    log('✅ Relasi berhasil dibuat.');
+
+                    // --- Seeding Data Siswa ---
+                    log('Membuat hasilDiagnostik, roadmapBelajar, dan progresMingguan untuk Siswa...');
+                    
+                    // 1. hasilDiagnostik
+                    await db.collection('hasilDiagnostik').doc(siswa1Id).set({
+                        gayaBelajarDominan: 'Visual',
+                        persentase: { visual: 60, auditori: 25, kinestetik: 15 },
+                        profesiRekomendasi: ['Arsitek', 'Desainer Grafis', 'Programmer'],
+                        tanggalTes: new Date().toISOString()
+                    });
+                    
+                    if (siswa2Id) {
+                        await db.collection('hasilDiagnostik').doc(siswa2Id).set({
+                            gayaBelajarDominan: 'Kinestetik',
+                            persentase: { visual: 20, auditori: 20, kinestetik: 60 },
+                            profesiRekomendasi: ['Atlet', 'Tentara', 'Polisi'],
+                            tanggalTes: new Date().toISOString()
+                        });
+                    }
+
+                    // 2. roadmapBelajar
+                    await db.collection('roadmapBelajar').doc(siswa1Id).set({
+                        targetProfesi: 'arsitek',
+                        tahapan: [
+                            { judul: 'Menguasai SketchUp 3D', status: 'Selesai', deskripsi: 'Mampu membuat model 3D bangunan sederhana', urutan: 1 },
+                            { judul: 'Proyek Desain Pertama', status: 'Selesai', deskripsi: 'Menyelesaikan desain rumah', urutan: 2 },
+                            { judul: '10 Karya Portfolio', status: 'Berjalan', deskripsi: 'Mengumpulkan karya untuk kuliah', urutan: 3 },
+                            { judul: 'Lulus Seleksi PTN', status: 'Belum', deskripsi: 'Masuk S1 Arsitektur', urutan: 4 }
+                        ]
+                    });
+
+                    if (siswa2Id) {
+                        await db.collection('roadmapBelajar').doc(siswa2Id).set({
+                            targetProfesi: 'atlet',
+                            tahapan: [
+                                { judul: 'Latihan Fisik Dasar', status: 'Selesai', deskripsi: 'Peningkatan stamina', urutan: 1 },
+                                { judul: 'Masuk Klub Olahraga', status: 'Berjalan', deskripsi: 'Bergabung dengan tim daerah', urutan: 2 },
+                                { judul: 'Kejuaraan Nasional', status: 'Belum', deskripsi: 'Mewakili provinsi', urutan: 3 }
+                            ]
+                        });
+                    }
+
+                    // 3. progresMingguan & tugasMendatang
+                    await db.collection('progresMingguan').doc(siswa1Id).set({
+                        persentaseProgres: 35,
+                        poinAkademik: 1250,
+                        tanggalUpdate: new Date().toISOString(),
+                        tugasMendatang: [
+                            { judul: 'Pengajuan KRS Semester Depan', tenggatWaktu: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(), status: 'Belum' },
+                            { judul: 'Laporan Proyek Desain Rumah', tenggatWaktu: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(), status: 'Berjalan' }
+                        ]
+                    });
+
+                    if (siswa2Id) {
+                        await db.collection('progresMingguan').doc(siswa2Id).set({
+                            persentaseProgres: 15,
+                            poinAkademik: 500,
+                            tanggalUpdate: new Date().toISOString(),
+                            tugasMendatang: [
+                                { judul: 'Evaluasi Kebugaran Fisik', tenggatWaktu: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), status: 'Belum' } // Past due
+                            ]
+                        });
+                    }
+
+                    log('✅ Data spesifik Siswa berhasil di-seed.');
+
+                } catch(e) {
+                    log(`❌ Error relasi/seeding: ${e.message}`);
+                }
+            }
+
+            log('\n🎉 PROSES SEEDING SELESAI!');
+            log('Anda sekarang bisa kembali ke halaman login.');
+            
+            // Logout after seeding
+            auth.signOut();
+            btn.disabled = false;
+        });
+    </script>
+</body>
+</html>

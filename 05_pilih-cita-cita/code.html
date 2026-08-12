@@ -109,8 +109,10 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #B9862F; }
     </style>
-</head>
+
+    </head>
 <body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+
 <!-- TopNavBar -->
 <nav class="bg-background dark:bg-surface border-b border-primary/20 sticky top-0 z-50">
 <div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-16">
@@ -147,11 +149,17 @@ notifications
 <div class="flex items-center gap-3 pl-4 border-l border-outline-variant/30">
 <div class="text-right">
 <p class="font-label-caps text-[10px] text-on-surface-variant leading-none">Selamat Datang,</p>
-<p id="user-name-display" class="font-bold text-sm text-primary">Ahmad Fauzi</p>
+<p id="user-name-display" class="font-bold text-sm text-primary"><span class="user-display-name"></span></p>
 </div>
 <span class="material-symbols-outlined text-3xl text-primary" data-icon="account_circle">account_circle</span>
 </div>
-</div>
+
+                <!-- Logout Button -->
+                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='../01_login/code.html');" class="ml-2 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-surface text-on-surface px-2 py-1 shadow-md rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border border-on-surface/10">Keluar</span>
+                </button>
+            </div>
 </div>
 </nav>
 <!-- Main Content -->
@@ -391,14 +399,24 @@ notifications
                     <h3 class="font-bold text-primary mb-1">${c.title}</h3>
                     <p class="font-body-sm text-[12px] text-on-surface-variant">${c.desc}</p>
                 </div>`;
+            
             });
 
             document.getElementById('career-cards-container').innerHTML = containerHtml;
         }
 
-        function confirmCareer() {
+        async function confirmCareer() {
             localStorage.setItem('selectedCareer', selectedCareerTitle);
-            window.location.href = '../06_roadmap-disusun/code.html';
+            if (window.firebaseDb && window._authUid) {
+                try {
+                    await window.firebaseDb.collection('users').doc(window._authUid).update({
+                        citaCita: selectedCareerTitle
+                    });
+                } catch(e) {
+                    console.error('Failed to update citaCita in Firestore', e);
+                }
+            }
+            window.location.href = '/?page=06_roadmap-disusun';
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -520,6 +538,39 @@ notifications
             if (confirmBtn) {
                 confirmBtn.removeAttribute('onclick');
                 confirmBtn.addEventListener('click', confirmCareer);
+            }
+        });
+    </script>
+
+    <!-- Firebase SDK & Auth -->
+    <script src="../firebase-config.js"></script>
+    <script src="../firebase-auth-guard.js"></script>
+    <script src="../firebase-data-store.js"></script>
+    <script src="../notification-sync.js"></script>
+
+    <script>
+        window.addEventListener('auth-ready', async function(e) {
+            const user = e.detail;
+            window._authUid = user.uid;
+            
+            if (user && user.nama) {
+                document.querySelectorAll('.user-display-name').forEach(el => {
+                    el.textContent = user.nama;
+                });
+                const nameEl = document.getElementById('user-name-display');
+                if (nameEl) nameEl.innerText = user.nama;
+            }
+            
+            // Load AI diagnosis from Firestore to populate recommended careers
+            if (window.DataStore && window.DataStore.getHasilDiagnostik) {
+                const hasil = await window.DataStore.getHasilDiagnostik(user.uid);
+                if (hasil && hasil.rekomendasiKarir && hasil.rekomendasiKarir.length > 0) {
+                    // Store for the DOMContentLoaded handler to pick up
+                    localStorage.setItem('aiDiagnosisResult', JSON.stringify({
+                        rekomendasiKarir: hasil.rekomendasiKarir,
+                        source: 'Flexa AI Diagnostik'
+                    }));
+                }
             }
         });
     </script>

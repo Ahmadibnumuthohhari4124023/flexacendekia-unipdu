@@ -140,8 +140,10 @@
             overflow: hidden;
         }
     </style>
-</head>
+
+    </head>
 <body class="bg-brand-cream text-on-surface font-body-md">
+
 <!-- TopNavBar -->
 <header class="fixed top-0 w-full z-50 bg-surface border-b border-on-surface/20 flex justify-between items-center h-16 px-margin-mobile md:px-margin-desktop">
 <div class="flex items-center gap-2">
@@ -155,7 +157,13 @@
 <div class="flex items-center space-x-4">
 <button class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform p-2 rounded-full hover:bg-on-surface/5">notifications</button>
 <button class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform p-2 rounded-full hover:bg-on-surface/5">account_circle</button>
-</div>
+
+                <!-- Logout Button -->
+                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='../01_login/code.html');" class="ml-2 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-surface text-on-surface px-2 py-1 shadow-md rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border border-on-surface/10">Keluar</span>
+                </button>
+            </div>
 </header>
 <!-- Main Content: Loading Screen -->
 <main class="min-h-screen flex flex-col items-center justify-center p-margin-mobile md:p-margin-desktop pt-24">
@@ -300,4 +308,22 @@
             startAiRoadmapGeneration();
         };
 </script>
+
+    <!-- Firebase SDK & Auth -->
+    <script src="../firebase-config.js"></script>
+    <script src="../firebase-auth-guard.js"></script>
+    <script src="../firebase-data-store.js"></script>
+    <script src="../notification-sync.js"></script>
+
+    <script>
+        window.addEventListener('auth-ready', function(e) {
+            const user = e.detail;
+            window._authUid = user.uid;
+            if (user && user.nama) {
+                document.querySelectorAll('.user-display-name').forEach(el => {
+                    el.textContent = user.nama;
+                });
+            }
+        });
+    </script>
 </body></html>

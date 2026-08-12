@@ -3,7 +3,7 @@
 <html class="light" lang="id"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Kartu Rencana Studi (KRS) - Ahmad Fauzi</title>
+<title>Kartu Rencana Studi (KRS) - Siswa</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <script src="../sso-sync.js"></script>
@@ -97,22 +97,22 @@
             background-color: rgba(185, 134, 47, 0.03);
         }
     </style>
-</head>
+
+    </head>
 <body class="bg-surface-container-low text-on-surface font-body-md">
+
 <!-- TopNavBar -->
 <nav class="bg-surface-container-low w-full border-b border-primary/20 top-0 fixed z-50">
 <div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-16">
 <div class="font-headline-md text-headline-md font-bold text-primary">
                 Flexa Cendekia x UNIPDU
             </div>
-<div class="hidden md:flex items-center space-x-8">
-<a class="text-secondary border-b-2 border-secondary font-bold pb-2 bg-secondary/10 transition-colors duration-200 px-4 py-2" href="../08_dashboard-siswa/code.html">Siswa</a>
-<a class="text-on-surface-variant font-medium pb-2 hover:bg-surface-container-high transition-colors duration-200 px-4 py-2" href="../14_dashboard-guru/code.html">Guru</a>
-<a class="text-on-surface-variant font-medium pb-2 hover:bg-surface-container-high transition-colors duration-200 px-4 py-2" href="../16_dashboard-ortu/code.html">Orang Tua</a>
-</div>
+<div class="hidden md:flex items-center h-full">
+                    <span class="px-4 py-1.5 font-label-caps text-[11px] font-bold text-primary bg-primary/5 rounded-full border border-primary/10 tracking-widest uppercase">Aplikasi Aktif</span>
+                </div>
 <div class="flex items-center space-x-4">
 <a href="../17_notifikasi/code.html" class="material-symbols-outlined text-primary hover:text-secondary transition-colors">notifications</a>
-<a href="../18_profil/code.html" class="material-symbols-outlined text-primary hover:text-secondary transition-colors">account_circle</a>
+<a href="../18_profil/profil-siswa.html" class="material-symbols-outlined text-primary hover:text-secondary transition-colors">account_circle</a>
 </div>
 </div>
 </nav>
@@ -141,7 +141,7 @@
 <div class="grid md:grid-cols-2 gap-8 mb-8">
 <div>
 <p class="font-label-caps text-label-caps text-on-surface-variant mb-1">NAMA SISWA</p>
-<p class="font-headline-md text-headline-md text-primary" id="display-student-name">Ahmad Fauzi</p>
+<p class="font-headline-md text-headline-md text-primary" id="display-student-name"><span class="user-display-name"></span></p>
 </div>
 <div>
 <p class="font-label-caps text-label-caps text-on-surface-variant mb-1">NISN / IDENTITAS</p>
@@ -288,17 +288,11 @@
             });
         });
 
-        const currentUser = DataStore.getCurrentUser('Siswa');
+        let currentUser = DataStore.getCurrentUser('Siswa');
 
         // Fetch KRS Status
-        function loadKrsStatus() {
+        async function loadKrsStatus() {
             if (!currentUser) return;
-            
-            const nameEl = document.getElementById('display-student-name');
-            if (nameEl) nameEl.textContent = currentUser.nama;
-            
-            const listKRS = DataStore.getKRSSiswa(currentUser.id);
-            const activeKrs = listKRS.length > 0 ? listKRS[0] : null;
 
             const badge = document.getElementById('krs-status-badge');
             const badgeIcon = badge.querySelector('.material-symbols-outlined');
@@ -313,80 +307,100 @@
             ];
             
             // Update Cita-Cita
-            document.getElementById('krs-cita-cita').textContent = currentUser.citaCita;
+            document.getElementById('krs-cita-cita').textContent = currentUser.citaCita || "Belum Memilih";
             
-            // Update Modul List
-            const tbody = document.getElementById('modul-list');
-            let html = '';
-            mockModules.forEach(m => {
-                const wajibClass = m.status === 'WAJIB' ? 'text-secondary' : 'text-on-surface-variant';
-                html += `
-                <tr>
-                    <td class="px-6 py-4 font-stats-sm text-stats-sm">${m.kode}</td>
-                    <td class="px-6 py-4 font-body-md font-bold text-primary">${m.nama}</td>
-                    <td class="px-6 py-4 font-body-sm text-on-surface-variant">${m.kompetensi}</td>
-                    <td class="px-6 py-4">
-                        <span class="px-2 py-1 bg-primary/5 text-primary border border-primary/10 text-[11px] font-bold uppercase">${m.pacing}</span>
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                        <span class="font-label-caps text-[10px] ${wajibClass}">${m.status}</span>
-                    </td>
-                </tr>`;
-            });
-            tbody.innerHTML = html;
-
             const btnRevisi = document.getElementById('btn-revisi');
             const btnCetak = document.getElementById('btn-cetak');
+            const tbody = document.getElementById('modul-list');
             
-            if (!activeKrs) {
-                // No KRS yet
-                badge.className = "inline-flex items-center px-4 py-2 bg-outline-variant/20 border border-outline-variant text-on-surface-variant rounded-sm";
-                badgeIcon.textContent = "pending_actions";
-                badgeText.textContent = "Belum Mengajukan";
-                
-                btnRevisi.innerHTML = '<span class="material-symbols-outlined mr-2">send</span>AJUKAN KRS';
-                btnRevisi.style.display = 'flex';
-                btnRevisi.onclick = function() {
-                    const mk = mockModules.map(m => m.nama);
-                    DataStore.ajukanKRS(currentUser.id, mk, 3);
-                    alert('KRS berhasil diajukan!');
-                    window.location.reload();
-                };
-            } else {
-                // Has KRS
-                if (activeKrs.status === 'Disetujui') {
-                    badge.className = "inline-flex items-center px-4 py-2 bg-[#adefe1] border border-[#005046] text-[#005046] rounded-sm";
-                    badgeIcon.textContent = "check_circle";
-                    badgeText.textContent = "Disetujui Guru";
+            // Listen for Real-Time KRS updates
+            DataStore.onKRSUpdate(currentUser.uid || currentUser.id, function(listKRS) {
+                const activeKrs = listKRS.length > 0 ? listKRS[0] : null;
+
+                // Update Modul List dynamically based on activeKrs or use mock if none
+                let html = '';
+                if (activeKrs && activeKrs.mataKuliah && activeKrs.mataKuliah.length > 0) {
+                    activeKrs.mataKuliah.forEach((mk, idx) => {
+                        html += `
+                        <tr>
+                            <td class="px-6 py-4 font-stats-sm text-stats-sm">MDK-${100 + idx}</td>
+                            <td class="px-6 py-4 font-body-md font-bold text-primary">${mk}</td>
+                            <td class="px-6 py-4 font-body-sm text-on-surface-variant">Inti Akademik</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 bg-primary/5 text-primary border border-primary/10 text-[11px] font-bold uppercase">REGULAR</span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <span class="font-label-caps text-[10px] text-secondary">WAJIB</span>
+                            </td>
+                        </tr>`;
+                    });
+                } else {
+                    mockModules.forEach(m => {
+                        const wajibClass = m.status === 'WAJIB' ? 'text-secondary' : 'text-on-surface-variant';
+                        html += `
+                        <tr>
+                            <td class="px-6 py-4 font-stats-sm text-stats-sm">${m.kode}</td>
+                            <td class="px-6 py-4 font-body-md font-bold text-primary">${m.nama}</td>
+                            <td class="px-6 py-4 font-body-sm text-on-surface-variant">${m.kompetensi}</td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-1 bg-primary/5 text-primary border border-primary/10 text-[11px] font-bold uppercase">${m.pacing}</span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <span class="font-label-caps text-[10px] ${wajibClass}">${m.status}</span>
+                            </td>
+                        </tr>`;
+                    });
+                }
+                tbody.innerHTML = html;
+
+                if (!activeKrs) {
+                    // No KRS yet
+                    badge.className = "inline-flex items-center px-4 py-2 bg-outline-variant/20 border border-outline-variant text-on-surface-variant rounded-sm";
+                    badgeIcon.textContent = "pending_actions";
+                    badgeText.textContent = "Belum Mengajukan";
                     
-                    btnRevisi.style.display = 'none';
-                    btnCetak.innerHTML = '<span class="material-symbols-outlined mr-2">print</span>CETAK KRS RESMI';
-                    btnCetak.className = "w-full py-4 bg-[#005046] text-surface-container-lowest font-bold text-label-caps hover:brightness-110 transition-all duration-150 flex items-center justify-center cursor-pointer";
-                } else if (activeKrs.status === 'Ditolak') {
-                    badge.className = "inline-flex items-center px-4 py-2 bg-error/10 border border-error text-error rounded-sm";
-                    badgeIcon.textContent = "cancel";
-                    badgeText.textContent = "Ditolak - Perlu Revisi";
-                    
-                    btnRevisi.innerHTML = '<span class="material-symbols-outlined mr-2">edit_note</span>AJUKAN REVISI';
+                    btnRevisi.innerHTML = '<span class="material-symbols-outlined mr-2">send</span>AJUKAN KRS';
                     btnRevisi.style.display = 'flex';
-                    btnRevisi.onclick = function() {
+                    btnRevisi.onclick = async function() {
                         const mk = mockModules.map(m => m.nama);
-                        DataStore.ajukanKRS(currentUser.id, mk, 3);
-                        alert('Revisi KRS berhasil diajukan!');
-                        window.location.reload();
+                        await DataStore.ajukanKRS(currentUser.uid || currentUser.id, mk, 3);
+                        alert('KRS berhasil diajukan!');
                     };
                 } else {
-                    // Menunggu Persetujuan
-                    badge.className = "inline-flex items-center px-4 py-2 bg-[#FDC265]/20 border border-brand-gold text-brand-gold-dark rounded-sm";
-                    badgeIcon.textContent = "schedule";
-                    badgeText.textContent = "Menunggu Persetujuan";
-                    
-                    btnRevisi.style.display = 'none';
+                    // Has KRS
+                    if (activeKrs.status === 'Disetujui') {
+                        badge.className = "inline-flex items-center px-4 py-2 bg-[#adefe1] border border-[#005046] text-[#005046] rounded-sm";
+                        badgeIcon.textContent = "check_circle";
+                        badgeText.textContent = "Disetujui Guru";
+                        
+                        btnRevisi.style.display = 'none';
+                        btnCetak.innerHTML = '<span class="material-symbols-outlined mr-2">print</span>CETAK KRS RESMI';
+                        btnCetak.className = "w-full py-4 bg-[#005046] text-surface-container-lowest font-bold text-label-caps hover:brightness-110 transition-all duration-150 flex items-center justify-center cursor-pointer";
+                    } else if (activeKrs.status === 'Ditolak') {
+                        badge.className = "inline-flex items-center px-4 py-2 bg-error/10 border border-error text-error rounded-sm";
+                        badgeIcon.textContent = "cancel";
+                        badgeText.textContent = "Ditolak - Perlu Revisi";
+                        
+                        btnRevisi.innerHTML = '<span class="material-symbols-outlined mr-2">edit_note</span>AJUKAN REVISI';
+                        btnRevisi.style.display = 'flex';
+                        btnRevisi.onclick = async function() {
+                            const mk = mockModules.map(m => m.nama);
+                            await DataStore.ajukanKRS(currentUser.uid || currentUser.id, mk, 3);
+                            alert('Revisi KRS berhasil diajukan!');
+                        };
+                    } else {
+                        // Menunggu Persetujuan
+                        badge.className = "inline-flex items-center px-4 py-2 bg-[#FDC265]/20 border border-brand-gold text-brand-gold-dark rounded-sm";
+                        badgeIcon.textContent = "schedule";
+                        badgeText.textContent = "Menunggu Persetujuan";
+                        
+                        btnRevisi.style.display = 'none';
+                    }
                 }
-            }
+            });
 
             // Find feedback notes
-            const allNotes = DataStore.getCatatanSiswa(currentUser.id);
+            const allNotes = await DataStore.getCatatanSiswa(currentUser.uid || currentUser.id);
             if (allNotes.length > 0) {
                 catatanText.textContent = '"' + allNotes[0].isi + '"';
             } else {
@@ -394,7 +408,22 @@
             }
         }
         
-        loadKrsStatus();
+        // Use event from firebase-auth-guard
+        window.addEventListener('auth-ready', function(e) {
+            currentUser = e.detail;
+            const user = e.detail;
+            
+            const displayEl = document.getElementById('display-student-name');
+            if (displayEl) displayEl.textContent = currentUser.nama;
+            
+            if (user && user.nama) {
+                document.querySelectorAll('.user-display-name').forEach(el => {
+                    el.textContent = user.nama;
+                });
+            }
+            
+            loadKrsStatus();
+        });
 
         // Download Action
         const btnCetak = document.getElementById('btn-cetak');
@@ -404,9 +433,9 @@
             });
         }
     </script>
-
-    <!-- Central Data Store & Notification Sync -->
-    <script src="../data-store.js"></script>
+    <!-- Firebase SDK & Auth -->
+    <script src="../firebase-config.js"></script>
+    <script src="../firebase-auth-guard.js"></script>
+    <script src="../firebase-data-store.js"></script>
     <script src="../notification-sync.js"></script>
-
 </body></html>

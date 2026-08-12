@@ -240,9 +240,9 @@
                         <button id="save-progress-btn" type="button" class="font-label-caps text-label-caps px-6 py-3 border border-outline-variant text-outline-variant hover:bg-surface-container-low transition-all flex-grow md:flex-grow-0">
                             SAVE PROGRESS
                         </button>
-                        <a href="../12_ganti-cita-cita/code.html" class="font-label-caps text-label-caps px-8 py-3 bg-primary text-white hover:bg-primary/90 transition-all flex-grow md:flex-grow-0 inline-flex items-center justify-center">
+                        <button id="submit-checkpoint-btn" type="button" class="font-label-caps text-label-caps px-8 py-3 bg-primary text-white hover:bg-primary/90 transition-all flex-grow md:flex-grow-0 inline-flex items-center justify-center">
                             NEXT SECTION
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -437,7 +437,7 @@
             }, 3000);
         };
 
-        if (saveProgressBtn) {
+        if(saveProgressBtn) {
             saveProgressBtn.addEventListener('click', () => {
                 const selectedOption = document.querySelector('input[name="q7"]:checked');
                 const reflectionValue = textarea ? textarea.value.trim() : '';
@@ -449,6 +449,35 @@
                 };
                 localStorage.setItem('checkpoint-11-progress', JSON.stringify(progressState));
                 showToast('Progress Saved', 'Your checkpoint data has been stored locally.');
+            });
+        }
+
+        const submitBtn = document.getElementById('submit-checkpoint-btn');
+        if (submitBtn) {
+            submitBtn.addEventListener('click', async () => {
+                const selectedOption = document.querySelector('input[name="q7"]:checked');
+                const reflectionValue = document.getElementById('reflection-textarea').value.trim();
+                
+                if (window.firebaseDb && window._authUid) {
+                    try {
+                        await window.firebaseDb.collection('jurnalRefleksi').add({
+                            siswaId: window._authUid,
+                            isi: reflectionValue,
+                            tanggal: new Date().toISOString(),
+                            topik: 'Checkpoint Friday',
+                            selectedAnswer: selectedOption ? selectedOption.closest('label').querySelector('span').textContent.trim() : null
+                        });
+                        showToast('Sukses', 'Refleksi berhasil dikirim ke guru.', true);
+                        setTimeout(() => {
+                            window.location.href = '/?page=12_ganti-cita-cita';
+                        }, 1000);
+                    } catch (e) {
+                        console.error('Error saving reflection', e);
+                        showToast('Error', 'Gagal mengirim refleksi.', false);
+                    }
+                } else {
+                    window.location.href = '/?page=12_ganti-cita-cita';
+                }
             });
         }
 
@@ -496,7 +525,7 @@
         const profileBtn = document.getElementById('profile-btn');
         if(profileBtn) {
             profileBtn.addEventListener('click', () => {
-                window.location.href = '../18_profil/code.html';
+                window.location.href = '../18_profil/profil-siswa.html';
             });
         }
 
@@ -525,9 +554,22 @@
         });
     </script>
 
-    <!-- Central Data Store & Notification Sync -->
-    <script src="../data-store.js"></script>
+    <!-- Firebase SDK & Auth -->
+    <script src="../firebase-config.js"></script>
+    <script src="../firebase-auth-guard.js"></script>
+    <script src="../firebase-data-store.js"></script>
     <script src="../notification-sync.js"></script>
 
+    <script>
+        window.addEventListener('auth-ready', function(e) {
+            const user = e.detail;
+            window._authUid = user.uid;
+            if (user && user.nama) {
+                document.querySelectorAll('.user-display-name').forEach(el => {
+                    el.textContent = user.nama;
+                });
+            }
+        });
+    </script>
 </body>
 </html>
