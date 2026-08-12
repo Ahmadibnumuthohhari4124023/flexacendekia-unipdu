@@ -50,29 +50,46 @@
             }
 
             waitForFirebase(function() {
-                firebaseAuth.onAuthStateChanged(function(user) {
-                    if (!user) {
-                        window.location.replace(LOGIN_URL);
-                        return;
-                    }
-                    firebaseDb.collection('users').doc(user.uid).get()
-                        .then(function(doc) {
-                            if (!doc.exists) {
+                window.firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+                    .then(function() {
+                        var sudahDicekSekali = false;
+
+                        firebaseAuth.onAuthStateChanged(function(user) {
+                            if (!user) {
+                                if (!sudahDicekSekali) {
+                                    sudahDicekSekali = true;
+                                    setTimeout(function() {
+                                        if (!window.firebaseAuth.currentUser) {
+                                            window.location.replace(LOGIN_URL);
+                                        }
+                                    }, 1000);
+                                    return;
+                                }
                                 window.location.replace(LOGIN_URL);
                                 return;
                             }
-                            const role = doc.data().role;
-                            const target = ROLE_TO_PAGE[role];
-                            if (target) {
-                                window.location.replace(target);
-                            } else {
-                                window.location.replace(LOGIN_URL);
-                            }
-                        })
-                        .catch(function() {
-                            window.location.replace(LOGIN_URL);
+                            firebaseDb.collection('users').doc(user.uid).get()
+                                .then(function(doc) {
+                                    if (!doc.exists) {
+                                        window.location.replace(LOGIN_URL);
+                                        return;
+                                    }
+                                    const role = doc.data().role;
+                                    const target = ROLE_TO_PAGE[role];
+                                    if (target) {
+                                        window.location.replace(target);
+                                    } else {
+                                        window.location.replace(LOGIN_URL);
+                                    }
+                                })
+                                .catch(function() {
+                                    window.location.replace(LOGIN_URL);
+                                });
                         });
-                });
+                    })
+                    .catch(function() {
+                        window.location.replace(LOGIN_URL);
+                    });
             });
 
             // Fail-closed: 8s timeout
