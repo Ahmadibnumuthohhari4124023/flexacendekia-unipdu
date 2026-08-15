@@ -5,6 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Dashboard Guru - Flexa Cendekia x UNIPDU</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;700&amp;family=Source+Serif+4:wght@600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap"
         rel="stylesheet" />
@@ -118,6 +119,16 @@
             box-shadow: 4px 4px 0px #17223B;
         }
     </style>
+
+    <!-- Firebase SDK (compat) & Auth Layer -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+    <script src="/firebase-auth-guard.js"></script>
+    <script src="/firebase-data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+    <script src="/career-roadmap-data.js"></script>
 </head>
 
 <body class="min-h-screen font-body-md text-on-surface bg-background selection:bg-role-teacher/20">
@@ -127,12 +138,8 @@
             <div class="flex items-center gap-12 h-full">
                 <span class="font-display-lg text-2xl font-bold text-primary">Flexa Cendekia x UNIPDU</span>
                 <div class="hidden md:flex items-center h-full gap-8">
-                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md py-2"
-                        href="/?page=08_dashboard-siswa">Siswa</a>
                     <a class="text-role-teacher border-b-4 border-role-teacher font-bold h-full flex items-center px-2"
-                        href="code.html">Guru</a>
-                    <a class="text-on-surface-variant hover:text-primary transition-colors font-body-md py-2"
-                        href="/?page=16_dashboard-ortu">Orang Tua</a>
+                        href="/?page=14_dashboard-guru">Dashboard Guru</a>
                 </div>
             </div>
             <div class="flex items-center gap-4">
@@ -144,8 +151,7 @@
                 </a>
                 <a href="/?page=18_profil"
                     class="w-10 h-10 rounded-full overflow-hidden border-2 border-role-teacher/20 hover:ring-2 hover:ring-role-teacher/50 transition-all block">
-                    <img alt="Ibu Sari Rahayu" class="w-full h-full object-cover"
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxBT34oA63VV8aYM0CjcnmsritZsSh9CsxFQRauujDwh6z4_64CQ4VV0XnX-Zz2j6r2ajNtHsvLsHVIWXy8xEr6fdfubBq4LffLi4yVgdYCsNV5i6JemzzrMS0D9Bt0VzG4ZgR4KQDD9BkEbn3uXNHKy00Mujo2SGCWohVy0onk1Veq_CXn9iNn3Kja0M80NsyY5aWsNYLcJhDE9dKG2ln1t5H9xEQ0iq2BuUe-MpgLjbiwEjuTr3KJAkNcoRGwvMkj9Ou2Fy6msQ" />
+                    <div id="guru-avatar-nav" class="w-full h-full bg-role-teacher flex items-center justify-center text-white font-bold text-sm">...</div>
                 </a>
             </div>
         </div>
@@ -157,14 +163,14 @@
             <div>
                 <div class="flex items-center gap-3 mb-2">
                     <h1 class="font-display-lg text-display-lg text-primary">Selamat Datang,
-                        <span id="guru-name">Ibu Sari Rahayu</span>
+                        <span id="guru-name">Memuat...</span>
                     </h1>
                     <span
                         class="px-3 py-1 bg-role-teacher/10 text-role-teacher text-label-caps font-bold rounded-full border border-role-teacher/20">PEMBIMBING
                         AKADEMIK</span>
                 </div>
                 <p class="font-body-md text-on-surface-variant">
-                    NIP: 19820412200903 • Saat ini membimbing <span class="font-bold text-primary">24 Siswa
+                    NIP: <span id="guru-nip">...</span> • Saat ini membimbing <span id="guru-siswa-count" class="font-bold text-primary">... Siswa
                         Binaan</span>.
                 </p>
             </div>
@@ -180,7 +186,7 @@
                 class="ledger-card p-8 border-l-4 border-l-secondary flex flex-col justify-between relative group overflow-hidden">
                 <div>
                     <p class="font-label-caps text-on-surface-variant mb-4">APPROVAL KRS</p>
-                    <p class="font-stats-lg text-5xl text-secondary mb-2">08</p>
+                    <p id="stat-krs" class="font-stats-lg text-5xl text-secondary mb-2">--</p>
                     <p class="font-stats-sm text-on-surface">Siswa Menunggu</p>
                 </div>
                 <span
@@ -191,7 +197,7 @@
                 class="ledger-card p-8 border-l-4 border-l-role-teacher flex flex-col justify-between relative group overflow-hidden">
                 <div>
                     <p class="font-label-caps text-on-surface-variant mb-4">CHECKPOINT</p>
-                    <p class="font-stats-lg text-5xl text-role-teacher mb-2">12</p>
+                    <p id="stat-checkpoint" class="font-stats-lg text-5xl text-role-teacher mb-2">--</p>
                     <p class="font-stats-sm text-on-surface">Perlu Ditinjau</p>
                 </div>
                 <span
@@ -202,7 +208,7 @@
                 class="ledger-card p-8 border-l-4 border-l-error flex flex-col justify-between relative group overflow-hidden">
                 <div>
                     <p class="font-label-caps text-on-surface-variant mb-4">RISIKO AKADEMIK</p>
-                    <p class="font-stats-lg text-5xl text-error mb-2">03</p>
+                    <p id="stat-risiko" class="font-stats-lg text-5xl text-error mb-2">--</p>
                     <p class="font-stats-sm text-on-surface">Tertinggal Target</p>
                 </div>
                 <span
@@ -224,12 +230,13 @@
                         class="font-stats-sm text-xs bg-secondary/10 text-secondary border border-secondary/20 px-3 py-1 rounded-full font-bold">MEMUAT...</span>
                 </div>
                 <div id="krs-pending-list"
-                    class="divide-y divide-on-surface/5 min-h-[100px] flex flex-col justify-center">
+                    class="divide-y divide-on-surface/5 min-h-[120px] flex flex-col justify-center">
                     <div class="text-center text-sm text-on-surface-variant py-8">Memuat data antrean...</div>
                 </div>
                 <a class="p-4 text-center font-label-caps text-on-surface-variant hover:text-primary transition-colors border-t border-on-surface/10 bg-on-surface/5 font-bold block"
                     href="/?page=15_tinjauan-guru">LIHAT SEMUA PENGAJUAN</a>
             </section>
+
             <!-- Checkpoint Section -->
             <section class="ledger-card flex flex-col">
                 <div
@@ -238,364 +245,572 @@
                         <span class="material-symbols-outlined text-role-teacher" data-icon="task_alt">task_alt</span>
                         Checkpoint Jumat
                     </h3>
-                    <span
-                        class="font-stats-sm text-xs bg-role-teacher/10 text-role-teacher border border-role-teacher/20 px-3 py-1 rounded-full font-bold">2
-                        TUGAS</span>
+                    <span id="checkpoint-queue-count"
+                        class="font-stats-sm text-xs bg-role-teacher/10 text-role-teacher border border-role-teacher/20 px-3 py-1 rounded-full font-bold">MEMUAT...</span>
                 </div>
-                <div class="p-6 space-y-4">
-                    <div
-                        class="p-5 border border-outline/15 bg-background/50 flex justify-between items-center group hover:border-role-teacher transition-colors">
-                        <div class="flex gap-4">
-                            <div class="w-12 h-12 ledger-card flex items-center justify-center text-role-teacher">
-                                <span class="material-symbols-outlined" data-icon="description">description</span>
-                            </div>
-                            <div>
-                                <p class="font-bold text-primary">Laporan Magang - Minggu 4</p>
-                                <p class="text-body-sm text-on-surface-variant">Oleh: Anisa Rahmawati</p>
-                            </div>
-                        </div>
-                        <button onclick="alert('Membuka halaman feedback...')" class="bg-primary text-white px-5 py-2 text-xs font-bold rounded-lg hard-shadow">BERI
-                            FEEDBACK</button>
-                    </div>
+                <div id="checkpoint-list" class="p-6 space-y-4 flex-1">
+                    <div class="text-center text-sm text-on-surface-variant py-8">Memuat data checkpoint...</div>
                 </div>
             </section>
+
             <!-- Aspiration Changes (Wide Section) -->
             <section class="ledger-card lg:col-span-2">
-                <div class="p-6 border-b border-on-surface/10 bg-surface-container-low/30">
+                <div class="p-6 border-b border-on-surface/10 bg-surface-container-low/30 flex justify-between items-center">
                     <h3 class="font-headline-md text-primary flex items-center gap-3">
                         <span class="material-symbols-outlined text-role-teacher" data-icon="auto_awesome"
                             style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
                         Pengajuan Cita-cita &amp; Aspirasi
                     </h3>
+                    <span id="aspirasi-badge"
+                        class="font-stats-sm text-xs bg-role-teacher/10 text-role-teacher border border-role-teacher/20 px-3 py-1 rounded-full font-bold">MEMUAT...</span>
                 </div>
-                <div class="p-8 flex flex-col md:flex-row items-center gap-12">
-                    <div class="w-32 h-32 rounded-full border-4 border-role-teacher p-1 flex-shrink-0">
-                        <img alt="Ahmad Fauzi" class="w-full h-full object-cover rounded-full"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgDjhjw1ZLKZ__J3ObtvMhmo1iqJsyQi8zn0qnX9RHd3kjOwkkvgw1_zXMbRK6aZp5OdpnD5hhUwH7AmWsD4k5rlrzG5XfypE88qQ0JiMOj0fLyP3qs6JTQOdJ3BOhCrUxegrkhIZW4FxHKSUIMgbFBLS0rq3-wOacVdHgJTqBMH0PD0iucGv3Q4Of4U_Y6ZoydwrPDVhfMECVLhzVti1HjtTLe2zwKO1fNhNdYlrmfBNhkW0m0gpWup3dzDKWXytzkWQ5BNVrPLY" />
-                    </div>
-                    <div class="flex-1 text-center md:text-left">
-                        <div class="flex flex-col md:flex-row md:items-center gap-4 mb-4">
-                            <span class="font-display-lg text-3xl text-primary">Ahmad Fauzi</span>
-                            <span
-                                class="text-stats-sm text-on-surface-variant bg-on-surface/5 px-3 py-1 font-bold">NISN:
-                                12938475</span>
-                        </div>
-                        <p class="text-lg text-on-surface-variant italic leading-relaxed mb-6">"Saya ingin fokus pada
-                            arsitektur berkelanjutan untuk membangun desa digital di masa depan."</p>
-                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-4">
-                            <span
-                                class="text-label-caps bg-role-teacher text-white px-4 py-1.5 font-bold rounded">ASPIRASI:
-                                ARSITEK</span>
-                            <div class="flex items-center gap-2 text-on-surface-variant">
-                                <span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
-                                <span class="text-label-caps font-bold">POSISI: BACKWARD MAPPING</span>
-                                <span class="material-symbols-outlined text-sm cursor-help" data-icon="info"
-                                    title="Kurikulum disesuaikan dengan target karir akhir.">info</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex flex-col gap-4 w-full md:w-auto">
-                        <button onclick="alert('Aspirasi disetujui!')"
-                            class="px-8 py-3 bg-role-teacher text-white font-bold rounded-lg hard-shadow hover:brightness-110 transition-all text-center">Setujui
-                            Aspirasi</button>
-                        <button onclick="alert('Aspirasi ditolak.')"
-                            class="px-8 py-3 border-2 border-error text-error font-bold rounded-lg hover:bg-error/5 transition-all text-center">Tolak</button>
-                    </div>
+                <div id="aspirasi-container" class="p-8">
+                    <div class="text-center text-sm text-on-surface-variant py-8">Memuat pengajuan aspirasi...</div>
                 </div>
             </section>
+
             <!-- Risk List -->
             <section class="ledger-card lg:col-span-2">
-                <div class="p-6 border-b border-on-surface/10 bg-error/5">
+                <div class="p-6 border-b border-on-surface/10 bg-error/5 flex justify-between items-center">
                     <h3 class="font-headline-md text-error flex items-center gap-3">
                         <span class="material-symbols-outlined" data-icon="error_outline">error_outline</span>
                         Perlu Perhatian Segera (Risiko Tertinggal)
                     </h3>
+                    <span id="risiko-badge"
+                        class="font-stats-sm text-xs bg-error/10 text-error border border-error/20 px-3 py-1 rounded-full font-bold">MEMUAT...</span>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-on-surface/10">
-                    <div class="p-8 group hover:bg-error/5 transition-colors">
-                        <div class="flex justify-between items-start mb-4">
-                            <p class="font-bold text-lg">Eka Wijaya</p>
-                            <span class="font-stats-sm text-error font-bold">-15% Target</span>
-                        </div>
-                        <div class="w-full bg-on-surface/5 h-2 rounded-full mb-4">
-                            <div class="bg-error h-full rounded-full" style="width: 45%;"></div>
-                        </div>
-                        <p class="text-stats-sm text-on-surface-variant">Belum submit 3 checkpoint terakhir. Terakhir
-                            aktif: 4 hari lalu.</p>
-                    </div>
-                    <div class="p-8 group hover:bg-error/5 transition-colors">
-                        <div class="flex justify-between items-start mb-4">
-                            <p class="font-bold text-lg">Larasati</p>
-                            <span class="font-stats-sm text-error font-bold">-8% Target</span>
-                        </div>
-                        <div class="w-full bg-on-surface/5 h-2 rounded-full mb-4">
-                            <div class="bg-error h-full rounded-full" style="width: 62%;"></div>
-                        </div>
-                        <p class="text-stats-sm text-on-surface-variant">Kehadiran sesi mentoring menurun drastis minggu
-                            ini.</p>
-                    </div>
-                    <div class="p-8 group hover:bg-error/5 transition-colors">
-                        <div class="flex justify-between items-start mb-4">
-                            <p class="font-bold text-lg">Hadi Kusuma</p>
-                            <span class="font-stats-sm text-on-surface-variant font-bold">STAGNAN</span>
-                        </div>
-                        <div class="w-full bg-on-surface/5 h-2 rounded-full mb-4">
-                            <div class="bg-primary/20 h-full rounded-full" style="width: 50%;"></div>
-                        </div>
-                        <p class="text-stats-sm text-on-surface-variant">Kecepatan penyelesaian modul berkurang 30% dari
-                            bulan lalu.</p>
+                <div id="risk-container" class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-on-surface/10">
+                    <div class="p-8 text-center text-sm text-on-surface-variant col-span-3">Memuat data analisis risiko...</div>
+                </div>
+            </section>
+
+            <!-- Class Performance Overview -->
+            <section class="ledger-card lg:col-span-2">
+                <div class="p-6 border-b border-on-surface/10 bg-role-teacher/5 flex justify-between items-center">
+                    <h3 class="font-headline-md text-primary flex items-center gap-3">
+                        <span class="material-symbols-outlined text-role-teacher" data-icon="monitoring">monitoring</span>
+                        Performa &amp; Progres Belajar Siswa
+                    </h3>
+                </div>
+                <div class="p-8">
+                    <p class="font-body-sm text-on-surface-variant mb-6">Distribusi rata-rata nilai siswa binaan berdasarkan area kompetensi semester ini.</p>
+
+                    <!-- Bar Chart Container -->
+                    <div id="chart-container"
+                        class="flex items-end gap-2 md:gap-4 h-48 border-l-2 border-b-2 border-on-surface/10 pl-4 pb-2 relative ml-4">
+                        <div class="text-center text-sm text-on-surface-variant w-full py-16">Memuat grafik performa kelas...</div>
                     </div>
                 </div>
-        </div>
-        </section>
-        <!-- Class Performance Overview -->
-        <section class="ledger-card lg:col-span-2">
-            <div class="p-6 border-b border-on-surface/10 bg-role-teacher/5 flex justify-between items-center">
-                <h3 class="font-headline-md text-primary flex items-center gap-3">
-                    <span class="material-symbols-outlined text-role-teacher" data-icon="monitoring">monitoring</span>
-                    Performa Kelas (Class Performance Overview)
-                </h3>
-            </div>
-            <div class="p-8">
-                <p class="font-body-sm text-on-surface-variant mb-6">Distribusi rata-rata nilai siswa binaan berdasarkan
-                    area kompetensi bulan ini.</p>
-
-                <!-- Bar Chart -->
-                <div
-                    class="flex items-end gap-2 md:gap-4 h-48 border-l-2 border-b-2 border-on-surface/10 pl-4 pb-2 relative ml-4">
-                    <!-- Y-Axis -->
-                    <div
-                        class="absolute left-[-28px] top-0 bottom-0 flex flex-col justify-between text-[10px] font-mono text-on-surface-variant py-2">
-                        <span>100</span>
-                        <span>75</span>
-                        <span>50</span>
-                        <span>25</span>
-                        <span>0</span>
-                    </div>
-
-                    <!-- Grid lines -->
-                    <div class="absolute left-0 right-0 top-1/4 border-t border-dashed border-on-surface/5 -z-10"></div>
-                    <div class="absolute left-0 right-0 top-2/4 border-t border-dashed border-on-surface/5 -z-10"></div>
-                    <div class="absolute left-0 right-0 top-3/4 border-t border-dashed border-on-surface/5 -z-10"></div>
-
-                    <!-- Bars -->
-                    <div class="flex-1 flex flex-col items-center justify-end h-full group relative">
-                        <div class="w-full max-w-[50px] bg-role-teacher/40 group-hover:bg-role-teacher/60 transition-colors rounded-t-sm"
-                            style="height: 85%;"></div>
-                        <span
-                            class="text-[9px] md:text-[11px] font-mono mt-2 text-on-surface-variant whitespace-nowrap">Matematika
-                            Dasar</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center justify-end h-full group relative">
-                        <div class="w-full max-w-[50px] bg-role-teacher/80 group-hover:bg-role-teacher transition-colors rounded-t-sm shadow-sm relative"
-                            style="height: 92%;">
-                            <div
-                                class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
-                                92%</div>
-                        </div>
-                        <span
-                            class="text-[9px] md:text-[11px] font-mono mt-2 text-on-surface-variant whitespace-nowrap font-bold">Logika
-                            & Algoritma</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center justify-end h-full group relative">
-                        <div class="w-full max-w-[50px] bg-role-teacher/40 group-hover:bg-role-teacher/60 transition-colors rounded-t-sm"
-                            style="height: 78%;"></div>
-                        <span
-                            class="text-[9px] md:text-[11px] font-mono mt-2 text-on-surface-variant whitespace-nowrap">Kewarganegaraan</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center justify-end h-full group relative">
-                        <div class="w-full max-w-[50px] bg-error/60 group-hover:bg-error transition-colors rounded-t-sm relative"
-                            style="height: 60%;">
-                            <div
-                                class="absolute -top-8 left-1/2 -translate-x-1/2 bg-error text-white text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                                60% (Rendah)</div>
-                        </div>
-                        <span class="text-[9px] md:text-[11px] font-mono mt-2 text-error whitespace-nowrap">Bahasa
-                            Inggris</span>
-                    </div>
-                    <div class="flex-1 flex flex-col items-center justify-end h-full group relative">
-                        <div class="w-full max-w-[50px] bg-role-teacher/60 group-hover:bg-role-teacher/80 transition-colors rounded-t-sm"
-                            style="height: 88%;"></div>
-                        <span
-                            class="text-[9px] md:text-[11px] font-mono mt-2 text-on-surface-variant whitespace-nowrap">Pengantar
-                            Sains</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+            </section>
         </div>
     </main>
+
     <footer class="max-w-container-max mx-auto px-margin-desktop py-12 border-t border-on-surface/10 text-center">
-        <p class="text-label-caps text-on-surface-variant font-bold">Panel Pembimbing Akademik • Flexa Cendekia x UNIPDU
-        </p>
-        <p class="text-xs text-on-surface-variant mt-2">© 2024 Arsitektur Kurikulum Masa Depan.</p>
+        <p class="text-label-caps text-on-surface-variant font-bold">Panel Pembimbing Akademik • Flexa Cendekia x UNIPDU</p>
+        <p class="text-xs text-on-surface-variant mt-2">&copy; 2024 Arsitektur Kurikulum Masa Depan.</p>
     </footer>
+
+    <!-- Firebase SDK & Auth -->
     <script>
-        // Sync Guru data
-        document.addEventListener('DOMContentLoaded', () => {
-            const guru = SSOSync.getGuru();
-            if(guru) {
-                document.getElementById('guru-name').textContent = guru.nama;
-            }
+        let currentGuru = null;
+        let binaanStudents = [];
+
+        window.addEventListener('auth-ready', async function(e) {
+            currentGuru = e.detail;
+            renderGuruHeader(currentGuru);
+
+            // Timeout safety fallback
+            setTimeout(() => {
+                const krsBadge = document.getElementById('krs-queue-count');
+                if (krsBadge && krsBadge.textContent === 'MEMUAT...') {
+                    krsBadge.textContent = '0 ANTRIAN';
+                    document.getElementById('krs-pending-list').innerHTML = '<div class="text-center text-sm text-on-surface-variant py-8">Tidak ada antrean KRS saat ini.</div>';
+                }
+            }, 8000);
+
+            // Run rendering tasks concurrently
+            await Promise.all([
+                loadSiswaBinaan(),
+                loadPendingKRS(),
+                loadCheckpointQueue(),
+                loadAspirasiQueue(),
+                loadRiskStudents(),
+                loadClassPerformance()
+            ]);
         });
 
-        // Fetch pending KRS - fallback mock data
-        function loadPendingKRS() {
-            const data = [
-                { krsId: '1', nama: 'Budi Santoso', semesterKe: 3, profesiTarget: 'Software Engineer' },
-                { krsId: '2', nama: 'Siti Aminah', semesterKe: 5, profesiTarget: 'Data Scientist' },
-                { krsId: '3', nama: 'Arif Hidayat', semesterKe: 1, profesiTarget: 'Desainer Grafis' }
-            ];
-            renderKRSList(data);
+        // Helper: Inisial nama avatar
+        function getInitials(name) {
+            if (!name) return 'S';
+            const parts = name.trim().split(' ');
+            if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
+            return parts[0].substring(0, 2).toUpperCase();
         }
 
-        function renderKRSList(data) {
+        // 1. Render Guru Header Profile
+        function renderGuruHeader(guru) {
+            if (!guru) return;
+            const nameEl = document.getElementById('guru-name');
+            const nipEl = document.getElementById('guru-nip');
+            const avatarNav = document.getElementById('guru-avatar-nav');
+
+            if (nameEl) nameEl.textContent = guru.nama || 'Guru Pembimbing';
+            if (nipEl) nipEl.textContent = guru.nip || '19820412200903';
+            if (avatarNav) avatarNav.textContent = getInitials(guru.nama);
+        }
+
+        // Load Siswa Binaan
+        async function loadSiswaBinaan() {
+            const countEl = document.getElementById('guru-siswa-count');
+            try {
+                if (window.firebaseDb && currentGuru.uid) {
+                    const snap = await window.firebaseDb.collection('users')
+                        .where('role', '==', 'Siswa')
+                        .where('guruWaliId', '==', currentGuru.uid)
+                        .get();
+                    
+                    if (!snap.empty) {
+                        binaanStudents = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+                    }
+                }
+            } catch (err) {
+                console.warn('[DashboardGuru] Error loading students from Firestore:', err);
+            }
+
+            // Fallback SSOSync
+            if (binaanStudents.length === 0 && window.SSOSync) {
+                binaanStudents = SSOSync.getSiswaList();
+            }
+
+            if (countEl) countEl.textContent = `${binaanStudents.length} Siswa`;
+        }
+
+        // 2. Render KRS Queue
+        async function loadPendingKRS() {
             const listContainer = document.getElementById('krs-pending-list');
             const countBadge = document.getElementById('krs-queue-count');
-            if (!listContainer) return;
+            const statKrs = document.getElementById('stat-krs');
+            
+            let krsData = [];
+            try {
+                if (window.DataStore && currentGuru && currentGuru.uid) {
+                    krsData = await DataStore.getPendingKRSForGuru(currentGuru.uid);
+                }
+            } catch (e) {
+                console.warn('[DashboardGuru] DataStore pending KRS error:', e);
+            }
 
-            if (countBadge) countBadge.textContent = `${data.length} ANTRIAN`;
+            // Fallback SSOSync
+            if (krsData.length === 0 && window.SSOSync) {
+                krsData = SSOSync.getKRSPending();
+            }
 
-            if (data.length === 0) {
-                listContainer.innerHTML = '<div class="text-center text-sm text-on-surface-variant py-8">Tidak ada antrean KRS saat ini.</div>';
+            const pendingCount = krsData.length;
+            if (countBadge) countBadge.textContent = `${pendingCount} ANTRIAN`;
+            if (statKrs) statKrs.textContent = pendingCount < 10 ? `0${pendingCount}` : pendingCount;
+
+            if (pendingCount === 0) {
+                if (listContainer) {
+                    listContainer.innerHTML = '<div class="text-center text-sm text-on-surface-variant py-8">Tidak ada antrean KRS saat ini.</div>';
+                }
                 return;
             }
 
-            let html = '';
-            data.forEach(item => {
-                const initial = item.nama.charAt(0).toUpperCase();
-                html += `
-            <div class="px-6 py-5 flex items-center justify-between hover:bg-on-surface/5 transition-colors">
-                <div class="flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary">${initial}</div>
-                    <div>
-                        <p class="font-bold">${item.nama}</p>
-                        <p class="text-xs text-on-surface-variant">Semester ${item.semesterKe} • ${item.profesiTarget}</p>
-                    </div>
-                </div>
-                <a href="../15_tinjauan-guru/code.html?krsId=${item.krsId}" class="text-role-teacher font-bold border-2 border-role-teacher px-4 py-1.5 rounded hover:bg-role-teacher hover:text-white transition-all text-xs inline-block text-center mt-2 md:mt-0">Tinjau/Setujui</a>
-            </div>`;
-            });
-            listContainer.innerHTML = html;
+            if (listContainer) {
+                listContainer.innerHTML = krsData.map(item => {
+                    const namaSiswa = item.nama || item.siswaNama || 'Siswa Binaan';
+                    const initials = getInitials(namaSiswa);
+                    const semesterText = item.semester || item.semesterKe || '-';
+                    const targetText = item.profesiTarget || item.profesi || (Array.isArray(item.mataPelajaran) ? item.mataPelajaran.join(', ') : 'Rencana Studi');
+                    const krsId = item.id || item.krsId || 'KRS-001';
+
+                    return `
+                    <div class="px-6 py-4 flex items-center justify-between hover:bg-on-surface/5 transition-colors">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center font-bold text-primary flex-shrink-0">${initials}</div>
+                            <div>
+                                <p class="font-bold text-primary">${namaSiswa}</p>
+                                <p class="text-xs text-on-surface-variant">Semester ${semesterText} • ${targetText}</p>
+                            </div>
+                        </div>
+                        <a href="/?page=15_tinjauan-guru&krsId=${krsId}" class="text-role-teacher font-bold border-2 border-role-teacher px-4 py-1.5 rounded hover:bg-role-teacher hover:text-white transition-all text-xs inline-block text-center flex-shrink-0">Tinjau/Setujui</a>
+                    </div>`;
+                }).join('');
+            }
         }
 
-        // Auto load on mount (mock fallback)
-        loadPendingKRS();
-    </script>
+        // 3. Render Checkpoint Queue
+        async function loadCheckpointQueue() {
+            const listContainer = document.getElementById('checkpoint-list');
+            const countBadge = document.getElementById('checkpoint-queue-count');
+            const statCheckpoint = document.getElementById('stat-checkpoint');
 
-    <!-- Firebase SDK & Auth -->
-    <script src="/firebase-config.js"></script>
-    <script src="/firebase-auth-guard.js"></script>
-    <script src="/firebase-data-store.js"></script>
-    <script src="/notification-sync.js"></script>
-
-    <script>
-        window.addEventListener('auth-ready', async function(e) {
-            const user = e.detail;
-            if (user && user.nama) {
-                document.querySelectorAll('.user-display-name').forEach(el => {
-                    el.textContent = user.nama;
-                });
-                const guruEl = document.getElementById('guru-name');
-                if (guruEl) guruEl.textContent = user.nama;
-            }
-
-            // Load real KRS from Firestore
-            if (window.firebaseDb) {
-                try {
-                    const snapshot = await window.firebaseDb.collection('krs')
-                        .where('status', '==', 'Menunggu Persetujuan')
+            let checkpoints = [];
+            try {
+                if (window.firebaseDb) {
+                    const snap = await window.firebaseDb.collection('jurnalRefleksi')
+                        .orderBy('tanggal', 'desc')
+                        .limit(5)
                         .get();
 
-                    const data = [];
-                    for (const doc of snapshot.docs) {
-                        const krs = doc.data();
-                        let nama = krs.siswaId || 'Siswa';
-                        try {
-                            const siswaDoc = await window.firebaseDb.collection('users').doc(krs.siswaId).get();
-                            if (siswaDoc.exists) nama = siswaDoc.data().nama || nama;
-                        } catch(e) {}
-                        data.push({
-                            krsId: doc.id,
-                            nama,
-                            semesterKe: krs.semesterKe || '-',
-                            profesiTarget: krs.profesiTarget || krs.citaCita || '-'
-                        });
+                    if (!snap.empty) {
+                        for (const doc of snap.docs) {
+                            const data = doc.data();
+                            let studentName = 'Siswa Binaan';
+                            if (data.siswaId) {
+                                const sDoc = await window.firebaseDb.collection('users').doc(data.siswaId).get();
+                                if (sDoc.exists) studentName = sDoc.data().nama || studentName;
+                            }
+                            checkpoints.push({
+                                id: doc.id,
+                                judul: data.topik || 'Refleksi Mingguan (Checkpoint Jumat)',
+                                siswaNama: studentName,
+                                tanggal: data.tanggal
+                            });
+                        }
                     }
-                    renderKRSList(data);
-                } catch(err) {
-                    console.error('Error loading KRS from Firestore:', err);
+                }
+            } catch (err) {
+                console.warn('[DashboardGuru] Error fetching checkpoints:', err);
+            }
+
+            // Dynamic handling if no pending checkpoint
+            if (checkpoints.length === 0 && window.SSOSync) {
+                const ssoStudents = SSOSync.getStudents();
+                if (ssoStudents && ssoStudents.length > 0) {
+                    const sample = ssoStudents[0];
+                    checkpoints = [
+                        { id: 'chk-1', judul: 'Refleksi Karakter & Capaian Belajar', siswaNama: sample.nama }
+                    ];
                 }
             }
-        });
+
+            const count = checkpoints.length;
+            if (countBadge) countBadge.textContent = `${count} TUGAS`;
+            if (statCheckpoint) statCheckpoint.textContent = count < 10 ? `0${count}` : count;
+
+            if (listContainer) {
+                listContainer.innerHTML = checkpoints.map(item => `
+                    <div class="p-4 border border-outline/15 bg-background/50 flex items-center justify-between group hover:border-role-teacher transition-colors rounded">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 ledger-card flex items-center justify-center text-role-teacher flex-shrink-0">
+                                <span class="material-symbols-outlined" data-icon="description">description</span>
+                            </div>
+                            <div>
+                                <p class="font-bold text-primary text-sm">${item.judul}</p>
+                                <p class="text-xs text-on-surface-variant">Oleh: ${item.siswaNama}</p>
+                            </div>
+                        </div>
+                        <a href="/?page=11_checkpoint-jumat" class="bg-primary text-white px-4 py-1.5 text-xs font-bold rounded hard-shadow hover:brightness-110 transition-all flex-shrink-0">BERI FEEDBACK</a>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // 4. Render Aspirasi Queue
+        async function loadAspirasiQueue() {
+            const container = document.getElementById('aspirasi-container');
+            const badge = document.getElementById('aspirasi-badge');
+
+            let pendingAspirasi = [];
+            if (window.SSOSync) {
+                pendingAspirasi = SSOSync.getAspirasiPending();
+            }
+
+            const count = pendingAspirasi.length;
+            if (badge) badge.textContent = count === 0 ? '0 PENGAJUAN' : `${count} MENUNGGU REVIEW`;
+
+            if (!container) return;
+
+            if (count === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8">
+                        <span class="material-symbols-outlined text-4xl text-role-teacher/40 mb-2">verified</span>
+                        <p class="font-bold text-primary text-base">Tidak ada pengajuan aspirasi saat ini 🎉</p>
+                        <p class="text-xs text-on-surface-variant mt-1">Semua siswa binaan Anda saat ini nyaman dengan jalur karir yang dipilih.</p>
+                    </div>`;
+                return;
+            }
+
+            const item = pendingAspirasi[0]; // Tampilkan pengajuan paling awal yang menunggu
+            const initials = getInitials(item.nama);
+
+            container.innerHTML = `
+                <div class="flex flex-col md:flex-row items-center gap-8">
+                    <div class="w-24 h-24 rounded-full border-4 border-role-teacher bg-primary/10 flex items-center justify-center font-bold text-2xl text-primary flex-shrink-0">
+                        ${initials}
+                    </div>
+                    <div class="flex-1 text-center md:text-left">
+                        <div class="flex flex-col md:flex-row md:items-center gap-3 mb-2">
+                            <span class="font-display-lg text-2xl text-primary">${item.nama}</span>
+                            <span class="text-stats-sm text-xs text-on-surface-variant bg-on-surface/5 px-2.5 py-0.5 font-bold rounded">Cita-Cita Saat Ini: ${item.citaLama || 'Belum diatur'}</span>
+                        </div>
+                        <p class="text-base text-on-surface-variant italic leading-relaxed mb-4">"${item.alasan || 'Ingin menyesuaikan rencana karir dengan minat baru.'}"</p>
+                        <div class="flex flex-wrap items-center justify-center md:justify-start gap-3">
+                            <span class="text-label-caps bg-role-teacher text-white px-3 py-1 font-bold rounded text-xs">TARGET BARU: ${(item.citaBaru || 'ARSITEK').toUpperCase()}</span>
+                            <div class="flex items-center gap-1 text-xs text-on-surface-variant">
+                                <span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                                <span class="font-bold">POSISI: BACKWARD MAPPING</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-3 w-full md:w-auto flex-shrink-0">
+                        <button onclick="handleApproveAspirasi('${item.id}', '${item.nama}', '${item.citaBaru}')"
+                            class="px-6 py-2.5 bg-role-teacher text-white text-xs font-bold rounded hard-shadow hover:brightness-110 transition-all text-center">Setujui Aspirasi</button>
+                        <button onclick="handleRejectAspirasi('${item.id}', '${item.nama}')"
+                            class="px-6 py-2.5 border-2 border-error text-error text-xs font-bold rounded hover:bg-error/5 transition-all text-center">Tolak</button>
+                    </div>
+                </div>`;
+        }
+
+        // Action Handlers Aspirasi
+        window.handleApproveAspirasi = function(id, nama, citaBaru) {
+            if (window.SSOSync) {
+                SSOSync.approveAspirasi(id);
+            }
+            if (window.NotificationSync) {
+                NotificationSync.addNotification('siswa', 'Aspirasi Disetujui!', `Pengajuan perubahan cita-cita Anda menjadi ${citaBaru} telah disetujui oleh Guru Pembimbing.`);
+            }
+            alert(`Aspirasi ${nama} berhasil disetujui!`);
+            loadAspirasiQueue();
+        };
+
+        window.handleRejectAspirasi = function(id, nama) {
+            if (window.SSOSync) {
+                SSOSync.rejectAspirasi(id);
+            }
+            if (window.NotificationSync) {
+                NotificationSync.addNotification('siswa', 'Pengajuan Aspirasi Ditinjau', `Pengajuan perubahan cita-cita Anda belum dapat disetujui. Silakan diskusikan dengan Guru Pembimbing.`);
+            }
+            alert(`Pengajuan aspirasi ${nama} ditolak.`);
+            loadAspirasiQueue();
+        };
+
+        // 5. Render Risiko Akademik
+        async function loadRiskStudents() {
+            const container = document.getElementById('risk-container');
+            const badge = document.getElementById('risiko-badge');
+            const statRisiko = document.getElementById('stat-risiko');
+
+            let riskList = [];
+            const allStudents = binaanStudents.length > 0 ? binaanStudents : (window.SSOSync ? SSOSync.getSiswaList() : []);
+
+            allStudents.forEach(s => {
+                const studentId = s.id || s.uid;
+                const nilaiList = window.SSOSync ? SSOSync.getNilaiMapel(studentId) : [];
+                const absensi = window.SSOSync ? SSOSync.getAbsensi(studentId) : null;
+                const progress = s.roadmapProgress !== undefined ? s.roadmapProgress : 70;
+
+                let risks = [];
+                if (progress < 30) {
+                    risks.push({ tipe: 'PROGRES_RENDAH', text: `Progres Roadmap baru ${progress}% (Tertinggal target)` });
+                }
+
+                if (nilaiList.length > 0) {
+                    const avg = nilaiList.reduce((acc, curr) => acc + (curr.nilai || 0), 0) / nilaiList.length;
+                    if (avg < 70) {
+                        risks.push({ tipe: 'NILAI_RENDAH', text: `Rata-rata nilai ${Math.round(avg)} (Di bawah KKM 70)` });
+                    }
+                }
+
+                if (absensi && absensi.alpa > 5) {
+                    risks.push({ tipe: 'ABSENSI', text: `${absensi.alpa} Hari Alpa semester ini` });
+                }
+
+                if (risks.length > 0) {
+                    riskList.push({
+                        id: studentId,
+                        nama: s.nama || 'Siswa',
+                        progress: progress,
+                        detail: risks[0].text,
+                        tipe: risks[0].tipe
+                    });
+                }
+            });
+
+            // Fallback SSOSync risk list if calculation yield 0
+            if (riskList.length === 0 && window.SSOSync) {
+                const ssoRisks = SSOSync.getRiskStudents();
+                if (ssoRisks.length > 0) {
+                    riskList = ssoRisks.map(r => ({
+                        id: r.studentId,
+                        nama: r.nama,
+                        progress: 45,
+                        detail: r.masalah,
+                        tipe: 'TARGET'
+                    }));
+                }
+            }
+
+            const count = riskList.length;
+            if (badge) badge.textContent = count === 0 ? '0 SISWA BERISIKO' : `${count} SISWA BERISIKO`;
+            if (statRisiko) statRisiko.textContent = count < 10 ? `0${count}` : count;
+
+            if (!container) return;
+
+            if (count === 0) {
+                container.innerHTML = `
+                    <div class="p-8 text-center col-span-3">
+                        <span class="material-symbols-outlined text-4xl text-role-teacher/40 mb-2">sentiment_very_satisfied</span>
+                        <p class="font-bold text-primary text-base">Semua siswa binaan Anda dalam progres baik 🎉</p>
+                        <p class="text-xs text-on-surface-variant mt-1">Tidak ada indikasi keterlambatan target atau masalah akademis signifikan saat ini.</p>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = riskList.slice(0, 3).map(item => `
+                <div class="p-6 group hover:bg-error/5 transition-colors">
+                    <div class="flex justify-between items-start mb-3">
+                        <p class="font-bold text-base text-primary">${item.nama}</p>
+                        <span class="font-stats-sm text-xs text-error font-bold bg-error/10 px-2 py-0.5 rounded">TERTINGGAL</span>
+                    </div>
+                    <div class="w-full bg-on-surface/10 h-2 rounded-full mb-3 overflow-hidden">
+                        <div class="bg-error h-full rounded-full" style="width: ${Math.max(item.progress, 20)}%;"></div>
+                    </div>
+                    <p class="text-xs text-on-surface-variant leading-relaxed">${item.detail}</p>
+                </div>
+            `).join('');
+        }
+
+        // 6. Render Class Performance Overview Bar Chart
+        async function loadClassPerformance() {
+            const chartContainer = document.getElementById('chart-container');
+            if (!chartContainer) return;
+
+            const mapelList = ['Matematika', 'Informatika', 'Biologi', 'B. Inggris', 'Fisika'];
+            const scoresMap = {};
+            mapelList.forEach(m => scoresMap[m] = { total: 0, count: 0 });
+
+            const allStudents = binaanStudents.length > 0 ? binaanStudents : (window.SSOSync ? SSOSync.getSiswaList() : []);
+
+            allStudents.forEach(s => {
+                const studentId = s.id || s.uid;
+                const grades = window.SSOSync ? SSOSync.getNilaiMapel(studentId) : [];
+                grades.forEach(g => {
+                    // Normalize mapel key
+                    let matchedKey = mapelList.find(m => g.mapel && g.mapel.toLowerCase().includes(m.toLowerCase()));
+                    if (matchedKey) {
+                        scoresMap[matchedKey].total += (g.nilai || 0);
+                        scoresMap[matchedKey].count += 1;
+                    }
+                });
+            });
+
+            // Calculate averages
+            const chartData = mapelList.map(mapel => {
+                const stat = scoresMap[mapel];
+                const avg = stat.count > 0 ? Math.round(stat.total / stat.count) : 0;
+                return { mapel, avg, hasData: stat.count > 0 };
+            });
+
+            let html = `
+                <!-- Y-Axis -->
+                <div class="absolute left-[-28px] top-0 bottom-0 flex flex-col justify-between text-[10px] font-mono text-on-surface-variant py-2">
+                    <span>100</span>
+                    <span>75</span>
+                    <span>50</span>
+                    <span>25</span>
+                    <span>0</span>
+                </div>
+
+                <!-- Grid lines -->
+                <div class="absolute left-0 right-0 top-1/4 border-t border-dashed border-on-surface/5 -z-10"></div>
+                <div class="absolute left-0 right-0 top-2/4 border-t border-dashed border-on-surface/5 -z-10"></div>
+                <div class="absolute left-0 right-0 top-3/4 border-t border-dashed border-on-surface/5 -z-10"></div>
+            `;
+
+            chartData.forEach(item => {
+                const barHeight = item.hasData ? `${item.avg}%` : '5%';
+                const barColor = !item.hasData 
+                    ? 'bg-on-surface/20' 
+                    : item.avg < 70 
+                        ? 'bg-error/80 group-hover:bg-error' 
+                        : 'bg-role-teacher/80 group-hover:bg-role-teacher';
+
+                const tooltipText = item.hasData ? `${item.avg}%` : 'Belum ada data';
+
+                html += `
+                    <div class="flex-1 flex flex-col items-center justify-end h-full group relative">
+                        <div class="w-full max-w-[48px] ${barColor} transition-all rounded-t-sm relative" style="height: ${barHeight};">
+                            <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-[10px] font-bold px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                                ${tooltipText}
+                            </div>
+                        </div>
+                        <span class="text-[10px] md:text-[11px] font-mono mt-2 text-on-surface-variant whitespace-nowrap ${item.avg < 70 && item.hasData ? 'text-error font-bold' : ''}">
+                            ${item.mapel}
+                        </span>
+                    </div>
+                `;
+            });
+
+            chartContainer.innerHTML = html;
+        }
     </script>
 
+    <!-- Generic Link Routing Handler -->
+    <script>
+    (function(){
+      function bindClick(selectors, handler) {
+        document.querySelectorAll(selectors).forEach(function(el) {
+          el.addEventListener('click', function(e) {
+            if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
+                return;
+            }
+            if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
+                return;
+            }
+            e.preventDefault();
+            handler(e, el);
+          });
+        });
+      }
 
-<script>
-(function(){
-  function bindClick(selectors, handler) {
-    document.querySelectorAll(selectors).forEach(function(el) {
-      el.addEventListener('click', function(e) {
-        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
-            return;
-        }
-        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
-            return;
-        }
-        e.preventDefault();
-        handler(e, el);
+      // 1. Top Navbar Role Tabs
+      bindClick('header nav a', function(e, a) {
+        var text = a.textContent.trim().toLowerCase();
+        if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
+        else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
+        else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
       });
-    });
-  }
 
-  // 1. Top Navbar Role Tabs
-  bindClick('header nav a', function(e, a) {
-    var text = a.textContent.trim().toLowerCase();
-    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
-    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
-  });
+      // 2. Header Icons & Avatar
+      bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
+        var iconText = '';
+        if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
+        else {
+          var icon = b.querySelector('.material-symbols-outlined');
+          if (icon) iconText = icon.textContent.trim();
+        }
+        
+        if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
+        else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
+          window.location.href = '/?page=18_profil';
+        }
+      });
 
-  // 2. Header Icons & Avatar
-  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
-    var iconText = '';
-    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
-    else {
-      var icon = b.querySelector('.material-symbols-outlined');
-      if (icon) iconText = icon.textContent.trim();
-    }
-    
-    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
-      window.location.href = '/?page=18_profil';
-    }
-  });
-
-  // 3. Sidebar, Bottom Nav, and generic # links
-  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
-    var text = el.textContent.trim().toLowerCase();
-    if (!text) {
-        var icon = el.querySelector('.material-symbols-outlined');
-        if (icon) text = icon.textContent.trim().toLowerCase();
-    }
-    
-    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
-    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
-    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
-    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
-    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
-    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
-    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
-    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
-    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
-  });
-  
-  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
-})();
-</script>
-
+      // 3. Sidebar, Bottom Nav, and generic # links
+      bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
+        var text = el.textContent.trim().toLowerCase();
+        if (!text) {
+            var icon = el.querySelector('.material-symbols-outlined');
+            if (icon) text = icon.textContent.trim().toLowerCase();
+        }
+        
+        if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
+        else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
+        else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
+        else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
+        else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
+        else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
+        else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
+        else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
+        else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
+        else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
+        else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
+      });
+      
+      document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
+    })();
+    </script>
 </body>
-
 </html>

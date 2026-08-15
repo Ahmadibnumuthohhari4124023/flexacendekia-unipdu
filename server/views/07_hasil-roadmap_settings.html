@@ -51,7 +51,17 @@
         @keyframes blink { 0%, 80%, 100% { opacity: 0; } 40% { opacity: 1; } }
     </style>
 
-    </head>
+    
+    <!-- Firebase SDK & Auth Layer -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+    <script src="/firebase-auth-guard.js"></script>
+    <script src="/firebase-data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+    <script src="/career-roadmap-data.js"></script>
+</head>
 <body class="bg-[#EAEDE2] text-on-surface font-body blueprint-grid min-h-screen">
 
     <!-- TopNavBar -->
@@ -66,7 +76,7 @@
             </a>
         
                 <!-- Logout Button -->
-                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='../01_login/code.html');" class="ml-2 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
+                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>if(window.flexaLogout) flexaLogout(); else window.location.href='/?page=01_login');" class="ml-2 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
                     <span class="material-symbols-outlined">logout</span>
                     <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-surface text-on-surface px-2 py-1 shadow-md rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border border-on-surface/10">Keluar</span>
                 </button>
@@ -339,71 +349,108 @@
 
     document.addEventListener('DOMContentLoaded', loadSettings);
     </script>
-
+</body>
+</html>
 <script>
-(function(){
-  function bindClick(selectors, handler) {
-    document.querySelectorAll(selectors).forEach(function(el) {
-      el.addEventListener('click', function(e) {
-        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
-            return;
+    function applySettingsUI(careerTitle) {
+        const store = window.CareerRoadmapStore;
+        const c = store ? store.getCareerData(careerTitle) : { title: careerTitle, icon: 'star', category: 'Karier' };
+
+        const elCareer = document.getElementById('current-career');
+        if (elCareer) elCareer.textContent = c.title;
+
+        const elIcon = document.getElementById('career-icon');
+        if (elIcon) elIcon.textContent = c.icon || 'star';
+    }
+
+    function saveSettings() {
+        const freq = document.getElementById('notif-freq').value;
+        const time = document.getElementById('notif-time').value;
+        const diff = document.querySelector('input[name="difficulty"]:checked')?.value || 'medium';
+
+        localStorage.setItem('notif_freq', freq);
+        localStorage.setItem('notif_time', time);
+        localStorage.setItem('difficulty', diff);
+
+        if (window.firebaseDb && window.firebaseAuth && window.firebaseAuth.currentUser) {
+            const uid = window.firebaseAuth.currentUser.uid;
+            window.firebaseDb.collection('users').doc(uid).update({
+                settings: { notif_freq: freq, notif_time: time, difficulty: diff }
+            }).catch(e => console.warn('Failed saving settings to Firestore:', e));
         }
-        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
-            return;
+
+        const btn = document.getElementById('btn-save');
+        btn.innerHTML = '<span class="material-symbols-outlined text-sm" style="font-variation-settings: \'FILL\' 1;">check_circle</span> Tersimpan!';
+        btn.classList.add('bg-emerald-600');
+        btn.classList.remove('bg-primary');
+        setTimeout(() => {
+            btn.innerHTML = '<span class="material-symbols-outlined text-sm">save</span> Simpan Pengaturan';
+            btn.classList.remove('bg-emerald-600');
+            btn.classList.add('bg-primary');
+        }, 2000);
+    }
+
+    function regenerateRoadmap() {
+        const statusPanel = document.getElementById('ai-status');
+        const statusText = document.getElementById('ai-status-text');
+        const logPanel = document.getElementById('ai-log');
+        const btn = document.getElementById('btn-regenerate');
+
+        statusPanel.classList.remove('hidden');
+        btn.disabled = true;
+        btn.classList.add('opacity-50', 'cursor-not-allowed');
+        logPanel.innerHTML = '';
+
+        const careerTitle = localStorage.getItem('selectedCareer') || 'Arsitek';
+        const steps = [
+            { text: '→ Menghubungi Gemini AI API...', delay: 600 },
+            { text: '→ Memuat profil diagnostik RIASEC siswa...', delay: 1200 },
+            { text: '→ Menganalisis jalur karier: ' + careerTitle + '...', delay: 1800 },
+            { text: '→ Menyusun kurikulum berbasis backward mapping 6 tahun...', delay: 2400 },
+            { text: '→ Mengoptimalkan timeline & milestone...', delay: 3000 },
+            { text: '→ Memvalidasi resources & bahan belajar...', delay: 3600 },
+            { text: '✓ Roadmap berhasil diregenerasi!', delay: 4200 }
+        ];
+
+        steps.forEach((step, i) => {
+            setTimeout(() => {
+                logPanel.innerHTML += '<p class="fade-in">' + step.text + '</p>';
+                if (i === steps.length - 1) {
+                    statusText.textContent = 'Selesai!';
+                    statusPanel.classList.remove('bg-primary-container');
+                    statusPanel.classList.add('bg-emerald-700');
+
+                    setTimeout(() => {
+                        window.location.href = '/?page=07_hasil-roadmap';
+                    }, 1200);
+                }
+            }, step.delay);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const careerTitle = localStorage.getItem('selectedCareer') || 'Arsitek';
+        applySettingsUI(careerTitle);
+
+        const freq = localStorage.getItem('notif_freq');
+        const time = localStorage.getItem('notif_time');
+        const diff = localStorage.getItem('difficulty');
+        if (freq && document.getElementById('notif-freq')) document.getElementById('notif-freq').value = freq;
+        if (time && document.getElementById('notif-time')) document.getElementById('notif-time').value = time;
+        if (diff) {
+            const radio = document.querySelector(`input[name="difficulty"][value="${diff}"]`);
+            if (radio) radio.checked = true;
         }
-        e.preventDefault();
-        handler(e, el);
-      });
     });
-  }
 
-  // 1. Top Navbar Role Tabs
-  bindClick('header nav a', function(e, a) {
-    var text = a.textContent.trim().toLowerCase();
-    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
-    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
-  });
-
-  // 2. Header Icons & Avatar
-  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
-    var iconText = '';
-    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
-    else {
-      var icon = b.querySelector('.material-symbols-outlined');
-      if (icon) iconText = icon.textContent.trim();
-    }
-    
-    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
-      window.location.href = '/?page=18_profil';
-    }
-  });
-
-  // 3. Sidebar, Bottom Nav, and generic # links
-  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
-    var text = el.textContent.trim().toLowerCase();
-    if (!text) {
-        var icon = el.querySelector('.material-symbols-outlined');
-        if (icon) text = icon.textContent.trim().toLowerCase();
-    }
-    
-    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
-    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
-    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
-    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
-    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
-    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
-    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
-    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
-    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
-  });
-  
-  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
-})();
-</script>
-
+    window.addEventListener('auth-ready', function(e) {
+        const user = e.detail;
+        if (user) {
+            const careerFromDb = user.citaCita || localStorage.getItem('selectedCareer') || 'Arsitek';
+            localStorage.setItem('selectedCareer', careerFromDb);
+            applySettingsUI(careerFromDb);
+        }
+    });
+    </script>
 </body>
 </html>

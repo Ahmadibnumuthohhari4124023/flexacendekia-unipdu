@@ -11,7 +11,7 @@ async function callGeminiApi(prompt, systemInstruction = '') {
     return null; // Trigger fallback
   }
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
   const payload = {
     contents: [
@@ -154,6 +154,15 @@ Keluarkan format JSON dengan struktur persis seperti berikut:
     }
   });
 
+  // Normalize RIASEC to max 100
+  const maxR = Math.max(...Object.values(rCount));
+  if (maxR > 100) {
+    const scaleR = 100 / maxR;
+    Object.keys(rCount).forEach(k => rCount[k] = Math.round(rCount[k] * scaleR));
+  } else {
+    Object.keys(rCount).forEach(k => rCount[k] = Math.round(rCount[k]));
+  }
+
   const totalV = vCount.Visual + vCount.Auditori + vCount.Kinestetik;
   const vPerc = {
     Visual: Math.round((vCount.Visual / totalV) * 100),
@@ -200,55 +209,22 @@ Keluarkan format JSON dengan struktur persis seperti berikut:
 /**
  * Generate AI 6-Year Roadmap based on Selected Career
  */
-async function generateRoadmap(career = 'Arsitek', diagnosisData = {}) {
-  const prompt = `Buatkan Roadmap Pendidikan & Pengembangan Karir 6 Tahun untuk cita-cita karir: "${career}".
+async function generateRoadmap(career = 'Arsitek', diagnosisData = {}, jenjang = 'SMA', kelas = 10) {
+  let startYearText = `${jenjang} Kelas ${kelas}`;
+  const prompt = `Buatkan Roadmap Pendidikan & Pengembangan Karir 6 Tahun untuk cita-cita karir: "${career}", dimulai dari tahap ${startYearText} ke 6 tahun berikutnya.
 Keluarkah format JSON dengan struktur berikut:
 {
   "careerTitle": "${career}",
   "quote": "Quote inspiratif profesional untuk bidang ${career}.",
   "years": [
     {
-      "yearCode": "10",
-      "yearTitle": "SMA Kelas 10 — Fondasi & Eksplorasi",
-      "status": "Selesai",
+      "yearCode": "Tahun 1",
+      "yearTitle": "${startYearText} — Fondasi & Eksplorasi",
+      "status": "Sedang Berjalan",
       "desc": "Penguatan materi dasar matematika, literasi, dan pembentukan kebiasaan belajar.",
       "tags": ["Penguatan Matematika", "Klub Sains"]
     },
-    {
-      "yearCode": "11",
-      "yearTitle": "SMA Kelas 11 — Spesialisasi & Portofolio (Sekarang)",
-      "status": "Sedang Berjalan",
-      "desc": "Fokus pada mata pelajaran pendukung utama karir ${career} dan keterlibatan proyek lomba.",
-      "tags": ["Olimpiade", "Proyek Mandiri", "Keterampilan Digital"]
-    },
-    {
-      "yearCode": "12",
-      "yearTitle": "SMA Kelas 12 — Persiapan SNBT & Mandiri",
-      "status": "Mendatang",
-      "desc": "Intensifikasi soal latihan, tryout nasional, dan penentuan jurusan target di universitas.",
-      "tags": ["Tryout SNBT", "Bimbingan PTN"]
-    },
-    {
-      "yearCode": "K1",
-      "yearTitle": "Kuliah Tahun 1 — Penguasaan Dasar Prodi",
-      "status": "Mendatang",
-      "desc": "Masuk ke jurusan perkuliahan pilihan dan menguasai mata kuliah dasar prodi.",
-      "tags": ["Pemrograman/Dasar Desain", "Adaptasi Kampus"]
-    },
-    {
-      "yearCode": "K2",
-      "yearTitle": "Kuliah Tahun 2 — Magang & Proyek Industri",
-      "status": "Mendatang",
-      "desc": "Mengikuti program magang industri dan membangun jejaring profesional.",
-      "tags": ["Magang Industri", "Sertifikasi Profesional"]
-    },
-    {
-      "yearCode": "K3",
-      "yearTitle": "Kuliah Tahun 3-4 — Tugas Akhir & Karir",
-      "status": "Mendatang",
-      "desc": "Penyelesaian tugas akhir/skripsi dan persiapan memasuki dunia kerja profesional.",
-      "tags": ["Tugas Akhir", "Kesiapan Karir"]
-    }
+    ... (tambahkan hingga 6 objek untuk 6 tahun ke depan, hitung level kelas secara rasional)
   ]
 }`;
 
@@ -259,55 +235,64 @@ Keluarkah format JSON dengan struktur berikut:
     return { ...aiResult, source: 'Gemini AI' };
   }
 
-  // --- FALLBACK HEURISTIC ROADMAP ---
+  // --- FALLBACK HEURISTIC ROADMAP DYNAMIC 6-YEARS ---
+  const yearsArr = [];
+  const startKelas = parseInt(kelas) || 10;
+  let currentJenjang = jenjang.toUpperCase();
+  let currentK = startKelas;
+
+  const labelsJenjang = { 'SD': 6, 'SMP': 3, 'SMA': 3, 'KULIAH': 4 };
+  const getNextLevel = (jenj, kel) => {
+    if (jenj === 'SD' && kel > 6) return { j: 'SMP', k: 7 };
+    if (jenj === 'SMP' && kel > 9) return { j: 'SMA', k: 10 };
+    if (jenj === 'SMA' && kel > 12) return { j: 'KULIAH', k: 1 };
+    return { j: jenj, k: kel };
+  };
+
+  for (let i = 0; i < 6; i++) {
+    let titlePrefix = '';
+    let phaseDesc = '';
+    let tags = [];
+
+    if (currentJenjang === 'SD') {
+      titlePrefix = `SD Kelas ${currentK}`;
+      phaseDesc = `Pengenalan minat belajar dan fondasi logika berpikir dasar untuk ${career}.`;
+      tags = ["Eksplorasi Minat", "Logika Dasar"];
+    } else if (currentJenjang === 'SMP') {
+      titlePrefix = `SMP Kelas ${currentK}`;
+      phaseDesc = `Pematangan keterampilan pra-remaja dan pembentukan disiplin belajar terkait ${career}.`;
+      tags = ["Penguatan Konsep", "Keterampilan Dasar"];
+    } else if (currentJenjang === 'SMA') {
+      titlePrefix = `SMA Kelas ${currentK}`;
+      if (currentK === 10) phaseDesc = "Penguatan fondasi logika, sains dasar, dan pembentukan karakter belajar mandiri.";
+      else if (currentK === 11) phaseDesc = `Pengembangan keterampilan khusus yang relevan dengan karir ${career} dan persiapan olimpiade.`;
+      else phaseDesc = "Latihan intensif soal SNBT, pendaftaran perguruan tinggi pilihan, dan pendaftaran beasiswa.";
+      tags = currentK === 12 ? ["Tryout SNBT", "Portofolio"] : ["Olimpiade Sains", "Proyek Praktek"];
+    } else {
+      titlePrefix = `Kuliah Tahun ${currentK}`;
+      phaseDesc = currentK === 1 ? "Adaptasi kurikulum perkuliahan dan partisipasi klub mahasiswa." : "Proyek industri, magang, dan persiapan karir profesional.";
+      tags = ["Keahlian Khusus", "Magang & Riset"];
+    }
+
+    yearsArr.push({
+      yearCode: `Tahun ${i+1}`,
+      yearTitle: `${titlePrefix} — Tahap ${i+1}`,
+      status: i === 0 ? "Sedang Berjalan" : "Mendatang",
+      desc: phaseDesc,
+      tags: tags
+    });
+
+    currentK++;
+    const nextLevel = getNextLevel(currentJenjang, currentK);
+    currentJenjang = nextLevel.j;
+    currentK = nextLevel.k;
+  }
+
   return {
     source: 'Smart Engine (Fallback)',
     careerTitle: career,
     quote: `"${career} tidak hanya dibangun dalam sehari, tetapi melalui perencanaan terstruktur selama 6 tahun."`,
-    years: [
-      {
-        yearCode: "10",
-        yearTitle: "SMA Kelas 10 — Fondasi & Eksplorasi Dasar",
-        status: "Selesai",
-        desc: "Penguatan fondasi logika, sains dasar, dan pembentukan karakter belajar mandiri.",
-        tags: ["Dasar Matematika", "Literasi Digital"]
-      },
-      {
-        yearCode: "11",
-        yearTitle: `SMA Kelas 11 — Spesialisasi & Portofolio (${career})`,
-        status: "Sedang Berjalan",
-        desc: `Pengembangan keterampilan khusus yang relevan dengan karir ${career} dan persiapan olimpiade.`,
-        tags: ["Proyek Praktek", "Olimpiade Sains", "Mentoring Guru"]
-      },
-      {
-        yearCode: "12",
-        yearTitle: "SMA Kelas 12 — Strategi Kelulusan & SNBT PTN",
-        status: "Mendatang",
-        desc: "Latihan intensif soal SNBT, pendaftaran perguruan tinggi pilihan, dan pendaftaran beasiswa.",
-        tags: ["Tryout SNBT", "Portofolio Prestasi"]
-      },
-      {
-        yearCode: "K1",
-        yearTitle: "Kuliah Th 1 — Adaptasi Akademik Perguruan Tinggi",
-        status: "Mendatang",
-        desc: "Memahami kurikulum perkuliahan dasar dan aktif di organisasi mahasiswa terkemuka.",
-        tags: ["Dasar Keahlian", "Klub Mahasiswa"]
-      },
-      {
-        yearCode: "K2",
-        yearTitle: "Kuliah Th 2 — Proyek Industri & Keterampilan Praktis",
-        status: "Mendatang",
-        desc: "Keterlibatan langsung dalam riset dosen dan program magang kerja profesional.",
-        tags: ["Riset & Magang", "Sertifikasi Bidang"]
-      },
-      {
-        yearCode: "K3",
-        yearTitle: "Kuliah Th 3-4 — Kelulusan & Transisi Karir",
-        status: "Mendatang",
-        desc: "Penyusunan tugas akhir/skripsi dan persiapan rekrutmen perusahaan kerja.",
-        tags: ["Skripsi", "Karir Profesional"]
-      }
-    ]
+    years: yearsArr
   };
 }
 

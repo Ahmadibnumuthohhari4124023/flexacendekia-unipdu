@@ -191,8 +191,8 @@ router.post('/ai/generate-diagnosis', async (req, res) => {
 // ==========================================
 router.post('/ai/generate-roadmap', async (req, res) => {
   try {
-    const { career, diagnosisData } = req.body;
-    const result = await generateRoadmap(career || 'Arsitek', diagnosisData || {});
+    const { career, diagnosisData, jenjang, kelas } = req.body;
+    const result = await generateRoadmap(career || 'Arsitek', diagnosisData || {}, jenjang || 'SMA', kelas || 10);
     res.json({ success: true, data: result });
   } catch (err) {
     console.error('AI Roadmap error:', err);

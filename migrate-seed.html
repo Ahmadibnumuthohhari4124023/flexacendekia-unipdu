@@ -199,7 +199,130 @@
                         });
                     }
 
-                    log('✅ Data spesifik Siswa berhasil di-seed.');
+                    
+                    // 4. nilaiAkademik
+                    log('Membuat data nilaiAkademik...');
+                    const nilaiDummy = [
+                        { siswaId: siswa1Id, kode: 'PHYS-301', namaMapel: 'Fisika Bangunan', namaGuru: 'Drs. Amir Santoso', nilaiHuruf: 'B+', skor: 82, bobotSKS: 3, status: 'Berlangsung', semester: 3, tahunAjaran: '2023/2024' },
+                        { siswaId: siswa1Id, kode: 'MATH-301', namaMapel: 'Matematika Kalkulus', namaGuru: 'Dr. Aris Subagyo', nilaiHuruf: 'B', skor: 76, bobotSKS: 4, status: 'Berlangsung', semester: 3, tahunAjaran: '2023/2024' },
+                        { siswaId: siswa1Id, kode: 'ARTS-315', namaMapel: 'Perspektif 2 Titik Hilang', namaGuru: 'Ibu Lestari, S.Sn', nilaiHuruf: 'A', skor: 95, bobotSKS: 3, status: 'Lulus', semester: 3, tahunAjaran: '2023/2024' },
+                        { siswaId: siswa1Id, kode: 'MATH-202', namaMapel: 'Calculus Foundations II', namaGuru: 'Dr. Aris Subagyo', nilaiHuruf: 'A', skor: 97, bobotSKS: 4, status: 'Lulus', semester: 2, tahunAjaran: '2022/2023' },
+                        { siswaId: siswa1Id, kode: 'PHYS-201', namaMapel: 'Classical Mechanics', namaGuru: 'Prof. Siti Aminah', nilaiHuruf: 'A-', skor: 91, bobotSKS: 3, status: 'Lulus', semester: 2, tahunAjaran: '2022/2023' },
+                        { siswaId: siswa1Id, kode: 'MATH-101', namaMapel: 'Introductory Algebra', namaGuru: 'Dr. Aris Subagyo', nilaiHuruf: 'A', skor: 94, bobotSKS: 3, status: 'Arsip', semester: 1, tahunAjaran: '2021/2022' }
+                    ];
+                    
+                    for (const nilai of nilaiDummy) {
+                        await db.collection('nilaiAkademik').add(nilai);
+                    }
+
+                    // 5. checkpoints
+                    await db.collection('checkpoints').doc(siswa1Id + '-chk1').set({
+                        siswaId: siswa1Id,
+                        status: 'pending',
+                        judul: 'Checkpoint Jumat - Evaluasi Kritis',
+                        batasWaktu: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
+                        questions: [
+                            {
+                                type: 'multiple_choice',
+                                text: 'Dalam konteks sumber primer mengenai ekspansi industri abad ke-19, kerangka analitis manakah yang paling baik menjelaskan...',
+                                options: ['Pendekatan Cliometrik', 'Materialisme Dialektis', 'Fokus Annales School']
+                            },
+                            {
+                                type: 'essay',
+                                text: 'Refleksikan kemajuan belajar Anda minggu ini. Identifikasi satu tantangan yang Anda hadapi dan bagaimana Anda mengatasinya.'
+                            }
+                        ]
+                    });
+
+                    // 6. history poin / aktivitas
+                    await db.collection('aktivitas').doc(siswa1Id + '-act1').set({
+                        siswaId: siswa1Id,
+                        judul: 'Menyelesaikan Modul DS302',
+                        tipe: 'modul',
+                        xp: 150,
+                        tanggal: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
+                    });
+                    await db.collection('aktivitas').doc(siswa1Id + '-act2').set({
+                        siswaId: siswa1Id,
+                        judul: 'Update KRS Semester 5',
+                        tipe: 'krs',
+                        xp: 50,
+                        tanggal: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString()
+                    });
+
+                    // 7. kehadiran (Koleksi Absensi Siswa)
+                    await db.collection('kehadiran').doc(siswa1Id).set({
+                        siswaId: siswa1Id,
+                        hadir: 80,
+                        izin: 6,
+                        sakit: 0,
+                        alpa: 8,
+                        total: 94,
+                        persentase: 85,
+                        status: 'Perlu Perhatian',
+                        semester: 'Semester Ganjil 2023/2024',
+                        catatan: 'Tingkat kehadiran di bawah 90%, perlu pemantauan kehadiran kelas pagi.',
+                        updateTerakhir: new Date().toISOString()
+                    });
+
+                    if (siswa2Id) {
+                        await db.collection('kehadiran').doc(siswa2Id).set({
+                            siswaId: siswa2Id,
+                            hadir: 92,
+                            izin: 2,
+                            sakit: 0,
+                            alpa: 0,
+                            total: 94,
+                            persentase: 98,
+                            status: 'Sangat Baik',
+                            semester: 'Semester Ganjil 2023/2024',
+                            catatan: 'Kehadiran konsisten dan sangat disiplin.',
+                            updateTerakhir: new Date().toISOString()
+                        });
+                    }
+
+                    // 8. catatanGuru
+                    await db.collection('catatanGuru').add({
+                        guruId: createdUids['Guru'],
+                        siswaId: siswa1Id,
+                        isi: 'Ahmad sangat aktif dalam diskusi kelas minggu ini. Saya menyarankan agar ia difasilitasi buku desain tambahan di rumah.',
+                        tanggal: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    // 9. notifikasi Orang Tua
+                    await db.collection('notifikasi').add({
+                        untukRole: 'OrangTua',
+                        untukUserId: createdUids['OrangTua'],
+                        tipe: 'keterlambatan',
+                        judul: 'Terlambat target: Matematika Dasar',
+                        isi: 'Ahmad belum mengumpulkan tugas Logaritma yang jatuh tempo kemarin.',
+                        siswaId: siswa1Id,
+                        dibaca: false,
+                        tanggal: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    await db.collection('notifikasi').add({
+                        untukRole: 'OrangTua',
+                        untukUserId: createdUids['OrangTua'],
+                        tipe: 'pengajuan',
+                        judul: 'Perubahan cita-cita dalam peninjauan',
+                        isi: 'Draft perubahan minat karier menjadi Arsitek sedang ditinjau oleh konselor akademik.',
+                        siswaId: siswa1Id,
+                        dibaca: false,
+                        tanggal: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    await db.collection('notifikasi').add({
+                        untukRole: 'OrangTua',
+                        untukUserId: createdUids['OrangTua'],
+                        tipe: 'info',
+                        judul: 'KRS Semester Ganjil Disetujui',
+                        isi: 'Rencana studi untuk semester mendatang telah divalidasi oleh sistem.',
+                        siswaId: siswa1Id,
+                        dibaca: true,
+                        tanggal: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+
+                    log('✅ Data spesifik Siswa (termasuk checkpoints, aktivitas, kehadiran, catatan guru, & notifikasi ortu) berhasil di-seed.');
+
 
                 } catch(e) {
                     log(`❌ Error relasi/seeding: ${e.message}`);

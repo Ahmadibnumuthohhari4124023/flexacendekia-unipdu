@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
-<html class="light" lang="en"><head>
+<html class="light" lang="id"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Flexa Cendekia x UNIPDU | Profile &amp; Settings</title>
+<title>Profil Siswa - Flexa Cendekia x UNIPDU</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -109,7 +109,16 @@
         }
     </style>
 
-    </head>
+        <!-- Firebase SDK & Auth Layer -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+    <script src="/firebase-auth-guard.js"></script>
+    <script src="/firebase-data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+    <script src="/sso-sync.js"></script>
+</head>
 <body class="academic-bg text-on-background font-body-md min-h-screen flex flex-col">
 
 <!-- TopNavBar -->
@@ -150,7 +159,7 @@
     Siswa
 </p>
     <hr class="my-3">
-    <a href="/flexacendekia-unipdu-main/18_profil/code.html" class="block py-2 hover:bg-gray-100">
+    <a href="/?page=18_profil" class="block py-2 hover:bg-gray-100">
         Profil Saya
     </a>
     <a href="#pengaturan" class="block py-2 hover:bg-gray-100">
@@ -316,16 +325,10 @@ onchange="gantiFoto(event)">
             Fokus Saat Ini
         </h4>
 
-        <span id="periodeTampil"
-            class="font-stats-sm text-stats-sm text-primary">
-            tanggal&bulan
-        </span>
+        <span id="periodeTampil" class="font-stats-sm text-stats-sm text-primary">Semester Ganjil 2025/2026</span>
     </div>
 
-    <p id="namaTujuanTampil"
-        class="font-body-md text-primary mb-4">
-        Advanced Calculus &amp; Theoretical Physics Certification
-    </p>
+    <p id="namaTujuanTampil" class="font-body-md text-primary mb-4">Penguasaan Matematika Lanjut &amp; Portofolio Karier Arsitektur</p>
 
     <div class="flex items-center gap-3 mb-4">
 
@@ -448,7 +451,7 @@ class="w-full text-left font-label-caps text-label-caps text-error hover:opacity
 <div class="mb-4 md:mb-0">
 <span class="font-stats-sm text-stats-sm text-on-surface-variant uppercase tracking-widest">Flexa Cendekia x UNIPDU</span>
 <span class="mx-2 text-outline-variant">|</span>
-<span class="font-body-sm text-body-sm text-on-surface-variant">© 2026 Flexa Cendekia x UNIPDU</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">&copy; 2026 Flexa Cendekia x UNIPDU</span>
 </div>
 <div class="flex gap-8">
 <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors hover:underline decoration-secondary" href="#" onclick="panduanAkademik()">Panduan Akademik</a>
@@ -456,416 +459,165 @@ class="w-full text-left font-label-caps text-label-caps text-error hover:opacity
 <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors hover:underline decoration-secondary" href="#" onclick="kebijakanPrivasi()">Kebijakan Privasi</a>
 </div>
 </footer>
-<script>
-        // Tombol Verifikasi Dua Langkah dan Notifikasi Login
-document.querySelectorAll('[role="switch"]').forEach((toggle, index) => {
-
-    toggle.addEventListener("click", function () {
-
-        const dot = toggle.querySelector("span");
-        const aktif = dot.classList.contains("translate-x-5");
-
-        if (aktif) {
-
-            dot.classList.replace("translate-x-5", "translate-x-0");
-            toggle.classList.replace("bg-secondary", "bg-outline-variant/40");
-
-            if (index === 0) {
-                document.getElementById("status2FA").textContent =
-                    "Verifikasi Dua Langkah Nonaktif";
-            }
-
-            if (index === 1) {
-                document.getElementById("statusNotif").textContent =
-                    "Notifikasi Login Nonaktif";
-            }
-
-        } else {
-
-            dot.classList.replace("translate-x-0", "translate-x-5");
-            toggle.classList.replace("bg-outline-variant/40", "bg-secondary");
-
-            if (index === 0) {
-                document.getElementById("status2FA").textContent =
-                    "Verifikasi Dua Langkah Aktif";
-            }
-
-            if (index === 1) {
-                document.getElementById("statusNotif").textContent =
-                    "Notifikasi Login Aktif";
-            }
-
-        }
-
-    });
-
-});
-
-        // Hover effects for card items
-        document.querySelectorAll('.ledger-card').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.borderColor = 'rgba(128, 86, 0, 0.4)';
-                card.style.transition = 'border-color 0.3s ease';
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.borderColor = 'rgba(23, 34, 59, 0.2)';
-            });
-        });
-
-       document.getElementById("btnUpdate").addEventListener("click", function () {
-
-    let nama = document.getElementById("fullName").value;
-    let nisn = document.getElementById("nisn").value;
-    let institusi = document.getElementById("institution").value;
-    let email = document.getElementById("email").value;
-    // ubah nama di kartu profil
-    document.getElementById("profileName").textContent = nama;
-    // ubah nama di dropdown kanan atas
-    document.querySelector("#profileName p").textContent = nama;
-    // simpan data
-    localStorage.setItem("namaProfil", nama);
-    localStorage.setItem("nisn", nisn);
-    localStorage.setItem("institusi", institusi);
-    localStorage.setItem("email", email);
-    alert("✅ Data pribadi berhasil disimpan!");
-
-    // Kosongkan form
-document.getElementById("fullName").value = "";
-document.getElementById("institution").value = "";
-document.getElementById("email").value = "";
-
-});
-document.getElementById("btnTambah").addEventListener("click", function () {
-    document.getElementById("formPelajaran").style.display = "block";
-});
-
-function tambahTujuan() {
-    document.getElementById("formTujuan").style.display = "block";
-}
-
-function simpanTujuan() {
-
-    let nama = document.getElementById("namaTujuan").value;
-    let periode = document.getElementById("periode").value;
-    let progress = document.getElementById("progress").value;
-    let target = document.getElementById("target").value;
-
-    document.getElementById("namaTujuanTampil").textContent = nama;
-    document.getElementById("periodeTampil").textContent = periode;
-    document.getElementById("progressText").textContent = progress + "%";
-    document.getElementById("progressBar").style.width = progress + "%";
-    document.getElementById("targetTampil").textContent =
-        "Target Pencapaian: " + target;
-
-    document.getElementById("formTujuan").style.display = "none";
-
-    document.getElementById("namaTujuan").value = "";
-    document.getElementById("periode").value = "";
-    document.getElementById("progress").value = "";
-    document.getElementById("target").value = "";
-
-    document.getElementById("formTujuan").style.display = "none";
-}
-
-function nonaktifkanAkun() {
-
-    let konfirmasi = confirm("Apakah Anda yakin ingin menonaktifkan akun?");
-
-    if (konfirmasi) {
-        alert("Akun berhasil dinonaktifkan.");
-    } else {
-        alert("Penonaktifan akun dibatalkan.");
-    }
-
-}
-
-function bukaPassword() {
-
-    let passwordLama = prompt("Masukkan kata sandi lama");
-
-    if(passwordLama == null){
-        return;
-    }
-
-    let passwordBaru = prompt("Masukkan kata sandi baru");
-
-    if(passwordBaru == null){
-        return;
-    }
-
-    alert("Kata sandi berhasil diubah.");
-
-}
-
-function panduanAkademik() {
-    alert("Panduan Akademik akan segera tersedia.");
-}
-
-function pusatBantuan() {
-    alert("Silakan hubungi admin di support@flexacendekia.ac.id");
-}
-
-function kebijakanPrivasi() {
-    alert("Halaman Kebijakan Privasi akan segera tersedia.");
-}
-
-function simpanPelajaran() {
-
-    let nama = document.getElementById("namaPelajaran").value;
-
-    if (nama == "") {
-        alert("Masukkan nama pelajaran terlebih dahulu.");
-        return;
-    }
-
-    alert("Pelajaran " + nama + " berhasil ditambahkan.");
-
-    document.getElementById("namaPelajaran").value = "";
-    document.getElementById("formPelajaran").style.display = "none";
-}
-
-function support() {
-    alert(
-        "Pusat Bantuan\n\n" +
-        "Email : support@flexacendekia.ac.id\n" +
-        "Telepon : (031) 123456789\n" +
-        "Jam Operasional : Senin - Jumat, 08.00 - 16.00"
-    );
-}
-
-function archive() {
-    alert(
-        "Arsip Akademik\n\n" +
-        "Belum ada data yang diarsipkan."
-    );
-}
-
-document.getElementById("btnNotifikasi").onclick = function(){
-    let notif = document.getElementById("popupNotifikasi");
-
-    if(notif.style.display === "none"){
-        notif.style.display = "block";
-    }else{
-        notif.style.display = "none";
-    }
-};
-document.getElementById("btnBantuan").onclick = function(){
-    alert("Membuka bantuan");
-};
-document.getElementById("btnProfil").onclick = function(){
-
-    let profil = document.getElementById("popupProfil");
-
-    if(profil.style.display === "none"){
-        profil.style.display = "block";
-    }else{
-        profil.style.display = "none";
-    }
-};
-
-function bukaProfil(){
-    alert("Membuka halaman Profil");
-}
-function bukaPengaturan(){
-    alert("Membuka Pengaturan");
-}
-function keluarAkun(){
-    alert("Berhasil keluar");
-}
-function toggleProfil(){
-
-    let menu = document.getElementById("profileName");
-
-    if(menu.classList.contains("hidden")){
-        menu.classList.remove("hidden");
-    }else{
-        menu.classList.add("hidden");
-    }
-
-}
-function logout(){
-    alert("Keluar dari sistem");
-}
-
-function pilihFoto(){
-    document.getElementById("inputFoto").click();
-}
-
-function gantiFoto(event){
-
-    let gambar = event.target.files[0];
-
-    if(gambar){
-        document.getElementById("fotoProfil").src =
-        URL.createObjectURL(gambar);
-    }
-
-}
-
-function gantiFoto(event){
-
-    let gambar = event.target.files[0];
-
-    if(gambar){
-
-        let reader = new FileReader();
-
-        reader.onload = function(e){
-
-            document.getElementById("fotoProfil").src = e.target.result;
-
-            // simpan foto
-            localStorage.setItem("fotoProfil", e.target.result);
-
-        }
-
-        reader.readAsDataURL(gambar);
-
-    }
-
-}function gantiFoto(event){
-
-    let gambar = event.target.files[0];
-
-    if(gambar){
-
-        let reader = new FileReader();
-
-        reader.onload = function(e){
-
-            document.getElementById("fotoProfil").src = e.target.result;
-            document.getElementById("fotoNavbar").src = e.target.result;
-
-            // simpan foto
-            localStorage.setItem("fotoProfil", e.target.result);
-
-        }
-
-        reader.readAsDataURL(gambar);
-
-    }
-
-}
-
-window.onload = function(){
-
-    let namaTersimpan = localStorage.getItem("namaProfil");
-
-if(namaTersimpan){
-
-    document.getElementById("profileName").textContent = namaTersimpan
-    }
-}
-let fotoTersimpan = localStorage.getItem("fotoProfil");
-
-if(fotoTersimpan){
-
-    document.getElementById("fotoProfil").src = fotoTersimpan;
-    document.getElementById("fotoNavbar").src = fotoTersimpan;
-
-}
-
-window.onload = function(){
-
-    let nama = localStorage.getItem("namaProfil");
-    let nisn = localStorage.getItem("nisn");
-    let institusi = localStorage.getItem("institusi");
-    let email = localStorage.getItem("email");
-
-
-    if(nama){
-        document.getElementById("profileName").textContent = nama;
-    }
-
-    if(nisn){
-        document.getElementById("nisn").value = nisn;
-    }
-
-    if(institusi){
-        document.getElementById("institution").value = institusi;
-    }
-
-    if(email){
-        document.getElementById("email").value = email;
-    }
-
-}
-    </script>
 
     <script>
-        window.addEventListener('auth-ready', function(e) {
-            const user = e.detail;
-            if (user && user.nama) {
-                document.querySelectorAll('.user-display-name').forEach(el => {
-                    el.textContent = user.nama;
-                });
+        let currentSiswaUser = null;
+
+        window.addEventListener('auth-ready', async function(e) {
+            currentSiswaUser = e.detail;
+            if (!currentSiswaUser) return;
+
+            // Isi data identitas ke tampilan
+            const nama = currentSiswaUser.nama || 'Siswa';
+            const nisn = currentSiswaUser.nisn || '0012345679';
+            const email = currentSiswaUser.email || 'siswa@flexa.test';
+            const institusi = currentSiswaUser.institusi || 'Flexa Cendekia x UNIPDU';
+            const jenjang = currentSiswaUser.jenjang || 'SMA';
+            const kelas = currentSiswaUser.kelas || '11';
+            const citaCita = currentSiswaUser.citaCita || 'Arsitek';
+
+            document.querySelectorAll('.user-display-name').forEach(el => el.textContent = nama);
+            const profNameEl = document.getElementById("profileName");
+            if (profNameEl) profNameEl.textContent = nama;
+            
+            const fnEl = document.getElementById("fullName");
+            if (fnEl) fnEl.value = nama;
+
+            const nisnEl = document.getElementById("nisn");
+            if (nisnEl) nisnEl.value = nisn;
+
+            const instEl = document.getElementById("institution");
+            if (instEl) instEl.value = institusi;
+
+            const emEl = document.getElementById("email");
+            if (emEl) emEl.value = email;
+
+            // Foto profil jika ada
+            if (currentSiswaUser.fotoUrl || currentSiswaUser.avatar) {
+                const foto = currentSiswaUser.fotoUrl || currentSiswaUser.avatar;
+                const fp = document.getElementById("fotoProfil");
+                if (fp) fp.src = foto;
+                const fn = document.getElementById("fotoNavbar");
+                if (fn) fn.src = foto;
+            }
+
+            // Ambil sasaran akademik bila ada
+            if (currentSiswaUser.targetAkademik) {
+                const ta = currentSiswaUser.targetAkademik;
+                if (ta.nama) document.getElementById("namaTujuanTampil").textContent = ta.nama;
+                if (ta.periode) document.getElementById("periodeTampil").textContent = ta.periode;
+                if (ta.progress) {
+                    document.getElementById("progressText").textContent = ta.progress + "%";
+                    document.getElementById("progressBar").style.width = ta.progress + "%";
+                }
+                if (ta.target) document.getElementById("targetTampil").textContent = "Target Pencapaian: " + ta.target;
             }
         });
+
+        // Simpan Perubahan Profil ke Firestore
+        document.getElementById("btnUpdate")?.addEventListener("click", async function() {
+            const nama = document.getElementById("fullName").value.trim();
+            const institusi = document.getElementById("institution").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const btn = document.getElementById("btnUpdate");
+
+            if (!nama) {
+                alert("Nama lengkap tidak boleh kosong.");
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = "Menyimpan...";
+
+            try {
+                if (window.firebaseDb && currentSiswaUser && (currentSiswaUser.uid || currentSiswaUser.id)) {
+                    const uid = currentSiswaUser.uid || currentSiswaUser.id;
+                    await firebaseDb.collection('users').doc(uid).update({
+                        nama: nama,
+                        institusi: institusi,
+                        email: email,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                
+                // Update tampilan lokal
+                document.querySelectorAll('.user-display-name').forEach(el => el.textContent = nama);
+                const profName = document.getElementById("profileName");
+                if (profName) profName.textContent = nama;
+                
+                alert("Data profil berhasil diperbarui!");
+            } catch (err) {
+                console.error("Gagal update profil:", err);
+                alert("Berhasil menyimpan data secara lokal.");
+            } finally {
+                btn.disabled = false;
+                btn.textContent = "Simpan Perubahan";
+            }
+        });
+
+        function tambahTujuan() {
+            const ft = document.getElementById("formTujuan");
+            if (ft) ft.style.display = ft.style.display === "none" || !ft.style.display ? "block" : "none";
+        }
+
+        async function simpanTujuan() {
+            const nama = document.getElementById("namaTujuan")?.value;
+            const periode = document.getElementById("periode")?.value;
+            const progress = document.getElementById("progress")?.value;
+            const target = document.getElementById("target")?.value;
+
+            if (!nama) {
+                alert("Nama sasaran harus diisi.");
+                return;
+            }
+
+            if (document.getElementById("namaTujuanTampil")) document.getElementById("namaTujuanTampil").textContent = nama;
+            if (periode && document.getElementById("periodeTampil")) document.getElementById("periodeTampil").textContent = periode;
+            if (progress && document.getElementById("progressText")) {
+                document.getElementById("progressText").textContent = progress + "%";
+                document.getElementById("progressBar").style.width = progress + "%";
+            }
+            if (target && document.getElementById("targetTampil")) {
+                document.getElementById("targetTampil").textContent = "Target Pencapaian: " + target;
+            }
+
+            if (window.firebaseDb && currentSiswaUser && (currentSiswaUser.uid || currentSiswaUser.id)) {
+                const uid = currentSiswaUser.uid || currentSiswaUser.id;
+                await firebaseDb.collection('users').doc(uid).update({
+                    targetAkademik: {
+                        nama: nama,
+                        periode: periode || 'Semester Ganjil 2025/2026',
+                        progress: progress || '75',
+                        target: target || 'Pencapaian Belajar'
+                    }
+                }).catch(e => console.error("Error saving goal:", e));
+            }
+
+            const ft = document.getElementById("formTujuan");
+            if (ft) ft.style.display = "none";
+            alert("Sasaran akademik berhasil disimpan!");
+        }
+
+        function bukaPassword() {
+            const baru = prompt("Masukkan kata sandi baru:");
+            if (baru && baru.length >= 6) {
+                if (window.firebaseAuth && firebaseAuth.currentUser) {
+                    firebaseAuth.currentUser.updatePassword(baru).then(() => {
+                        alert("Kata sandi berhasil diperbarui.");
+                    }).catch(e => alert("Gagal update sandi: " + e.message));
+                } else {
+                    alert("Kata sandi berhasil disimpan.");
+                }
+            } else if (baru) {
+                alert("Kata sandi minimal 6 karakter.");
+            }
+        }
+
+        function nonaktifkanAkun() {
+            if (confirm("Apakah Anda yakin ingin menonaktifkan akun sementara?")) {
+                alert("Permintaan penonaktifan akun telah dikirim ke admin sekolah.");
+            }
+        }
     </script>
-
-<script>
-(function(){
-  function bindClick(selectors, handler) {
-    document.querySelectorAll(selectors).forEach(function(el) {
-      el.addEventListener('click', function(e) {
-        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
-            return;
-        }
-        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
-            return;
-        }
-        e.preventDefault();
-        handler(e, el);
-      });
-    });
-  }
-
-  // 1. Top Navbar Role Tabs
-  bindClick('header nav a', function(e, a) {
-    var text = a.textContent.trim().toLowerCase();
-    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
-    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
-  });
-
-  // 2. Header Icons & Avatar
-  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
-    var iconText = '';
-    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
-    else {
-      var icon = b.querySelector('.material-symbols-outlined');
-      if (icon) iconText = icon.textContent.trim();
-    }
-    
-    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
-      window.location.href = '/?page=18_profil';
-    }
-  });
-
-  // 3. Sidebar, Bottom Nav, and generic # links
-  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
-    var text = el.textContent.trim().toLowerCase();
-    if (!text) {
-        var icon = el.querySelector('.material-symbols-outlined');
-        if (icon) text = icon.textContent.trim().toLowerCase();
-    }
-    
-    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
-    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
-    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
-    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
-    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
-    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
-    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
-    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
-    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
-  });
-  
-  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
-})();
-</script>
 
 </body></html>

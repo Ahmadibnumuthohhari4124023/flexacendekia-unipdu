@@ -1,0 +1,11 @@
+node_modules/
+.env
+scratch/
+*.log
+all_html.txt
+dummy_findings.json
+fix-guru.js
+fix-ortu.js
+fix.js
+server/test_roadmap.js
+_legacy_backup/

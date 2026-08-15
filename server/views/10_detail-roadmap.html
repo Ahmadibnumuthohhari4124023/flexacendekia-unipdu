@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Peta Jalan Arsitektur | Akademika</title>
+    <title>Detail Roadmap Karier - Flexa Cendekia x UNIPDU</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
@@ -132,52 +132,67 @@
         }
     </style>
 
-    </head>
+    <!-- Firebase SDK (compat) & Auth Layer -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+    <script src="/firebase-auth-guard.js"></script>
+    <script src="/firebase-data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+    <script src="/career-roadmap-data.js"></script>
+</head>
 
 <body class="min-h-screen flex flex-col">
 
     <!-- Top Navigation -->
     <header class="bg-surface-container-lowest dark:bg-primary border-b border-outline-variant/20 flex justify-between items-center w-full px-margin-desktop h-16 sticky top-0 z-50">
         <div class="flex items-center gap-8">
-            <h1 class="font-display-lg text-display-lg text-primary dark:text-primary-fixed">Akademika</h1>
+            <h1 class="font-display-lg text-display-lg text-primary dark:text-primary-fixed">Flexa Cendekia x UNIPDU</h1>
             <nav class="hidden md:flex gap-6 h-full items-center">
-                <a class="font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-low transition-colors px-2 py-1" href="/?page=08_dashboard-siswa">Dashboard</a>
-                <a class="font-label-caps text-label-caps text-secondary font-bold border-b-2 border-secondary px-2 py-1" href="/?page=09_krs-siswa">KRS</a>
-                <a class="font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-low transition-colors px-2 py-1" href="/?page=13_riwayat-semester">Riwayat Semester</a>
+                <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors px-2 py-1" href="/?page=08_dashboard-siswa">Dashboard</a>
+                <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors px-2 py-1" href="/?page=09_krs-siswa">KRS</a>
+                <a class="font-label-caps text-label-caps text-secondary font-bold border-b-2 border-secondary px-2 py-1" href="/?page=10_detail-roadmap">Detail Roadmap</a>
+                <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors px-2 py-1" href="/?page=13_riwayat-semester">Riwayat Semester</a>
             </nav>
         </div>
         <div class="flex items-center gap-4">
-            <div class="relative hidden sm:block">
-                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
-                <input class="pl-10 pr-4 py-1.5 bg-surface-container-low border border-outline-variant/30 rounded-none focus:ring-1 focus:ring-primary font-body-sm text-body-sm w-64" placeholder="Cari pencapaian..." type="text" />
-            </div>
-            <a href="/?page=17_notifikasi" class="material-symbols-outlined text-primary hover:text-secondary transition-colors">notifications</a>
-            <a href="/?page=18_profil_profil-siswa" class="w-8 h-8 bg-primary rounded-full overflow-hidden border border-outline-variant/50 hover:ring-2 hover:ring-brand-gold/50 transition-all block">
-                <img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjerfRAYi1BiDkVosKSr9JE4y6g6VXPG1U-8gvpdOvq62p5_5ShWU-EgFA0t_kuFptYbPgQ7zzsa_FPyY1vlrKOXJhVnfhmP3KBJSDdm9rmZj1GqudIH9xFhDjPXHDnrPWsSV1V-Bzj_vpjN7GwTxriO6OwdP9uRci1r-CLC1o6Iz2RJopR0idgvo_IF4NDtPpIi_xBErVm_625QO2ohVWEYG5HGlTL3cru3ngiTzZxTbTAURTECAlFesHpsPd_RhncoMeg8lAbN8" />
+            <a href="/?page=17_notifikasi" class="material-symbols-outlined text-primary hover:text-secondary transition-colors" title="Notifikasi">notifications</a>
+            <a href="/?page=18_profil_profil-siswa" class="w-8 h-8 bg-primary rounded-full overflow-hidden border border-outline-variant/50 hover:ring-2 hover:ring-brand-gold/50 transition-all flex items-center justify-center text-white text-xs font-bold" title="Profil Siswa">
+                <span class="material-symbols-outlined text-sm">person</span>
             </a>
         
-                <!-- Logout Button -->
-                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='../01_login/code.html');" class="ml-2 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
-                    <span class="material-symbols-outlined">logout</span>
-                    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-surface text-on-surface px-2 py-1 shadow-md rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border border-on-surface/10">Keluar</span>
-                </button>
-            </div>
+            <!-- Logout Button -->
+            <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" class="ml-2 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
+                <span class="material-symbols-outlined">logout</span>
+                <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-surface text-on-surface px-2 py-1 shadow-md rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border border-on-surface/10">Keluar</span>
+            </button>
+        </div>
     </header>
+
     <div class="flex flex-1 overflow-hidden">
         <!-- Sidebar -->
         <aside class="hidden md:flex flex-col h-full py-margin-desktop bg-surface-container-low dark:bg-tertiary-container border-r border-outline-variant/20 w-64">
             <div class="px-6 mb-8">
-                <h2 class="font-headline-md text-headline-md text-primary dark:text-primary-fixed">Portal Akademik</h2>
-                <p class="font-label-caps text-[10px] text-on-surface-variant tracking-widest mt-1 uppercase" id="academic-year-sidebar">Tahun Akademik 2024</p>
+                <h2 class="font-headline-md text-headline-md text-primary dark:text-primary-fixed">Portal Siswa</h2>
+                <p class="font-label-caps text-[10px] text-on-surface-variant tracking-widest mt-1 uppercase" id="academic-year-sidebar">Tahun Akademik 2026/2027</p>
             </div>
             <nav class="flex-1 space-y-1">
                 <a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=08_dashboard-siswa">
                     <span class="material-symbols-outlined">dashboard</span>
                     <span class="font-label-caps text-label-caps">Dashboard</span>
                 </a>
-                <a class="flex items-center gap-3 px-6 py-3 bg-secondary/10 text-secondary border-r-4 border-secondary translate-x-1 duration-200" href="/?page=09_krs-siswa">
+                <a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=09_krs-siswa">
                     <span class="material-symbols-outlined">menu_book</span>
                     <span class="font-label-caps text-label-caps">KRS</span>
+                </a>
+                <a class="flex items-center gap-3 px-6 py-3 bg-secondary/10 text-secondary border-r-4 border-secondary translate-x-1 duration-200" href="/?page=10_detail-roadmap">
+                    <span class="material-symbols-outlined">alt_route</span>
+                    <span class="font-label-caps text-label-caps">Detail Roadmap</span>
+                </a>
+                <a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=11_checkpoint-jumat">
+                    <span class="material-symbols-outlined">event_available</span>
+                    <span class="font-label-caps text-label-caps">Checkpoint Jumat</span>
                 </a>
                 <a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=13_riwayat-semester">
                     <span class="material-symbols-outlined">grade</span>
@@ -185,25 +200,23 @@
                 </a>
                 <a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=18_profil_profil-siswa">
                     <span class="material-symbols-outlined">settings</span>
-                    <span class="font-label-caps text-label-caps">Pengaturan</span>
+                    <span class="font-label-caps text-label-caps">Profil &amp; Pengaturan</span>
                 </a>
             </nav>
             <div class="px-6 mt-auto space-y-4">
-                <button class="w-full bg-primary text-on-primary py-3 font-label-caps text-label-caps hover:opacity-90 transition-opacity">
-                    Tambah Pelajaran Baru
-                </button>
+                <a href="/?page=12_ganti-cita-cita" class="w-full bg-secondary text-white py-3 font-label-caps text-xs tracking-wider hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">edit</span>
+                    Ubah Cita-Cita
+                </a>
                 <div class="pt-4 border-t border-outline-variant/20">
                     <a class="flex items-center gap-3 py-2 text-on-surface-variant hover:text-primary font-body-sm text-body-sm" href="/?page=01_login_bantuan">
                         <span class="material-symbols-outlined text-sm">contact_support</span>
-                        <span>Bantuan</span>
-                    </a>
-                    <a class="flex items-center gap-3 py-2 text-on-surface-variant hover:text-primary font-body-sm text-body-sm" href="/?page=13_riwayat-semester">
-                        <span class="material-symbols-outlined text-sm">inventory_2</span>
-                        <span>Arsip</span>
+                        <span>Pusat Bantuan</span>
                     </a>
                 </div>
             </div>
         </aside>
+
         <!-- Main Content -->
         <main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop">
             <div class="max-w-container-max mx-auto">
@@ -216,22 +229,23 @@
                             <span class="font-label-caps text-[10px] text-primary" id="peta-jalan-title">PETA JALAN ARSITEKTUR</span>
                         </nav>
                         <h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-primary">Jalur Strategis 6 Tahun</h2>
-                        <p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-2xl">Buku besar akademik komprehensif yang merinci transisi dari pendidikan menengah ke studi arsitektur profesional.</p>
+                        <p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-2xl" id="roadmap-subtitle">Buku besar akademik komprehensif yang merinci transisi dari pendidikan menengah ke studi profesional.</p>
                     </div>
                     <div class="flex gap-4">
                         <div class="bg-ledger-ivory border border-primary/20 p-4 min-w-[140px]">
                             <p class="font-label-caps text-[10px] text-outline mb-1">PENYELESAIAN</p>
-                            <p class="font-stats-lg text-stats-lg text-secondary">38%</p>
+                            <p class="font-stats-lg text-stats-lg text-secondary" id="completion-pct">38%</p>
                             <div class="w-full h-1 bg-surface-container mt-2">
-                                <div class="bg-secondary h-full" style="width: 38%"></div>
+                                <div class="bg-secondary h-full" id="completion-bar" style="width: 38%"></div>
                             </div>
                         </div>
                         <div class="bg-ledger-ivory border border-primary/20 p-4 min-w-[140px]">
                             <p class="font-label-caps text-[10px] text-outline mb-1">KREDIT</p>
-                            <p class="font-stats-lg text-stats-lg text-primary">42/144</p>
+                            <p class="font-stats-lg text-stats-lg text-primary" id="credits-display">42/144 Kredit</p>
                         </div>
                     </div>
                 </div>
+
                 <!-- Roadmap Layout -->
                 <div class="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
                     <!-- Phase 1: SMA (Left Side) -->
@@ -240,72 +254,56 @@
                             <div class="bg-primary text-on-primary px-3 py-1 font-stats-sm text-stats-sm">FASE 01</div>
                             <h3 class="font-headline-md text-headline-md">Dasar SMA</h3>
                         </div>
+
                         <!-- Year 10 -->
-                        <div class="bg-ledger-ivory border border-outline-variant/30 p-6 hard-shadow relative">
+                        <div class="bg-ledger-ivory border border-outline-variant/30 p-6 hard-shadow relative" id="fase1-year10-card">
                             <div class="absolute top-4 right-4 flex gap-1">
                                 <span class="material-symbols-outlined text-secondary text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
                             </div>
                             <h4 class="font-label-caps text-label-caps text-secondary mb-4">TAHUN 10: EKSPLORASI</h4>
-                            <ul class="space-y-4 ledger-line">
+                            <ul class="space-y-4 ledger-line" id="fase1-year10-list">
                                 <li class="flex justify-between items-center py-1">
-                                    <span class="font-body-md text-body-md">Geometri Ruang I</span>
-                                    <span class="font-stats-sm text-stats-sm text-secondary">SELESAI</span>
-                                </li>
-                                <li class="flex justify-between items-center py-1">
-                                    <span class="font-body-md text-body-md">Sketsa Dasar</span>
-                                    <span class="font-stats-sm text-stats-sm text-secondary">SELESAI</span>
-                                </li>
-                                <li class="flex justify-between items-center py-1">
-                                    <span class="font-body-md text-body-md">Sejarah Seni Rupa</span>
+                                    <span class="font-body-md text-body-md">Mata Pelajaran Dasar</span>
                                     <span class="font-stats-sm text-stats-sm text-secondary">SELESAI</span>
                                 </li>
                             </ul>
                         </div>
+
                         <!-- Year 11 -->
-                        <div class="bg-ledger-ivory border border-outline-variant/30 p-6 relative">
+                        <div class="bg-ledger-ivory border border-outline-variant/30 p-6 relative" id="fase1-year11-card">
                             <div class="absolute top-4 right-4 text-outline">
                                 <span class="material-symbols-outlined text-lg">pending</span>
                             </div>
                             <h4 class="font-label-caps text-label-caps text-primary mb-4">TAHUN 11: KEAHLIAN INTI</h4>
-                            <ul class="space-y-4 ledger-line">
+                            <ul class="space-y-4 ledger-line" id="fase1-year11-list">
                                 <li class="flex justify-between items-center py-1">
-                                    <span class="font-body-md text-body-md">Fisika Bangunan</span>
+                                    <span class="font-body-md text-body-md">Pendalaman Peminatan</span>
                                     <span class="font-stats-sm text-stats-sm text-outline">70%</span>
-                                </li>
-                                <li class="flex justify-between items-center py-1">
-                                    <span class="font-body-md text-body-md">Perspektif 2 Titik Hilang</span>
-                                    <span class="font-stats-sm text-stats-sm text-secondary">SELESAI</span>
-                                </li>
-                                <li class="flex justify-between items-center py-1">
-                                    <span class="font-body-md text-body-md">Matematika Kalkulus</span>
-                                    <span class="font-stats-sm text-stats-sm text-outline">45%</span>
                                 </li>
                             </ul>
                         </div>
+
                         <!-- Year 12 -->
-                        <div class="bg-ledger-ivory border border-outline-variant/30 p-6 opacity-60">
+                        <div class="bg-ledger-ivory border border-outline-variant/30 p-6 opacity-80" id="fase1-year12-card">
                             <h4 class="font-label-caps text-label-caps text-outline mb-4">TAHUN 12: PERSIAPAN PORTOFOLIO</h4>
-                            <ul class="space-y-4 ledger-line">
+                            <ul class="space-y-4 ledger-line" id="fase1-year12-list">
                                 <li class="flex justify-between items-center py-1">
-                                    <span class="font-body-md text-body-md">Maket Studi I</span>
-                                    <span class="font-stats-sm text-stats-sm text-outline">TERKUNCI</span>
-                                </li>
-                                <li class="flex justify-between items-center py-1">
-                                    <span class="font-body-md text-body-md">Komposisi Warna</span>
+                                    <span class="font-body-md text-body-md">Persiapan Ujian &amp; Masuk PTN</span>
                                     <span class="font-stats-sm text-stats-sm text-outline">TERKUNCI</span>
                                 </li>
                             </ul>
                         </div>
                     </div>
-                    <!-- Phase 2: Gap Year (Middle Column) -->
+
+                    <!-- Phase 2: Transisi / Gap Year (Middle Column) -->
                     <div class="xl:col-span-3 space-y-6">
                         <div class="flex items-center gap-3 mb-4">
                             <div class="bg-secondary text-on-secondary px-3 py-1 font-stats-sm text-stats-sm">FASE 02</div>
-                            <h3 class="font-headline-md text-headline-md">Tahun Jeda</h3>
+                            <h3 class="font-headline-md text-headline-md">Transisi &amp; Portofolio</h3>
                         </div>
                         <div class="bg-secondary-container/10 border-2 border-secondary p-1">
                             <div class="bg-ledger-ivory border border-secondary p-6">
-                                <p class="font-body-sm text-body-sm italic text-on-surface-variant mb-6">"Interval khusus untuk kurasi portofolio yang intensif dan magang profesional."</p>
+                                <p class="font-body-sm text-body-sm italic text-on-surface-variant mb-6" id="fase2-quote">"Kurasi portofolio yang intensif dan magang persiapan profesional."</p>
                                 <div class="space-y-8">
                                     <div>
                                         <h5 class="font-label-caps text-[10px] text-secondary mb-3">TONGGAK PENCAPAIAN</h5>
@@ -314,24 +312,23 @@
                                                 <div class="flex-shrink-0 w-8 h-8 rounded-full border border-secondary flex items-center justify-center text-secondary font-stats-sm">01</div>
                                                 <div>
                                                     <p class="font-label-caps text-label-caps">Tinjauan Portofolio</p>
-                                                    <p class="font-body-sm text-body-sm text-outline">12 Karya Terpilih</p>
+                                                    <p class="font-body-sm text-body-sm text-outline">Koleksi Karya Terkurasi</p>
                                                 </div>
                                             </div>
                                             <div class="flex gap-4">
                                                 <div class="flex-shrink-0 w-8 h-8 rounded-full border border-outline flex items-center justify-center text-outline font-stats-sm">02</div>
                                                 <div>
-                                                    <p class="font-label-caps text-label-caps text-outline">Magang Studio</p>
-                                                    <p class="font-body-sm text-body-sm text-outline">Durasi 3 Bulan</p>
+                                                    <p class="font-label-caps text-label-caps text-outline">Magang / Studi Lapangan</p>
+                                                    <p class="font-body-sm text-body-sm text-outline">Pengalaman Industri Nyata</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="border-t border-secondary/20 pt-6">
                                         <h5 class="font-label-caps text-[10px] text-secondary mb-3">PENGUASAAN ALAT</h5>
-                                        <div class="flex flex-wrap gap-2">
-                                            <span class="px-2 py-1 bg-surface-container text-primary font-stats-sm text-[10px] border border-outline-variant">AUTOCAD</span>
-                                            <span class="px-2 py-1 bg-surface-container text-primary font-stats-sm text-[10px] border border-outline-variant">SKETCHUP</span>
-                                            <span class="px-2 py-1 bg-surface-container text-primary font-stats-sm text-[10px] border border-outline-variant opacity-50">REVIT</span>
+                                        <div class="flex flex-wrap gap-2" id="fase2-tools-container">
+                                            <span class="px-2 py-1 bg-surface-container text-primary font-stats-sm text-[10px] border border-outline-variant">TOOL 01</span>
+                                            <span class="px-2 py-1 bg-surface-container text-primary font-stats-sm text-[10px] border border-outline-variant">TOOL 02</span>
                                         </div>
                                     </div>
                                 </div>
@@ -339,19 +336,22 @@
                         </div>
                         <!-- Vision Image -->
                         <div class="relative group cursor-pointer overflow-hidden border border-outline-variant/30">
-                            <img class="w-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-105" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlUwJvYGIgQmdjJkSHSyPtvQJiduTZSzGL6ZrqNWfkwiCdMEIiaxEM_ulEA4byNi0aCMmEq7EUJoT-xLerVk02PIoEanHwvgkUPTu3oNkLgjqtCwQbPYWIDdl_SrfZhqGTFzSSTvQJb0sH7c_AUC8diSqkwWfehUcKLunxXTVIk9CQ2SCsgHlDfbARfiacTZgKzLVRaHOpRfj51M40aK91rjDrT3n1OLTBfnxfxjAz9KCLb5boFRn86g2hCkY7dRZ9N8m3E_nSv6A" />
+                            <img id="vision-image" class="w-full aspect-[4/5] object-cover transition-transform duration-700 group-hover:scale-105" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=600&auto=format&fit=crop" alt="Visi Profesi" />
                             <div class="absolute bottom-0 left-0 right-0 bg-primary/90 p-4 translate-y-full group-hover:translate-y-0 transition-transform">
                                 <p class="font-label-caps text-[10px] text-on-primary">VISI TERKURASI</p>
-                                <p class="font-body-sm text-body-sm text-on-primary-container" id="vision-year">Studi 2024</p>
+                                <p class="font-body-sm text-body-sm text-on-primary-container" id="vision-year">Studi Masa Depan</p>
                             </div>
                         </div>
                     </div>
+
                     <!-- Phase 3: Higher Ed (Right Column) -->
                     <div class="xl:col-span-5 space-y-6">
                         <div class="flex items-center gap-3 mb-4">
                             <div class="bg-tertiary text-on-tertiary px-3 py-1 font-stats-sm text-stats-sm">FASE 03</div>
-                            <h3 class="font-headline-md text-headline-md">S1 Arsitektur</h3>
+                            <h3 class="font-headline-md text-headline-md" id="fase3-title">Perguruan Tinggi</h3>
                         </div>
+
+                        <!-- Core Modules Table -->
                         <div class="bg-ledger-ivory border border-outline-variant/30 overflow-hidden">
                             <table class="w-full text-left border-collapse">
                                 <thead>
@@ -361,84 +361,40 @@
                                         <th class="p-4 font-label-caps text-label-caps text-right">STATUS</th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-outline-variant/20">
-                                    <tr class="hover:bg-surface-container-low transition-colors">
-                                        <td class="p-4 align-top">
-                                            <p class="font-stats-lg text-stats-lg">01</p>
-                                        </td>
-                                        <td class="p-4">
-                                            <p class="font-body-md text-body-md font-bold mb-1">Studio Perancangan I</p>
-                                            <p class="font-body-sm text-body-sm text-on-surface-variant">Dasar-dasar komposisi dan organisasi ruang.</p>
-                                        </td>
-                                        <td class="p-4 text-right">
-                                            <span class="inline-block px-2 py-1 bg-secondary/10 text-secondary font-stats-sm text-[10px] border border-secondary/20">MENDATANG</span>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-surface-container-low transition-colors">
-                                        <td class="p-4 align-top">
-                                            <p class="font-stats-lg text-stats-lg">02</p>
-                                        </td>
-                                        <td class="p-4">
-                                            <p class="font-body-md text-body-md font-bold mb-1">Sains Bangunan</p>
-                                            <p class="font-body-sm text-body-sm text-on-surface-variant">Penghawaan alami dan pencahayaan.</p>
-                                        </td>
-                                        <td class="p-4 text-right">
-                                            <span class="material-symbols-outlined text-outline">lock</span>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-surface-container-low transition-colors bg-surface-container-lowest">
-                                        <td class="p-4 align-top">
-                                            <p class="font-stats-lg text-stats-lg">03</p>
-                                        </td>
-                                        <td class="p-4">
-                                            <p class="font-body-md text-body-md font-bold mb-1">Struktur &amp; Konstruksi II</p>
-                                            <p class="font-body-sm text-body-sm text-on-surface-variant">Sistem bentang lebar dan material komposit.</p>
-                                        </td>
-                                        <td class="p-4 text-right">
-                                            <span class="material-symbols-outlined text-outline">lock</span>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-surface-container-low transition-colors">
-                                        <td class="p-4 align-top">
-                                            <p class="font-stats-lg text-stats-lg">04</p>
-                                        </td>
-                                        <td class="p-4">
-                                            <p class="font-body-md text-body-md font-bold mb-1">Teori Arsitektur</p>
-                                            <p class="font-body-sm text-body-sm text-on-surface-variant">Kritik arsitektur dan perkembangan desain modern.</p>
-                                        </td>
-                                        <td class="p-4 text-right">
-                                            <span class="material-symbols-outlined text-outline">lock</span>
-                                        </td>
-                                    </tr>
+                                <tbody class="divide-y divide-outline-variant/20" id="fase3-modules-body">
+                                    <!-- Populated dynamically -->
                                 </tbody>
                             </table>
                         </div>
+
+                        <!-- Proyeksi Karir (Clean, no overlap) -->
                         <div class="bg-primary p-6 text-on-primary relative overflow-hidden">
                             <div class="relative z-10">
-                                <h4 class="font-label-caps text-label-caps mb-4 text-primary-fixed">PROYEKSI KARIR</h4>
+                                <h4 class="font-label-caps text-label-caps mb-4 text-primary-fixed">PROYEKSI KARIER</h4>
                                 <div class="flex items-center gap-6">
                                     <div class="text-center">
-                                        <p class="font-stats-lg text-stats-lg" id="grad-year">2027</p>
-                                        <p class="font-label-caps text-[10px] opacity-70">KELULUSAN</p>
+                                        <p class="font-stats-lg text-stats-lg text-white font-bold" id="grad-year">2027</p>
+                                        <p class="font-label-caps text-[10px] opacity-70">KELULUSAN SMA</p>
                                     </div>
                                     <div class="h-8 w-px bg-on-primary/20"></div>
                                     <div class="text-center">
-                                        <p class="font-stats-lg text-stats-lg" id="prof-year">2029</p>
-                                        <p class="font-label-caps text-[10px] opacity-70">PROFESIONAL (PPAr)</p>
+                                        <p class="font-stats-lg text-stats-lg text-white font-bold" id="prof-year">2030</p>
+                                        <p class="font-label-caps text-[10px] opacity-70" id="prof-title-label">PROFESIONAL</p>
                                     </div>
                                 </div>
                             </div>
-                            <div class="absolute -right-4 -bottom-4 opacity-10">
-                                <span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'wght' 200;">architecture</span>
+                            <div class="absolute -right-4 -bottom-4 opacity-10 pointer-events-none">
+                                <span class="material-symbols-outlined text-[120px]" id="career-bg-icon" style="font-variation-settings: 'wght' 200;">work</span>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <!-- Footer Action -->
                 <div class="mt-12 py-8 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-6">
                     <div class="flex items-center gap-4">
                         <span class="material-symbols-outlined text-secondary">verified</span>
-                        <p class="font-body-sm text-body-sm" id="verified-date">Terakhir diverifikasi oleh Konselor Akademik pada 24 Okt 2023</p>
+                        <p class="font-body-sm text-body-sm" id="verified-date">Terakhir diverifikasi oleh Konselor Akademik</p>
                     </div>
                     <div class="flex gap-4">
                         <button id="download-pdf-btn" class="px-6 py-2 border border-primary font-label-caps text-label-caps hover:bg-surface-container transition-all">Unduh PDF</button>
@@ -448,43 +404,166 @@
             </div>
         </main>
     </div>
+
     <!-- Global Footer -->
     <footer class="bg-surface-container-lowest dark:bg-primary border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center w-full px-margin-desktop py-4 z-40">
-        <p class="font-stats-sm text-stats-sm text-on-surface-variant">© <span id="footer-year">2024</span> ScholarsLedger Academic Systems</p>
+        <p class="font-stats-sm text-stats-sm text-on-surface-variant">&copy; <span id="footer-year">2026</span> Flexa Cendekia x UNIPDU. Hak Cipta Dilindungi.</p>
         <div class="flex gap-8 mt-4 md:mt-0">
             <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="/?page=01_login_bantuan">Integritas Akademik</a>
             <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="/?page=01_login_kontak">Pusat Bantuan</a>
-            <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="../05_pilih-cita-cita/kebijakan-privasi.html">Kebijakan Privasi</a>
+            <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="/?page=01_login_panduan">Kebijakan Privasi</a>
         </div>
     </footer>
+
     <script>
-        // Micro-interactions for hover effects on ledger cards
-        document.querySelectorAll('.bg-ledger-ivory').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                if (card.classList.contains('hard-shadow')) {
-                    card.style.transform = 'translate(-2px, -2px)';
-                }
-            });
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translate(0, 0)';
-            });
-        });
+        let currentActiveCareer = 'Arsitek';
 
+        function applyDetailRoadmapUI(careerTitle, jenjang, kelas) {
+            const store = window.CareerRoadmapStore;
+            if (!store) return;
+
+            const roadmap = store.getCareerRoadmap(careerTitle, jenjang, kelas);
+            currentActiveCareer = roadmap.title;
+
+            // 1. Breadcrumbs & Titles
+            const elPeta = document.getElementById('peta-jalan-title');
+            if (elPeta) elPeta.textContent = 'PETA JALAN ' + roadmap.title.toUpperCase();
+
+            const elSub = document.getElementById('roadmap-subtitle');
+            if (elSub) elSub.textContent = `Buku besar akademik komprehensif yang merinci transisi dari pendidikan menengah ke studi ${roadmap.title} profesional.`;
+
+            // 2. Fase 1: SMA Years
+            const smaTopics = roadmap.sma.replace(/^Fokus:\s*/i, '').split(',').map(s => s.trim());
+            const y10List = document.getElementById('fase1-year10-list');
+            if (y10List) {
+                y10List.innerHTML = `
+                    <li class="flex justify-between items-center py-1">
+                        <span class="font-body-md text-body-md">${smaTopics[0] || 'Fondasi Keilmuan'}</span>
+                        <span class="font-stats-sm text-stats-sm text-secondary">SELESAI</span>
+                    </li>
+                    <li class="flex justify-between items-center py-1">
+                        <span class="font-body-md text-body-md">${smaTopics[1] || 'Keterampilan Dasar'}</span>
+                        <span class="font-stats-sm text-stats-sm text-secondary">SELESAI</span>
+                    </li>
+                    <li class="flex justify-between items-center py-1">
+                        <span class="font-body-md text-body-md">Literasi &amp; Logika</span>
+                        <span class="font-stats-sm text-stats-sm text-secondary">SELESAI</span>
+                    </li>
+                `;
+            }
+
+            const y11List = document.getElementById('fase1-year11-list');
+            if (y11List) {
+                y11List.innerHTML = `
+                    <li class="flex justify-between items-center py-1">
+                        <span class="font-body-md text-body-md">${smaTopics[2] || 'Pendalaman Peminatan'}</span>
+                        <span class="font-stats-sm text-stats-sm text-outline">70%</span>
+                    </li>
+                    <li class="flex justify-between items-center py-1">
+                        <span class="font-body-md text-body-md">${roadmap.kegiatan[0] || 'Karya Ilmiah / Praktikum'}</span>
+                        <span class="font-stats-sm text-stats-sm text-secondary">SELESAI</span>
+                    </li>
+                    <li class="flex justify-between items-center py-1">
+                        <span class="font-body-md text-body-md">Matematika &amp; Analisis</span>
+                        <span class="font-stats-sm text-stats-sm text-outline">45%</span>
+                    </li>
+                `;
+            }
+
+            const y12List = document.getElementById('fase1-year12-list');
+            if (y12List) {
+                y12List.innerHTML = `
+                    <li class="flex justify-between items-center py-1">
+                        <span class="font-body-md text-body-md">Portofolio &amp; Karya Unggulan</span>
+                        <span class="font-stats-sm text-stats-sm text-outline">TERKUNCI</span>
+                    </li>
+                    <li class="flex justify-between items-center py-1">
+                        <span class="font-body-md text-body-md">Simulasi Seleksi Masuk PTN</span>
+                        <span class="font-stats-sm text-stats-sm text-outline">TERKUNCI</span>
+                    </li>
+                `;
+            }
+
+            // 3. Fase 2: Transisi
+            const quoteEl = document.getElementById('fase2-quote');
+            if (quoteEl) quoteEl.textContent = roadmap.quote;
+
+            const visionImg = document.getElementById('vision-image');
+            if (visionImg && roadmap.img) visionImg.src = roadmap.img;
+
+            const toolsContainer = document.getElementById('fase2-tools-container');
+            if (toolsContainer) {
+                const tools = roadmap.resources.filter(r => r.type === 'tool').map(r => r.title);
+                if (!tools.length) tools.push('SOFTWARE UTAMA', 'STANDARD INDUSTRI', 'DIGITAL WORKSPACE');
+                toolsContainer.innerHTML = tools.slice(0, 3).map((t, idx) => `
+                    <span class="px-2 py-1 bg-surface-container text-primary font-stats-sm text-[10px] border border-outline-variant ${idx === 2 ? 'opacity-50' : ''}">${t.toUpperCase()}</span>
+                `).join('');
+            }
+
+            // 4. Fase 3: Perguruan Tinggi
+            const f3Title = document.getElementById('fase3-title');
+            if (f3Title) {
+                const ptName = roadmap.pt.split('.')[0] || `S1 ${roadmap.title}`;
+                f3Title.textContent = ptName;
+            }
+
+            const ptFocus = roadmap.pt.replace(/^.*Fokus:\s*/i, '').split(',').map(s => s.trim());
+            const modulesBody = document.getElementById('fase3-modules-body');
+            if (modulesBody) {
+                modulesBody.innerHTML = `
+                    <tr class="hover:bg-surface-container-low transition-colors">
+                        <td class="p-4 align-top"><p class="font-stats-lg text-stats-lg">01</p></td>
+                        <td class="p-4">
+                            <p class="font-body-md text-body-md font-bold mb-1">Fondasi &amp; Pengantar ${roadmap.title}</p>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant">${ptFocus[0] || 'Prinsip dasar dan metodologi keilmuan.'}</p>
+                        </td>
+                        <td class="p-4 text-right">
+                            <span class="inline-block px-2 py-1 bg-secondary/10 text-secondary font-stats-sm text-[10px] border border-secondary/20">MENDATANG</span>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors">
+                        <td class="p-4 align-top"><p class="font-stats-lg text-stats-lg">02</p></td>
+                        <td class="p-4">
+                            <p class="font-body-md text-body-md font-bold mb-1">Teori &amp; Aplikasi Terapan</p>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant">${ptFocus[1] || 'Penerapan konsep lanjutan di industri.'}</p>
+                        </td>
+                        <td class="p-4 text-right">
+                            <span class="material-symbols-outlined text-outline">lock</span>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors bg-surface-container-lowest">
+                        <td class="p-4 align-top"><p class="font-stats-lg text-stats-lg">03</p></td>
+                        <td class="p-4">
+                            <p class="font-body-md text-body-md font-bold mb-1">Studi Lanjut &amp; Metodologi</p>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant">${ptFocus[2] || 'Riset dan analisis tingkat lanjut.'}</p>
+                        </td>
+                        <td class="p-4 text-right">
+                            <span class="material-symbols-outlined text-outline">lock</span>
+                        </td>
+                    </tr>
+                    <tr class="hover:bg-surface-container-low transition-colors">
+                        <td class="p-4 align-top"><p class="font-stats-lg text-stats-lg">04</p></td>
+                        <td class="p-4">
+                            <p class="font-body-md text-body-md font-bold mb-1">Tugas Akhir &amp; Sertifikasi</p>
+                            <p class="font-body-sm text-body-sm text-on-surface-variant">Uji kompetensi profesi dan proyek kelulusan.</p>
+                        </td>
+                        <td class="p-4 text-right">
+                            <span class="material-symbols-outlined text-outline">lock</span>
+                        </td>
+                    </tr>
+                `;
+            }
+
+            // 5. Proyeksi Karir Icon & Title
+            const careerBgIcon = document.getElementById('career-bg-icon');
+            if (careerBgIcon) careerBgIcon.textContent = roadmap.icon || 'work';
+
+            const profLabel = document.getElementById('prof-title-label');
+            if (profLabel) profLabel.textContent = roadmap.title.toUpperCase();
+        }
+
+        // Export PDF
         const downloadPdfBtn = document.getElementById('download-pdf-btn');
-        const syncCalendarBtn = document.getElementById('sync-calendar-btn');
-
-        const downloadFile = (filename, content, mimeType) => {
-            const blob = new Blob([content], { type: mimeType });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        };
-
         if (downloadPdfBtn) {
             downloadPdfBtn.addEventListener('click', (event) => {
                 event.preventDefault();
@@ -495,22 +574,26 @@
 
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF({ unit: 'pt', format: 'a4' });
-                doc.setFontSize(18);
-                doc.text('ScholarsLedger Roadmap Overview', 40, 60);
-                doc.setFontSize(12);
+                doc.setFontSize(16);
+                doc.text(`Flexa Cendekia x UNIPDU - Detail Roadmap ${currentActiveCareer}`, 40, 60);
+                doc.setFontSize(11);
+                const currentYear = new Date().getFullYear();
                 const contentLines = [
-                    'Phase 1: SMA Foundation - 38% complete',
-                    'Phase 2: University Prep - In progress',
-                    'Next checkpoint: Checkpoint Jumat',
-                    `Target Graduation: ${new Date().getFullYear() + 3}`,
-                    `Professional track: PPAr by ${new Date().getFullYear() + 5}`,
-                    'Plan: Sync this roadmap to your calendar for milestone reminders.'
+                    `Jalur Profesi: ${currentActiveCareer}`,
+                    'Fase 1: Fondasi SMA - 38% terselesaikan',
+                    'Fase 2: Persiapan Transisi UNIPDU - Sedang berjalan',
+                    'Fase 3: Pendidikan Tinggi & Sertifikasi Profesional',
+                    `Estimasi Lulus SMA: ${currentYear + 1}`,
+                    `Estimasi Gelar Profesional: ${currentYear + 4}`,
+                    'Dokumen resmi buku besar rencana studi 6 tahun Flexa Cendekia x UNIPDU.'
                 ];
-                doc.text(contentLines, 40, 90, { maxWidth: 520, lineHeightFactor: 1.4 });
-                doc.save('scholarsledger-roadmap.pdf');
+                doc.text(contentLines, 40, 95, { maxWidth: 520, lineHeightFactor: 1.5 });
+                doc.save(`flexacendekia-roadmap-${currentActiveCareer.toLowerCase().replace(/\s+/g, '_')}.pdf`);
             });
         }
 
+        // Sync Calendar (ICS)
+        const syncCalendarBtn = document.getElementById('sync-calendar-btn');
         if (syncCalendarBtn) {
             syncCalendarBtn.addEventListener('click', (event) => {
                 event.preventDefault();
@@ -522,125 +605,72 @@
                 const icsContent = [
                     'BEGIN:VCALENDAR',
                     'VERSION:2.0',
-                    'PRODID:-//ScholarsLedger//Roadmap Sync//ID',
+                    'PRODID:-//FlexaCendekia//Roadmap Sync//ID',
                     'BEGIN:VEVENT',
-                    'UID:' + Date.now() + '@scholarsledger.edu',
+                    'UID:' + Date.now() + '@flexacendekia.unipdu.ac.id',
                     'DTSTAMP:' + toIcsDate(now),
                     'DTSTART:' + toIcsDate(eventStart),
                     'DTEND:' + toIcsDate(eventEnd),
-                    'SUMMARY:Roadmap Review - Checkpoint Jumat',
-                    'LOCATION:ScholarsLedger Portal',
-                    'DESCRIPTION:Phase 1 complete 38%\\nPhase 2 in progress\\nNext checkpoint: Checkpoint Jumat\\nSync your six-year academic roadmap for milestone reminders.',
+                    'SUMMARY:Review Roadmap 6 Tahun - ' + currentActiveCareer,
+                    'LOCATION:Portal Flexa Cendekia x UNIPDU',
+                    'DESCRIPTION:Penyelarasan kurikulum akademik 6 tahun untuk profesi ' + currentActiveCareer + ' di Flexa Cendekia x UNIPDU.',
                     'END:VEVENT',
                     'END:VCALENDAR'
                 ].join('\n');
-                downloadFile('scholarsledger-roadmap-sync.ics', icsContent, 'text/calendar');
-                alert('File kalender roadmap telah dibuat. Impor ke aplikasi kalender Anda.');
+
+                const blob = new Blob([icsContent], { type: 'text/calendar' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `flexacendekia-roadmap-sync-${currentActiveCareer.toLowerCase()}.ics`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                alert('File kalender roadmap ' + currentActiveCareer + ' telah dibuat. Impor ke aplikasi kalender Anda.');
             });
         }
 
-        // Realtime integration
+        // Realtime Dates
         document.addEventListener('DOMContentLoaded', () => {
             const currentYear = new Date().getFullYear();
+            const elYear = document.getElementById('academic-year-sidebar');
+            if (elYear) elYear.innerText = `Tahun Akademik ${currentYear}/${currentYear+1}`;
+            const elVision = document.getElementById('vision-year');
+            if (elVision) elVision.innerText = `Studi Visi ${currentYear}`;
             
-            // Sidebar and vision year
-            document.getElementById('academic-year-sidebar').innerText = `Tahun Akademik ${currentYear}`;
-            document.getElementById('vision-year').innerText = `Studi Paviliun Hunian ${currentYear}`;
+            const elGrad = document.getElementById('grad-year');
+            if (elGrad) elGrad.innerText = currentYear + 1;
+            const elProf = document.getElementById('prof-year');
+            if (elProf) elProf.innerText = currentYear + 4;
             
-            // Career projection years
-            document.getElementById('grad-year').innerText = currentYear + 3;
-            document.getElementById('prof-year').innerText = currentYear + 5;
-            
-            document.getElementById('footer-year').innerText = currentYear;
+            const elFooterYear = document.getElementById('footer-year');
+            if (elFooterYear) elFooterYear.innerText = currentYear;
 
-            // Verified Date logic (Simulate current date minus a few days)
             const date = new Date();
             const options = { year: 'numeric', month: 'short', day: 'numeric' };
             const dateString = date.toLocaleDateString('id-ID', options);
-            document.getElementById('verified-date').innerText = `Terakhir diverifikasi oleh Konselor Akademik pada ${dateString}`;
-        });
-    </script>
-    <!-- Firebase SDK & Auth -->
-    <script src="/firebase-config.js"></script>
-    <script src="/firebase-auth-guard.js"></script>
-    <script src="/firebase-data-store.js"></script>
-    <script src="/notification-sync.js"></script>
+            const elVer = document.getElementById('verified-date');
+            if (elVer) elVer.innerText = `Terakhir diverifikasi oleh Konselor Akademik pada ${dateString}`;
 
-    <script>
+            const savedCareer = localStorage.getItem('selectedCareer') || 'Arsitek';
+            applyDetailRoadmapUI(savedCareer);
+        });
+
+        // Reactive Auth listener
         window.addEventListener('auth-ready', function(e) {
             const user = e.detail;
-            if (user && user.nama) {
-                document.querySelectorAll('.user-display-name').forEach(el => {
-                    el.textContent = user.nama;
-                });
+            if (user) {
+                if (user.nama) {
+                    document.querySelectorAll('.user-display-name').forEach(el => {
+                        el.textContent = user.nama;
+                    });
+                }
+                const career = user.citaCita || localStorage.getItem('selectedCareer') || 'Arsitek';
+                localStorage.setItem('selectedCareer', career);
+                applyDetailRoadmapUI(career, user.jenjang, user.kelas);
             }
         });
     </script>
-
-<script>
-(function(){
-  function bindClick(selectors, handler) {
-    document.querySelectorAll(selectors).forEach(function(el) {
-      el.addEventListener('click', function(e) {
-        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
-            return;
-        }
-        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
-            return;
-        }
-        e.preventDefault();
-        handler(e, el);
-      });
-    });
-  }
-
-  // 1. Top Navbar Role Tabs
-  bindClick('header nav a', function(e, a) {
-    var text = a.textContent.trim().toLowerCase();
-    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
-    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
-  });
-
-  // 2. Header Icons & Avatar
-  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
-    var iconText = '';
-    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
-    else {
-      var icon = b.querySelector('.material-symbols-outlined');
-      if (icon) iconText = icon.textContent.trim();
-    }
-    
-    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
-      window.location.href = '/?page=18_profil';
-    }
-  });
-
-  // 3. Sidebar, Bottom Nav, and generic # links
-  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
-    var text = el.textContent.trim().toLowerCase();
-    if (!text) {
-        var icon = el.querySelector('.material-symbols-outlined');
-        if (icon) text = icon.textContent.trim().toLowerCase();
-    }
-    
-    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
-    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
-    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
-    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
-    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
-    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
-    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
-    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
-    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
-  });
-  
-  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
-})();
-</script>
-
 </body>
 </html>

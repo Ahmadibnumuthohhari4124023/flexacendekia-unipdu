@@ -1,492 +1,801 @@
 <!DOCTYPE html>
+<html class="light" lang="id">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Notifikasi | Flexa Cendekia x UNIPDU</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Libre+Franklin:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;600;700&amp;display=swap" rel="stylesheet"/>
+    <!-- SSO Sync -->
+    <script src="/sso-sync.js"></script>
 
-<html class="light" lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Notifications | ScholarsLedger</title>
-<!-- Tailwind CSS -->
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<!-- Material Symbols -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Libre+Franklin:wght@400;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;600;700&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<!-- Design System Theme Overrides -->
-<script id="tailwind-config">
+    <!-- Design System Theme Overrides -->
+    <script id="tailwind-config">
         tailwind.config = {
           darkMode: "class",
           theme: {
             extend: {
-              "colors": {
-                      "tertiary-container": "#002822",
-                      "surface-container": "#f0edf0",
-                      "inverse-primary": "#bbc6e7",
-                      "on-secondary-fixed-variant": "#614000",
-                      "on-error": "#ffffff",
-                      "on-secondary-container": "#754e00",
-                      "on-primary-fixed-variant": "#3c4661",
-                      "tertiary-fixed": "#adefe1",
-                      "on-tertiary": "#ffffff",
-                      "primary-container": "#17223b",
-                      "secondary": "#805600",
-                      "secondary-fixed-dim": "#f7bc60",
-                      "outline": "#76777e",
-                      "on-tertiary-fixed": "#00201b",
-                      "on-surface-variant": "#45464d",
-                      "on-tertiary-container": "#549589",
-                      "outline-variant": "#c6c6ce",
-                      "primary": "#020b24",
-                      "on-background": "#1b1b1d",
-                      "secondary-container": "#fdc265",
-                      "tertiary": "#000f0c",
-                      "on-tertiary-fixed-variant": "#005046",
-                      "surface-variant": "#e4e2e4",
-                      "secondary-fixed": "#ffddaf",
-                      "surface-container-low": "#f5f3f5",
-                      "on-primary-container": "#7f89a8",
-                      "surface-container-lowest": "#ffffff",
-                      "on-surface": "#1b1b1d",
-                      "on-primary": "#ffffff",
-                      "surface-dim": "#dcd9dc",
-                      "on-secondary": "#ffffff",
-                      "error": "#ba1a1a",
-                      "background": "#fbf8fb",
-                      "on-error-container": "#93000a",
-                      "on-primary-fixed": "#101b34",
-                      "surface-container-high": "#eae7ea",
-                      "inverse-on-surface": "#f3f0f2",
-                      "primary-fixed": "#d9e2ff",
-                      "surface-tint": "#535e7a",
-                      "surface": "#fbf8fb",
-                      "error-container": "#ffdad6",
-                      "tertiary-fixed-dim": "#91d3c5",
-                      "surface-container-highest": "#e4e2e4",
-                      "inverse-surface": "#303032",
-                      "surface-bright": "#fbf8fb",
-                      "on-secondary-fixed": "#281800",
-                      "primary-fixed-dim": "#bbc6e7"
+              colors: {
+                "primary": "#020b24",
+                "primary-container": "#17223b",
+                "on-primary": "#ffffff",
+                "primary-fixed": "#d9e2ff",
+                "secondary": "#805600",
+                "secondary-container": "#fdc265",
+                "on-secondary-container": "#754e00",
+                "secondary-fixed": "#ffddaf",
+                "secondary-fixed-dim": "#f7bc60",
+                "tertiary": "#000f0c",
+                "tertiary-container": "#002822",
+                "surface": "#fbf8fb",
+                "surface-container": "#f0edf0",
+                "surface-container-low": "#f5f3f5",
+                "surface-container-high": "#eae7ea",
+                "surface-container-lowest": "#ffffff",
+                "surface-variant": "#e4e2e4",
+                "on-surface": "#1b1b1d",
+                "on-surface-variant": "#45464d",
+                "outline": "#76777e",
+                "outline-variant": "#c6c6ce",
+                "error": "#ba1a1a",
+                "error-container": "#ffdad6",
+                "role-parent": "#A65C4B",
+                "role-guru": "#2E5A88"
               },
-              "borderRadius": {
-                      "DEFAULT": "0.25rem",
-                      "lg": "0.5rem",
-                      "xl": "0.75rem",
-                      "full": "9999px"
-              },
-              "spacing": {
-                      "container-max": "1280px",
-                      "unit": "4px",
-                      "margin-desktop": "32px",
-                      "gutter": "16px",
-                      "margin-mobile": "16px"
-              },
-              "fontFamily": {
-                      "stats-sm": ["JetBrains Mono"],
-                      "display-lg": ["\"Source Serif 4\""],
-                      "body-md": ["Libre Franklin"],
-                      "label-caps": ["Libre Franklin"],
-                      "headline-md": ["\"Source Serif 4\""],
-                      "display-lg-mobile": ["\"Source Serif 4\""],
-                      "stats-lg": ["JetBrains Mono"],
-                      "body-sm": ["Libre Franklin"]
-              },
-              "fontSize": {
-                      "stats-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400"}],
-                      "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
-                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
-                      "display-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
-                      "stats-lg": ["20px", {"lineHeight": "24px", "fontWeight": "500"}],
-                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+              fontFamily: {
+                "headline-md": ["Source Serif 4", "serif"],
+                "display-lg": ["Source Serif 4", "serif"],
+                "body-md": ["Libre Franklin", "sans-serif"],
+                "body-sm": ["Libre Franklin", "sans-serif"],
+                "label-caps": ["Libre Franklin", "sans-serif"],
+                "stats-sm": ["JetBrains Mono", "monospace"],
+                "stats-lg": ["JetBrains Mono", "monospace"]
               }
-            },
-          },
-        }
+            }
+          }
+        };
     </script>
-<style>
+    <style>
         body {
-            background-color: #EAEDE2; /* Level 0: Background Cream from Style Guidance */
+            background-color: #fbf8fb;
+            font-family: 'Libre Franklin', sans-serif;
             color: #1b1b1d;
         }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        /* Ledger "Paper" Aesthetic */
-        .ledger-card {
-            background-color: #FBFAF5; /* Level 1: Ivory White */
-            border: 1px solid rgba(23, 34, 59, 0.15); /* Hairline Dark Navy */
+        .paper-stack-effect {
+            background-color: #ffffff;
+            border: 1px solid rgba(2, 11, 36, 0.12);
+            box-shadow: 0 4px 12px -2px rgba(2, 11, 36, 0.06), 0 2px 4px -2px rgba(2, 11, 36, 0.04);
         }
         .ledger-row:nth-child(even) {
-            background-color: rgba(2, 11, 36, 0.02); /* Zebra striping */
+            background-color: rgba(2, 11, 36, 0.015);
         }
         .sidebar-active {
             background-color: rgba(128, 86, 0, 0.1);
             color: #805600;
+            font-weight: 700;
             border-right: 4px solid #805600;
+        }
+        .filter-tab-active {
+            background-color: #805600;
+            color: #ffffff;
+            border-bottom: 2px solid #805600;
         }
     </style>
 
-    </head>
-<body class="flex min-h-screen overflow-x-hidden">
-
-<!-- Sidebar (SideNavBar Anchor) -->
-<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant/20 py-8">
-<div class="px-6 mb-10">
-<h1 class="font-headline-md text-headline-md text-primary">Homeschool Portal</h1>
-<p class="font-body-sm text-body-sm text-on-surface-variant opacity-70">Academic Year 2024</p>
-</div>
-<nav class="flex-1 space-y-1">
-<a class="flex items-center px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=08_dashboard-siswa">
-<span class="material-symbols-outlined mr-3">dashboard</span> Dashboard
-            </a>
-<a class="flex items-center px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=09_krs-siswa">
-<span class="material-symbols-outlined mr-3">menu_book</span> Study Plans
-            </a>
-<a class="flex items-center px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=13_riwayat-semester">
-<span class="material-symbols-outlined mr-3">grade</span> Grades
-            </a>
-<!-- Notifications isn't a top tab in JSON but is our active page context -->
-<a class="flex items-center px-6 py-3 font-label-caps text-label-caps sidebar-active translate-x-1 duration-200" href="code.html">
-<span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">notifications</span> Notifications
-            </a>
-<a class="flex items-center px-6 py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=18_profil_profil-siswa">
-<span class="material-symbols-outlined mr-3">settings</span> Settings
-            </a>
-</nav>
-<div class="px-6 mt-auto space-y-2">
-<button class="w-full py-3 bg-primary text-on-primary font-label-caps text-label-caps hover:opacity-90 transition-opacity">
-                Add New Lesson
-            </button>
-<div class="pt-4 border-t border-outline-variant/20">
-<a class="flex items-center py-2 font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="/?page=18_profil_profil-siswa">
-<span class="material-symbols-outlined mr-2">contact_support</span> Support
-                </a>
-<a class="flex items-center py-2 font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined mr-2">inventory_2</span> Archive
-                </a>
-</div>
-</div>
-</aside>
-<!-- Main Content Canvas -->
-<main class="flex-1 md:ml-64 flex flex-col min-h-screen">
-<!-- TopNavBar Anchor -->
-<header class="sticky top-0 z-10 bg-surface-container-lowest border-b border-outline-variant/20 flex justify-between items-center w-full px-8 h-16">
-<div class="flex items-center gap-4">
-<span class="font-display-lg text-display-lg text-primary">ScholarsLedger</span>
-<div class="hidden md:flex ml-8 items-center bg-surface-container rounded px-3 py-1">
-<span class="material-symbols-outlined text-outline text-sm">search</span>
-<input class="bg-transparent border-none focus:ring-0 font-body-sm text-body-sm w-48" placeholder="Cari notifikasi..." type="text"/>
-</div>
-</div>
-<div class="flex items-center gap-6">
-<div class="relative">
-<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">notifications</span>
-<span class="absolute -top-1 -right-1 w-2 h-2 bg-error rounded-full"></span>
-</div>
-<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded transition-colors cursor-pointer">help</span>
-<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant/30">
-<img class="w-full h-full object-cover" data-alt="A professional academic profile portrait of a university student against a neutral studio background. The lighting is soft and directional, emphasizing clarity and focus. The overall aesthetic is clean and studious, utilizing a muted color palette that blends cream and dark navy tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLXxo1iaaPH30zetHyodyBQqQX8vTTeoNHxgUFMfRFsbWY1zwajIU7n_9xAQ4e5j9y8v4kx1xTgFDqn5oXap7tig06vx-JuApQCynDLNBLqTYHBYhLbRP4y-vLzV8HkLSiudLe4Ul6Zj1hbhOsiqSwcIDYJyY0OXGYPu56tR71wyoD1q7xR-OsqozVPquyBZRvcnVaRMWjqhf5oPXWdMvE38QQUqK5dJ7fuwtJM1RTwNbdgvo4XPZi-W-0hLKP2hnEo2Hem5wmw5I"/>
-</div>
-
-                <!-- Logout Button -->
-                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='../01_login/code.html');" class="ml-2 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
-                    <span class="material-symbols-outlined">logout</span>
-                    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-surface text-on-surface px-2 py-1 shadow-md rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border border-on-surface/10">Keluar</span>
-                </button>
-            </div>
-</header>
-<!-- Notification Content -->
-<section class="flex-1 px-8 py-10 max-w-5xl">
-<header class="mb-8">
-<h2 class="font-headline-md text-headline-md text-primary mb-2">Notification Ledger</h2>
-<p class="font-body-md text-body-md text-on-surface-variant">Stay updated with academic alerts, feedback, and system announcements.</p>
-</header>
-<!-- Filtering Tabs (Binder Aesthetic) -->
-<div class="flex items-end border-b border-outline-variant/20 mb-6">
-<button class="px-6 py-2 bg-secondary text-on-primary font-label-caps text-label-caps border-t border-x border-outline-variant/20 rounded-t-sm -mb-[1px]">
-                    Terbaru (4)
-                </button>
-<button class="px-6 py-2 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-low transition-colors">
-                    Sudah Dibaca
-                </button>
-<div class="ml-auto flex gap-4 mb-2">
-<button class="text-stats-sm font-stats-sm text-secondary hover:underline transition-all">Mark all as read</button>
-<button class="text-stats-sm font-stats-sm text-on-surface-variant hover:underline transition-all">Archive ledger</button>
-</div>
-</div>
-<!-- Bento Grid of Highlighted Alerts -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-<div class="ledger-card p-5 md:col-span-2 relative overflow-hidden group hover:border-secondary transition-colors cursor-pointer">
-<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-<span class="material-symbols-outlined text-6xl">school</span>
-</div>
-<span class="inline-block px-2 py-1 bg-secondary-fixed/30 text-on-secondary-fixed-variant font-stats-sm text-stats-sm rounded mb-3">Academic Alert</span>
-<h3 class="font-headline-md text-headline-md text-primary mb-2">Final Exam Registration Opening</h3>
-<p class="font-body-sm text-body-sm text-on-surface-variant mb-4">Registration for the 2024 End-of-Year Examinations starts in 48 hours. Ensure your KRS is fully approved before the deadline.</p>
-<div class="flex items-center gap-2 text-secondary font-label-caps text-label-caps">
-<span>Check Requirements</span>
-<span class="material-symbols-outlined text-sm">arrow_forward</span>
-</div>
-</div>
-<div class="ledger-card p-5 border-l-4 border-l-secondary flex flex-col justify-between">
-<div>
-<div class="flex justify-between items-start mb-3">
-<span class="material-symbols-outlined text-secondary">verified_user</span>
-<span class="font-stats-sm text-stats-sm text-outline">10:45 AM</span>
-</div>
-<h4 class="font-label-caps text-label-caps text-primary mb-1">KRS Approval Status</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Your Academic Advisor (Dosen PA) has approved your Semester Plan.</p>
-</div>
-<button class="mt-4 py-2 border border-primary text-primary font-label-caps text-label-caps hover:bg-primary hover:text-white transition-all">
-                        View Plan
-                    </button>
-</div>
-</div>
-<!-- Notification List (The Ledger) -->
-<div class="ledger-card overflow-hidden">
-<div class="px-6 py-3 bg-surface-container border-b border-outline-variant/20 flex justify-between items-center">
-<span class="font-label-caps text-label-caps text-primary">Notification History</span>
-<span class="font-stats-sm text-stats-sm text-on-surface-variant">Displaying 4 records</span>
-</div>
-<!-- Latest Section -->
-<div id="notifikasi-list" class="divide-y divide-outline-variant/10">
-<!-- Notification Row 1 -->
-<div class="ledger-row p-6 flex gap-6 hover:bg-surface-container-low transition-colors cursor-pointer group">
-<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0 border border-outline-variant/20">
-<span class="material-symbols-outlined text-primary">feedback</span>
-</div>
-<div class="flex-1">
-<div class="flex justify-between items-start mb-1">
-<h5 class="font-body-md text-body-md font-bold text-primary">New Feedback: Advanced Calculus</h5>
-<span class="font-stats-sm text-stats-sm text-outline">Today, 09:12</span>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Prof. Aris has left a comment on your Week 8 Assignment: "Excellent derivation on the second problem."</p>
-</div>
-<div class="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-<button class="p-1 hover:text-secondary"><span class="material-symbols-outlined text-sm">visibility</span></button>
-<button class="p-1 hover:text-error"><span class="material-symbols-outlined text-sm">archive</span></button>
-</div>
-</div>
-<!-- Notification Row 2 -->
-<div class="ledger-row p-6 flex gap-6 hover:bg-surface-container-low transition-colors cursor-pointer group">
-<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center shrink-0 border border-secondary/20">
-<span class="material-symbols-outlined text-secondary">campaign</span>
-</div>
-<div class="flex-1">
-<div class="flex justify-between items-start mb-1">
-<h5 class="font-body-md text-body-md font-bold text-primary">System Maintenance Notice</h5>
-<span class="font-stats-sm text-stats-sm text-outline">Yesterday, 22:00</span>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant">The portal will be offline for routine database optimization this Sunday from 01:00 to 03:00 GMT+7.</p>
-</div>
-<div class="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-<button class="p-1 hover:text-secondary"><span class="material-symbols-outlined text-sm">visibility</span></button>
-<button class="p-1 hover:text-error"><span class="material-symbols-outlined text-sm">archive</span></button>
-</div>
-</div>
-<!-- Notification Row 3 (Unread indicator) -->
-<div class="ledger-row p-6 flex gap-6 hover:bg-surface-container-low transition-colors cursor-pointer group bg-secondary/5 border-l-4 border-l-secondary">
-<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center shrink-0">
-<span class="material-symbols-outlined text-on-primary">assignment_late</span>
-</div>
-<div class="flex-1">
-<div class="flex justify-between items-start mb-1">
-<h5 class="font-body-md text-body-md font-bold text-primary">Late Submission Alert: Organic Chemistry</h5>
-<span class="font-stats-sm text-stats-sm text-secondary font-bold">New</span>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Your lab report for Experiment 4 is past due. Please contact your teaching assistant immediately.</p>
-</div>
-</div>
-<!-- Notification Row 4 -->
-<div class="ledger-row p-6 flex gap-6 hover:bg-surface-container-low transition-colors cursor-pointer group">
-<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center shrink-0 border border-outline-variant/20">
-<span class="material-symbols-outlined text-primary">group</span>
-</div>
-<div class="flex-1">
-<div class="flex justify-between items-start mb-1">
-<h5 class="font-body-md text-body-md font-bold text-primary">Study Group Invitation</h5>
-<span class="font-stats-sm text-stats-sm text-outline">2 days ago</span>
-</div>
-<p class="font-body-sm text-body-sm text-on-surface-variant">Sarah J. invited you to join the "Calculus Study Lounge" group. Join to share notes and resources.</p>
-</div>
-</div>
-</div>
-<!-- Footer of List -->
-<div class="px-6 py-4 bg-surface-container-low border-t border-outline-variant/20 flex justify-center">
-<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2">
-                        Load more ledger entries <span class="material-symbols-outlined text-sm">expand_more</span>
-</button>
-</div>
-</div>
-</section>
-<!-- Footer Anchor -->
-<footer class="mt-auto bg-surface-container-lowest border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center w-full px-8 py-4">
-<span class="font-stats-sm text-stats-sm text-on-surface-variant">© 2024 ScholarsLedger Academic Systems</span>
-<div class="flex gap-6 mt-4 md:mt-0">
-<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors hover:underline decoration-secondary" href="#">Academic Integrity</a>
-<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors hover:underline decoration-secondary" href="#">Support Center</a>
-<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors hover:underline decoration-secondary" href="#">Privacy Ledger</a>
-</div>
-</footer>
-</main>
-<!-- Mobile Bottom Navigation (Responsive Pivot) -->
-<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest border-t border-outline-variant/20 flex justify-around items-center h-16 px-4 z-20">
-<a href="/?page=08_dashboard-siswa" class="flex flex-col items-center gap-1 text-on-surface-variant">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="text-[10px] font-label-caps">Home</span>
-</a>
-<a href="/?page=09_krs-siswa" class="flex flex-col items-center gap-1 text-on-surface-variant">
-<span class="material-symbols-outlined">menu_book</span>
-<span class="text-[10px] font-label-caps">Study</span>
-</a>
-<a href="code.html" class="flex flex-col items-center gap-1 text-secondary">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
-<span class="text-[10px] font-label-caps">Alerts</span>
-</a>
-<a href="/?page=18_profil_profil-siswa" class="flex flex-col items-center gap-1 text-on-surface-variant">
-<span class="material-symbols-outlined">person</span>
-<span class="text-[10px] font-label-caps">Profile</span>
-</a>
-</nav>
-<script>
-        // Micro-interaction for notification rows
-        document.querySelectorAll('.ledger-row').forEach(row => {
-            row.addEventListener('click', function() {
-                this.classList.remove('bg-secondary/5', 'border-l-4', 'border-l-secondary');
-                // Simulate "Read" state
-                const badge = this.querySelector('.text-secondary.font-bold');
-                if(badge) badge.remove();
-            });
-        });
-    </script>
-
-    
-    <script>
-        let currentUser = null;
-
-        window.addEventListener('auth-ready', function(e) {
-            currentUser = e.detail;
-            setupNotifikasiListener();
-        });
-
-        function setupNotifikasiListener() {
-            const listContainer = document.getElementById('notifikasi-list');
-            if (!listContainer || !currentUser) return;
-            
-            // Listen real-time
-            DataStore.onNotifikasiUpdate(currentUser.uid || currentUser.id, function(notifs) {
-                if (notifs.length === 0) {
-                    listContainer.innerHTML = '<div class="p-6 text-center text-on-surface-variant font-body-sm">Tidak ada notifikasi.</div>';
-                    document.querySelector('.font-stats-sm.text-stats-sm.text-on-surface-variant').textContent = 'Displaying 0 records';
-                    return;
-                }
-                
-                document.querySelector('.font-stats-sm.text-stats-sm.text-on-surface-variant').textContent = 'Displaying ' + notifs.length + ' records';
-
-                listContainer.innerHTML = notifs.map(n => `
-                    <div class="ledger-row p-6 flex gap-6 hover:bg-surface-container-low transition-colors cursor-pointer group ${n.dibaca ? '' : 'bg-secondary/5 border-l-4 border-l-secondary'}">
-                        <div class="w-10 h-10 rounded-full ${n.dibaca ? 'bg-surface-container border border-outline-variant/20' : 'bg-primary'} flex items-center justify-center shrink-0">
-                            <span class="material-symbols-outlined ${n.dibaca ? 'text-primary' : 'text-on-primary'}">notifications</span>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start mb-1">
-                                <h5 class="font-body-md text-body-md font-bold text-primary">${n.judul}</h5>
-                                <span class="font-stats-sm text-stats-sm ${n.dibaca ? 'text-outline' : 'text-secondary font-bold'}">${n.tanggal ? (n.tanggal.toDate ? n.tanggal.toDate().toLocaleTimeString() : new Date(n.tanggal).toLocaleTimeString()) : ''}</span>
-                            </div>
-                            <p class="font-body-sm text-body-sm text-on-surface-variant">${n.isi}</p>
-                        </div>
-                        <div class="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                            ${n.dibaca ? '' : `<button class="p-1 hover:text-secondary" onclick="markRead('${n.id}')" title="Tandai Dibaca"><span class="material-symbols-outlined text-sm">visibility</span></button>`}
-                        </div>
-                    </div>
-                `).join('');
-            });
-        }
-
-        window.markRead = async function(id) {
-            await DataStore.markNotifikasiRead(id);
-            // Listener will auto-update UI
-        }
-        
-        // Expose a global mark all as read
-        const btnMarkAll = Array.from(document.querySelectorAll('button')).find(b => b.textContent.includes('Mark all as read'));
-        if (btnMarkAll) {
-            btnMarkAll.addEventListener('click', async () => {
-                await DataStore.markAllNotifikasiRead(currentUser.role, currentUser.uid || currentUser.id);
-                // Listener will auto-update UI
-            });
-        }
-    </script>
-    <!-- Firebase SDK & Auth -->
+    <!-- Firebase SDK (compat) & Auth Layer -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="/firebase-config.js"></script>
     <script src="/firebase-auth-guard.js"></script>
     <script src="/firebase-data-store.js"></script>
     <script src="/notification-sync.js"></script>
+    <script src="/career-roadmap-data.js"></script>
+</head>
+<body class="flex min-h-screen overflow-x-hidden bg-surface">
 
+<!-- Sidebar (SideNavBar Anchor) -->
+<aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant/20 py-6 z-20">
+    <div class="px-6 mb-8">
+        <div class="flex items-center gap-2.5 mb-1">
+            <div class="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-bold text-sm">FC</div>
+            <h1 class="font-headline-md text-base font-bold text-primary tracking-tight">Flexa Cendekia</h1>
+        </div>
+        <p class="font-mono text-[10px] text-on-surface-variant/70 tracking-wider">x UNIPDU • TP 2025/2026</p>
+    </div>
+
+    <!-- Dynamic Role-aware Navigation Links -->
+    <nav class="flex-1 space-y-1" id="sidebar-nav">
+        <a class="flex items-center px-6 py-3 font-label-caps text-xs text-on-surface-variant hover:bg-surface-container transition-all" id="nav-dashboard-link" href="/?page=08_dashboard-siswa">
+            <span class="material-symbols-outlined mr-3 text-lg">dashboard</span>
+            <span id="nav-dashboard-text">Dashboard Siswa</span>
+        </a>
+        <a class="flex items-center px-6 py-3 font-label-caps text-xs text-on-surface-variant hover:bg-surface-container transition-all" id="nav-krs-link" href="/?page=09_krs-siswa">
+            <span class="material-symbols-outlined mr-3 text-lg">menu_book</span>
+            <span id="nav-krs-text">Rencana Studi (KRS)</span>
+        </a>
+        <a class="flex items-center px-6 py-3 font-label-caps text-xs text-on-surface-variant hover:bg-surface-container transition-all" id="nav-grades-link" href="/?page=13_riwayat-semester">
+            <span class="material-symbols-outlined mr-3 text-lg">grade</span>
+            <span>Riwayat &amp; Nilai</span>
+        </a>
+        <a class="flex items-center px-6 py-3 font-label-caps text-xs sidebar-active translate-x-1 duration-200" href="/?page=17_notifikasi">
+            <span class="material-symbols-outlined mr-3 text-lg" style="font-variation-settings: 'FILL' 1;">notifications</span>
+            <span>Notifikasi</span>
+            <span id="sidebar-unread-badge" class="ml-auto bg-secondary text-white text-[10px] font-mono px-2 py-0.5 rounded-full hidden">0</span>
+        </a>
+        <a class="flex items-center px-6 py-3 font-label-caps text-xs text-on-surface-variant hover:bg-surface-container transition-all" id="nav-profile-link" href="/?page=18_profil">
+            <span class="material-symbols-outlined mr-3 text-lg">person</span>
+            <span>Profil &amp; Akun</span>
+        </a>
+    </nav>
+
+    <div class="px-6 mt-auto space-y-2">
+        <a id="btn-quick-action" href="/?page=11_checkpoint-jumat" class="w-full py-2.5 px-4 bg-primary text-on-primary font-label-caps text-xs text-center block rounded hover:opacity-90 transition-opacity">
+            Checkpoint Jumat
+        </a>
+        <div class="pt-3 border-t border-outline-variant/20 flex flex-col gap-1">
+            <a class="flex items-center py-1.5 font-label-caps text-[11px] text-on-surface-variant hover:text-primary transition-colors cursor-pointer" onclick="openHelpModal()">
+                <span class="material-symbols-outlined mr-2 text-base">contact_support</span> Pusat Bantuan
+            </a>
+            <a class="flex items-center py-1.5 font-label-caps text-[11px] text-on-surface-variant hover:text-primary transition-colors cursor-pointer" onclick="filterByTab('sudah')">
+                <span class="material-symbols-outlined mr-2 text-base">inventory_2</span> Arsip Terbaca
+            </a>
+        </div>
+    </div>
+</aside>
+
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 flex flex-col min-h-screen">
+    <!-- TopNavBar Anchor -->
+    <header class="sticky top-0 z-10 bg-surface-container-lowest border-b border-outline-variant/20 flex justify-between items-center w-full px-6 md:px-8 h-16">
+        <div class="flex items-center gap-4">
+            <span class="font-display-lg text-lg md:text-xl font-bold text-primary">Flexa Cendekia</span>
+            <span class="hidden sm:inline-block text-xs font-mono px-2.5 py-0.5 bg-surface-container text-on-surface-variant rounded" id="user-role-badge">Siswa</span>
+
+            <!-- Search Bar -->
+            <div class="hidden md:flex ml-4 items-center bg-surface-container rounded-full px-3.5 py-1.5 border border-outline-variant/20">
+                <span class="material-symbols-outlined text-outline text-sm mr-2">search</span>
+                <input id="search-input" class="bg-transparent border-none focus:ring-0 font-body-sm text-xs w-48 text-primary placeholder-on-surface-variant/60" placeholder="Cari isi notifikasi..." type="text" oninput="handleSearch(this.value)"/>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-4 md:gap-6">
+            <!-- Notifications Icon Indicator -->
+            <div class="relative cursor-pointer" onclick="filterByTab('belum')">
+                <span class="material-symbols-outlined text-secondary text-2xl" style="font-variation-settings: 'FILL' 1;">notifications</span>
+                <span id="topbar-unread-dot" class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-error rounded-full ring-2 ring-white hidden"></span>
+            </div>
+
+            <!-- Help Icon -->
+            <span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded transition-colors cursor-pointer text-xl" onclick="openHelpModal()" title="Bantuan">help</span>
+
+            <!-- User Avatar & Profile Link -->
+            <a id="topbar-avatar-link" href="/?page=18_profil" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <div id="topbar-avatar" class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs uppercase shadow-sm">
+                    U
+                </div>
+                <span id="topbar-user-name" class="hidden lg:inline-block text-xs font-semibold text-primary">Memuat...</span>
+            </a>
+
+            <!-- Logout Button -->
+            <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" class="flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
+                <span class="material-symbols-outlined text-xl">logout</span>
+                <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-surface text-on-surface px-2 py-1 shadow-md rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border border-on-surface/10 whitespace-nowrap">Keluar</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Notification Content -->
+    <section class="flex-1 px-6 md:px-8 py-8 max-w-5xl w-full mx-auto">
+        <header class="mb-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                    <h2 class="font-headline-md text-2xl font-bold text-primary mb-1">Pusat Notifikasi</h2>
+                    <p class="font-body-sm text-xs text-on-surface-variant" id="page-subtitle">Informasi akademik, pengumuman tugas, absensi, dan pembaruan sistem secara langsung.</p>
+                </div>
+                <span class="font-mono text-xs text-on-surface-variant/80 bg-white px-3 py-1.5 rounded border border-outline-variant/30 self-start sm:self-auto" id="timestamp-now">
+                    14 Agu 2026
+                </span>
+            </div>
+        </header>
+
+        <!-- Bento Grid of Highlighted Alerts (Contextual) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <!-- Alert Utama (Akademik & Checkpoint) -->
+            <div class="paper-stack-effect rounded-lg p-5 md:col-span-2 relative overflow-hidden group hover:border-secondary/50 transition-all">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <span class="material-symbols-outlined text-6xl text-primary">event_upcoming</span>
+                </div>
+                <span class="inline-block px-2.5 py-0.5 bg-secondary-fixed/50 text-on-secondary-fixed-variant font-mono text-[10px] font-bold rounded uppercase tracking-wider mb-2" id="bento-alert-badge">Agenda Penting</span>
+                <h3 class="font-headline-md text-lg font-bold text-primary mb-1.5" id="bento-alert-title">Checkpoint Mingguan &amp; Tinjauan Belajar</h3>
+                <p class="font-body-sm text-xs text-on-surface-variant leading-relaxed mb-3" id="bento-alert-desc">Pastikan ringkasan progres mandiri minggu ini diisi sebelum hari Jumat pukul 17:00 WIB agar dapat dievaluasi guru pembimbing.</p>
+                <a id="bento-alert-action" href="/?page=11_checkpoint-jumat" class="inline-flex items-center gap-1.5 text-secondary font-label-caps text-xs font-bold hover:underline">
+                    <span>Buka Checkpoint</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+            </div>
+
+            <!-- Status Card (Rencana Studi / Persetujuan Guru) -->
+            <div class="paper-stack-effect rounded-lg p-5 border-l-4 border-l-secondary flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="material-symbols-outlined text-secondary text-2xl" id="bento-status-icon">verified_user</span>
+                        <span class="font-mono text-[10px] text-on-surface-variant" id="bento-status-time">Hari ini</span>
+                    </div>
+                    <h4 class="font-label-caps text-xs font-bold text-primary mb-1" id="bento-status-title">Status Rencana Studi (KRS)</h4>
+                    <p class="font-body-sm text-xs text-on-surface-variant leading-relaxed" id="bento-status-desc">Rencana studi Anda telah ditinjau dan disetujui oleh Guru Pembimbing.</p>
+                </div>
+                <a id="bento-status-btn" href="/?page=09_krs-siswa" class="mt-3 py-2 px-3 border border-primary text-primary font-label-caps text-xs text-center font-bold rounded hover:bg-primary hover:text-white transition-all">
+                    Lihat Rencana Studi
+                </a>
+            </div>
+        </div>
+
+        <!-- Filter Tabs & Actions Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between border-b border-outline-variant/30 mb-4 gap-3">
+            <div class="flex gap-1 overflow-x-auto pb-[-1px]">
+                <button onclick="filterByTab('semua')" id="tab-semua" class="filter-tab-active px-5 py-2.5 font-label-caps text-xs rounded-t font-semibold transition-all">
+                    Semua (<span id="count-semua">0</span>)
+                </button>
+                <button onclick="filterByTab('belum')" id="tab-belum" class="px-5 py-2.5 font-label-caps text-xs text-on-surface-variant hover:bg-surface-container rounded-t font-medium transition-all">
+                    Belum Dibaca (<span id="count-belum">0</span>)
+                </button>
+                <button onclick="filterByTab('sudah')" id="tab-sudah" class="px-5 py-2.5 font-label-caps text-xs text-on-surface-variant hover:bg-surface-container rounded-t font-medium transition-all">
+                    Sudah Dibaca (<span id="count-sudah">0</span>)
+                </button>
+            </div>
+
+            <div class="flex items-center gap-3 mb-2 text-xs">
+                <button onclick="markAllCurrentRead()" class="font-mono text-secondary hover:underline flex items-center gap-1 cursor-pointer">
+                    <span class="material-symbols-outlined text-sm">done_all</span> Tandai Semua Dibaca
+                </button>
+                <span class="text-outline-variant">|</span>
+                <button onclick="filterByTab('sudah')" class="font-mono text-on-surface-variant hover:underline cursor-pointer">
+                    Arsip
+                </button>
+            </div>
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div class="flex gap-2 overflow-x-auto py-1 mb-4" id="category-pills">
+            <button onclick="filterByCategory('all')" data-cat="all" class="cat-pill bg-primary text-white text-[11px] font-mono px-3 py-1 rounded-full whitespace-nowrap">Semua Kategori</button>
+            <button onclick="filterByCategory('akademik')" data-cat="akademik" class="cat-pill bg-white hairline-border text-on-surface-variant hover:bg-surface-container text-[11px] font-mono px-3 py-1 rounded-full whitespace-nowrap">Akademik &amp; Nilai</button>
+            <button onclick="filterByCategory('pengajuan')" data-cat="pengajuan" class="cat-pill bg-white hairline-border text-on-surface-variant hover:bg-surface-container text-[11px] font-mono px-3 py-1 rounded-full whitespace-nowrap">Rencana Studi / KRS</button>
+            <button onclick="filterByCategory('keterlambatan')" data-cat="keterlambatan" class="cat-pill bg-white hairline-border text-on-surface-variant hover:bg-surface-container text-[11px] font-mono px-3 py-1 rounded-full whitespace-nowrap">Kehadiran &amp; Absensi</button>
+            <button onclick="filterByCategory('sistem')" data-cat="sistem" class="cat-pill bg-white hairline-border text-on-surface-variant hover:bg-surface-container text-[11px] font-mono px-3 py-1 rounded-full whitespace-nowrap">Info Sistem</button>
+        </div>
+
+        <!-- Notification List (The Ledger) -->
+        <div class="paper-stack-effect rounded-lg overflow-hidden">
+            <div class="px-6 py-3 bg-surface-container border-b border-outline-variant/20 flex justify-between items-center">
+                <span class="font-label-caps text-xs font-bold text-primary uppercase tracking-wider" id="ledger-header-title">Riwayat Notifikasi</span>
+                <span class="font-mono text-[11px] text-on-surface-variant" id="record-count-text">Memuat notifikasi...</span>
+            </div>
+
+            <div id="notifikasi-list" class="divide-y divide-outline-variant/15">
+                <!-- Skeleton Loader -->
+                <div class="p-6 space-y-3">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-surface-container animate-pulse"></div>
+                        <div class="flex-1 space-y-2">
+                            <div class="h-4 bg-surface-container rounded w-1/3 animate-pulse"></div>
+                            <div class="h-3 bg-surface-container rounded w-3/4 animate-pulse"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Load More Bar -->
+            <div id="load-more-container" class="p-3 bg-surface-container-low border-t border-outline-variant/20 text-center hidden">
+                <button onclick="loadMoreEntries()" class="font-label-caps text-xs text-secondary hover:underline font-bold py-1 px-4 inline-flex items-center gap-1">
+                    <span>Muat Lebih Banyak</span>
+                    <span class="material-symbols-outlined text-sm">expand_more</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Anchor -->
+    <footer class="mt-auto bg-surface-container-lowest border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center w-full px-6 md:px-8 py-4 text-xs text-on-surface-variant">
+        <span class="font-mono">&copy; 2026 Flexa Cendekia x UNIPDU. Hak Cipta Dilindungi.</span>
+        <div class="flex gap-6 mt-3 md:mt-0">
+            <a class="hover:text-primary hover:underline transition-colors" href="/?page=01_login_panduan">Panduan Pengguna</a>
+            <a class="hover:text-primary hover:underline transition-colors" href="/?page=01_login_bantuan">Pusat Bantuan</a>
+            <a class="hover:text-primary hover:underline transition-colors" href="/?page=01_login_kontak">Kontak</a>
+        </div>
+    </footer>
+</main>
+
+<!-- Mobile Bottom Navigation -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-container-lowest border-t border-outline-variant/20 flex justify-around items-center h-16 px-4 z-30">
+    <a id="mob-nav-home" href="/?page=08_dashboard-siswa" class="flex flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span class="text-[10px] font-label-caps">Beranda</span>
+    </a>
+    <a id="mob-nav-study" href="/?page=09_krs-siswa" class="flex flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined">menu_book</span>
+        <span class="text-[10px] font-label-caps">Studi</span>
+    </a>
+    <a href="/?page=17_notifikasi" class="flex flex-col items-center gap-1 text-secondary">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">notifications</span>
+        <span class="text-[10px] font-label-caps font-bold">Notifikasi</span>
+    </a>
+    <a id="mob-nav-profile" href="/?page=18_profil" class="flex flex-col items-center gap-1 text-on-surface-variant">
+        <span class="material-symbols-outlined">person</span>
+        <span class="text-[10px] font-label-caps">Profil</span>
+    </a>
+</nav>
+
+<!-- Help Modal -->
+<div id="help-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+    <div class="bg-white rounded-lg p-6 max-w-md w-full paper-stack-effect">
+        <div class="flex justify-between items-center mb-3">
+            <h3 class="font-headline-md font-bold text-primary text-base">Pusat Bantuan Notifikasi</h3>
+            <button onclick="closeHelpModal()" class="text-on-surface-variant hover:text-primary">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
+        <p class="text-xs text-on-surface-variant leading-relaxed mb-4">
+            Notifikasi dikirim otomatis oleh sistem Flexa Cendekia x UNIPDU terkait peninjauan rencana studi, jadwal checkpoint tugas, presensi, dan rekapitulasi nilai dari guru wali.
+        </p>
+        <div class="p-3 bg-surface-container rounded text-xs space-y-1 font-mono text-on-surface-variant">
+            <p><strong>Email Dukungan:</strong> bantuan@flexacendekia.sch.id</p>
+            <p><strong>Waktu Operasional:</strong> Senin - Jumat, 08:00 - 16:00 WIB</p>
+        </div>
+        <button onclick="closeHelpModal()" class="mt-4 w-full py-2 bg-primary text-white text-xs font-bold rounded">Tutup</button>
+    </div>
+</div>
 
 <script>
-(function(){
-  function bindClick(selectors, handler) {
-    document.querySelectorAll(selectors).forEach(function(el) {
-      el.addEventListener('click', function(e) {
-        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
-            return;
-        }
-        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
-            return;
-        }
-        e.preventDefault();
-        handler(e, el);
-      });
+    let currentUser = null;
+    let rawNotifications = [];
+    let activeTab = 'semua'; // 'semua' | 'belum' | 'sudah'
+    let activeCategory = 'all'; // 'all' | 'akademik' | 'pengajuan' | 'keterlambatan' | 'sistem'
+    let searchQuery = '';
+    let displayLimit = 10;
+
+    // Date display
+    const now = new Date();
+    const options = { day: 'numeric', month: 'short', year: 'numeric' };
+    const dateStr = now.toLocaleDateString('id-ID', options);
+    const timeEl = document.getElementById('timestamp-now');
+    if (timeEl) timeEl.textContent = dateStr;
+
+    window.addEventListener('auth-ready', async function(e) {
+        currentUser = e.detail;
+        if (!currentUser) return;
+
+        adaptRoleUI(currentUser);
+        await loadNotifications();
     });
-  }
 
-  // 1. Top Navbar Role Tabs
-  bindClick('header nav a', function(e, a) {
-    var text = a.textContent.trim().toLowerCase();
-    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
-    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
-  });
+    function adaptRoleUI(user) {
+        const role = user.role || 'Siswa';
+        const name = user.nama || 'Pengguna';
 
-  // 2. Header Icons & Avatar
-  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
-    var iconText = '';
-    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
-    else {
-      var icon = b.querySelector('.material-symbols-outlined');
-      if (icon) iconText = icon.textContent.trim();
-    }
-    
-    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
-      window.location.href = '/?page=18_profil';
-    }
-  });
+        // Update Topbar
+        const nameEl = document.getElementById('topbar-user-name');
+        const roleBadge = document.getElementById('user-role-badge');
+        const avatarEl = document.getElementById('topbar-avatar');
+        const avatarLink = document.getElementById('topbar-avatar-link');
 
-  // 3. Sidebar, Bottom Nav, and generic # links
-  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
-    var text = el.textContent.trim().toLowerCase();
-    if (!text) {
-        var icon = el.querySelector('.material-symbols-outlined');
-        if (icon) text = icon.textContent.trim().toLowerCase();
+        if (nameEl) nameEl.textContent = name;
+        if (avatarEl) avatarEl.textContent = name.charAt(0).toUpperCase();
+
+        if (roleBadge) {
+            roleBadge.textContent = role === 'OrangTua' ? 'Orang Tua' : role;
+            if (role === 'Guru') {
+                roleBadge.className = 'hidden sm:inline-block text-xs font-mono px-2.5 py-0.5 bg-blue-100 text-blue-800 rounded font-bold';
+            } else if (role === 'OrangTua') {
+                roleBadge.className = 'hidden sm:inline-block text-xs font-mono px-2.5 py-0.5 bg-amber-100 text-amber-900 rounded font-bold';
+            }
+        }
+
+        // Adapt Sidebar Navigation
+        const dashLink = document.getElementById('nav-dashboard-link');
+        const dashText = document.getElementById('nav-dashboard-text');
+        const krsLink = document.getElementById('nav-krs-link');
+        const krsText = document.getElementById('nav-krs-text');
+        const profLink = document.getElementById('nav-profile-link');
+        const quickBtn = document.getElementById('btn-quick-action');
+
+        const mobHome = document.getElementById('mob-nav-home');
+        const mobStudy = document.getElementById('mob-nav-study');
+        const mobProf = document.getElementById('mob-nav-profile');
+
+        if (role === 'Guru') {
+            if (dashLink) dashLink.href = '/?page=14_dashboard-guru';
+            if (dashText) dashText.textContent = 'Dashboard Guru';
+            if (krsLink) krsLink.href = '/?page=15_tinjauan-guru';
+            if (krsText) krsText.textContent = 'Tinjauan Siswa';
+            if (profLink) profLink.href = '/?page=18_profil_profil-guru';
+            if (avatarLink) avatarLink.href = '/?page=18_profil_profil-guru';
+            if (quickBtn) {
+                quickBtn.href = '/?page=15_tinjauan-guru';
+                quickBtn.textContent = 'Tinjau Rencana Siswa';
+            }
+            if (mobHome) mobHome.href = '/?page=14_dashboard-guru';
+            if (mobStudy) mobStudy.href = '/?page=15_tinjauan-guru';
+            if (mobProf) mobProf.href = '/?page=18_profil_profil-guru';
+
+            // Bento Cards for Guru
+            document.getElementById('bento-alert-title').textContent = 'Persetujuan Rencana Belajar';
+            document.getElementById('bento-alert-desc').textContent = 'Periksa dan berikan catatan evaluasi untuk rencana studi siswa bimbingan yang masuk minggu ini.';
+            document.getElementById('bento-alert-action').href = '/?page=15_tinjauan-guru';
+            document.getElementById('bento-alert-action').querySelector('span').textContent = 'Buka Tinjauan';
+
+            document.getElementById('bento-status-title').textContent = 'Rekapitulasi Kelas';
+            document.getElementById('bento-status-desc').textContent = 'Kelola catatan pembimbing dan progres checkpoint seluruh siswa binaan.';
+            document.getElementById('bento-status-btn').href = '/?page=14_dashboard-guru';
+            document.getElementById('bento-status-btn').textContent = 'Buka Dashboard Guru';
+
+        } else if (role === 'OrangTua') {
+            if (dashLink) dashLink.href = '/?page=16_dashboard-ortu';
+            if (dashText) dashText.textContent = 'Dashboard Orang Tua';
+            if (krsLink) krsLink.href = '/?page=16_dashboard-ortu#section-nilai';
+            if (krsText) krsText.textContent = 'Laporan Nilai Anak';
+            if (profLink) profLink.href = '/?page=18_profil_profil-ortu';
+            if (avatarLink) avatarLink.href = '/?page=18_profil_profil-ortu';
+            if (quickBtn) {
+                quickBtn.href = '/?page=16_dashboard-ortu';
+                quickBtn.textContent = 'Pantau Presensi Anak';
+            }
+            if (mobHome) mobHome.href = '/?page=16_dashboard-ortu';
+            if (mobStudy) mobStudy.href = '/?page=16_dashboard-ortu';
+            if (mobProf) mobProf.href = '/?page=18_profil_profil-ortu';
+
+            // Bento Cards for Orang Tua
+            document.getElementById('bento-alert-title').textContent = 'Pemantauan Akademik Ananda';
+            document.getElementById('bento-alert-desc').textContent = 'Catatan perkembangan absensi dan hasil checkpoint belajar ananda dapat dipantau langsung.';
+            document.getElementById('bento-alert-action').href = '/?page=16_dashboard-ortu';
+            document.getElementById('bento-alert-action').querySelector('span').textContent = 'Buka Dashboard Ortu';
+
+            document.getElementById('bento-status-title').textContent = 'Catatan dari Guru Pembimbing';
+            document.getElementById('bento-status-desc').textContent = 'Lihat dan balas pesan evaluasi belajar ananda dari wali kelas.';
+            document.getElementById('bento-status-btn').href = '/?page=16_dashboard-ortu';
+            document.getElementById('bento-status-btn').textContent = 'Lihat Catatan Guru';
+        }
     }
-    
-    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
-    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
-    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
-    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
-    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
-    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
-    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
-    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
-    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
-  });
-  
-  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
-})();
+
+    async function loadNotifications() {
+        if (!currentUser) return;
+        const role = currentUser.role || 'Siswa';
+        const uid = currentUser.uid || currentUser.id;
+
+        try {
+            // Read from Firestore via DataStore
+            let list = await DataStore.getNotifikasi(role, uid);
+
+            // Fallback realistic school seeds if Firestore empty
+            if (!list || list.length === 0) {
+                list = getRoleDefaultNotifications(role);
+            }
+
+            rawNotifications = list;
+            updateCounts();
+            renderNotificationList();
+
+        } catch (e) {
+            console.error('[Notifikasi] Error loading notifications:', e);
+            rawNotifications = getRoleDefaultNotifications(role);
+            updateCounts();
+            renderNotificationList();
+        }
+    }
+
+    function getRoleDefaultNotifications(role) {
+        if (role === 'Guru') {
+            return [
+                {
+                    id: 'g-notif-1',
+                    judul: 'Pengajuan KRS Baru Menunggu Tinjauan',
+                    isi: `Siswa ${window.currentFirebaseUser?.nama || 'Siswa'} (SMA Kelas 11) telah mengajukan mata pelajaran untuk semester ini. Silakan verifikasi.`, 
+                    tipe: 'pengajuan',
+                    dibaca: false,
+                    tanggal: new Date(Date.now() - 1000 * 60 * 35)
+                },
+                {
+                    id: 'g-notif-2',
+                    judul: 'Balasan Catatan dari Orang Tua',
+                    isi: 'Bpk. Heru (Orang Tua Ahmad) mengirim balasan: "Terima kasih atas masukannya Bu, kami akan dampingi belajarnya di rumah."',
+                    tipe: 'akademik',
+                    dibaca: false,
+                    tanggal: new Date(Date.now() - 1000 * 60 * 120)
+                },
+                {
+                    id: 'g-notif-3',
+                    judul: 'Peringatan Checkpoint Jumat',
+                    isi: 'Batas akhir evaluasi checkpoint mingguan seluruh siswa binaan akan ditutup hari Jumat pukul 17:00 WIB.',
+                    tipe: 'sistem',
+                    dibaca: true,
+                    tanggal: new Date(Date.now() - 1000 * 60 * 60 * 24)
+                }
+            ];
+        } else if (role === 'OrangTua') {
+            return [
+                {
+                    id: 'o-notif-1',
+                    judul: 'Alert Keterlambatan: 1 Hari Alpa Terdeteksi',
+                    isi: 'Ananda Ahmad tercatat tidak hadir pada mata pelajaran Biologi jam pertama. Mohon konfirmasi ke wali kelas.',
+                    tipe: 'keterlambatan',
+                    dibaca: false,
+                    tanggal: new Date(Date.now() - 1000 * 60 * 45)
+                },
+                {
+                    id: 'o-notif-2',
+                    judul: 'Rencana Studi Semester 4 Disetujui',
+                    isi: 'Guru Pembimbing telah menyetujui paket modul belajar untuk semester genap ananda.',
+                    tipe: 'pengajuan',
+                    dibaca: false,
+                    tanggal: new Date(Date.now() - 1000 * 60 * 180)
+                },
+                {
+                    id: 'o-notif-3',
+                    judul: 'Nilai Ujian Tengah Semester Telah Direkap',
+                    isi: 'Hasil penilaian UTS Fisika dan Matematika Lanjut ananda telah dimasukkan ke transkrip akademik.',
+                    tipe: 'akademik',
+                    dibaca: true,
+                    tanggal: new Date(Date.now() - 1000 * 60 * 60 * 30)
+                }
+            ];
+        } else {
+            // Siswa Default
+            return [
+                {
+                    id: 's-notif-1',
+                    judul: 'Rencana Studi (KRS) Disetujui Guru Pembimbing',
+                    isi: 'Ibu Guru Pembimbing telah menyetujui seluruh mata pelajaran semester aktif Anda. Selamat belajar!',
+                    tipe: 'pengajuan',
+                    dibaca: false,
+                    tanggal: new Date(Date.now() - 1000 * 60 * 25)
+                },
+                {
+                    id: 's-notif-2',
+                    judul: 'Tugas Checkpoint Minggu 8: Kalkulus & Matematika',
+                    isi: 'Ibu Sari memberikan catatan: "Bagus sekali pada penurunan rumus nomor 2, pertahankan ketelitiannya."',
+                    tipe: 'akademik',
+                    dibaca: false,
+                    tanggal: new Date(Date.now() - 1000 * 60 * 90)
+                },
+                {
+                    id: 's-notif-3',
+                    judul: 'Pengingat Batas Akhir Tugas Kimia Organik',
+                    isi: 'Laporan praktikum Kimia Organik batas pengumpulan tersisa 24 jam. Segera unggah sebelum tenggat.',
+                    tipe: 'akademik',
+                    dibaca: true,
+                    tanggal: new Date(Date.now() - 1000 * 60 * 60 * 18)
+                },
+                {
+                    id: 's-notif-4',
+                    judul: 'Jadwal Pemeliharaan Server Rutin',
+                    isi: 'Portal Flexa Cendekia akan melakukan sinkronisasi sistem hari Minggu pukul 01:00 - 03:00 WIB.',
+                    tipe: 'sistem',
+                    dibaca: true,
+                    tanggal: new Date(Date.now() - 1000 * 60 * 60 * 48)
+                }
+            ];
+        }
+    }
+
+    function updateCounts() {
+        const total = rawNotifications.length;
+        const unread = rawNotifications.filter(n => !n.dibaca).length;
+        const read = total - unread;
+
+        document.getElementById('count-semua').textContent = total;
+        document.getElementById('count-belum').textContent = unread;
+        document.getElementById('count-sudah').textContent = read;
+
+        // Topbar & Sidebar badges
+        const topDot = document.getElementById('topbar-unread-dot');
+        const sideBadge = document.getElementById('sidebar-unread-badge');
+
+        if (topDot) {
+            if (unread > 0) topDot.classList.remove('hidden');
+            else topDot.classList.add('hidden');
+        }
+        if (sideBadge) {
+            sideBadge.textContent = unread;
+            if (unread > 0) sideBadge.classList.remove('hidden');
+            else sideBadge.classList.add('hidden');
+        }
+    }
+
+    function filterByTab(tab) {
+        activeTab = tab;
+        ['semua', 'belum', 'sudah'].forEach(t => {
+            const el = document.getElementById('tab-' + t);
+            if (el) {
+                if (t === tab) {
+                    el.className = "filter-tab-active px-5 py-2.5 font-label-caps text-xs rounded-t font-semibold transition-all";
+                } else {
+                    el.className = "px-5 py-2.5 font-label-caps text-xs text-on-surface-variant hover:bg-surface-container rounded-t font-medium transition-all";
+                }
+            }
+        });
+        renderNotificationList();
+    }
+
+    function filterByCategory(cat) {
+        activeCategory = cat;
+        document.querySelectorAll('.cat-pill').forEach(btn => {
+            if (btn.dataset.cat === cat) {
+                btn.className = "cat-pill bg-primary text-white text-[11px] font-mono px-3 py-1 rounded-full whitespace-nowrap";
+            } else {
+                btn.className = "cat-pill bg-white hairline-border text-on-surface-variant hover:bg-surface-container text-[11px] font-mono px-3 py-1 rounded-full whitespace-nowrap";
+            }
+        });
+        renderNotificationList();
+    }
+
+    function handleSearch(val) {
+        searchQuery = (val || '').toLowerCase().trim();
+        renderNotificationList();
+    }
+
+    function renderNotificationList() {
+        const listContainer = document.getElementById('notifikasi-list');
+        const countText = document.getElementById('record-count-text');
+        const loadMoreBox = document.getElementById('load-more-container');
+        if (!listContainer) return;
+
+        // Apply filters
+        let filtered = rawNotifications.filter(n => {
+            // 1. Tab filter
+            if (activeTab === 'belum' && n.dibaca) return false;
+            if (activeTab === 'sudah' && !n.dibaca) return false;
+
+            // 2. Category filter
+            if (activeCategory !== 'all') {
+                const itemCat = (n.tipe || 'akademik').toLowerCase();
+                if (!itemCat.includes(activeCategory)) return false;
+            }
+
+            // 3. Search query
+            if (searchQuery) {
+                const j = (n.judul || '').toLowerCase();
+                const i = (n.isi || '').toLowerCase();
+                if (!j.includes(searchQuery) && !i.includes(searchQuery)) return false;
+            }
+
+            return true;
+        });
+
+        const totalFiltered = filtered.length;
+        if (countText) {
+            countText.textContent = `Menampilkan ${Math.min(displayLimit, totalFiltered)} dari ${totalFiltered} notifikasi`;
+        }
+
+        if (totalFiltered === 0) {
+            listContainer.innerHTML = `
+                <div class="p-10 text-center text-on-surface-variant">
+                    <span class="material-symbols-outlined text-4xl text-on-surface-variant/40 mb-2">notifications_off</span>
+                    <p class="font-body-md font-bold text-primary">Tidak Ada Notifikasi</p>
+                    <p class="font-body-sm text-xs mt-1">Tidak ada entri notifikasi yang cocok dengan filter yang dipilih.</p>
+                </div>
+            `;
+            if (loadMoreBox) loadMoreBox.classList.add('hidden');
+            return;
+        }
+
+        const visibleItems = filtered.slice(0, displayLimit);
+
+        listContainer.innerHTML = visibleItems.map(n => {
+            const isUnread = !n.dibaca;
+            let iconName = 'notifications';
+            let iconBg = isUnread ? 'bg-primary text-white' : 'bg-surface-container text-primary';
+            let borderClass = isUnread ? 'bg-secondary/5 border-l-4 border-l-secondary' : 'bg-white hover:bg-surface-container-low';
+            let badgeTag = '';
+
+            if (n.tipe === 'keterlambatan') {
+                iconName = 'event_busy';
+                iconBg = isUnread ? 'bg-error text-white' : 'bg-error-container text-error';
+                borderClass = isUnread ? 'bg-error-container/10 border-l-4 border-l-error' : 'bg-white hover:bg-surface-container-low';
+                badgeTag = '<span class="text-[10px] font-mono uppercase bg-error/10 text-error font-bold px-2 py-0.5 rounded mr-2">Presensi</span>';
+            } else if (n.tipe === 'pengajuan') {
+                iconName = 'assignment_turned_in';
+                iconBg = isUnread ? 'bg-secondary text-white' : 'bg-secondary-container text-on-secondary-container';
+                borderClass = isUnread ? 'bg-secondary-container/10 border-l-4 border-l-secondary' : 'bg-white hover:bg-surface-container-low';
+                badgeTag = '<span class="text-[10px] font-mono uppercase bg-secondary/10 text-secondary font-bold px-2 py-0.5 rounded mr-2">Rencana Studi</span>';
+            } else if (n.tipe === 'sistem') {
+                iconName = 'settings_suggest';
+                badgeTag = '<span class="text-[10px] font-mono uppercase bg-surface-container text-on-surface-variant font-bold px-2 py-0.5 rounded mr-2">Sistem</span>';
+            }
+
+            // Format timestamp
+            let timeDisplay = 'Baru saja';
+            if (n.tanggal) {
+                const t = n.tanggal.toDate ? n.tanggal.toDate() : new Date(n.tanggal);
+                timeDisplay = t.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) + ', ' + t.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+            }
+
+            return `
+                <div class="ledger-row p-5 md:p-6 flex items-start gap-4 transition-colors cursor-pointer group ${borderClass}" onclick="toggleReadState('${n.id}')">
+                    <div class="w-10 h-10 rounded-full ${iconBg} flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+                        <span class="material-symbols-outlined text-lg">${iconName}</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-1">
+                            <div class="flex items-center flex-wrap gap-1">
+                                ${badgeTag}
+                                <h5 class="font-body-md text-sm font-bold text-primary">${n.judul}</h5>
+                            </div>
+                            <span class="font-mono text-[11px] ${isUnread ? 'text-secondary font-bold' : 'text-on-surface-variant'}">${timeDisplay}</span>
+                        </div>
+                        <p class="font-body-sm text-xs text-on-surface-variant leading-relaxed">${n.isi}</p>
+                    </div>
+                    <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button onclick="event.stopPropagation(); toggleReadState('${n.id}')" class="p-1.5 rounded hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors" title="${isUnread ? 'Tandai sudah dibaca' : 'Tandai belum dibaca'}">
+                            <span class="material-symbols-outlined text-base">${isUnread ? 'drafts' : 'mark_email_read'}</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        if (loadMoreBox) {
+            if (totalFiltered > displayLimit) {
+                loadMoreBox.classList.remove('hidden');
+            } else {
+                loadMoreBox.classList.add('hidden');
+            }
+        }
+    }
+
+    async function toggleReadState(id) {
+        const item = rawNotifications.find(n => n.id === id);
+        if (!item) return;
+
+        const newStatus = !item.dibaca;
+        item.dibaca = newStatus;
+
+        updateCounts();
+        renderNotificationList();
+
+        try {
+            if (newStatus) {
+                await DataStore.markNotifikasiRead(id);
+            }
+        } catch (e) {
+            console.error('Error updating notification read state:', e);
+        }
+    }
+
+    async function markAllCurrentRead() {
+        if (!currentUser) return;
+        rawNotifications.forEach(n => n.dibaca = true);
+        updateCounts();
+        renderNotificationList();
+
+        try {
+            const role = currentUser.role || 'Siswa';
+            const uid = currentUser.uid || currentUser.id;
+            await DataStore.markAllNotifikasiRead(role, uid);
+        } catch (e) {
+            console.error('Error mark all read:', e);
+        }
+    }
+
+    function loadMoreEntries() {
+        displayLimit += 10;
+        renderNotificationList();
+    }
+
+    function openHelpModal() {
+        const modal = document.getElementById('help-modal');
+        if (modal) modal.classList.remove('hidden');
+    }
+
+    function closeHelpModal() {
+        const modal = document.getElementById('help-modal');
+        if (modal) modal.classList.add('hidden');
+    }
 </script>
 
-</body></html>
+<!-- Firebase SDK & Auth -->
+</body>
+</html>

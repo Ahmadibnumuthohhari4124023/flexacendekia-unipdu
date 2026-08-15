@@ -98,7 +98,17 @@
         }
     </style>
 
-    </head>
+    
+    <!-- Firebase SDK (compat) & Auth Layer -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+    <script src="/firebase-auth-guard.js"></script>
+    <script src="/firebase-data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+    <script src="/career-roadmap-data.js"></script>
+</head>
 <body class="bg-surface-container-low text-on-surface font-body-md">
 
 <!-- TopNavBar -->
@@ -434,12 +444,7 @@
         }
     </script>
     <!-- Firebase SDK & Auth -->
-    <script src="/firebase-config.js"></script>
-    <script src="/firebase-auth-guard.js"></script>
-    <script src="/firebase-data-store.js"></script>
-    <script src="/notification-sync.js"></script>
-
-<script>
+    <script>
 (function(){
   function bindClick(selectors, handler) {
     document.querySelectorAll(selectors).forEach(function(el) {

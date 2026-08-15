@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Grades – Academic Ledger | Flexa Cendekia</title>
-<meta name="description" content="Halaman nilai akademik lengkap siswa Flexa Cendekia – riwayat semester, GPA, dan analisis performa belajar."/>
+<title>Riwayat Semester & Nilai Akademik - Flexa Cendekia x UNIPDU</title>
+<meta name="description" content="Halaman riwayat nilai akademik lengkap siswa Flexa Cendekia x UNIPDU - semester, capaian belajar, dan analisis performa."/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=Libre+Franklin:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -75,7 +75,17 @@ tbody tr:nth-child(even){background:rgba(185,134,47,0.03)}
 @media print{.no-print{display:none !important}body{background:white}.ledger-card,.ledger-shadow{box-shadow:none;border:1px solid #ccc}}
 </style>
 
-    </head>
+    
+    <!-- Firebase SDK (compat) & Auth Layer -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+    <script src="/firebase-auth-guard.js"></script>
+    <script src="/firebase-data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+    <script src="/career-roadmap-data.js"></script>
+</head>
 <body class="min-h-screen flex flex-col">
 
 
@@ -104,7 +114,7 @@ tbody tr:nth-child(even){background:rgba(185,134,47,0.03)}
         <p class="font-mono text-[9px] text-on-surface-variant tracking-widest px-5 mb-2 uppercase">Menu</p>
         <a href="/?page=08_dashboard-siswa" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">dashboard</span>Dashboard</a>
         <a href="/?page=09_krs-siswa" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">menu_book</span>Study Plans</a>
-        <a href="code.html" class="sidebar-link active"><span class="material-symbols-outlined text-[20px] filled-icon">grade</span>Grades</a>
+        <a href="/?page=13_riwayat-semester" class="sidebar-link active"><span class="material-symbols-outlined text-[20px] filled-icon">grade</span>Grades</a>
         <a href="/?page=10_detail-roadmap" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">route</span>Roadmap</a>
         <a href="/?page=11_checkpoint-jumat" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">flag</span>Checkpoint</a>
         <a href="/?page=12_ganti-cita-cita" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">swap_horiz</span>Ganti Cita-cita</a>
@@ -146,7 +156,7 @@ tbody tr:nth-child(even){background:rgba(185,134,47,0.03)}
             <a href="/?page=18_profil_profil-siswa" id="user-avatar-small" class="w-9 h-9 bg-primary text-white font-serif font-bold text-sm flex items-center justify-center hover:ring-2 hover:ring-brand-gold/50 transition-all">--</a>
         
                 <!-- Logout Button -->
-                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='../01_login/code.html');" class="ml-2 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
+                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" class="ml-2 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
                     <span class="material-symbols-outlined">logout</span>
                     <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-surface text-on-surface px-2 py-1 shadow-md rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border border-on-surface/10">Keluar</span>
                 </button>
@@ -179,7 +189,7 @@ tbody tr:nth-child(even){background:rgba(185,134,47,0.03)}
                     <p class="font-mono text-[10px] text-on-surface-variant tracking-widest uppercase mb-1">Semester Terekam</p>
                     <p class="font-serif text-5xl font-bold text-primary leading-none">03</p>
                     <div class="mt-4">
-                        <p class="font-mono text-[10px] text-on-surface-variant">T.A. 2021/22 – 2023/24</p>
+                        <p class="font-mono text-[10px] text-on-surface-variant">T.A. 2021/22 — 2023/24</p>
                         <div class="flex gap-1 mt-2">
                             <span class="w-6 h-1.5 bg-primary"></span>
                             <span class="w-6 h-1.5 bg-primary"></span>
@@ -231,13 +241,11 @@ tbody tr:nth-child(even){background:rgba(185,134,47,0.03)}
             <!-- SEMESTER TABS + TABLE -->
             <section class="ledger-card ledger-shadow animate-entry delay-3">
                 <div class="border-b border-primary/10 flex items-center justify-between flex-wrap gap-2 px-6 pt-4">
-                    <div class="flex gap-0" id="semester-tabs">
-                        <button class="tab-btn active" data-tab="sem3">Sem 3 (Aktif)</button>
-                        <button class="tab-btn" data-tab="sem2">Sem 2</button>
-                        <button class="tab-btn" data-tab="sem1">Sem 1</button>
+                    <div class="flex gap-0 overflow-x-auto" id="semester-tabs">
+                        <!-- Tabs di-render dinamis di sini -->
                     </div>
                     <div class="flex items-center gap-3 pb-3">
-                        <span id="active-gpa-badge" class="font-mono text-sm font-bold text-brand-gold-dark bg-brand-gold/10 px-3 py-1 border border-brand-gold/30">GPA: 3.82</span>
+                        <span id="active-gpa-badge" class="font-mono text-sm font-bold text-brand-gold-dark bg-brand-gold/10 px-3 py-1 border border-brand-gold/30">GPA: --</span>
                         <button id="toggle-chart-btn" class="hidden md:flex items-center gap-1 font-mono text-[11px] text-on-surface-variant hover:text-primary border border-primary/15 px-3 py-1.5 transition-colors">
                             <span class="material-symbols-outlined text-[16px]">bar_chart</span>Grafik
                         </button>
@@ -250,212 +258,10 @@ tbody tr:nth-child(even){background:rgba(185,134,47,0.03)}
                     <p class="font-mono text-[9px] text-on-surface-variant mt-2">Skor per mapel (maks 100)</p>
                 </div>
 
-                <!-- SEM 3 -->
-                <div id="sem3" class="tab-panel">
-                    <div class="p-4 bg-brand-gold/5 border-b border-brand-gold/20 flex items-center gap-3">
-                        <span class="material-symbols-outlined text-brand-gold filled-icon">bolt</span>
-                        <span class="font-sans text-sm font-bold text-brand-gold-dark">Semester 3 – Ganjil 2023/2024 <span class="font-mono text-[10px] font-normal text-on-surface-variant ml-2">(SEMESTER AKTIF)</span></span>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full border-collapse text-sm">
-                            <thead><tr class="bg-primary/5 border-b border-primary/10">
-                                <th class="px-5 py-3 text-left font-mono text-[10px] text-on-surface-variant tracking-wider">KODE</th>
-                                <th class="px-5 py-3 text-left font-mono text-[10px] text-on-surface-variant tracking-wider">MATA PELAJARAN</th>
-                                <th class="px-5 py-3 text-left font-mono text-[10px] text-on-surface-variant tracking-wider hidden md:table-cell">GURU</th>
-                                <th class="px-5 py-3 text-center font-mono text-[10px] text-on-surface-variant tracking-wider">NILAI</th>
-                                <th class="px-5 py-3 text-center font-mono text-[10px] text-on-surface-variant tracking-wider">SKOR</th>
-                                <th class="px-5 py-3 text-center font-mono text-[10px] text-on-surface-variant tracking-wider hidden sm:table-cell">BOBOT</th>
-                                <th class="px-5 py-3 text-right font-mono text-[10px] text-on-surface-variant tracking-wider">STATUS</th>
-                            </tr></thead>
-                            <tbody class="divide-y divide-primary/5 ledger-lines">
-                                <tr class="searchable" data-name="Fisika Bangunan">
-                                    <td class="px-5 py-4 font-mono text-xs text-on-surface-variant">PHYS-301</td>
-                                    <td class="px-5 py-4 font-sans font-semibold text-primary">Fisika Bangunan</td>
-                                    <td class="px-5 py-4 font-sans text-sm text-on-surface-variant hidden md:table-cell">Drs. Amir Santoso</td>
-                                    <td class="px-5 py-4 text-center"><span class="grade-pill grade-Bp">B+</span></td>
-                                    <td class="px-5 py-4 text-center font-mono text-sm font-bold">82</td>
-                                    <td class="px-5 py-4 text-center font-mono text-xs text-on-surface-variant hidden sm:table-cell">3 SKS</td>
-                                    <td class="px-5 py-4 text-right"><span class="px-2 py-1 bg-brand-gold/10 text-brand-gold-dark font-mono text-[10px] border border-brand-gold/20">Berlangsung</span></td>
-                                </tr>
-                                <tr class="searchable" data-name="Matematika Kalkulus">
-                                    <td class="px-5 py-4 font-mono text-xs text-on-surface-variant">MATH-301</td>
-                                    <td class="px-5 py-4 font-sans font-semibold text-primary">Matematika Kalkulus</td>
-                                    <td class="px-5 py-4 font-sans text-sm text-on-surface-variant hidden md:table-cell">Dr. Aris Subagyo</td>
-                                    <td class="px-5 py-4 text-center"><span class="grade-pill grade-B">B</span></td>
-                                    <td class="px-5 py-4 text-center font-mono text-sm font-bold">76</td>
-                                    <td class="px-5 py-4 text-center font-mono text-xs text-on-surface-variant hidden sm:table-cell">4 SKS</td>
-                                    <td class="px-5 py-4 text-right"><span class="px-2 py-1 bg-brand-gold/10 text-brand-gold-dark font-mono text-[10px] border border-brand-gold/20">Berlangsung</span></td>
-                                </tr>
-                                <tr class="searchable" data-name="Perspektif 2 Titik Hilang">
-                                    <td class="px-5 py-4 font-mono text-xs text-on-surface-variant">ARTS-315</td>
-                                    <td class="px-5 py-4 font-sans font-semibold text-primary">Perspektif 2 Titik Hilang</td>
-                                    <td class="px-5 py-4 font-sans text-sm text-on-surface-variant hidden md:table-cell">Ibu Lestari, S.Sn</td>
-                                    <td class="px-5 py-4 text-center"><span class="grade-pill grade-A">A</span></td>
-                                    <td class="px-5 py-4 text-center font-mono text-sm font-bold">95</td>
-                                    <td class="px-5 py-4 text-center font-mono text-xs text-on-surface-variant hidden sm:table-cell">3 SKS</td>
-                                    <td class="px-5 py-4 text-right"><span class="px-2 py-1 bg-green-50 text-green-800 font-mono text-[10px] border border-green-200">Lulus</span></td>
-                                </tr>
-                                <tr class="searchable" data-name="Sejarah Arsitektur Dunia">
-                                    <td class="px-5 py-4 font-mono text-xs text-on-surface-variant">HIST-310</td>
-                                    <td class="px-5 py-4 font-sans font-semibold text-primary">Sejarah Arsitektur Dunia</td>
-                                    <td class="px-5 py-4 font-sans text-sm text-on-surface-variant hidden md:table-cell">Mr. Hendra Wijaya</td>
-                                    <td class="px-5 py-4 text-center"><span class="grade-pill grade-A-">A-</span></td>
-                                    <td class="px-5 py-4 text-center font-mono text-sm font-bold">89</td>
-                                    <td class="px-5 py-4 text-center font-mono text-xs text-on-surface-variant hidden sm:table-cell">2 SKS</td>
-                                    <td class="px-5 py-4 text-right"><span class="px-2 py-1 bg-green-50 text-green-800 font-mono text-[10px] border border-green-200">Lulus</span></td>
-                                </tr>
-                                <tr class="searchable" data-name="Bahasa Indonesia Akademik">
-                                    <td class="px-5 py-4 font-mono text-xs text-on-surface-variant">LNG-301</td>
-                                    <td class="px-5 py-4 font-sans font-semibold text-primary">Bahasa Indonesia Akademik</td>
-                                    <td class="px-5 py-4 font-sans text-sm text-on-surface-variant hidden md:table-cell">Ibu Sri Utami</td>
-                                    <td class="px-5 py-4 text-center"><span class="grade-pill grade-Bp">B+</span></td>
-                                    <td class="px-5 py-4 text-center font-mono text-sm font-bold">84</td>
-                                    <td class="px-5 py-4 text-center font-mono text-xs text-on-surface-variant hidden sm:table-cell">2 SKS</td>
-                                    <td class="px-5 py-4 text-right"><span class="px-2 py-1 bg-brand-gold/10 text-brand-gold-dark font-mono text-[10px] border border-brand-gold/20">Berlangsung</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="p-6 bg-primary/3 border-t border-primary/10">
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 bg-primary text-white flex items-center justify-center flex-shrink-0 font-serif font-bold text-sm">BW</div>
-                            <div class="flex-1">
-                                <p class="font-mono text-[10px] text-on-surface-variant tracking-wider uppercase mb-1">Catatan Guru Pembimbing – Drs. Bambang Wijaya</p>
-                                <blockquote class="font-serif text-sm italic text-on-surface border-l-2 border-brand-gold pl-4 leading-relaxed">"Perkembangan Ahmad sangat memuaskan di semester ini, khususnya dalam mata pelajaran seni arsitektur. Diharapkan dapat meningkatkan fokus pada kalkulasi matematika agar performa lebih seimbang menuju jenjang berikutnya."</blockquote>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SEM 2 -->
-                <div id="sem2" class="tab-panel hidden">
-                    <div class="p-4 bg-primary/4 border-b border-primary/10 flex items-center gap-3">
-                        <span class="material-symbols-outlined text-on-surface-variant">history_edu</span>
-                        <span class="font-sans text-sm font-bold text-primary">Semester 2 – Genap 2022/2023</span>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full border-collapse text-sm">
-                            <thead><tr class="bg-primary/5 border-b border-primary/10">
-                                <th class="px-5 py-3 text-left font-mono text-[10px] text-on-surface-variant tracking-wider">KODE</th>
-                                <th class="px-5 py-3 text-left font-mono text-[10px] text-on-surface-variant tracking-wider">MATA PELAJARAN</th>
-                                <th class="px-5 py-3 text-left font-mono text-[10px] text-on-surface-variant tracking-wider hidden md:table-cell">GURU</th>
-                                <th class="px-5 py-3 text-center font-mono text-[10px] text-on-surface-variant tracking-wider">NILAI</th>
-                                <th class="px-5 py-3 text-center font-mono text-[10px] text-on-surface-variant tracking-wider">SKOR</th>
-                                <th class="px-5 py-3 text-center font-mono text-[10px] text-on-surface-variant tracking-wider hidden sm:table-cell">BOBOT</th>
-                                <th class="px-5 py-3 text-right font-mono text-[10px] text-on-surface-variant tracking-wider">STATUS</th>
-                            </tr></thead>
-                            <tbody class="divide-y divide-primary/5 ledger-lines">
-                                <tr class="searchable" data-name="Calculus Foundations II">
-                                    <td class="px-5 py-4 font-mono text-xs text-on-surface-variant">MATH-202</td>
-                                    <td class="px-5 py-4 font-sans font-semibold text-primary">Calculus Foundations II</td>
-                                    <td class="px-5 py-4 font-sans text-sm text-on-surface-variant hidden md:table-cell">Dr. Aris Subagyo</td>
-                                    <td class="px-5 py-4 text-center"><span class="grade-pill grade-A">A</span></td>
-                                    <td class="px-5 py-4 text-center font-mono text-sm font-bold">97</td>
-                                    <td class="px-5 py-4 text-center font-mono text-xs text-on-surface-variant hidden sm:table-cell">4 SKS</td>
-                                    <td class="px-5 py-4 text-right"><span class="px-2 py-1 bg-green-50 text-green-800 font-mono text-[10px] border border-green-200">Lulus</span></td>
-                                </tr>
-                                <tr class="searchable" data-name="Classical Mechanics">
-                                    <td class="px-5 py-4 font-mono text-xs text-on-surface-variant">PHYS-201</td>
-                                    <td class="px-5 py-4 font-sans font-semibold text-primary">Classical Mechanics</td>
-                                    <td class="px-5 py-4 font-sans text-sm text-on-surface-variant hidden md:table-cell">Prof. Siti Aminah</td>
-                                    <td class="px-5 py-4 text-center"><span class="grade-pill grade-A-">A-</span></td>
-                                    <td class="px-5 py-4 text-center font-mono text-sm font-bold">91</td>
-                                    <td class="px-5 py-4 text-center font-mono text-xs text-on-surface-variant hidden sm:table-cell">3 SKS</td>
-                                    <td class="px-5 py-4 text-right"><span class="px-2 py-1 bg-green-50 text-green-800 font-mono text-[10px] border border-green-200">Lulus</span></td>
-                                </tr>
-                                <tr class="searchable" data-name="World Civilizations Modern Era">
-                                    <td class="px-5 py-4 font-mono text-xs text-on-surface-variant">HIST-205</td>
-                                    <td class="px-5 py-4 font-sans font-semibold text-primary">World Civilizations: Modern Era</td>
-                                    <td class="px-5 py-4 font-sans text-sm text-on-surface-variant hidden md:table-cell">Mr. Hendra Wijaya</td>
-                                    <td class="px-5 py-4 text-center"><span class="grade-pill grade-A">A</span></td>
-                                    <td class="px-5 py-4 text-center font-mono text-sm font-bold">93</td>
-                                    <td class="px-5 py-4 text-center font-mono text-xs text-on-surface-variant hidden sm:table-cell">2 SKS</td>
-                                    <td class="px-5 py-4 text-right"><span class="px-2 py-1 bg-green-50 text-green-800 font-mono text-[10px] border border-green-200">Lulus</span></td>
-                                </tr>
-                                <tr class="searchable" data-name="Sketsa Arsitektur Lanjutan">
-                                    <td class="px-5 py-4 font-mono text-xs text-on-surface-variant">ARTS-204</td>
-                                    <td class="px-5 py-4 font-sans font-semibold text-primary">Sketsa Arsitektur Lanjutan</td>
-                                    <td class="px-5 py-4 font-sans text-sm text-on-surface-variant hidden md:table-cell">Ibu Lestari, S.Sn</td>
-                                    <td class="px-5 py-4 text-center"><span class="grade-pill grade-A">A</span></td>
-                                    <td class="px-5 py-4 text-center font-mono text-sm font-bold">96</td>
-                                    <td class="px-5 py-4 text-center font-mono text-xs text-on-surface-variant hidden sm:table-cell">3 SKS</td>
-                                    <td class="px-5 py-4 text-right"><span class="px-2 py-1 bg-green-50 text-green-800 font-mono text-[10px] border border-green-200">Lulus</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="p-6 bg-primary/3 border-t border-primary/10">
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 bg-primary text-white flex items-center justify-center flex-shrink-0 font-serif font-bold text-sm">BW</div>
-                            <div class="flex-1">
-                                <p class="font-mono text-[10px] text-on-surface-variant tracking-wider uppercase mb-1">Catatan Guru – Drs. Bambang Wijaya</p>
-                                <blockquote class="font-serif text-sm italic text-on-surface border-l-2 border-brand-gold pl-4 leading-relaxed">"Excellent progress this semester. The student shows great aptitude in analytical subjects and has maintained consistent attendance. Highly recommended to pursue advanced calculus modules next year."</blockquote>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- SEM 1 -->
-                <div id="sem1" class="tab-panel hidden">
-                    <div class="p-4 bg-primary/4 border-b border-primary/10 flex items-center gap-3">
-                        <span class="material-symbols-outlined text-on-surface-variant">archive</span>
-                        <span class="font-sans text-sm font-bold text-primary">Semester 1 – Ganjil 2021/2022 <span class="font-mono text-[10px] font-normal text-on-surface-variant ml-2">(Diarsipkan)</span></span>
-                    </div>
-                    <div class="overflow-x-auto opacity-80">
-                        <table class="w-full border-collapse text-sm">
-                            <thead><tr class="bg-primary/5 border-b border-primary/10">
-                                <th class="px-5 py-3 text-left font-mono text-[10px] text-on-surface-variant tracking-wider">KODE</th>
-                                <th class="px-5 py-3 text-left font-mono text-[10px] text-on-surface-variant tracking-wider">MATA PELAJARAN</th>
-                                <th class="px-5 py-3 text-left font-mono text-[10px] text-on-surface-variant tracking-wider hidden md:table-cell">GURU</th>
-                                <th class="px-5 py-3 text-center font-mono text-[10px] text-on-surface-variant tracking-wider">NILAI</th>
-                                <th class="px-5 py-3 text-center font-mono text-[10px] text-on-surface-variant tracking-wider">SKOR</th>
-                                <th class="px-5 py-3 text-center font-mono text-[10px] text-on-surface-variant tracking-wider hidden sm:table-cell">BOBOT</th>
-                                <th class="px-5 py-3 text-right font-mono text-[10px] text-on-surface-variant tracking-wider">STATUS</th>
-                            </tr></thead>
-                            <tbody class="divide-y divide-primary/5 ledger-lines">
-                                <tr class="searchable" data-name="Introductory Algebra">
-                                    <td class="px-5 py-4 font-mono text-xs text-on-surface-variant">MATH-101</td>
-                                    <td class="px-5 py-4 font-sans font-semibold text-primary">Introductory Algebra</td>
-                                    <td class="px-5 py-4 font-sans text-sm text-on-surface-variant hidden md:table-cell">Dr. Aris Subagyo</td>
-                                    <td class="px-5 py-4 text-center"><span class="grade-pill grade-A">A</span></td>
-                                    <td class="px-5 py-4 text-center font-mono text-sm font-bold">94</td>
-                                    <td class="px-5 py-4 text-center font-mono text-xs text-on-surface-variant hidden sm:table-cell">3 SKS</td>
-                                    <td class="px-5 py-4 text-right"><span class="px-2 py-1 bg-outline-variant/20 text-on-surface-variant font-mono text-[10px] border border-outline-variant/30">Arsip</span></td>
-                                </tr>
-                                <tr class="searchable" data-name="Composition Rhetoric">
-                                    <td class="px-5 py-4 font-mono text-xs text-on-surface-variant">ENG-110</td>
-                                    <td class="px-5 py-4 font-sans font-semibold text-primary">Composition &amp; Rhetoric</td>
-                                    <td class="px-5 py-4 font-sans text-sm text-on-surface-variant hidden md:table-cell">Ms. Diana Ross</td>
-                                    <td class="px-5 py-4 text-center"><span class="grade-pill grade-Bp">B+</span></td>
-                                    <td class="px-5 py-4 text-center font-mono text-sm font-bold">86</td>
-                                    <td class="px-5 py-4 text-center font-mono text-xs text-on-surface-variant hidden sm:table-cell">2 SKS</td>
-                                    <td class="px-5 py-4 text-right"><span class="px-2 py-1 bg-outline-variant/20 text-on-surface-variant font-mono text-[10px] border border-outline-variant/30">Arsip</span></td>
-                                </tr>
-                                <tr class="searchable" data-name="Geometri Ruang I">
-                                    <td class="px-5 py-4 font-mono text-xs text-on-surface-variant">MATH-115</td>
-                                    <td class="px-5 py-4 font-sans font-semibold text-primary">Geometri Ruang I</td>
-                                    <td class="px-5 py-4 font-sans text-sm text-on-surface-variant hidden md:table-cell">Dr. Aris Subagyo</td>
-                                    <td class="px-5 py-4 text-center"><span class="grade-pill grade-A">A</span></td>
-                                    <td class="px-5 py-4 text-center font-mono text-sm font-bold">92</td>
-                                    <td class="px-5 py-4 text-center font-mono text-xs text-on-surface-variant hidden sm:table-cell">3 SKS</td>
-                                    <td class="px-5 py-4 text-right"><span class="px-2 py-1 bg-outline-variant/20 text-on-surface-variant font-mono text-[10px] border border-outline-variant/30">Arsip</span></td>
-                                </tr>
-                                <tr class="searchable" data-name="Sketsa Dasar">
-                                    <td class="px-5 py-4 font-mono text-xs text-on-surface-variant">ARTS-101</td>
-                                    <td class="px-5 py-4 font-sans font-semibold text-primary">Sketsa Dasar</td>
-                                    <td class="px-5 py-4 font-sans text-sm text-on-surface-variant hidden md:table-cell">Ibu Lestari, S.Sn</td>
-                                    <td class="px-5 py-4 text-center"><span class="grade-pill grade-A">A</span></td>
-                                    <td class="px-5 py-4 text-center font-mono text-sm font-bold">98</td>
-                                    <td class="px-5 py-4 text-center font-mono text-xs text-on-surface-variant hidden sm:table-cell">3 SKS</td>
-                                    <td class="px-5 py-4 text-right"><span class="px-2 py-1 bg-outline-variant/20 text-on-surface-variant font-mono text-[10px] border border-outline-variant/30">Arsip</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="p-6 border-t border-primary/10">
-                        <button class="flex items-center gap-2 font-mono text-[11px] text-primary hover:underline">
-                            <span class="material-symbols-outlined text-[16px]">visibility</span>Lihat Rekam Ledger Lengkap
-                        </button>
+                <!-- Panels Container -->
+                <div id="semester-panels-container">
+                    <div class="p-8 text-center text-on-surface-variant font-mono text-sm">
+                        Memuat data nilai...
                     </div>
                 </div>
             </section>
@@ -527,7 +333,7 @@ tbody tr:nth-child(even){background:rgba(185,134,47,0.03)}
     <!-- FOOTER -->
     <footer class="bg-brand-surface border-t border-primary/10 py-4 px-4 md:px-8 flex flex-col sm:flex-row justify-between items-center gap-3 no-print">
         <div>
-            <p class="font-mono text-[10px] text-on-surface-variant">&#169; 2024 Flexa Cendekia &#215; UNIPDU Academic Systems</p>
+            <p class="font-mono text-[10px] text-on-surface-variant">&copy; 2026 Flexa Cendekia &#215; UNIPDU Academic Systems</p>
             <p class="font-mono text-[9px] text-on-surface-variant opacity-60">Verified Ledger ID: SL-2024-ARCH-9921 · V.2.4.0-STABLE</p>
         </div>
         <div class="flex gap-6">
@@ -549,7 +355,7 @@ tbody tr:nth-child(even){background:rgba(185,134,47,0.03)}
         <span class="material-symbols-outlined text-[22px]">menu_book</span>
         <span class="font-mono text-[9px] mt-0.5">Study</span>
     </a>
-    <a href="code.html" class="flex flex-col items-center text-brand-gold py-2">
+    <a href="/?page=13_riwayat-semester" class="flex flex-col items-center text-brand-gold py-2">
         <span class="material-symbols-outlined text-[22px] filled-icon">grade</span>
         <span class="font-mono text-[9px] mt-0.5 font-bold">Grades</span>
     </a>
@@ -573,7 +379,7 @@ tbody tr:nth-child(even){background:rgba(185,134,47,0.03)}
     <div class="flex-1 py-4 overflow-y-auto">
         <a href="/?page=08_dashboard-siswa" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">dashboard</span>Dashboard</a>
         <a href="/?page=09_krs-siswa" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">menu_book</span>Study Plans</a>
-        <a href="code.html" class="sidebar-link active"><span class="material-symbols-outlined text-[20px] filled-icon">grade</span>Grades</a>
+        <a href="/?page=13_riwayat-semester" class="sidebar-link active"><span class="material-symbols-outlined text-[20px] filled-icon">grade</span>Grades</a>
         <a href="/?page=10_detail-roadmap" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">route</span>Roadmap</a>
         <a href="/?page=11_checkpoint-jumat" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">flag</span>Checkpoint</a>
         <a href="/?page=17_notifikasi" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">notifications</span>Notifikasi</a>
@@ -726,9 +532,9 @@ document.getElementById('mobile-menu-btn')?.addEventListener('click',()=>{
             <p class="font-mono text-[9px] text-on-surface-variant opacity-60">Verified Ledger ID: SL-2024-ARCH-9921 · V.2.4.0-STABLE</p>
         </div>
         <div class="flex gap-6">
-            <a href="#" class="font-mono text-[10px] text-on-surface-variant hover:text-primary transition-colors">Academic Integrity</a>
-            <a href="#" class="font-mono text-[10px] text-on-surface-variant hover:text-primary transition-colors">Support Center</a>
-            <a href="#" class="font-mono text-[10px] text-on-surface-variant hover:text-primary transition-colors">Privacy Ledger</a>
+            <a href="/?page=01_login_panduan" class="font-mono text-[10px] text-on-surface-variant hover:text-primary transition-colors">Panduan Akademik</a>
+            <a href="/?page=01_login_bantuan" class="font-mono text-[10px] text-on-surface-variant hover:text-primary transition-colors">Pusat Bantuan</a>
+            <a href="/?page=01_login_kontak" class="font-mono text-[10px] text-on-surface-variant hover:text-primary transition-colors">Kontak Admin</a>
         </div>
     </footer>
 </div>
@@ -744,7 +550,7 @@ document.getElementById('mobile-menu-btn')?.addEventListener('click',()=>{
         <span class="material-symbols-outlined text-[22px]">menu_book</span>
         <span class="font-mono text-[9px] mt-0.5">Study</span>
     </a>
-    <a href="code.html" class="flex flex-col items-center text-brand-gold py-2">
+    <a href="/?page=13_riwayat-semester" class="flex flex-col items-center text-brand-gold py-2">
         <span class="material-symbols-outlined text-[22px] filled-icon">grade</span>
         <span class="font-mono text-[9px] mt-0.5 font-bold">Grades</span>
     </a>
@@ -761,19 +567,29 @@ document.getElementById('mobile-menu-btn')?.addEventListener('click',()=>{
 <!-- MOBILE OVERLAY -->
 <div id="mobile-overlay" class="md:hidden fixed inset-0 bg-black/40 z-[60] hidden" onclick="closeMobileMenu()"></div>
 <div id="mobile-sidebar" class="md:hidden fixed left-0 top-0 h-full w-72 bg-brand-surface z-[70] transform -translate-x-full transition-transform duration-300 shadow-2xl flex flex-col">
-    <div class="flex items-center justify-between px-5 py-4 border-b border-primary/10">
-        <div class="font-serif text-lg font-bold text-primary">Flexa Cendekia</div>
-        <button onclick="closeMobileMenu()" class="p-1 text-on-surface-variant"><span class="material-symbols-outlined">close</span></button>
+    <div class="px-6 pt-6 pb-4 border-b border-primary/10">
+        <div class="font-serif text-xl font-bold text-primary leading-tight">Flexa Cendekia</div>
+        <div class="font-mono text-[10px] text-on-surface-variant tracking-widest mt-0.5">× UNIPDU • TP 2025/2026</div>
     </div>
-    <div class="flex-1 py-4 overflow-y-auto">
-        <a href="/?page=08_dashboard-siswa" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">dashboard</span>Dashboard</a>
-        <a href="/?page=09_krs-siswa" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">menu_book</span>Study Plans</a>
-        <a href="code.html" class="sidebar-link active"><span class="material-symbols-outlined text-[20px] filled-icon">grade</span>Grades</a>
+    <div class="px-6 py-4 border-b border-primary/10 flex items-center gap-3">
+        <div id="user-avatar-large" class="w-10 h-10 bg-primary text-white flex items-center justify-center font-serif font-bold text-sm flex-shrink-0">--</div>
+        <div>
+            <div class="font-sans font-bold text-sm text-primary"><span class="user-display-name"></span></div>
+            <div class="font-mono text-[10px] text-on-surface-variant">SMA · Kelas 11</div>
+        </div>
+    </div>
+    <nav class="flex-1 py-4 overflow-y-auto">
+        <p class="font-mono text-[9px] text-on-surface-variant tracking-widest px-5 mb-2 uppercase">Menu</p>
+        <a href="/?page=08_dashboard-siswa" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">dashboard</span>Beranda</a>
+        <a href="/?page=09_krs-siswa" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">menu_book</span>Rencana Studi (KRS)</a>
+        <a href="/?page=13_riwayat-semester" class="sidebar-link active"><span class="material-symbols-outlined text-[20px] filled-icon">grade</span>Riwayat &amp; Nilai</a>
         <a href="/?page=10_detail-roadmap" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">route</span>Roadmap</a>
         <a href="/?page=11_checkpoint-jumat" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">flag</span>Checkpoint</a>
+        <a href="/?page=12_ganti-cita-cita" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">swap_horiz</span>Ganti Cita-cita</a>
+        <p class="font-mono text-[9px] text-on-surface-variant tracking-widest px-5 mt-4 mb-2 uppercase">Akun</p>
         <a href="/?page=17_notifikasi" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">notifications</span>Notifikasi</a>
         <a href="/?page=18_profil_profil-siswa" class="sidebar-link"><span class="material-symbols-outlined text-[20px]">settings</span>Pengaturan</a>
-    </div>
+    </nav>
 </div>
 
 <script>
@@ -791,101 +607,270 @@ updateClock();setInterval(updateClock,1000);
 // GPA BAR
 setTimeout(()=>{const b=document.getElementById('gpa-bar');if(b)b.style.width='97%';},400);
 
-// GPA TREND CHART
-const gpaData=[
-    {label:'Sem 1\n2021/22',gpa:3.84,current:false},
-    {label:'Sem 2\n2022/23',gpa:3.92,current:false},
-    {label:'Sem 3\n2023/24',gpa:3.82,current:true}
-];
-function renderGpaChart(){
-    const chart=document.getElementById('gpa-chart');
-    const labels=document.getElementById('gpa-labels');
-    if(!chart||!labels)return;
-    chart.innerHTML='';labels.innerHTML='';
-    gpaData.forEach(d=>{
-        const pct=(d.gpa/4.0)*100;
-        const col=document.createElement('div');
-        col.className='flex-1 flex flex-col items-center gap-1';
-        col.innerHTML=`<div class="font-mono text-[11px] font-bold ${d.current?'text-brand-gold':'text-primary'} mb-1">${d.gpa.toFixed(2)}</div>
-            <div style="width:100%;height:140px;background:rgba(23,34,59,0.06);border:1px solid rgba(23,34,59,0.10);display:flex;flex-direction:column-reverse;" title="GPA: ${d.gpa}">
-                <div style="background:${d.current?'#B9862F':'#17223B'};width:100%;height:0%;transition:height 1.2s cubic-bezier(.4,0,.2,1);" data-target="${pct}"></div>
-            </div>`;
-        chart.appendChild(col);
-        const lbl=document.createElement('div');
-        lbl.className=`flex-1 text-center font-mono text-[9px] leading-tight ${d.current?'text-brand-gold font-bold':'text-on-surface-variant'}`;
-        lbl.textContent=d.label;
-        labels.appendChild(lbl);
-    });
-    setTimeout(()=>{chart.querySelectorAll('[data-target]').forEach(el=>{el.style.height=el.dataset.target+'%';});},200);
+// GPA TREND CHART & UI (DYNAMIC)
+let tabMini = {}; // Store scores for mini chart
+let tabGpa = {}; // Store GPA for each semester
+let miniVisible = false;
+
+function mapScoreToLetterAndColor(skor) {
+    if (skor >= 90) return { letter: 'A', bgClass: 'bg-green-50', textClass: 'text-green-800', borderClass: 'border-green-200' };
+    if (skor >= 85) return { letter: 'A-', bgClass: 'bg-green-50', textClass: 'text-green-800', borderClass: 'border-green-200' };
+    if (skor >= 80) return { letter: 'B+', bgClass: 'bg-brand-gold/10', textClass: 'text-brand-gold-dark', borderClass: 'border-brand-gold/20' };
+    if (skor >= 75) return { letter: 'B', bgClass: 'bg-brand-gold/10', textClass: 'text-brand-gold-dark', borderClass: 'border-brand-gold/20' };
+    if (skor >= 70) return { letter: 'B-', bgClass: 'bg-brand-gold/10', textClass: 'text-brand-gold-dark', borderClass: 'border-brand-gold/20' };
+    if (skor >= 65) return { letter: 'C+', bgClass: 'bg-yellow-50', textClass: 'text-yellow-800', borderClass: 'border-yellow-200' };
+    if (skor >= 60) return { letter: 'C', bgClass: 'bg-yellow-50', textClass: 'text-yellow-800', borderClass: 'border-yellow-200' };
+    if (skor >= 50) return { letter: 'D', bgClass: 'bg-orange-50', textClass: 'text-orange-800', borderClass: 'border-orange-200' };
+    return { letter: 'E', bgClass: 'bg-red-50', textClass: 'text-red-800', borderClass: 'border-red-200' };
 }
-renderGpaChart();
 
-// TABS
-const tabGpa={sem3:'3.82',sem2:'3.92',sem1:'3.84'};
-const tabMini={sem3:[82,76,95,89,84],sem2:[97,91,93,96],sem1:[94,86,92,98]};
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-        const id=btn.dataset.tab;
-        document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        document.querySelectorAll('.tab-panel').forEach(p=>p.classList.add('hidden'));
-        document.getElementById(id).classList.remove('hidden');
-        document.getElementById('active-gpa-badge').textContent='GPA: '+tabGpa[id];
-        if(!document.getElementById('mini-chart-area').classList.contains('hidden'))renderMiniChart(id);
+function calculateGPA(scores) {
+    if (scores.length === 0) return 0.00;
+    let totalBobot = 0;
+    let totalPoint = 0;
+    scores.forEach(s => {
+        let bobot = s.bobotSKS || 3; // Default 3 Jam Pelajaran if missing
+        totalBobot += bobot;
+        // Convert skor to GPA point (4.0 scale roughly)
+        let point = 0;
+        if (s.skor >= 90) point = 4.0;
+        else if (s.skor >= 85) point = 3.7;
+        else if (s.skor >= 80) point = 3.3;
+        else if (s.skor >= 75) point = 3.0;
+        else if (s.skor >= 70) point = 2.7;
+        else if (s.skor >= 65) point = 2.3;
+        else if (s.skor >= 60) point = 2.0;
+        else if (s.skor >= 50) point = 1.0;
+        else point = 0.0;
+        totalPoint += (point * bobot);
     });
-});
+    return (totalPoint / totalBobot);
+}
 
-// MINI CHART
-let miniVisible=false;
-document.getElementById('toggle-chart-btn').addEventListener('click',()=>{
-    miniVisible=!miniVisible;
-    document.getElementById('mini-chart-area').classList.toggle('hidden',!miniVisible);
-    if(miniVisible){const at=document.querySelector('.tab-btn.active');renderMiniChart(at?at.dataset.tab:'sem3');}
-});
-function renderMiniChart(tabId){
-    const data=tabMini[tabId]||[];
-    const c=document.getElementById('mini-chart-bars');if(!c)return;
-    c.innerHTML='';
-    const colors=['#17223B','#B9862F','#005046','#17223B','#805600'];
-    data.forEach((val,i)=>{
-        const el=document.createElement('div');
-        el.className='flex-1 flex flex-col items-center gap-1';
-        el.innerHTML=`<span class="font-mono text-[9px] text-on-surface-variant">${val}</span>
+function getSubjectCategory(mapel) {
+    const name = (mapel || '').toLowerCase();
+    if (name.includes('seni') || name.includes('arsitektur') || name.includes('perspektif') || name.includes('sketsa')) {
+        return { name: 'Seni & Arsitektur', color: '#B9862F', icon: 'architecture' };
+    } else if (name.includes('matematika') || name.includes('calculus') || name.includes('geometri') || name.includes('algebra')) {
+        return { name: 'Matematika', color: '#17223B', icon: 'calculate' };
+    } else if (name.includes('fisika') || name.includes('sains') || name.includes('science') || name.includes('mechanics')) {
+        return { name: 'Ilmu Pengetahuan', color: '#005046', icon: 'science' };
+    } else if (name.includes('bahasa') || name.includes('rhetoric') || name.includes('composition')) {
+        return { name: 'Bahasa & Sastra', color: '#805600', icon: 'menu_book' };
+    } else {
+        return { name: 'Sejarah & Sosial', color: '#45464D', icon: 'history_edu' };
+    }
+}
+
+function renderUIFromData(grades) {
+    // 1. Group grades by semester
+    const semMap = {};
+    grades.forEach(g => {
+        const semName = g.semester || 'Semester Tidak Diketahui';
+        if (!semMap[semName]) semMap[semName] = { name: semName, data: [] };
+        semMap[semName].data.push(g);
+    });
+
+    const semesters = Object.values(semMap).sort((a,b) => {
+        // Sort descending (assuming Semester 3 is above Semester 2)
+        return b.name.localeCompare(a.name); 
+    });
+
+    if (semesters.length === 0) {
+        document.getElementById('semester-panels-container').innerHTML = '<div class="p-8 text-center text-on-surface-variant font-mono text-sm">Belum ada data nilai akademik.</div>';
+        return;
+    }
+
+    const tabsContainer = document.getElementById('semester-tabs');
+    const panelsContainer = document.getElementById('semester-panels-container');
+    tabsContainer.innerHTML = '';
+    panelsContainer.innerHTML = '';
+    tabMini = {};
+    tabGpa = {};
+
+    let gpaData = [];
+    let categoriesMap = {};
+
+    // 2. Render Tabs and Panels
+    semesters.forEach((sem, index) => {
+        const isLatest = index === 0;
+        const tabId = 'sem-' + index;
+
+        // Populate Analysis
+        sem.data.forEach(g => {
+            const cat = getSubjectCategory(g.namaMapel);
+            if (!categoriesMap[cat.name]) categoriesMap[cat.name] = { ...cat, totalSkor: 0, count: 0 };
+            categoriesMap[cat.name].totalSkor += g.skor;
+            categoriesMap[cat.name].count += 1;
+        });
+
+        // Tab Button
+        const btn = document.createElement('button');
+        btn.className = `tab-btn ${isLatest ? 'active' : ''}`;
+        btn.dataset.tab = tabId;
+        btn.innerHTML = `${sem.name} ${isLatest ? '(Aktif)' : ''}`;
+        tabsContainer.appendChild(btn);
+
+        // Calculate GPA
+        const gpa = calculateGPA(sem.data);
+        tabGpa[tabId] = gpa.toFixed(2);
+        gpaData.push({ label: sem.name, gpa: gpa, current: isLatest });
+
+        // Populate TabMini scores
+        tabMini[tabId] = sem.data.map(g => g.skor);
+
+        // Panel HTML
+        let tableRows = '';
+        sem.data.forEach(g => {
+            const style = mapScoreToLetterAndColor(g.skor);
+            const statusLabel = g.status === 'Lulus' ? 'Lulus' : (g.status === 'Berlangsung' ? 'Berlangsung' : 'Arsip');
+            const statusBadge = `<span class="px-2 py-1 ${style.bgClass} ${style.textClass} font-mono text-[10px] border ${style.borderClass}">${statusLabel}</span>`;
+            
+            tableRows += `
+                <tr class="searchable" data-name="${g.namaMapel}">
+                    <td class="px-5 py-4 font-mono text-xs text-on-surface-variant">${g.kode || '-'}</td>
+                    <td class="px-5 py-4 font-sans font-semibold text-primary">${g.namaMapel}</td>
+                    <td class="px-5 py-4 font-sans text-sm text-on-surface-variant hidden md:table-cell">${g.namaGuru || '-'}</td>
+                    <td class="px-5 py-4 text-center"><span class="grade-pill" style="color:var(--md-sys-color-primary);background:var(--md-sys-color-primary-container)">${g.nilaiHuruf || style.letter}</span></td>
+                    <td class="px-5 py-4 text-center font-mono text-sm font-bold">${g.skor}</td>
+                    <td class="px-5 py-4 text-center font-mono text-xs text-on-surface-variant hidden sm:table-cell">${g.bobotSKS || 3} Jam Pelajaran</td>
+                    <td class="px-5 py-4 text-right">${statusBadge}</td>
+                </tr>
+            `;
+        });
+
+        const panel = document.createElement('div');
+        panel.id = tabId;
+        panel.className = `tab-panel ${isLatest ? '' : 'hidden'}`;
+        panel.innerHTML = `
+            <div class="p-4 bg-primary/4 border-b border-primary/10 flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">${isLatest ? 'bolt' : 'history_edu'}</span>
+                <span class="font-sans text-sm font-bold text-primary">${sem.name}</span>
+            </div>
+            <div class="overflow-x-auto ${isLatest ? '' : 'opacity-80'}">
+                <table class="w-full border-collapse text-sm">
+                    <thead><tr class="bg-primary/5 border-b border-primary/10">
+                        <th class="px-5 py-3 text-left font-mono text-[10px] text-on-surface-variant tracking-wider">KODE</th>
+                        <th class="px-5 py-3 text-left font-mono text-[10px] text-on-surface-variant tracking-wider">MATA PELAJARAN</th>
+                        <th class="px-5 py-3 text-left font-mono text-[10px] text-on-surface-variant tracking-wider hidden md:table-cell">GURU</th>
+                        <th class="px-5 py-3 text-center font-mono text-[10px] text-on-surface-variant tracking-wider">NILAI</th>
+                        <th class="px-5 py-3 text-center font-mono text-[10px] text-on-surface-variant tracking-wider">SKOR</th>
+                        <th class="px-5 py-3 text-center font-mono text-[10px] text-on-surface-variant tracking-wider hidden sm:table-cell">BOBOT</th>
+                        <th class="px-5 py-3 text-right font-mono text-[10px] text-on-surface-variant tracking-wider">STATUS</th>
+                    </tr></thead>
+                    <tbody class="divide-y divide-primary/5 ledger-lines">
+                        ${tableRows}
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-6 bg-primary/3 border-t border-primary/10">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 bg-primary text-white flex items-center justify-center flex-shrink-0 font-serif font-bold text-sm">AD</div>
+                    <div class="flex-1">
+                        <p class="font-mono text-[10px] text-on-surface-variant tracking-wider uppercase mb-1">Catatan Akademik</p>
+                        <blockquote class="font-serif text-sm italic text-on-surface border-l-2 border-brand-gold pl-4 leading-relaxed">"Perkembangan siswa terpantau stabil pada semester ini. Diharapkan tetap mempertahankan konsistensi pada mata pelajaran analisis."</blockquote>
+                    </div>
+                </div>
+            </div>
+        `;
+        panelsContainer.appendChild(panel);
+
+        // Bind tab button click
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById('active-gpa-badge').textContent = 'GPA: ' + tabGpa[tabId];
+            if (!document.getElementById('mini-chart-area').classList.contains('hidden')) renderMiniChart(tabId);
+        });
+    });
+
+    // Initial state
+    if (semesters.length > 0) {
+        document.getElementById('active-gpa-badge').textContent = 'GPA: ' + tabGpa['sem-0'];
+    }
+
+    // 3. Render GPA Chart
+    // Reverse gpaData to show oldest first in chart
+    gpaData = gpaData.reverse(); 
+    const chart = document.getElementById('gpa-chart');
+    const labels = document.getElementById('gpa-labels');
+    if (chart && labels) {
+        chart.innerHTML = ''; labels.innerHTML = '';
+        gpaData.forEach(d => {
+            const pct = (d.gpa / 4.0) * 100;
+            const col = document.createElement('div');
+            col.className = 'flex-1 flex flex-col items-center gap-1';
+            col.innerHTML = `<div class="font-mono text-[11px] font-bold ${d.current ? 'text-brand-gold' : 'text-primary'} mb-1">${d.gpa.toFixed(2)}</div>
+                <div style="width:100%;height:140px;background:rgba(23,34,59,0.06);border:1px solid rgba(23,34,59,0.10);display:flex;flex-direction:column-reverse;" title="GPA: ${d.gpa.toFixed(2)}">
+                    <div style="background:${d.current ? '#B9862F' : '#17223B'};width:100%;height:0%;transition:height 1.2s cubic-bezier(.4,0,.2,1);" data-target="${pct}"></div>
+                </div>`;
+            chart.appendChild(col);
+            const lbl = document.createElement('div');
+            lbl.className = `flex-1 text-center font-mono text-[9px] leading-tight ${d.current ? 'text-brand-gold font-bold' : 'text-on-surface-variant'}`;
+            lbl.textContent = d.label;
+            labels.appendChild(lbl);
+        });
+        setTimeout(() => { chart.querySelectorAll('[data-target]').forEach(el => { el.style.height = el.dataset.target + '%'; }); }, 200);
+    }
+
+    // 4. Render Subject Analysis
+    const catArray = Object.values(categoriesMap).map(c => ({
+        ...c,
+        avg: Math.round(c.totalSkor / c.count)
+    }));
+    const analysisContainer = document.getElementById('subject-analysis');
+    if (analysisContainer) {
+        analysisContainer.innerHTML = catArray.map(cat => `
+            <div class="flex items-center gap-4">
+                <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center" style="background:${cat.color}18;border:1px solid ${cat.color}30">
+                    <span class="material-symbols-outlined text-[16px]" style="color:${cat.color}">${cat.icon}</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="font-sans text-sm font-semibold text-primary">${cat.name}</span>
+                        <span class="font-mono text-xs text-on-surface-variant">${cat.count} mapel</span>
+                    </div>
+                    <div class="progress-track"><div class="progress-fill" style="width:0%;background:${cat.color}" data-t="${cat.avg}"></div></div>
+                </div>
+                <div class="font-mono text-sm font-bold flex-shrink-0" style="color:${cat.color}">${cat.avg}%</div>
+            </div>`).join('');
+        setTimeout(() => { analysisContainer.querySelectorAll('.progress-fill[data-t]').forEach(el => { el.style.width = el.dataset.t + '%'; }); }, 500);
+    }
+
+    // Bind row hover
+    document.querySelectorAll('tbody tr').forEach(row => {
+        row.addEventListener('mouseenter', () => { row.style.borderLeft = '3px solid #B9862F'; });
+        row.addEventListener('mouseleave', () => { row.style.borderLeft = ''; });
+    });
+}
+
+function renderMiniChart(tabId) {
+    const data = tabMini[tabId] || [];
+    const c = document.getElementById('mini-chart-bars'); if (!c) return;
+    c.innerHTML = '';
+    const colors = ['#17223B', '#B9862F', '#005046', '#17223B', '#805600'];
+    data.forEach((val, i) => {
+        const el = document.createElement('div');
+        el.className = 'flex-1 flex flex-col items-center gap-1';
+        el.innerHTML = `<span class="font-mono text-[9px] text-on-surface-variant">${val}</span>
             <div style="width:100%;height:60px;background:rgba(23,34,59,0.06);border:1px solid rgba(23,34,59,0.08);display:flex;flex-direction:column-reverse;">
-                <div style="background:${colors[i%colors.length]};width:100%;height:0%;transition:height 0.8s;" data-t="${val}"></div>
+                <div style="background:${colors[i % colors.length]};width:100%;height:0%;transition:height 0.8s;" data-t="${val}"></div>
             </div>`;
         c.appendChild(el);
     });
-    setTimeout(()=>{c.querySelectorAll('[data-t]').forEach(el=>{el.style.height=el.dataset.t+'%';});},50);
+    setTimeout(() => { c.querySelectorAll('[data-t]').forEach(el => { el.style.height = el.dataset.t + '%'; }); }, 50);
 }
 
-// SUBJECT ANALYSIS
-const cats=[
-    {name:'Seni & Arsitektur',avg:95,count:8,color:'#B9862F',icon:'architecture'},
-    {name:'Matematika',avg:87,count:7,color:'#17223B',icon:'calculate'},
-    {name:'Ilmu Pengetahuan',avg:88,count:6,color:'#005046',icon:'science'},
-    {name:'Bahasa & Sastra',avg:85,count:7,color:'#805600',icon:'menu_book'},
-    {name:'Sejarah & Sosial',avg:91,count:6,color:'#45464D',icon:'history_edu'},
-];
-function renderSubjectAnalysis(){
-    const c=document.getElementById('subject-analysis');if(!c)return;
-    c.innerHTML=cats.map(cat=>`
-        <div class="flex items-center gap-4">
-            <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center" style="background:${cat.color}18;border:1px solid ${cat.color}30">
-                <span class="material-symbols-outlined text-[16px]" style="color:${cat.color}">${cat.icon}</span>
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="flex justify-between items-center mb-1">
-                    <span class="font-sans text-sm font-semibold text-primary">${cat.name}</span>
-                    <span class="font-mono text-xs text-on-surface-variant">${cat.count} mapel</span>
-                </div>
-                <div class="progress-track"><div class="progress-fill" style="width:0%;background:${cat.color}" data-t="${cat.avg}"></div></div>
-            </div>
-            <div class="font-mono text-sm font-bold flex-shrink-0" style="color:${cat.color}">${cat.avg}%</div>
-        </div>`).join('');
-    setTimeout(()=>{c.querySelectorAll('.progress-fill[data-t]').forEach(el=>{el.style.width=el.dataset.t+'%';});},500);
-}
-renderSubjectAnalysis();
+document.getElementById('toggle-chart-btn')?.addEventListener('click', () => {
+    miniVisible = !miniVisible;
+    document.getElementById('mini-chart-area').classList.toggle('hidden', !miniVisible);
+    if (miniVisible) {
+        const at = document.querySelector('.tab-btn.active');
+        renderMiniChart(at ? at.dataset.tab : 'sem-0');
+    }
+});
 
 // SEARCH
 document.getElementById('search-input')?.addEventListener('input',function(){
@@ -913,7 +898,7 @@ function closeMobileMenu(){
 
 // EXPORT
 document.getElementById('export-btn')?.addEventListener('click',()=>{
-    const namaSiswa = window._userName || 'Ahmad Fauzi';
+    const namaSiswa = (window.currentFirebaseUser && window.currentFirebaseUser.nama) || window._userName || 'Siswa';
     const data={student: namaSiswa,id:'FCX-UN-2023-A00421',gpa:3.88,honor:'Cum Laude',semesters:3,modules:34,exported:new Date().toISOString()};
     const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
     const a=document.createElement('a');
@@ -923,13 +908,8 @@ document.getElementById('export-btn')?.addEventListener('click',()=>{
 });
 </script>
     <!-- Firebase SDK & Auth -->
-    <script src="/firebase-config.js"></script>
-    <script src="/firebase-auth-guard.js"></script>
-    <script src="/firebase-data-store.js"></script>
-    <script src="/notification-sync.js"></script>
-
     <script>
-        window.addEventListener('auth-ready', function(e) {
+        window.addEventListener('auth-ready', async function(e) {
             const user = e.detail;
             window._authUid = user.uid;
             window._userName = user.nama;
@@ -938,11 +918,22 @@ document.getElementById('export-btn')?.addEventListener('click',()=>{
                     el.textContent = user.nama;
                 });
                 // Update Avatar initials
-                    const initials = user.nama.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                    const avatarSmall = document.getElementById('user-avatar-small');
-                    const avatarLarge = document.getElementById('user-avatar-large');
-                    if (avatarSmall) avatarSmall.textContent = initials;
-                    if (avatarLarge) avatarLarge.textContent = initials;
+                const initials = user.nama.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                const avatarSmall = document.getElementById('user-avatar-small');
+                const avatarLarge = document.getElementById('user-avatar-large');
+                if (avatarSmall) avatarSmall.textContent = initials;
+                if (avatarLarge) avatarLarge.textContent = initials;
+
+                // Load grades from Firestore
+                if (window.DataStore && window.DataStore.getNilaiAkademikSiswa) {
+                    try {
+                        const grades = await window.DataStore.getNilaiAkademikSiswa(user.uid);
+                        renderUIFromData(grades);
+                    } catch (error) {
+                        console.error('Error loading grades:', error);
+                        document.getElementById('semester-panels-container').innerHTML = '<div class="p-8 text-center text-red-500 font-mono text-sm">Gagal memuat data nilai.</div>';
+                    }
+                }
             }
         });
     </script>
@@ -1014,3 +1005,4 @@ document.getElementById('export-btn')?.addEventListener('click',()=>{
 
 </body>
 </html>
+

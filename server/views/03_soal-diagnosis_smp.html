@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html class="light" lang="id"><head>
 <meta charset="utf-8"/>
@@ -110,7 +110,15 @@
         input[type="radio"]:checked + label { background-color: rgba(128, 86, 0, 0.1); border-color: #805600; }
     </style>
 
-    </head>
+        <!-- Firebase SDK & Auth Layer -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+    <script src="/firebase-auth-guard.js"></script>
+    <script src="/firebase-data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+</head>
 <body class="bg-[#EAEDE2] font-body-md text-on-surface min-h-screen">
 
 <!-- TopNavBar -->
@@ -161,7 +169,7 @@
 </a>
 </nav>
 <div class="mt-auto pt-6 border-t border-primary/5 space-y-1">
-<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:bg-surface-container transition-all" href="../01_login/bantuan.html">
+<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=01_login_bantuan">
 <span class="material-symbols-outlined">help</span>
 <span class="font-label-caps text-label-caps">Bantuan</span>
 </a>
@@ -480,4 +488,5 @@
 </script>
 
 </body></html>
+
 

@@ -101,5 +101,23 @@ service cloud.firestore {
       
       allow delete: if false;
     }
+    // ---------------------------------------------------------
+    // Koleksi Nilai Akademik
+    // ---------------------------------------------------------
+    match /nilaiAkademik/{nilaiId} {
+      // Siswa hanya boleh membaca nilainya sendiri
+      // Guru boleh membaca dan menulis nilai untuk siswa yang diampunya
+      allow read: if isAuth() && (
+        resource.data.siswaId == request.auth.uid ||
+        (getUserRole() == 'Guru' && get(/databases/$(database)/documents/users/$(resource.data.siswaId)).data.guruWaliId == request.auth.uid) ||
+        // Tambahan untuk mempermudah dev/ortu jika diperlukan
+        getUserRole() == 'OrangTua'
+      );
+
+      // Siswa tidak boleh mengubah nilai
+      allow write: if isAuth() && 
+                   getUserRole() == 'Guru' && 
+                   get(/databases/$(database)/documents/users/$(request.resource.data.siswaId)).data.guruWaliId == request.auth.uid;
+    }
   }
 }

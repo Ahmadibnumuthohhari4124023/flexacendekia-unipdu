@@ -54,16 +54,30 @@
             return;
         }
 
-        firebaseAuth.onAuthStateChanged(function(user) {
-            if (_authResolved) return; // Cegah duplikasi
-            _authResolved = true;
+        window.firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(function() {
+                var sudahDicekSekali = false;
+                
+                firebaseAuth.onAuthStateChanged(function(user) {
+                    if (!user) {
+                        if (!sudahDicekSekali) {
+                            console.warn('[AuthGuard] Sesi awal null. Menunggu pemulihan...');
+                            sudahDicekSekali = true;
+                            setTimeout(function() {
+                                if (!window.firebaseAuth.currentUser) {
+                                    console.warn('[AuthGuard] Sesi dipastikan null. Redirect ke login.');
+                                    window.location.replace(getLoginUrl());
+                                }
+                            }, 1000);
+                            return;
+                        } else {
+                            window.location.replace(getLoginUrl());
+                            return;
+                        }
+                    }
 
-            if (!user) {
-                // Belum login → redirect ke login
-                console.warn('[AuthGuard] Pengguna belum login. Redirect ke halaman login.');
-                window.location.href = getLoginUrl();
-                return;
-            }
+                    if (_authResolved) return; // Cegah duplikasi
+                    _authResolved = true;
 
             // User sudah login — ambil profil dari Firestore
             window.firebaseDb.collection('users').doc(user.uid).get()
@@ -131,7 +145,8 @@
                     // Fail closed
                     window.location.href = getLoginUrl();
                 });
-        });
+                });
+            }).catch(function(err) { console.error("[AuthGuard] Set persistence error", err); window.location.href = getLoginUrl(); });
     }
 
     // Listen for firebase-ready event or check if already ready

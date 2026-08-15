@@ -135,7 +135,17 @@
         }
     </style>
 
-    </head>
+    
+    <!-- Firebase SDK (compat) & Auth Layer -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+    <script src="/firebase-auth-guard.js"></script>
+    <script src="/firebase-data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+    <script src="/career-roadmap-data.js"></script>
+</head>
 
 <body class="min-h-screen flex flex-col">
 
@@ -413,7 +423,7 @@
                 <!-- Footer Context -->
                 <div
                     class="mt-8 text-center text-on-surface-variant/40 font-label-caps text-[10px] uppercase tracking-[0.2em]">
-                    Flexa Cendekia Academic Assessment Framework © 2026
+                    Flexa Cendekia Academic Assessment Framework &copy; 2026
                 </div>
             </div>
         </main>
@@ -498,11 +508,6 @@
     </script>
 
     <!-- Firebase SDK & Auth -->
-    <script src="/firebase-config.js"></script>
-    <script src="/firebase-auth-guard.js"></script>
-    <script src="/firebase-data-store.js"></script>
-    <script src="/notification-sync.js"></script>
-
     <script>
         window.addEventListener('auth-ready', function(e) {
             const user = e.detail;

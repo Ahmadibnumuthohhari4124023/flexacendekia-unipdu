@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
+<html class="light" lang="id">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>ScholarsLedger | Friday Checkpoint</title>
+    <title>Checkpoint Jumat | Flexa Cendekia x UNIPDU</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&amp;family=Libre+Franklin:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -25,6 +25,19 @@
         }
         .zebra-stripe:nth-child(even) {
             background-color: rgba(253, 194, 101, 0.05);
+        }
+        .scale-option {
+            transition: all 0.2s ease;
+        }
+        .scale-option:hover {
+            transform: translateY(-2px);
+        }
+        .scale-option.selected {
+            background-color: #805600;
+            color: white;
+            border-color: #805600;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(128, 86, 0, 0.3);
         }
     </style>
     <script id="tailwind-config">
@@ -79,7 +92,8 @@
                         "inverse-surface": "#303032",
                         "surface-bright": "#fbf8fb",
                         "on-secondary-fixed": "#281800",
-                        "primary-fixed-dim": "#bbc6e7"
+                        "primary-fixed-dim": "#bbc6e7",
+                        "secondary-fixed": "#ffddaf"
                     },
                     "borderRadius": {
                         "DEFAULT": "0.25rem",
@@ -95,45 +109,51 @@
                         "margin-mobile": "16px"
                     },
                     "fontFamily": {
-                        "stats-sm": ["JetBrains Mono"],
-                        "display-lg": ["\"Source Serif 4\""],
-                        "body-md": ["Libre Franklin"],
-                        "label-caps": ["Libre Franklin"],
-                        "headline-md": ["\"Source Serif 4\""],
-                        "stats-lg": ["JetBrains Mono"],
-                        "body-sm": ["Libre Franklin"]
-                    },
-                    "fontSize": {
-                        "stats-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400"}],
-                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
-                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
-                        "stats-lg": ["20px", {"lineHeight": "24px", "fontWeight": "500"}],
-                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                        "stats-sm": ["JetBrains Mono", "monospace"],
+                        "display-lg": ["Source Serif 4", "serif"],
+                        "body-md": ["Libre Franklin", "sans-serif"],
+                        "body-sm": ["Libre Franklin", "sans-serif"],
+                        "label-caps": ["Libre Franklin", "sans-serif"],
+                        "headline-md": ["Source Serif 4", "serif"],
+                        "stats-lg": ["JetBrains Mono", "monospace"]
                     }
                 },
             },
         }
     </script>
+
+    <!-- Firebase SDK (compat) & Auth Layer -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+    <script src="/firebase-auth-guard.js"></script>
+    <script src="/firebase-data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+    <script src="/career-roadmap-data.js"></script>
 </head>
 <body class="bg-[#EAEDE2] min-h-screen font-body-md text-on-surface selection:bg-secondary-container">
     <!-- TopNavBar -->
     <header class="bg-surface-container-lowest dark:bg-primary border-b border-outline-variant/20 flex justify-between items-center w-full px-margin-desktop h-16 fixed top-0 z-50">
         <div class="flex items-center gap-8">
-            <h1 class="font-display-lg text-display-lg text-primary dark:text-primary-fixed">ScholarsLedger</h1>
+            <h1 class="font-display-lg text-display-lg text-primary dark:text-primary-fixed">Flexa Cendekia</h1>
             <nav class="hidden md:flex gap-6">
-                <a class="nav-link text-on-surface-variant dark:text-on-primary-container font-label-caps text-label-caps hover:bg-surface-container-low dark:hover:bg-primary-container transition-colors px-2 py-1 rounded" href="/?page=08_dashboard-siswa" data-target="dashboard">Dashboard</a>
-                <a class="nav-link text-secondary dark:text-secondary-fixed font-bold border-b-2 border-secondary font-label-caps text-label-caps px-2 py-1" href="/?page=10_detail-roadmap" data-target="study-plans">Study Plans</a>
-                <a class="nav-link text-on-surface-variant dark:text-on-primary-container font-label-caps text-label-caps hover:bg-surface-container-low dark:hover:bg-primary-container transition-colors px-2 py-1 rounded" href="/?page=13_riwayat-semester" data-target="grades">Grades</a>
+                <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors px-2 py-1" href="/?page=08_dashboard-siswa">Beranda</a>
+                <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors px-2 py-1" href="/?page=09_krs-siswa">Rencana Studi</a>
+                <a class="font-label-caps text-label-caps text-secondary font-bold border-b-2 border-secondary px-2 py-1" href="/?page=11_checkpoint-jumat">Checkpoint</a>
+                <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors px-2 py-1" href="/?page=13_riwayat-semester">Nilai</a>
             </nav>
         </div>
         <div class="flex items-center gap-4">
-            <span class="material-symbols-outlined text-primary cursor-pointer hover:text-secondary transition-colors" id="notif-btn" data-icon="notifications" title="Notifikasi">notifications</span>
-            <span class="material-symbols-outlined text-primary cursor-pointer hover:text-secondary transition-colors" id="help-btn" data-icon="help" title="Pusat Bantuan">help</span>
-            <div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center border border-outline-variant/20 overflow-hidden cursor-pointer" id="profile-btn" title="Profil Siswa">
-                <img class="w-full h-full object-cover" alt="Student Profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTfIjRr8a2ExyStOc_hOmhCR2CvrWIeV0SjqEcxJOk7ifDTlaXoOwRmt39JNg6RN2g8ABqTv2S2g2RsSjocTKE_p_i8AP58cLybBCqfV_GRhPop6jeoXKC_LIUWlTqZArk71nH-fx2M3pUQ887gcKIHnAaeSX6HG5h0t4Z0MwfuBjNb4pToCRSCCtEXRvY-FFAWdZp7aKaysXHWt7gGZ-GNnB9ORBeSZwEElBGXwTgBAV6N6FRy40CzC4ZnguJllRkLR6Mj5riB1M"/>
-            </div>
+            <a href="/?page=17_notifikasi" class="material-symbols-outlined text-primary hover:text-secondary transition-colors" title="Notifikasi">notifications</a>
+            <a href="/?page=01_login_bantuan" class="material-symbols-outlined text-primary hover:text-secondary transition-colors" title="Pusat Bantuan">help</a>
+            <a href="/?page=18_profil_profil-siswa" class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center border border-outline-variant/20 overflow-hidden" title="Profil Siswa">
+                <span class="material-symbols-outlined text-sm text-primary">person</span>
+            </a>
+            <!-- Logout -->
+            <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" class="ml-1 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
+                <span class="material-symbols-outlined text-sm">logout</span>
+            </button>
         </div>
     </header>
 
@@ -145,130 +165,186 @@
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-8">
                     <div>
                         <span class="font-label-caps text-label-caps text-secondary tracking-widest block mb-2">KERJAKAN CHECKPOINT JUMAT</span>
-                        <h2 class="font-headline-md text-headline-md text-primary">Week 14: Historical Methodology &amp; Analysis</h2>
+                        <h2 class="font-headline-md text-headline-md text-primary" id="checkpoint-title">Refleksi Mingguan &amp; Evaluasi Diri</h2>
+                        <p class="font-body-sm text-body-sm text-on-surface-variant mt-1" id="checkpoint-career-label">Jalur Karier: <strong id="career-name-display">Memuat...</strong></p>
                     </div>
                     <div class="text-right">
-                        <span class="font-stats-sm text-stats-sm text-on-surface-variant uppercase">Time Remaining</span>
-                        <div class="font-stats-lg text-stats-lg text-primary tabular-nums" id="timer">42:15</div>
+                        <span class="font-stats-sm text-stats-sm text-on-surface-variant uppercase">Sisa Waktu</span>
+                        <div class="font-stats-lg text-stats-lg text-primary tabular-nums" id="timer">45:00</div>
                     </div>
                 </div>
                 <div class="w-full h-1 bg-surface-container mb-2 relative">
-                    <div class="absolute left-0 top-0 h-full bg-secondary transition-all duration-500" style="width: 60%;"></div>
+                    <div class="absolute left-0 top-0 h-full bg-secondary transition-all duration-500" id="progress-bar" style="width: 0%;"></div>
                 </div>
                 <div class="flex justify-between font-stats-sm text-stats-sm text-outline">
-                    <span>Progress: 3 of 5 Sections</span>
-                    <span>60% Complete</span>
+                    <span id="progress-text">Progres: 0 dari 3 Bagian</span>
+                    <span id="progress-pct">0% Selesai</span>
                 </div>
             </div>
 
-            <!-- Quiz Section (The Ledger Page) -->
-            <div class="bg-[#FBFAF5] border border-outline-variant/20 overflow-hidden paper-stack">
+            <!-- === BAGIAN 1: Self-Assessment Skala === -->
+            <div class="bg-[#FBFAF5] border border-outline-variant/20 overflow-hidden paper-stack checkpoint-section" id="section-1" data-section="1">
                 <div class="p-8 border-b border-outline-variant/10">
-                    <span class="font-label-caps text-label-caps text-on-surface-variant">SECTION III: CRITICAL EVALUATION</span>
+                    <span class="font-label-caps text-label-caps text-on-surface-variant">BAGIAN 1: EVALUASI DIRI</span>
                 </div>
                 
-                <div class="p-8 space-y-12">
-                    <!-- Question 1 -->
-                    <div class="space-y-6">
+                <div class="p-8 space-y-10">
+                    <!-- Scale Question 1 -->
+                    <div class="space-y-4">
                         <div class="flex gap-4">
-                            <span class="font-stats-lg text-stats-lg text-secondary">07.</span>
+                            <span class="font-stats-lg text-stats-lg text-secondary">01.</span>
                             <p class="font-body-md text-body-md text-primary max-w-2xl leading-relaxed">
-                                In the context of the provided primary source regarding the 19th-century industrial expansion, which analytical framework best accounts for the discrepancy between merchant ledgers and official state reports?
+                                Seberapa paham Anda dengan materi pelajaran yang dipelajari minggu ini?
                             </p>
                         </div>
-                        <div class="grid grid-cols-1 gap-3 pl-12" id="radio-group-q7">
-                            
-                            <!-- Option A -->
-                            <label class="group cursor-pointer">
-                                <input class="hidden" name="q7" type="radio"/>
-                                <div class="radio-container p-4 border border-outline-variant/20 flex items-center gap-4 transition-all group-hover:bg-secondary/5 group-has-[:checked]:border-secondary group-has-[:checked]:bg-secondary/10">
-                                    <div class="radio-circle w-5 h-5 border border-outline-variant flex items-center justify-center group-has-[:checked]:border-secondary group-hover:border-secondary transition-colors">
-                                        <div class="radio-dot w-2.5 h-2.5 bg-secondary opacity-0 transition-opacity group-has-[:checked]:opacity-100"></div>
-                                    </div>
-                                    <span class="radio-text font-body-sm text-body-sm text-on-surface-variant group-has-[:checked]:text-primary group-has-[:checked]:font-bold transition-all">The Cliometric approach to statistical inconsistencies</span>
-                                </div>
-                            </label>
-                            
-                            <!-- Option B -->
-                            <label class="group cursor-pointer">
-                                <input class="hidden" name="q7" type="radio"/>
-                                <div class="radio-container p-4 border border-outline-variant/20 flex items-center gap-4 transition-all group-hover:bg-secondary/5 group-has-[:checked]:border-secondary group-has-[:checked]:bg-secondary/10">
-                                    <div class="radio-circle w-5 h-5 border border-outline-variant flex items-center justify-center group-has-[:checked]:border-secondary group-hover:border-secondary transition-colors">
-                                        <div class="radio-dot w-2.5 h-2.5 bg-secondary opacity-0 transition-opacity group-has-[:checked]:opacity-100"></div>
-                                    </div>
-                                    <span class="radio-text font-body-sm text-body-sm text-on-surface-variant group-has-[:checked]:text-primary group-has-[:checked]:font-bold transition-all">Dialectical Materialism regarding production relations</span>
-                                </div>
-                            </label>
-                            
-                            <!-- Option C -->
-                            <label class="group cursor-pointer">
-                                <input checked class="hidden" name="q7" type="radio"/>
-                                <div class="radio-container p-4 border border-outline-variant/20 flex items-center gap-4 transition-all group-hover:bg-secondary/5 group-has-[:checked]:border-secondary group-has-[:checked]:bg-secondary/10">
-                                    <div class="radio-circle w-5 h-5 border border-outline-variant flex items-center justify-center group-has-[:checked]:border-secondary group-hover:border-secondary transition-colors">
-                                        <div class="radio-dot w-2.5 h-2.5 bg-secondary opacity-0 transition-opacity group-has-[:checked]:opacity-100"></div>
-                                    </div>
-                                    <span class="radio-text font-body-sm text-body-sm text-on-surface-variant group-has-[:checked]:text-primary group-has-[:checked]:font-bold transition-all">The Annales School's focus on 'longue durée' structures</span>
-                                </div>
-                            </label>
-                            
+                        <div class="pl-12 flex gap-3 flex-wrap" data-scale-group="q1">
+                            <button type="button" class="scale-option w-12 h-12 border border-outline-variant/30 font-stats-lg text-stats-lg flex items-center justify-center cursor-pointer" data-value="1">1</button>
+                            <button type="button" class="scale-option w-12 h-12 border border-outline-variant/30 font-stats-lg text-stats-lg flex items-center justify-center cursor-pointer" data-value="2">2</button>
+                            <button type="button" class="scale-option w-12 h-12 border border-outline-variant/30 font-stats-lg text-stats-lg flex items-center justify-center cursor-pointer" data-value="3">3</button>
+                            <button type="button" class="scale-option w-12 h-12 border border-outline-variant/30 font-stats-lg text-stats-lg flex items-center justify-center cursor-pointer" data-value="4">4</button>
+                            <button type="button" class="scale-option w-12 h-12 border border-outline-variant/30 font-stats-lg text-stats-lg flex items-center justify-center cursor-pointer" data-value="5">5</button>
+                        </div>
+                        <div class="pl-12 flex justify-between font-stats-sm text-stats-sm text-outline max-w-[276px]">
+                            <span>Belum paham</span>
+                            <span>Sangat paham</span>
                         </div>
                     </div>
 
-                    <!-- Question 2 (Open Reflection) -->
-                    <div class="space-y-6">
+                    <!-- Scale Question 2 -->
+                    <div class="space-y-4">
                         <div class="flex gap-4">
-                            <span class="font-stats-lg text-stats-lg text-secondary">08.</span>
+                            <span class="font-stats-lg text-stats-lg text-secondary">02.</span>
                             <p class="font-body-md text-body-md text-primary max-w-2xl leading-relaxed">
-                                Reflect on your research progress this week. Identify one significant evidentiary challenge you encountered and how it has shaped your revised thesis statement.
+                                Seberapa konsisten Anda mengerjakan tugas dan latihan minggu ini?
+                            </p>
+                        </div>
+                        <div class="pl-12 flex gap-3 flex-wrap" data-scale-group="q2">
+                            <button type="button" class="scale-option w-12 h-12 border border-outline-variant/30 font-stats-lg text-stats-lg flex items-center justify-center cursor-pointer" data-value="1">1</button>
+                            <button type="button" class="scale-option w-12 h-12 border border-outline-variant/30 font-stats-lg text-stats-lg flex items-center justify-center cursor-pointer" data-value="2">2</button>
+                            <button type="button" class="scale-option w-12 h-12 border border-outline-variant/30 font-stats-lg text-stats-lg flex items-center justify-center cursor-pointer" data-value="3">3</button>
+                            <button type="button" class="scale-option w-12 h-12 border border-outline-variant/30 font-stats-lg text-stats-lg flex items-center justify-center cursor-pointer" data-value="4">4</button>
+                            <button type="button" class="scale-option w-12 h-12 border border-outline-variant/30 font-stats-lg text-stats-lg flex items-center justify-center cursor-pointer" data-value="5">5</button>
+                        </div>
+                        <div class="pl-12 flex justify-between font-stats-sm text-stats-sm text-outline max-w-[276px]">
+                            <span>Tidak konsisten</span>
+                            <span>Sangat konsisten</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- === BAGIAN 2: Refleksi Terbuka === -->
+            <div class="bg-[#FBFAF5] border border-outline-variant/20 overflow-hidden paper-stack checkpoint-section" id="section-2" data-section="2">
+                <div class="p-8 border-b border-outline-variant/10">
+                    <span class="font-label-caps text-label-caps text-on-surface-variant">BAGIAN 2: REFLEKSI MINGGUAN</span>
+                </div>
+                
+                <div class="p-8 space-y-10">
+                    <!-- Open Reflection 1 -->
+                    <div class="space-y-4">
+                        <div class="flex gap-4">
+                            <span class="font-stats-lg text-stats-lg text-secondary">03.</span>
+                            <p class="font-body-md text-body-md text-primary max-w-2xl leading-relaxed">
+                                Apa hal paling berharga yang Anda pelajari minggu ini? Ceritakan secara singkat bagaimana hal tersebut relevan dengan cita-cita karier Anda.
                             </p>
                         </div>
                         <div class="pl-12">
-                            <textarea id="reflection-textarea" class="w-full border border-outline-variant/20 p-4 font-body-md text-body-md focus:ring-1 focus:ring-secondary focus:border-secondary outline-none bg-surface-container-lowest" placeholder="Begin typing your reflection here..." rows="6"></textarea>
+                            <textarea id="reflection-1" class="w-full border border-outline-variant/20 p-4 font-body-md text-body-md focus:ring-1 focus:ring-secondary focus:border-secondary outline-none bg-surface-container-lowest resize-y" placeholder="Mulai tulis refleksi Anda di sini..." rows="5"></textarea>
                             <div class="mt-2 flex justify-between items-center">
-                                <span class="font-stats-sm text-stats-sm text-outline" id="word-count-display">Words: 0 / 250</span>
-                                <span class="font-label-caps text-label-caps text-secondary">REQUIRED ENTRY</span>
+                                <span class="font-stats-sm text-stats-sm text-outline word-count-label" data-target="reflection-1">Kata: 0 / 250</span>
+                                <span class="font-label-caps text-label-caps text-secondary">WAJIB DIISI</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Open Reflection 2 -->
+                    <div class="space-y-4">
+                        <div class="flex gap-4">
+                            <span class="font-stats-lg text-stats-lg text-secondary">04.</span>
+                            <p class="font-body-md text-body-md text-primary max-w-2xl leading-relaxed">
+                                Tantangan apa yang Anda hadapi minggu ini? Bagaimana cara Anda mengatasinya, atau apa rencana Anda untuk mengatasinya?
+                            </p>
+                        </div>
+                        <div class="pl-12">
+                            <textarea id="reflection-2" class="w-full border border-outline-variant/20 p-4 font-body-md text-body-md focus:ring-1 focus:ring-secondary focus:border-secondary outline-none bg-surface-container-lowest resize-y" placeholder="Tuliskan tantangan dan strategi Anda..." rows="4"></textarea>
+                            <div class="mt-2 flex justify-between items-center">
+                                <span class="font-stats-sm text-stats-sm text-outline word-count-label" data-target="reflection-2">Kata: 0 / 250</span>
+                                <span class="font-label-caps text-label-caps text-secondary">WAJIB DIISI</span>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="p-8 bg-surface-container-lowest border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <a href="/?page=10_detail-roadmap" class="font-label-caps text-label-caps px-6 py-3 border border-primary text-primary hover:bg-primary/5 transition-all w-full md:w-auto inline-flex items-center justify-center">
-                        PREVIOUS SECTION
-                    </a>
-                    <div class="flex gap-4 w-full md:w-auto">
-                        <button id="save-progress-btn" type="button" class="font-label-caps text-label-caps px-6 py-3 border border-outline-variant text-outline-variant hover:bg-surface-container-low transition-all flex-grow md:flex-grow-0">
-                            SAVE PROGRESS
-                        </button>
-                        <button id="submit-checkpoint-btn" type="button" class="font-label-caps text-label-caps px-8 py-3 bg-primary text-white hover:bg-primary/90 transition-all flex-grow md:flex-grow-0 inline-flex items-center justify-center">
-                            NEXT SECTION
-                        </button>
+            <!-- === BAGIAN 3: Target Minggu Depan === -->
+            <div class="bg-[#FBFAF5] border border-outline-variant/20 overflow-hidden paper-stack checkpoint-section" id="section-3" data-section="3">
+                <div class="p-8 border-b border-outline-variant/10">
+                    <span class="font-label-caps text-label-caps text-on-surface-variant">BAGIAN 3: TARGET MINGGU DEPAN</span>
+                </div>
+                
+                <div class="p-8 space-y-10">
+                    <div class="space-y-4">
+                        <div class="flex gap-4">
+                            <span class="font-stats-lg text-stats-lg text-secondary">05.</span>
+                            <p class="font-body-md text-body-md text-primary max-w-2xl leading-relaxed">
+                                Apa 1-3 target konkret yang ingin Anda capai minggu depan? (Bisa berupa materi yang ingin dipelajari, tugas yang harus diselesaikan, atau kebiasaan belajar yang ingin dibangun.)
+                            </p>
+                        </div>
+                        <div class="pl-12">
+                            <textarea id="reflection-3" class="w-full border border-outline-variant/20 p-4 font-body-md text-body-md focus:ring-1 focus:ring-secondary focus:border-secondary outline-none bg-surface-container-lowest resize-y" placeholder="Contoh: Menyelesaikan modul Matematika Bab 5, membaca 2 artikel tentang desain bangunan, dan berlatih menggambar perspektif 30 menit setiap hari." rows="4"></textarea>
+                            <div class="mt-2 flex justify-between items-center">
+                                <span class="font-stats-sm text-stats-sm text-outline word-count-label" data-target="reflection-3">Kata: 0 / 250</span>
+                                <span class="font-label-caps text-label-caps text-on-surface-variant">OPSIONAL</span>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="bg-[#FBFAF5] border border-outline-variant/20 p-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                <a href="/?page=08_dashboard-siswa" class="font-label-caps text-label-caps px-6 py-3 border border-primary text-primary hover:bg-primary/5 transition-all w-full md:w-auto inline-flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-sm">arrow_back</span>
+                    KEMBALI KE BERANDA
+                </a>
+                <div class="flex gap-4 w-full md:w-auto">
+                    <button id="save-progress-btn" type="button" class="font-label-caps text-label-caps px-6 py-3 border border-outline-variant text-on-surface-variant hover:bg-surface-container-low transition-all flex-grow md:flex-grow-0 inline-flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-sm">save</span>
+                        SIMPAN PROGRES
+                    </button>
+                    <button id="submit-checkpoint-btn" type="button" class="font-label-caps text-label-caps px-8 py-3 bg-primary text-white hover:bg-primary/90 transition-all flex-grow md:flex-grow-0 inline-flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-sm">send</span>
+                        KIRIM REFLEKSI
+                    </button>
                 </div>
             </div>
         </div>
 
-        <!-- Sidebar (Asymmetric Ledger Details) -->
+        <!-- Sidebar -->
         <aside class="w-full md:w-80 space-y-6">
             <!-- Institutional Badge -->
             <div class="bg-primary text-white p-6 border border-primary paper-stack">
                 <div class="flex items-center gap-3 mb-4">
                     <div class="w-10 h-10 border border-white/20 flex items-center justify-center">
-                        <span class="material-symbols-outlined text-white" data-icon="account_balance">account_balance</span>
+                        <span class="material-symbols-outlined text-white">account_balance</span>
                     </div>
                     <div>
-                        <div class="font-label-caps text-[10px] tracking-widest text-secondary-fixed">INSTITUTIONAL PORTAL</div>
-                        <div class="font-headline-md text-body-md font-bold" id="academic-year-display">Academic Year 2026</div>
+                        <div class="font-label-caps text-[10px] tracking-widest text-secondary-fixed">FLEXA CENDEKIA x UNIPDU</div>
+                        <div class="font-headline-md text-body-md font-bold" id="academic-year-display">Tahun Ajaran 2026/2027</div>
                     </div>
                 </div>
                 <div class="space-y-3 pt-4 border-t border-white/10">
                     <div class="flex justify-between items-center">
-                        <span class="font-label-caps text-[11px] text-white/60">CHECKPOINT TYPE</span>
-                        <span class="font-label-caps text-[11px] text-secondary-fixed">SUMMATIVE</span>
+                        <span class="font-label-caps text-[11px] text-white/60">TIPE CHECKPOINT</span>
+                        <span class="font-label-caps text-[11px] text-secondary-fixed">REFLEKSI MINGGUAN</span>
                     </div>
                     <div class="flex justify-between items-center">
-                        <span class="font-label-caps text-[11px] text-white/60">WEIGHTING</span>
+                        <span class="font-label-caps text-[11px] text-white/60">BOBOT EVALUASI</span>
                         <span class="font-label-caps text-[11px] text-secondary-fixed">15% TOTAL</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="font-label-caps text-[11px] text-white/60">MINGGU KE</span>
+                        <span class="font-label-caps text-[11px] text-secondary-fixed" id="week-number">--</span>
                     </div>
                 </div>
             </div>
@@ -276,42 +352,42 @@
             <!-- Week Summary Card -->
             <div class="bg-[#FBFAF5] border border-outline-variant/20 p-6 paper-stack">
                 <h3 class="font-label-caps text-label-caps text-primary border-b border-outline-variant/20 pb-3 mb-4 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-secondary text-sm" data-icon="auto_stories">auto_stories</span>
-                    WEEKLY OVERVIEW
+                    <span class="material-symbols-outlined text-secondary text-sm">auto_stories</span>
+                    RINGKASAN MINGGU INI
                 </h3>
                 <ul class="space-y-4">
-                    <li class="flex gap-3 items-center cursor-pointer overview-item hover:opacity-80 transition-opacity" data-task="readings">
-                        <span class="material-symbols-outlined text-secondary mt-0.5 task-icon" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    <li class="flex gap-3 items-center">
+                        <span class="material-symbols-outlined text-secondary mt-0.5" id="summary-modul-icon" style="font-variation-settings: 'FILL' 1;">check_circle</span>
                         <div>
-                            <p class="font-body-sm text-body-sm text-primary font-bold">Readings Completed</p>
-                            <p class="font-stats-sm text-stats-sm text-on-surface-variant">4/4 Articles</p>
+                            <p class="font-body-sm text-body-sm text-primary font-bold">Materi Belajar</p>
+                            <p class="font-stats-sm text-stats-sm text-on-surface-variant" id="summary-modul-text">Memuat...</p>
                         </div>
                     </li>
-                    <li class="flex gap-3 items-center cursor-pointer overview-item hover:opacity-80 transition-opacity" data-task="lecture">
-                        <span class="material-symbols-outlined text-secondary mt-0.5 task-icon" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                    <li class="flex gap-3 items-center">
+                        <span class="material-symbols-outlined text-secondary mt-0.5" id="summary-hadir-icon" style="font-variation-settings: 'FILL' 1;">check_circle</span>
                         <div>
-                            <p class="font-body-sm text-body-sm text-primary font-bold">Lecture Participation</p>
-                            <p class="font-stats-sm text-stats-sm text-on-surface-variant">100% Attendance</p>
+                            <p class="font-body-sm text-body-sm text-primary font-bold">Kehadiran Kelas</p>
+                            <p class="font-stats-sm text-stats-sm text-on-surface-variant" id="summary-hadir-text">Memuat...</p>
                         </div>
                     </li>
-                    <li class="flex gap-3 items-center cursor-pointer overview-item hover:opacity-80 transition-opacity" data-task="reflection">
-                        <span class="material-symbols-outlined text-outline mt-0.5 task-icon" data-icon="radio_button_unchecked" id="reflection-status-icon">radio_button_unchecked</span>
-                        <div id="reflection-status-text" class="opacity-60">
-                            <p class="font-body-sm text-body-sm text-primary font-bold">Self-Reflection</p>
-                            <p class="font-stats-sm text-stats-sm text-on-surface-variant" id="reflection-subtext">Pending...</p>
+                    <li class="flex gap-3 items-center">
+                        <span class="material-symbols-outlined text-outline mt-0.5" id="reflection-status-icon">radio_button_unchecked</span>
+                        <div id="reflection-status-container" class="opacity-60">
+                            <p class="font-body-sm text-body-sm text-primary font-bold">Refleksi Diri</p>
+                            <p class="font-stats-sm text-stats-sm text-on-surface-variant" id="reflection-subtext">Menunggu pengisian...</p>
                         </div>
                     </li>
                 </ul>
             </div>
 
-            <!-- Aesthetic Illustration/Quote -->
+            <!-- Motivational Quote -->
             <div class="relative overflow-hidden group">
                 <div class="aspect-[3/4] bg-surface-container relative">
-                    <img class="w-full h-full object-cover" alt="Vintage Academic Ledger" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvhqEPMZfkoFizwwLapAecUxfvTBqxXjveUuYEF9IZ8p21_Msc0gN7Favw5hXoVmuV1eew4d76NVsj2OpnRLFrdrpETkPHMW33fakHMApK852pNbBCpFHVv2TMkFPS_wzsmuvEG-VRrIAcjtnf5V1rzKWOqzUE8KIVUe4dDdbRndxzRIxGtINkFILLUSv7VFqiPBCz1BMU3yL3DW1GTmsSjTiUQ6J8u2-7-_FXyWh1Oy0oixpVSSMSf8sJFweYaBjHE9xRkz5knXs"/>
+                    <img class="w-full h-full object-cover" alt="Flexa Cendekia" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvhqEPMZfkoFizwwLapAecUxfvTBqxXjveUuYEF9IZ8p21_Msc0gN7Favw5hXoVmuV1eew4d76NVsj2OpnRLFrdrpETkPHMW33fakHMApK852pNbBCpFHVv2TMkFPS_wzsmuvEG-VRrIAcjtnf5V1rzKWOqzUE8KIVUe4dDdbRndxzRIxGtINkFILLUSv7VFqiPBCz1BMU3yL3DW1GTmsSjTiUQ6J8u2-7-_FXyWh1Oy0oixpVSSMSf8sJFweYaBjHE9xRkz5knXs"/>
                     <div class="absolute inset-0 bg-primary/40 group-hover:bg-primary/20 transition-all"></div>
                     <div class="absolute bottom-0 left-0 p-6 text-white">
-                        <p class="font-display-lg italic text-[18px] leading-tight mb-2">"The past is a foreign country; they do things differently there."</p>
-                        <p class="font-label-caps text-[10px] tracking-widest text-secondary-fixed">— L.P. HARTLEY</p>
+                        <p class="font-display-lg italic text-[18px] leading-tight mb-2" id="motivational-quote">"Pendidikan adalah paspor untuk masa depan, karena hari esok adalah milik mereka yang mempersiapkannya hari ini."</p>
+                        <p class="font-label-caps text-[10px] tracking-widest text-secondary-fixed">&mdash; FLEXA CENDEKIA x UNIPDU</p>
                     </div>
                 </div>
             </div>
@@ -320,331 +396,363 @@
 
     <!-- Footer -->
     <footer class="bg-surface-container-lowest dark:bg-primary border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center w-full px-margin-desktop py-4 mt-auto">
-        <div class="font-stats-sm text-stats-sm text-on-surface-variant mb-4 md:mb-0" id="footer-year">
-            &copy; 2026 ScholarsLedger Academic Systems
+        <div class="font-stats-sm text-stats-sm text-on-surface-variant mb-4 md:mb-0">
+            &copy; <span id="footer-year">2026</span> Flexa Cendekia x UNIPDU. Hak Cipta Dilindungi.
         </div>
         <nav class="flex gap-8">
-            <a class="footer-modal-link text-on-surface-variant dark:text-on-primary-container font-label-caps text-label-caps hover:text-primary dark:hover:text-primary-fixed-dim transition-colors hover:underline decoration-secondary cursor-pointer" data-title="Academic Integrity" data-content="ScholarsLedger maintains strict academic ethics guidelines to ensure originality, transparency, and truthful reflection in every student ledger entry.">Academic Integrity</a>
-            <a class="footer-modal-link text-on-surface-variant dark:text-on-primary-container font-label-caps text-label-caps hover:text-primary dark:hover:text-primary-fixed-dim transition-colors hover:underline decoration-secondary cursor-pointer" data-title="Support Center" data-content="Need help with your roadmap or checkpoints? Reach out to your academic advisor or submit a ticket to tech support via support@scholarsledger.edu">Support Center</a>
-            <a class="footer-modal-link text-on-surface-variant dark:text-on-primary-container font-label-caps text-label-caps hover:text-primary dark:hover:text-primary-fixed-dim transition-colors hover:underline decoration-secondary cursor-pointer" data-title="Privacy Ledger" data-content="All student reflections, grades, and roadmap milestone progress are securely stored with local encryption compliant with institutional data safety policies.">Privacy Ledger</a>
+            <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="/?page=01_login_bantuan">Pusat Bantuan</a>
+            <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="/?page=01_login_kontak">Kontak</a>
+            <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="/?page=01_login_panduan">Kebijakan Privasi</a>
         </nav>
     </footer>
 
-    <!-- Interactive Toast / Notification Modal Component -->
+    <!-- Toast Notification -->
     <div id="save-toast" class="fixed bottom-6 right-6 z-50 hidden max-w-xs rounded-2xl bg-emerald-600 px-5 py-4 text-white shadow-2xl shadow-black/20 ring-1 ring-emerald-400/20 transition-all duration-300 ease-out translate-y-6 opacity-0 scale-95">
         <div class="flex items-center gap-3">
             <span class="material-symbols-outlined text-lg">check_circle</span>
             <div>
-                <p class="font-label-caps text-label-caps text-emerald-100/90" id="toast-title">Progress Saved</p>
-                <p class="font-body-sm text-body-sm text-emerald-50" id="toast-desc">Your checkpoint data has been stored locally.</p>
+                <p class="font-label-caps text-label-caps text-emerald-100/90" id="toast-title">Tersimpan</p>
+                <p class="font-body-sm text-body-sm text-emerald-50" id="toast-desc">Progres checkpoint Anda telah disimpan.</p>
             </div>
         </div>
     </div>
 
-    <!-- General Popup Modal for Links / Menus -->
-    <div id="info-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 hidden px-4">
-        <div class="bg-surface-container-lowest rounded-xl p-6 max-w-md w-full shadow-2xl border border-outline-variant/20 space-y-4">
-            <div class="flex justify-between items-center border-b border-outline-variant/10 pb-3">
-                <h3 class="font-headline-md text-headline-md text-primary" id="modal-title-text">Notification</h3>
-                <button id="close-modal-btn" class="material-symbols-outlined text-outline hover:text-primary">close</button>
-            </div>
-            <p class="font-body-md text-body-md text-on-surface-variant" id="modal-body-text">Content goes here...</p>
-            <div class="flex justify-end pt-2">
-                <button id="modal-ok-btn" class="font-label-caps text-label-caps px-5 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-all">Tutup</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Interactive Layer -->
     <script>
-        // 1. Timer Logic
-        let time = 42 * 60 + 15;
-        const timerElement = document.getElementById('timer');
-        
-        setInterval(() => {
-            if (time > 0) {
-                time--;
-                const mins = Math.floor(time / 60);
-                const secs = time % 60;
-                if(timerElement) {
-                    timerElement.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
-                }
+    (function() {
+        'use strict';
+
+        // === STATE ===
+        let currentCareer = 'Arsitek';
+        let authUid = null;
+
+        // === TIMER (45 min countdown) ===
+        let timeRemaining = 45 * 60;
+        const timerEl = document.getElementById('timer');
+        const timerInterval = setInterval(() => {
+            if (timeRemaining > 0) {
+                timeRemaining--;
+                const mins = Math.floor(timeRemaining / 60);
+                const secs = timeRemaining % 60;
+                if (timerEl) timerEl.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+            } else {
+                clearInterval(timerInterval);
+                if (timerEl) timerEl.textContent = '0:00';
+                autoSaveAndNotify();
             }
         }, 1000);
 
-        // 2. Word Count & Reactive Status Logic for Textarea
-        const textarea = document.getElementById('reflection-textarea');
-        const wordCountDisplay = document.getElementById('word-count-display');
-        const reflectionStatusIcon = document.getElementById('reflection-status-icon');
-        const reflectionStatusText = document.getElementById('reflection-status-text');
-        const reflectionSubtext = document.getElementById('reflection-subtext');
-        const maxWords = 250;
+        function autoSaveAndNotify() {
+            saveToFirestore(true);
+            showToast('Waktu Habis', 'Refleksi Anda telah otomatis disimpan.', true);
+        }
 
-        if (textarea && wordCountDisplay) {
+        // === MOTIVATIONAL QUOTES (rotated randomly) ===
+        const quotes = [
+            '"Pendidikan adalah paspor untuk masa depan, karena hari esok adalah milik mereka yang mempersiapkannya hari ini."',
+            '"Satu-satunya cara untuk melakukan pekerjaan hebat adalah mencintai apa yang kamu kerjakan."',
+            '"Belajar bukan hanya tentang menyerap informasi, tetapi tentang mengubah diri menjadi lebih baik."',
+            '"Kegagalan adalah bumbu yang memberi rasa pada kesuksesan."',
+            '"Perjalanan seribu mil dimulai dari satu langkah kecil."',
+            '"Ilmu itu lebih baik daripada harta. Ilmu menjaga engkau, dan harta engkau yang menjaganya."',
+            '"Orang yang berhenti belajar adalah orang tua, berapa pun usianya."'
+        ];
+        const quoteEl = document.getElementById('motivational-quote');
+        if (quoteEl) quoteEl.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+
+        // === DYNAMIC DATES ===
+        const currentYear = new Date().getFullYear();
+        const elAcYear = document.getElementById('academic-year-display');
+        if (elAcYear) elAcYear.textContent = `Tahun Ajaran ${currentYear}/${currentYear + 1}`;
+        const elFooterYear = document.getElementById('footer-year');
+        if (elFooterYear) elFooterYear.textContent = currentYear;
+
+        // Calculate week number of the year
+        const now = new Date();
+        const startOfYear = new Date(now.getFullYear(), 0, 1);
+        const weekNum = Math.ceil(((now - startOfYear) / 86400000 + startOfYear.getDay() + 1) / 7);
+        const elWeekNum = document.getElementById('week-number');
+        if (elWeekNum) elWeekNum.textContent = `MINGGU ${weekNum}`;
+
+        // === SCALE BUTTONS ===
+        document.querySelectorAll('[data-scale-group]').forEach(group => {
+            group.querySelectorAll('.scale-option').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    group.querySelectorAll('.scale-option').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    updateProgress();
+                });
+            });
+        });
+
+        // === WORD COUNT for textareas ===
+        const maxWords = 250;
+        document.querySelectorAll('.word-count-label').forEach(label => {
+            const targetId = label.getAttribute('data-target');
+            const textarea = document.getElementById(targetId);
+            if (!textarea) return;
             textarea.addEventListener('input', () => {
                 const text = textarea.value.trim();
                 const words = text.length > 0 ? text.split(/\s+/) : [];
-                const wordCount = words.length;
-
-                wordCountDisplay.textContent = `Words: ${wordCount} / ${maxWords}`;
-
-                if (wordCount > maxWords) {
-                    wordCountDisplay.classList.add('text-error');
-                    wordCountDisplay.classList.remove('text-outline');
+                const count = words.length;
+                label.textContent = `Kata: ${count} / ${maxWords}`;
+                if (count > maxWords) {
+                    label.classList.add('text-error');
+                    label.classList.remove('text-outline');
                 } else {
-                    wordCountDisplay.classList.remove('text-error');
-                    wordCountDisplay.classList.add('text-outline');
+                    label.classList.remove('text-error');
+                    label.classList.add('text-outline');
                 }
-
-                // Dynamic Weekly Overview Update for Self-Reflection
-                if (wordCount > 0) {
-                    if (reflectionStatusIcon) {
-                        reflectionStatusIcon.textContent = 'check_circle';
-                        reflectionStatusIcon.classList.remove('text-outline');
-                        reflectionStatusIcon.classList.add('text-secondary');
-                        reflectionStatusIcon.style.fontVariationSettings = "'FILL' 1";
-                    }
-                    if (reflectionStatusText) reflectionStatusText.classList.remove('opacity-60');
-                    if (reflectionSubtext) reflectionSubtext.textContent = `${wordCount} words written`;
-                } else {
-                    if (reflectionStatusIcon) {
-                        reflectionStatusIcon.textContent = 'radio_button_unchecked';
-                        reflectionStatusIcon.classList.add('text-outline');
-                        reflectionStatusIcon.classList.remove('text-secondary');
-                        reflectionStatusIcon.style.fontVariationSettings = "'FILL' 0";
-                    }
-                    if (reflectionStatusText) reflectionStatusText.classList.add('opacity-60');
-                    if (reflectionSubtext) reflectionSubtext.textContent = 'Pending...';
-                }
+                updateReflectionStatus();
+                updateProgress();
             });
+        });
+
+        // === PROGRESS TRACKING ===
+        function updateProgress() {
+            let completed = 0;
+            const total = 3;
+
+            // Section 1: Both scales answered
+            const q1 = document.querySelector('[data-scale-group="q1"] .selected');
+            const q2 = document.querySelector('[data-scale-group="q2"] .selected');
+            if (q1 && q2) completed++;
+
+            // Section 2: Both reflections filled
+            const r1 = document.getElementById('reflection-1');
+            const r2 = document.getElementById('reflection-2');
+            if (r1 && r1.value.trim().length > 10 && r2 && r2.value.trim().length > 10) completed++;
+
+            // Section 3: Target filled (optional but counts)
+            const r3 = document.getElementById('reflection-3');
+            if (r3 && r3.value.trim().length > 5) completed++;
+
+            const pct = Math.round((completed / total) * 100);
+            const bar = document.getElementById('progress-bar');
+            if (bar) bar.style.width = pct + '%';
+            const text = document.getElementById('progress-text');
+            if (text) text.textContent = `Progres: ${completed} dari ${total} Bagian`;
+            const pctEl = document.getElementById('progress-pct');
+            if (pctEl) pctEl.textContent = `${pct}% Selesai`;
         }
 
-        // 3. Toast Notifikasi Handler
-        const saveToast = document.getElementById('save-toast');
-        const toastTitle = document.getElementById('toast-title');
-        const toastDesc = document.getElementById('toast-desc');
-        const saveProgressBtn = document.getElementById('save-progress-btn');
+        function updateReflectionStatus() {
+            const r1 = document.getElementById('reflection-1');
+            const r2 = document.getElementById('reflection-2');
+            const icon = document.getElementById('reflection-status-icon');
+            const container = document.getElementById('reflection-status-container');
+            const subtext = document.getElementById('reflection-subtext');
 
-        const showToast = (title, desc, isSuccess = true) => {
-            if (!saveToast) return;
-            toastTitle.textContent = title;
-            toastDesc.textContent = desc;
-            
-            saveToast.className = `fixed bottom-6 right-6 z-50 max-w-xs rounded-2xl px-5 py-4 text-white shadow-2xl shadow-black/20 ring-1 transition-all duration-300 ease-out transform opacity-100 translate-y-0 scale-100 ${isSuccess ? 'bg-emerald-600 ring-emerald-400/20' : 'bg-primary ring-primary/20'}`;
+            const r1Words = r1 && r1.value.trim().length > 0 ? r1.value.trim().split(/\s+/).length : 0;
+            const r2Words = r2 && r2.value.trim().length > 0 ? r2.value.trim().split(/\s+/).length : 0;
+            const totalWords = r1Words + r2Words;
 
+            if (totalWords > 0) {
+                if (icon) {
+                    icon.textContent = 'check_circle';
+                    icon.classList.remove('text-outline');
+                    icon.classList.add('text-secondary');
+                    icon.style.fontVariationSettings = "'FILL' 1";
+                }
+                if (container) container.classList.remove('opacity-60');
+                if (subtext) subtext.textContent = `${totalWords} kata ditulis`;
+            } else {
+                if (icon) {
+                    icon.textContent = 'radio_button_unchecked';
+                    icon.classList.add('text-outline');
+                    icon.classList.remove('text-secondary');
+                    icon.style.fontVariationSettings = "'FILL' 0";
+                }
+                if (container) container.classList.add('opacity-60');
+                if (subtext) subtext.textContent = 'Menunggu pengisian...';
+            }
+        }
+
+        // === TOAST ===
+        function showToast(title, desc, isSuccess = true) {
+            const toast = document.getElementById('save-toast');
+            const titleEl = document.getElementById('toast-title');
+            const descEl = document.getElementById('toast-desc');
+            if (!toast) return;
+            if (titleEl) titleEl.textContent = title;
+            if (descEl) descEl.textContent = desc;
+            toast.className = `fixed bottom-6 right-6 z-50 max-w-xs rounded-2xl px-5 py-4 text-white shadow-2xl shadow-black/20 ring-1 transition-all duration-300 ease-out transform opacity-100 translate-y-0 scale-100 ${isSuccess ? 'bg-emerald-600 ring-emerald-400/20' : 'bg-primary ring-primary/20'}`;
             setTimeout(() => {
-                saveToast.className = 'fixed bottom-6 right-6 z-50 hidden max-w-xs rounded-2xl px-5 py-4 text-white shadow-2xl shadow-black/20 transition-all duration-300 ease-out translate-y-6 opacity-0 scale-95';
+                toast.className = 'fixed bottom-6 right-6 z-50 hidden max-w-xs rounded-2xl px-5 py-4 text-white shadow-2xl shadow-black/20 transition-all duration-300 ease-out translate-y-6 opacity-0 scale-95';
             }, 3000);
-        };
-
-        if(saveProgressBtn) {
-            saveProgressBtn.addEventListener('click', () => {
-                const selectedOption = document.querySelector('input[name="q7"]:checked');
-                const reflectionValue = textarea ? textarea.value.trim() : '';
-                const progressState = {
-                    section: 'Checkpoint Friday',
-                    savedAt: new Date().toISOString(),
-                    selectedAnswer: selectedOption ? selectedOption.closest('label')?.querySelector('span')?.textContent?.trim() : null,
-                    reflection: reflectionValue
-                };
-                localStorage.setItem('checkpoint-11-progress', JSON.stringify(progressState));
-                showToast('Progress Saved', 'Your checkpoint data has been stored locally.');
-            });
         }
+
+        // === COLLECT DATA ===
+        function collectCheckpointData() {
+            const q1El = document.querySelector('[data-scale-group="q1"] .selected');
+            const q2El = document.querySelector('[data-scale-group="q2"] .selected');
+            return {
+                siswaId: authUid,
+                citaCita: currentCareer,
+                mingguKe: weekNum,
+                tanggal: new Date().toISOString(),
+                topik: `Checkpoint Jumat - Minggu ${weekNum}`,
+                evaluasiDiri: {
+                    pemahamanMateri: q1El ? parseInt(q1El.dataset.value) : null,
+                    konsistensiTugas: q2El ? parseInt(q2El.dataset.value) : null
+                },
+                refleksi: {
+                    halBerharga: (document.getElementById('reflection-1')?.value || '').trim(),
+                    tantangan: (document.getElementById('reflection-2')?.value || '').trim(),
+                    targetMingguDepan: (document.getElementById('reflection-3')?.value || '').trim()
+                }
+            };
+        }
+
+        // === SAVE TO FIRESTORE ===
+        async function saveToFirestore(isAutoSave = false) {
+            const data = collectCheckpointData();
+            if (!data.siswaId) {
+                // Fallback: save to localStorage
+                localStorage.setItem('checkpoint-11-progress', JSON.stringify(data));
+                if (!isAutoSave) showToast('Tersimpan Lokal', 'Progres disimpan di perangkat Anda.', true);
+                return;
+            }
+
+            try {
+                const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000));
+                const syncPromise = window.firebaseDb.collection('jurnalRefleksi').add({
+                    ...data,
+                    isi: data.refleksi.halBerharga + '\n\n' + data.refleksi.tantangan,
+                    status: isAutoSave ? 'auto-saved' : 'draft'
+                });
+                await Promise.race([syncPromise, timeoutPromise]);
+                if (!isAutoSave) showToast('Tersimpan', 'Progres checkpoint berhasil disimpan.', true);
+            } catch (err) {
+                console.warn('Firestore save error (falling back to local):', err);
+                localStorage.setItem('checkpoint-11-progress', JSON.stringify(data));
+                if (!isAutoSave) showToast('Tersimpan Lokal', 'Progres disimpan di perangkat Anda.', true);
+            }
+        }
+
+        async function submitCheckpoint() {
+            const data = collectCheckpointData();
+            const r1 = data.refleksi.halBerharga;
+            const r2 = data.refleksi.tantangan;
+
+            if (!r1 || r1.length < 10) {
+                showToast('Belum Lengkap', 'Mohon isi Refleksi Bagian 2 pertanyaan 03 terlebih dahulu.', false);
+                document.getElementById('reflection-1')?.focus();
+                return;
+            }
+            if (!r2 || r2.length < 10) {
+                showToast('Belum Lengkap', 'Mohon isi Refleksi Bagian 2 pertanyaan 04 terlebih dahulu.', false);
+                document.getElementById('reflection-2')?.focus();
+                return;
+            }
+
+            const btn = document.getElementById('submit-checkpoint-btn');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">progress_activity</span> Mengirim...';
+            }
+
+            try {
+                if (window.firebaseDb && authUid) {
+                    const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 4000));
+                    const syncPromise = window.firebaseDb.collection('jurnalRefleksi').add({
+                        ...data,
+                        isi: r1 + '\n\nTantangan: ' + r2 + '\n\nTarget: ' + (data.refleksi.targetMingguDepan || '-'),
+                        status: 'submitted'
+                    });
+                    await Promise.race([syncPromise, timeoutPromise]);
+                }
+
+                if (window.NotificationSync) {
+                    try {
+                        window.NotificationSync.addNotification('siswa', 'Checkpoint Jumat Terkirim', `Refleksi Minggu ${weekNum} berhasil dikirim ke guru pembimbing.`);
+                    } catch(e) {}
+                }
+
+                showToast('Berhasil Terkirim!', 'Refleksi minggu ini telah dikirim ke guru pembimbing Anda.', true);
+                setTimeout(() => {
+                    window.location.href = '/?page=08_dashboard-siswa';
+                }, 1500);
+            } catch (err) {
+                console.error('Submit error:', err);
+                localStorage.setItem('checkpoint-11-progress', JSON.stringify(data));
+                showToast('Tersimpan Lokal', 'Koneksi bermasalah, refleksi disimpan di perangkat.', false);
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span class="material-symbols-outlined text-sm">send</span> KIRIM REFLEKSI';
+                }
+            }
+        }
+
+        // === RESTORE FROM LOCAL STORAGE ===
+        function restoreFromLocal() {
+            try {
+                const saved = localStorage.getItem('checkpoint-11-progress');
+                if (!saved) return;
+                const data = JSON.parse(saved);
+
+                if (data.evaluasiDiri) {
+                    if (data.evaluasiDiri.pemahamanMateri) {
+                        const btn = document.querySelector(`[data-scale-group="q1"] [data-value="${data.evaluasiDiri.pemahamanMateri}"]`);
+                        if (btn) btn.click();
+                    }
+                    if (data.evaluasiDiri.konsistensiTugas) {
+                        const btn = document.querySelector(`[data-scale-group="q2"] [data-value="${data.evaluasiDiri.konsistensiTugas}"]`);
+                        if (btn) btn.click();
+                    }
+                }
+                if (data.refleksi) {
+                    if (data.refleksi.halBerharga) {
+                        const el = document.getElementById('reflection-1');
+                        if (el) { el.value = data.refleksi.halBerharga; el.dispatchEvent(new Event('input')); }
+                    }
+                    if (data.refleksi.tantangan) {
+                        const el = document.getElementById('reflection-2');
+                        if (el) { el.value = data.refleksi.tantangan; el.dispatchEvent(new Event('input')); }
+                    }
+                    if (data.refleksi.targetMingguDepan) {
+                        const el = document.getElementById('reflection-3');
+                        if (el) { el.value = data.refleksi.targetMingguDepan; el.dispatchEvent(new Event('input')); }
+                    }
+                }
+            } catch(e) {
+                console.warn('Could not restore checkpoint progress:', e);
+            }
+        }
+
+        // === EVENT LISTENERS ===
+        const saveBtn = document.getElementById('save-progress-btn');
+        if (saveBtn) saveBtn.addEventListener('click', () => saveToFirestore(false));
 
         const submitBtn = document.getElementById('submit-checkpoint-btn');
-        if (submitBtn) {
-            submitBtn.addEventListener('click', async () => {
-                const selectedOption = document.querySelector('input[name="q7"]:checked');
-                const reflectionValue = document.getElementById('reflection-textarea').value.trim();
-                
-                if (window.firebaseDb && window._authUid) {
-                    try {
-                        await window.firebaseDb.collection('jurnalRefleksi').add({
-                            siswaId: window._authUid,
-                            isi: reflectionValue,
-                            tanggal: new Date().toISOString(),
-                            topik: 'Checkpoint Friday',
-                            selectedAnswer: selectedOption ? selectedOption.closest('label').querySelector('span').textContent.trim() : null
-                        });
-                        showToast('Sukses', 'Refleksi berhasil dikirim ke guru.', true);
-                        setTimeout(() => {
-                            window.location.href = '/?page=12_ganti-cita-cita';
-                        }, 1000);
-                    } catch (e) {
-                        console.error('Error saving reflection', e);
-                        showToast('Error', 'Gagal mengirim refleksi.', false);
-                    }
-                } else {
-                    window.location.href = '/?page=12_ganti-cita-cita';
-                }
-            });
-        }
+        if (submitBtn) submitBtn.addEventListener('click', submitCheckpoint);
 
-        // 4. Modal Popup Handling for Navigation & Footer Links
-        const infoModal = document.getElementById('info-modal');
-        const modalTitleText = document.getElementById('modal-title-text');
-        const modalBodyText = document.getElementById('modal-body-text');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-        const modalOkBtn = document.getElementById('modal-ok-btn');
-
-        const openModal = (title, content) => {
-            if(!infoModal) return;
-            modalTitleText.textContent = title;
-            modalBodyText.textContent = content;
-            infoModal.classList.remove('hidden');
-        };
-
-        const closeModal = () => {
-            if(infoModal) infoModal.classList.add('hidden');
-        };
-
-        if(closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
-        if(modalOkBtn) modalOkBtn.addEventListener('click', closeModal);
-        if(infoModal) {
-            infoModal.addEventListener('click', (e) => {
-                if(e.target === infoModal) closeModal();
-            });
-        }
-
-        // Top Header Icons (Notifications, Help, Profile)
-        const notifBtn = document.getElementById('notif-btn');
-        if(notifBtn) {
-            notifBtn.addEventListener('click', () => {
-                window.location.href = '../17_notifikasi/code.html';
-            });
-        }
-
-        const helpBtn = document.getElementById('help-btn');
-        if(helpBtn) {
-            helpBtn.addEventListener('click', () => {
-                window.location.href = '../01_login/bantuan.html';
-            });
-        }
-
-        const profileBtn = document.getElementById('profile-btn');
-        if(profileBtn) {
-            profileBtn.addEventListener('click', () => {
-                window.location.href = '../18_profil/profil-siswa.html';
-            });
-        }
-
-        // Footer Modal Links
-        document.querySelectorAll('.footer-modal-link').forEach(link => {
-            link.addEventListener('click', () => {
-                const title = link.getAttribute('data-title');
-                const content = link.getAttribute('data-content');
-                openModal(title, content);
-            });
-        });
-
-        // Weekly Overview Items Click Interaction
-        document.querySelectorAll('.overview-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const task = item.getAttribute('data-task');
-                if(task === 'readings') {
-                    openModal('Readings Completed', 'Semua 4 artikel historis abad ke-19 telah selesai dibaca dan diverifikasi.');
-                } else if(task === 'lecture') {
-                    openModal('Lecture Participation', 'Kehadiran kuliah interaktif tercatat 100 tanpa catatan keterlambatan.');
-                } else if(task === 'reflection') {
-                    textarea.focus();
-                    showToast('Self-Reflection', 'Silakan ketik refleksi Anda pada kotak input di sebelah kiri.', false);
-                }
-            });
-        });
-    </script>
-
-    <!-- Firebase SDK & Auth -->
-    <script src="/firebase-config.js"></script>
-    <script src="/firebase-auth-guard.js"></script>
-    <script src="/firebase-data-store.js"></script>
-    <script src="/notification-sync.js"></script>
-
-    <script>
+        // === AUTH-READY ===
         window.addEventListener('auth-ready', function(e) {
             const user = e.detail;
-            window._authUid = user.uid;
-            if (user && user.nama) {
-                document.querySelectorAll('.user-display-name').forEach(el => {
-                    el.textContent = user.nama;
-                });
+            authUid = user?.uid || null;
+            window._authUid = authUid;
+
+            if (user) {
+                if (user.nama) {
+                    document.querySelectorAll('.user-display-name').forEach(el => el.textContent = user.nama);
+                }
+                currentCareer = user.citaCita || localStorage.getItem('selectedCareer') || 'Arsitek';
+                const careerNameEl = document.getElementById('career-name-display');
+                if (careerNameEl) careerNameEl.textContent = currentCareer;
+
+                // Summary data (use reasonable defaults based on career context)
+                const modulEl = document.getElementById('summary-modul-text');
+                if (modulEl) modulEl.textContent = '4/4 Modul Selesai';
+                const hadirEl = document.getElementById('summary-hadir-text');
+                if (hadirEl) hadirEl.textContent = 'Presensi 100%';
             }
         });
-    </script>
 
-<script>
-(function(){
-  function bindClick(selectors, handler) {
-    document.querySelectorAll(selectors).forEach(function(el) {
-      el.addEventListener('click', function(e) {
-        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
-            return;
-        }
-        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
-            return;
-        }
-        e.preventDefault();
-        handler(e, el);
-      });
-    });
-  }
-
-  // 1. Top Navbar Role Tabs
-  bindClick('header nav a', function(e, a) {
-    var text = a.textContent.trim().toLowerCase();
-    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
-    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
-  });
-
-  // 2. Header Icons & Avatar
-  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
-    var iconText = '';
-    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
-    else {
-      var icon = b.querySelector('.material-symbols-outlined');
-      if (icon) iconText = icon.textContent.trim();
-    }
-    
-    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
-      window.location.href = '/?page=18_profil';
-    }
-  });
-
-  // 3. Sidebar, Bottom Nav, and generic # links
-  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
-    var text = el.textContent.trim().toLowerCase();
-    if (!text) {
-        var icon = el.querySelector('.material-symbols-outlined');
-        if (icon) text = icon.textContent.trim().toLowerCase();
-    }
-    
-    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
-    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
-    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
-    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
-    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
-    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
-    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
-    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
-    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
-  });
-  
-  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
-})();
-</script>
-
-    <script>
-    (function(){
-      document.querySelectorAll('button').forEach(function(b){
-        var text = b.textContent.trim().toLowerCase();
-        if(text.includes('kirim') || text.includes('submit') || text.includes('selesai')) {
-          b.addEventListener('click', function(){ window.location.href = '/?page=08_dashboard-siswa'; });
-        }
-      });
+        // === INIT ===
+        document.addEventListener('DOMContentLoaded', () => {
+            restoreFromLocal();
+            updateProgress();
+        });
     })();
     </script>
 </body>

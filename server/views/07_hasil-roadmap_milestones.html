@@ -47,7 +47,17 @@
         .confetti { position: fixed; pointer-events: none; z-index: 100; }
     </style>
 
-    </head>
+    
+    <!-- Firebase SDK & Auth Layer -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+    <script src="/firebase-auth-guard.js"></script>
+    <script src="/firebase-data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+    <script src="/career-roadmap-data.js"></script>
+</head>
 <body class="bg-[#EAEDE2] text-on-surface font-body blueprint-grid min-h-screen">
 
     <!-- TopNavBar -->
@@ -67,7 +77,7 @@
             </a>
         
                 <!-- Logout Button -->
-                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='../01_login/code.html');" class="ml-2 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
+                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>if(window.flexaLogout) flexaLogout(); else window.location.href='/?page=01_login');" class="ml-2 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
                     <span class="material-symbols-outlined">logout</span>
                     <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-surface text-on-surface px-2 py-1 shadow-md rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border border-on-surface/10">Keluar</span>
                 </button>
@@ -103,221 +113,113 @@
     </main>
 
     <script>
-    function getCareerData() {
-        const careerTitle = localStorage.getItem('selectedCareer') || 'Arsitek';
-        return careerTitle;
-    }
-
-    // Default milestones (fallback)
-    const defaultMilestones = [
-        { id: 'def1', title: 'Fondasi Akademik', desc: 'Menyelesaikan fondasi mata pelajaran inti.', target: 'Kelas 10', icon: 'school' },
-        { id: 'def2', title: 'Proyek Pertama', desc: 'Menyelesaikan proyek praktik pertama.', target: 'Kelas 11', icon: 'assignment' },
-        { id: 'def3', title: 'Lulus Seleksi PTN', desc: 'Diterima di perguruan tinggi pilihan.', target: 'Kelas 12', icon: 'emoji_events' }
-    ];
-
-    // Career milestone data (will be read from careerRoadmaps if available, otherwise use inline)
-    const careerMilestonesMap = {
-        'arsitek': [
-            { id: 'am1', title: 'Menguasai SketchUp 3D', desc: 'Mampu membuat model 3D bangunan sederhana secara mandiri.', target: 'Kelas 10 - Semester 2', icon: 'view_in_ar' },
-            { id: 'am2', title: 'Proyek Desain Pertama', desc: 'Menyelesaikan desain rumah ramah lingkungan dengan konsep sustainable.', target: 'Kelas 11 - Semester 1', icon: 'home_work' },
-            { id: 'am3', title: '10 Karya Portfolio', desc: 'Mengumpulkan 10 karya desain terbaik untuk portfolio masuk universitas.', target: 'Kelas 12 - Semester 1', icon: 'collections' },
-            { id: 'am4', title: 'Lulus Seleksi PTN', desc: 'Diterima di program S1 Arsitektur perguruan tinggi pilihan.', target: 'Kelas 12 - Semester 2', icon: 'school' },
-            { id: 'am5', title: 'Magang Biro Arsitek', desc: 'Menyelesaikan program magang profesional di biro arsitek ternama.', target: 'Universitas Tahun 3', icon: 'work' },
-            { id: 'am6', title: 'Tugas Akhir: Desain Kompleks', desc: 'Menyelesaikan proyek akhir berupa desain kompleks arsitektural skala besar.', target: 'Universitas Tahun 4', icon: 'emoji_events' }
-        ],
-        'data scientist': [
-            { id: 'dm1', title: 'Sertifikasi Python Dasar', desc: 'Menyelesaikan sertifikasi resmi bahasa pemrograman Python.', target: 'Kelas 10 - Semester 2', icon: 'code' },
-            { id: 'dm2', title: 'Proyek Data Analysis', desc: 'Menganalisis dataset publik dan membuat visualisasi data interaktif.', target: 'Kelas 11 - Semester 1', icon: 'analytics' },
-            { id: 'dm3', title: 'ML Model Pertama', desc: 'Membangun model machine learning regresi dan klasifikasi sederhana.', target: 'Kelas 11 - Semester 2', icon: 'smart_toy' },
-            { id: 'dm4', title: 'Lulus Seleksi PTN', desc: 'Diterima di program S1 Ilmu Komputer / Data Science.', target: 'Kelas 12 - Semester 2', icon: 'school' },
-            { id: 'dm5', title: 'Magang Data Analyst', desc: 'Menyelesaikan internship sebagai Data Analyst di perusahaan teknologi.', target: 'Universitas Tahun 3', icon: 'work' },
-            { id: 'dm6', title: 'Tugas Akhir: AI Predictive Model', desc: 'Membangun sistem prediksi berbasis AI untuk studi kasus nyata.', target: 'Universitas Tahun 4', icon: 'emoji_events' }
-        ],
-        'arsitek sistem': [
-            { id: 'sm1', title: 'Sertifikasi Linux Essentials', desc: 'Menguasai operasi dasar Linux dan administrasi sistem.', target: 'Kelas 10 - Semester 2', icon: 'terminal' },
-            { id: 'sm2', title: 'Web Server Deployment', desc: 'Berhasil membangun dan men-deploy web server dari nol.', target: 'Kelas 11 - Semester 1', icon: 'dns' },
-            { id: 'sm3', title: 'Cloud Architecture Project', desc: 'Menyelesaikan proyek arsitektur cloud menggunakan AWS/GCP.', target: 'Kelas 12 - Semester 1', icon: 'cloud' },
-            { id: 'sm4', title: 'Lulus Seleksi PTN', desc: 'Diterima di S1 Teknik Informatika perguruan tinggi pilihan.', target: 'Kelas 12 - Semester 2', icon: 'school' },
-            { id: 'sm5', title: 'Magang DevOps Engineer', desc: 'Internship sebagai DevOps Engineer di perusahaan teknologi.', target: 'Universitas Tahun 3', icon: 'work' },
-            { id: 'sm6', title: 'TA: Desain Cloud-Native', desc: 'Merancang arsitektur sistem cloud-native berskala enterprise.', target: 'Universitas Tahun 4', icon: 'emoji_events' }
-        ],
-        'dokter': [
-            { id: 'dm1_doc', title: 'Sertifikat P3K & CPR', desc: 'Menyelesaikan pelatihan pertolongan pertama dan CPR bersertifikat resmi.', target: 'Kelas 11 - Semester 1', icon: 'medical_services' },
-            { id: 'dm2_doc', title: 'Olimpiade Biologi', desc: 'Berpartisipasi dalam Olimpiade Sains Nasional bidang Biologi.', target: 'Kelas 11 - Semester 2', icon: 'science' },
-            { id: 'dm3_doc', title: 'Riset Kesehatan', desc: 'Menyelesaikan proyek riset kesehatan masyarakat dengan metodologi ilmiah.', target: 'Kelas 12 - Semester 1', icon: 'biotech' },
-            { id: 'dm4_doc', title: 'Lulus Seleksi FK', desc: 'Diterima di Fakultas Kedokteran perguruan tinggi pilihan.', target: 'Kelas 12 - Semester 2', icon: 'school' },
-            { id: 'dm5_doc', title: 'Rotasi Klinik RS', desc: 'Menyelesaikan rotasi klinik di berbagai departemen RS Pendidikan.', target: 'Universitas Tahun 3', icon: 'local_hospital' },
-            { id: 'dm6_doc', title: 'Lulus UKMPPD', desc: 'Lulus Ujian Kompetensi Mahasiswa Program Profesi Dokter.', target: 'Universitas Tahun 5+', icon: 'emoji_events' }
-        ],
-        'akuntan': [
-            { id: 'akm1', title: 'Sertifikasi Excel Intermediate', desc: 'Menguasai formula lanjut, pivot table, dan macro di Excel.', target: 'Kelas 10 - Semester 2', icon: 'grid_on' },
-            { id: 'akm2', title: 'Pembukuan UMKM', desc: 'Menyelesaikan proyek pembukuan nyata untuk UMKM lokal.', target: 'Kelas 11 - Semester 1', icon: 'storefront' },
-            { id: 'akm3', title: 'Simulasi Audit', desc: 'Melakukan simulasi audit pada koperasi sekolah.', target: 'Kelas 12 - Semester 1', icon: 'fact_check' },
-            { id: 'akm4', title: 'Lulus Seleksi PTN', desc: 'Diterima di S1 Akuntansi perguruan tinggi pilihan.', target: 'Kelas 12 - Semester 2', icon: 'school' },
-            { id: 'akm5', title: 'Magang di KAP', desc: 'Menyelesaikan internship sebagai Junior Auditor di Kantor Akuntan Publik.', target: 'Universitas Tahun 3', icon: 'work' },
-            { id: 'akm6', title: 'TA: Analisis Laporan Keuangan', desc: 'Menyelesaikan tugas akhir berupa analisis mendalam laporan keuangan perusahaan publik.', target: 'Universitas Tahun 4', icon: 'emoji_events' }
-        ],
-        'peneliti biologi': [
-            { id: 'pm1', title: 'Praktikum Mikroskop', desc: 'Mampu mengoperasikan mikroskop cahaya dan mendokumentasikan pengamatan sel.', target: 'Kelas 10 - Semester 2', icon: 'biotech' },
-            { id: 'pm2', title: 'Riset Biodiversitas', desc: 'Menyelesaikan survei keanekaragaman hayati dengan metodologi ilmiah.', target: 'Kelas 11 - Semester 1', icon: 'forest' },
-            { id: 'pm3', title: 'Karya Ilmiah Remaja', desc: 'Menulis dan mempresentasikan karya ilmiah biologi di tingkat kabupaten/kota.', target: 'Kelas 12 - Semester 1', icon: 'description' },
-            { id: 'pm4', title: 'Lulus Seleksi PTN', desc: 'Diterima di program S1 Biologi perguruan tinggi pilihan.', target: 'Kelas 12 - Semester 2', icon: 'school' },
-            { id: 'pm5', title: 'Research Assistant', desc: 'Menjadi asisten riset di laboratorium biologi universitas.', target: 'Universitas Tahun 3', icon: 'work' },
-            { id: 'pm6', title: 'Publikasi Ilmiah', desc: 'Mempublikasikan hasil riset tugas akhir di jurnal ilmiah nasional.', target: 'Universitas Tahun 4', icon: 'emoji_events' }
-        ]
-    };
+    let activeMilestones = [];
 
     function toggleMilestone(id) {
-        const isChecked = localStorage.getItem(`milestone_${id}`) === 'true';
-        localStorage.setItem(`milestone_${id}`, !isChecked);
-        renderAll();
+        const isChecked = localStorage.getItem('milestone_' + id) === 'true';
+        localStorage.setItem('milestone_' + id, !isChecked);
+        renderMilestonesUI();
         
         if (!isChecked) {
-            // Show a small celebration
-            const card = document.getElementById(`card-${id}`);
+            const card = document.getElementById('card-' + id);
             if (card) {
                 const icon = card.querySelector('.check-icon');
                 if (icon) icon.classList.add('check-bounce');
                 setTimeout(() => { if (icon) icon.classList.remove('check-bounce'); }, 500);
             }
+            if (window.NotificationSync) {
+                window.NotificationSync.addNotification('siswa', 'Milestone Tercapai!', 'Selamat! Kamu telah menyelesaikan satu milestone pencapaian.');
+            }
         }
     }
 
-    function updateProgress(milestones) {
-        const completed = milestones.filter(m => localStorage.getItem(`milestone_${m.id}`) === 'true').length;
-        const total = milestones.length;
-        const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
-        
-        document.getElementById('progress-counter').textContent = `${completed}/${total} Selesai`;
-        document.getElementById('progress-percent').textContent = `${percent}%`;
-        document.getElementById('progress-bar').style.width = `${percent}%`;
-    }
-
-    function renderMilestones(milestones) {
+    function renderMilestonesUI() {
         const container = document.getElementById('milestones-container');
-        
-        container.innerHTML = milestones.map((m, index) => {
-            const isChecked = localStorage.getItem(`milestone_${m.id}`) === 'true';
-            const cardBg = isChecked ? 'bg-emerald-50 border-emerald-300' : 'bg-white border-primary/15';
-            const iconBg = isChecked ? 'bg-emerald-500 text-white' : 'bg-primary/5 text-primary';
-            const checkIcon = isChecked ? 'check_circle' : 'radio_button_unchecked';
-            const checkColor = isChecked ? 'text-emerald-500' : 'text-primary/20';
-            const titleDecor = isChecked ? 'line-through text-on-surface-variant' : 'text-primary';
-            
-            return `
-            <div class="milestone-card border ${cardBg} p-6 hard-shadow cursor-pointer hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_#020b24] transition-all duration-300 relative group"
-                 id="card-${m.id}" onclick="toggleMilestone('${m.id}')" style="transition-delay: ${index * 80}ms">
-                
+        if (!container || !activeMilestones.length) return;
+
+        let completed = 0;
+        let html = '';
+
+        activeMilestones.forEach(m => {
+            const done = localStorage.getItem('milestone_' + m.id) === 'true';
+            if (done) completed++;
+
+            html += `
+            <div id="card-${m.id}" onclick="toggleMilestone('${m.id}')" class="milestone-card border ${done ? 'bg-emerald-50 border-emerald-300' : 'bg-white border-primary/15'} p-6 hard-shadow cursor-pointer hover:translate-y-[-2px] hover:shadow-[6px_6px_0_0_#020b24] transition-all duration-300 relative group flex flex-col justify-between">
                 <!-- Check Button -->
                 <div class="absolute top-4 right-4">
-                    <span class="material-symbols-outlined check-icon ${checkColor} text-2xl transition-colors" style="font-variation-settings: 'FILL' ${isChecked ? 1 : 0};">${checkIcon}</span>
+                    <span class="material-symbols-outlined check-icon ${done ? 'text-emerald-500' : 'text-primary/20'} text-2xl transition-colors" style="${done ? "font-variation-settings: 'FILL' 1;" : ''}">${done ? 'check_circle' : 'radio_button_unchecked'}</span>
                 </div>
                 
-                <!-- Icon -->
-                <div class="w-12 h-12 rounded-lg ${iconBg} flex items-center justify-center mb-4 transition-colors">
-                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">${m.icon}</span>
+                <div>
+                    <!-- Icon -->
+                    <div class="w-12 h-12 rounded-lg ${done ? 'bg-emerald-500 text-white' : 'bg-primary/5 text-primary'} flex items-center justify-center mb-4 transition-colors">
+                        <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">${m.icon || 'emoji_events'}</span>
+                    </div>
+                    
+                    <!-- Content -->
+                    <h3 class="font-bold text-lg ${done ? 'line-through text-on-surface-variant' : 'text-primary'} mb-2 pr-8 transition-colors">${m.title}</h3>
+                    <p class="text-on-surface-variant text-sm mb-4 leading-relaxed">${m.desc}</p>
                 </div>
-                
-                <!-- Content -->
-                <h3 class="font-bold text-lg ${titleDecor} mb-2 pr-8 transition-colors">${m.title}</h3>
-                <p class="text-on-surface-variant text-sm mb-4 leading-relaxed">${m.desc}</p>
                 
                 <!-- Target Badge -->
-                <div class="flex items-center gap-2 mt-auto">
+                <div class="flex items-center gap-2 mt-auto pt-3 border-t border-primary/10">
                     <span class="material-symbols-outlined text-secondary text-sm">schedule</span>
                     <span class="font-mono text-[11px] text-secondary font-bold tracking-wider">${m.target}</span>
                 </div>
             </div>`;
-        }).join('');
+        });
 
-        // Animate cards on scroll
+        container.innerHTML = html;
+
+        const total = activeMilestones.length;
+        const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
+        const counterEl = document.getElementById('progress-counter');
+        const percentEl = document.getElementById('progress-percent');
+        const barEl = document.getElementById('progress-bar');
+
+        if (counterEl) counterEl.textContent = completed + '/' + total + ' Selesai';
+        if (percentEl) percentEl.textContent = pct + '%';
+        if (barEl) barEl.style.width = pct + '%';
+
+        // Animate cards
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
-            });
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
         }, { threshold: 0.1 });
-
         container.querySelectorAll('.milestone-card').forEach(card => observer.observe(card));
     }
 
-    function renderAll() {
-        const careerTitle = getCareerData();
-        const milestones = careerMilestonesMap[careerTitle.toLowerCase()] || defaultMilestones;
+    function applyMilestones(careerTitle, jenjang, kelas) {
+        const store = window.CareerRoadmapStore;
+        if (!store) return;
+
+        const roadmap = store.getCareerRoadmap(careerTitle, jenjang, kelas);
+        activeMilestones = roadmap.milestones || [];
+
+        document.title = `Milestones: Jalur ${roadmap.title} | Flexa Cendekia`;
         
-        document.getElementById('page-title').textContent = `Milestones: Jalur ${careerTitle}`;
-        document.getElementById('page-subtitle').textContent = `Tandai setiap pencapaian yang telah Anda raih dalam perjalanan menjadi ${careerTitle} profesional.`;
-        
-        renderMilestones(milestones);
-        updateProgress(milestones);
+        const elTitle = document.getElementById('page-title');
+        if (elTitle) elTitle.textContent = 'Milestones: Jalur ' + roadmap.title;
+
+        const elSubtitle = document.getElementById('page-subtitle');
+        if (elSubtitle) elSubtitle.textContent = 'Tandai setiap pencapaian yang telah Anda raih dalam perjalanan menjadi ' + roadmap.title + ' profesional.';
+
+        renderMilestonesUI();
     }
 
-    document.addEventListener('DOMContentLoaded', renderAll);
-    </script>
-
-<script>
-(function(){
-  function bindClick(selectors, handler) {
-    document.querySelectorAll(selectors).forEach(function(el) {
-      el.addEventListener('click', function(e) {
-        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
-            return;
-        }
-        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
-            return;
-        }
-        e.preventDefault();
-        handler(e, el);
-      });
+    document.addEventListener('DOMContentLoaded', () => {
+        const careerTitle = localStorage.getItem('selectedCareer') || 'Arsitek';
+        applyMilestones(careerTitle);
     });
-  }
 
-  // 1. Top Navbar Role Tabs
-  bindClick('header nav a', function(e, a) {
-    var text = a.textContent.trim().toLowerCase();
-    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
-    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
-  });
-
-  // 2. Header Icons & Avatar
-  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
-    var iconText = '';
-    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
-    else {
-      var icon = b.querySelector('.material-symbols-outlined');
-      if (icon) iconText = icon.textContent.trim();
-    }
-    
-    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
-      window.location.href = '/?page=18_profil';
-    }
-  });
-
-  // 3. Sidebar, Bottom Nav, and generic # links
-  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
-    var text = el.textContent.trim().toLowerCase();
-    if (!text) {
-        var icon = el.querySelector('.material-symbols-outlined');
-        if (icon) text = icon.textContent.trim().toLowerCase();
-    }
-    
-    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
-    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
-    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
-    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
-    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
-    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
-    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
-    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
-    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
-  });
-  
-  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
-})();
-</script>
-
+    window.addEventListener('auth-ready', function(e) {
+        const user = e.detail;
+        if (user) {
+            const careerFromDb = user.citaCita || localStorage.getItem('selectedCareer') || 'Arsitek';
+            localStorage.setItem('selectedCareer', careerFromDb);
+            applyMilestones(careerFromDb, user.jenjang, user.kelas);
+        }
+    });
+    </script>
 </body>
 </html>

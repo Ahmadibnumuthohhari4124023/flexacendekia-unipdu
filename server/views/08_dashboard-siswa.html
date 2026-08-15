@@ -68,6 +68,16 @@
             font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
     </style>
+
+    <!-- Firebase SDK (compat) & Auth Layer -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="/firebase-config.js"></script>
+    <script src="/firebase-auth-guard.js"></script>
+    <script src="/firebase-data-store.js"></script>
+    <script src="/notification-sync.js"></script>
+    <script src="/career-roadmap-data.js"></script>
 </head>
 
 <body
@@ -92,17 +102,9 @@
 
             <!-- Middle Navigation Tabs -->
             <nav class="hidden md:flex items-center self-end h-full">
-                <a href="code.html"
+                <a href="/?page=08_dashboard-siswa"
                     class="bg-brand-gold text-white px-6 py-2 rounded-t-md font-bold text-sm h-[calc(100%-8px)] flex items-center mt-auto">
-                    Siswa
-                </a>
-                <a href="/?page=14_dashboard-guru"
-                    class="text-on-surface-variant hover:text-primary px-6 py-2 text-sm font-medium h-[calc(100%-8px)] flex items-center mt-auto transition-colors">
-                    Guru
-                </a>
-                <a href="/?page=16_dashboard-ortu"
-                    class="text-on-surface-variant hover:text-primary px-6 py-2 text-sm font-medium h-[calc(100%-8px)] flex items-center mt-auto transition-colors">
-                    Orang Tua
+                    Dashboard Siswa
                 </a>
             </nav>
 
@@ -121,9 +123,64 @@
                     class="p-2 text-on-surface-variant hover:text-primary rounded-full transition-colors">
                     <span class="material-symbols-outlined">settings</span>
                 </a>
-                <a href="/?page=18_profil" id="user-avatar-small"
+                <a href="/?page=18_profil"
                     class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-mono text-sm font-bold border border-primary/30 hover:ring-2 hover:ring-brand-gold/50 transition-all">
                     AF
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="max-w-[1280px] w-full mx-auto px-4 md:px-8 py-8 grid grid-cols-12 gap-6 flex-grow">
+
+        <!-- 1. Header Identitas Section -->
+        <section
+            class="col-span-12 ledger-card p-6 md:p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <!-- Left: Avatar + Details -->
+            <div class="flex items-center gap-6">
+                <!-- Avatar with PRO badge -->
+                <div class="relative flex-shrink-0">
+                    <div
+                        class="w-20 h-20 md:w-24 md:h-24 bg-primary text-white flex items-center justify-center font-serif text-3xl md:text-4xl font-bold">
+                        AF
+                    </div>
+                    <span
+                        class="absolute -bottom-1 -right-2 bg-brand-gold text-white font-mono text-[10px] font-bold px-1.5 py-0.5 rounded-none tracking-wider border border-white">
+                        PRO
+                    </span>
+                </div>
+                <!-- Details -->
+                <div>
+                    <h1 id="user-display-name" class="font-serif text-2xl md:text-3xl font-bold text-primary mb-1">...</h1>
+                    <p class="text-on-surface-variant text-sm mb-2" id="greeting-text">Selamat datang kembali!</p>
+                    <div
+                        class="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-on-surface-variant text-xs md:text-sm font-medium">
+                        <span class="flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px]">school</span> <span id="user-jenjang">Memuat...</span>
+                        </span>
+                        <span class="flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-[18px]">architecture</span> Cita-cita: <span id="user-citacita">Memuat...</span>
+                        </span>
+                        <a href="/?page=12_ganti-cita-cita" class="text-brand-gold font-bold hover:underline">
+                            Ajukan Ganti Cita-cita
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Semester Badge + Action Button -->
+            <div class="flex flex-col items-start md:items-end gap-3 w-full md:w-auto">
+                <span
+                    class="inline-block bg-[#FDC265]/25 text-brand-dark border border-brand-gold/40 px-3.5 py-1 font-mono text-xs font-bold uppercase tracking-wider"
+                    id="semester-badge">
+                    Semester Ganjil 2024/2025
+                </span>
+                <div class="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
+                    <a href="/?page=09_krs-siswa"
+                        class="w-full md:w-auto bg-brand-gold text-white px-6 py-2.5 hover:opacity-90 transition-all font-mono text-xs font-bold tracking-wider text-center flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-[18px]">calendar_month</span> KRS & JADWAL
+                    </a>
                     <a href="/?page=10_detail-roadmap"
                         class="w-full md:w-auto border border-primary text-primary px-6 py-2.5 hover:bg-primary/5 transition-all font-mono text-xs font-bold tracking-wider text-center flex items-center justify-center">
                         LIHAT DETAIL ROADMAP
@@ -136,32 +193,24 @@
             </div>
         </section>
 
-        <!-- 2. Baris Statistik -->
-        <section class="col-span-12 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Progress Ringkasan Mingguan (Menggantikan Streak & Poin) -->
-            <div class="ledger-card p-6 flex items-center justify-between">
-                <div>
-                    <span class="font-mono text-xs font-bold tracking-widest text-on-surface-variant mb-2 block">PROGRES MINGGU INI</span>
-                    <h3 class="font-serif text-xl font-bold text-primary mb-1">Terus Tingkatkan!</h3>
-                    <p class="text-xs text-on-surface-variant max-w-[200px]" id="progress-summary-text">Menyelesaikan target harian akan membantumu mencapai checkpoint Jumat.</p>
+        <!-- 2. Baris Tugas Terdekat & Level -->
+        <section class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Tugas / Deadline Terdekat -->
+            <div class="md:col-span-2 ledger-card p-6 flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="font-mono text-xs font-bold tracking-widest text-on-surface-variant">DEADLINE TERDEKAT</span>
+                    <span class="material-symbols-outlined text-primary text-xl">assignment_late</span>
                 </div>
-                <!-- Dynamic SVG Ring -->
-                <div class="relative w-24 h-24 flex-shrink-0">
-                    <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-                        <circle cx="18" cy="18" r="15.91549430918954" fill="transparent" stroke="currentColor" stroke-width="4" class="text-outline-variant/30"></circle>
-                        <circle id="mini-progress-ring" cx="18" cy="18" r="15.91549430918954" fill="transparent" stroke="currentColor" stroke-width="4" stroke-dasharray="0, 100" stroke-linecap="round" class="text-brand-gold transition-all duration-1000 ease-out"></circle>
-                    </svg>
-                    <div class="absolute inset-0 flex items-center justify-center flex-col">
-                        <span id="mini-progress-text" class="font-mono text-lg font-bold text-primary">0%</span>
-                    </div>
+                <div id="upcoming-tasks-list" class="space-y-3 flex-1 flex flex-col justify-center">
+                    <div class="text-sm text-center text-on-surface-variant italic animate-pulse">Memuat data...</div>
                 </div>
             </div>
 
-            <!-- Level (Tetap Dipertahankan) -->
+            <!-- Level -->
             <div class="ledger-card p-6 flex flex-col justify-center items-center text-center">
                 <span class="font-mono text-xs font-bold tracking-widest text-on-surface-variant mb-2">LEVEL</span>
                 <div class="flex flex-col items-center">
-                    <span class="font-serif text-2xl md:text-3xl font-bold text-primary mb-1">Penjelajah</span>
+                    <span id="user-level" class="font-serif text-2xl md:text-3xl font-bold text-primary mb-1">...</span>
                     <div class="w-24 h-1.5 bg-brand-gold mt-1"></div>
                 </div>
             </div>
@@ -295,8 +344,8 @@
 
             <!-- Right: Archive Ref ID -->
             <div class="flex flex-col items-end gap-0.5">
-                <span class="font-mono text-[10px] uppercase tracking-widest font-bold">ARCHIVE REFERENCE ID</span>
-                <span class="font-mono text-sm font-bold text-brand-gold tracking-wider">FCX-UN-2023-A00421</span>
+                        <span class="font-mono text-[10px] uppercase tracking-widest font-bold">ARCHIVE REFERENCE ID</span>
+                        <span id="archive-ref-id" class="font-mono text-sm font-bold text-brand-gold tracking-wider">...</span>
             </div>
         </div>
     </main>
@@ -323,11 +372,9 @@
             else el.textContent = 'Selamat Malam, Ahmad! 🌙 Jangan lupa istirahat.';
         }
 
-        async function updateWeeklyTarget(userId) {
-            let activeDay = new Date().getDay(); // 0:Sun, 1:Mon, ..., 6:Sat
-            let progressPercentage = 0;
-            
-            let daysData = [
+        function updateWeeklyTarget() {
+            const today = new Date().getDay(); // 0:Sun, 1:Mon, ..., 6:Sat
+            const daysData = [
                 { id: 1, name: 'Senin' },
                 { id: 2, name: 'Selasa' },
                 { id: 3, name: 'Rabu' },
@@ -335,54 +382,36 @@
                 { id: 5, name: 'Jumat', isCheckpoint: true }
             ];
 
-            // Try to fetch from Firebase DataStore
-            if (userId && typeof DataStore !== 'undefined' && DataStore.getProgresMingguan) {
-                const progresData = await DataStore.getProgresMingguan(userId);
-                if (progresData) {
-                    if (progresData.persentaseSelesai !== undefined) progressPercentage = progresData.persentaseSelesai;
-                    if (progresData.activeDay !== undefined) activeDay = progresData.activeDay;
-                    // Note: If you have dynamic daysData in DB, map them here.
-                } else {
-                    // Fallback logic if user data doesn't exist yet
-                    if (activeDay === 0 || activeDay === 6) activeDay = 6;
-                    if (activeDay >= 1 && activeDay <= 5) progressPercentage = (activeDay - 1) * 20 + 10;
-                    if (activeDay > 5) progressPercentage = 100;
-                }
-            } else {
-                // Fallback local logic
-                if (activeDay === 0 || activeDay === 6) activeDay = 6;
-                if (activeDay >= 1 && activeDay <= 5) progressPercentage = (activeDay - 1) * 20 + 10;
-                if (activeDay > 5) progressPercentage = 100;
-            }
+            let activeDay = today;
+            // Jika weekend (0 atau 6), anggap jumat sudah selesai
+            if (today === 0 || today === 6) activeDay = 6;
+
+            // Hitung progress 0-100% (Masing-masing hari = 20%)
+            let progressPercentage = 0;
+            if (activeDay >= 1 && activeDay <= 5) progressPercentage = (activeDay - 1) * 20 + 10; // tengah jalan
+            if (activeDay > 5) progressPercentage = 100;
 
             // Animasi progress bar & text
             const pBar = document.getElementById('weekly-progress-bar');
             const pText = document.getElementById('weekly-progress-text');
-            const miniRing = document.getElementById('mini-progress-ring');
-            const miniText = document.getElementById('mini-progress-text');
 
             setTimeout(() => {
                 if (pBar) pBar.style.width = progressPercentage + '%';
-                if (miniRing) miniRing.style.strokeDasharray = progressPercentage + ', 100';
             }, 300);
 
-            const animateNumber = (el, target) => {
-                if (!el) return;
+            if (pText) {
                 let currentP = 0;
                 let interval = setInterval(() => {
-                    if (currentP >= target) {
+                    if (currentP >= progressPercentage) {
                         clearInterval(interval);
-                        el.textContent = target + '%';
+                        pText.textContent = progressPercentage + '%';
                     } else {
-                        currentP += Math.ceil(target / 20) || 1;
-                        if (currentP > target) currentP = target;
-                        el.textContent = currentP + '%';
+                        currentP += Math.ceil(progressPercentage / 20);
+                        if (currentP > progressPercentage) currentP = progressPercentage;
+                        pText.textContent = currentP + '%';
                     }
                 }, 30);
-            };
-
-            animateNumber(pText, progressPercentage);
-            animateNumber(miniText, progressPercentage);
+            }
 
             let html = '';
             daysData.forEach(day => {
@@ -391,13 +420,16 @@
                 let liClass = 'flex items-center justify-between py-3 px-2 rounded-lg transition-colors';
 
                 if (day.id < activeDay) {
+                    // Selesai
                     iconHtml = `<span class="material-symbols-outlined text-primary filled-icon text-xl hover:scale-110 transition-transform">check_circle</span>`;
                     statusHtml = `<span class="text-xs text-primary font-bold px-2 py-0.5 bg-primary/10 rounded">Selesai</span>`;
                 } else if (day.id === activeDay) {
+                    // Berjalan
                     liClass = 'flex items-center justify-between py-3 -mx-2 px-4 bg-[#FDC265]/20 rounded-lg shadow-sm border border-brand-gold/30 transform scale-[1.02] transition-all';
                     iconHtml = `<span class="material-symbols-outlined text-brand-gold text-xl animate-spin" style="animation-duration: 3s;">sync</span>`;
                     statusHtml = `<span class="text-xs font-bold text-brand-gold animate-pulse bg-brand-gold/10 px-2 py-0.5 rounded">Berjalan</span>`;
                 } else {
+                    // Belum
                     iconHtml = `<span class="material-symbols-outlined text-outline-variant text-xl">circle</span>`;
                     statusHtml = `<span class="text-xs text-outline-variant font-medium">Belum</span>`;
                 }
@@ -431,135 +463,111 @@
         updateClock();
         updateGreeting();
         setInterval(updateClock, 1000);
+        // Delay slight to allow UI render before calculation
+        setTimeout(updateWeeklyTarget, 300);
     </script>
 
     <!-- Firebase SDK & Auth -->
-    <script src="/firebase-config.js"></script>
-    <script src="/firebase-auth-guard.js"></script>
-    <script src="/firebase-data-store.js"></script>
-    <script src="/notification-sync.js"></script>
-
     <script>
-        window.addEventListener('auth-ready', function(e) {
+        
+        // Timeout fallback for initial data
+        let dataLoaded = false;
+        setTimeout(() => {
+            if (!dataLoaded) {
+                const citaEl = document.getElementById('user-citacita');
+                const levelEl = document.getElementById('user-level');
+                const jenjangEl = document.getElementById('user-jenjang');
+                if (citaEl && citaEl.textContent === 'Memuat...') citaEl.textContent = 'Belum diatur';
+                if (levelEl && levelEl.textContent === '...') levelEl.textContent = 'Pemula';
+                if (jenjangEl && jenjangEl.textContent === 'Memuat...') jenjangEl.textContent = 'Data tidak ditemukan';
+                
+                const taskList = document.getElementById('upcoming-tasks-list');
+                if (taskList && taskList.innerHTML.includes('Memuat data...')) {
+                    taskList.innerHTML = '<div class="text-sm text-center text-error py-4">Gagal memuat tugas (Timeout). Coba muat ulang.</div>';
+                }
+            }
+        }, 8000);
+
+        window.addEventListener('auth-ready', async function(e) {
             const user = e.detail;
             if (user) {
-                // Update Nama
-                if (user.nama) {
-                    document.querySelectorAll('.user-display-name').forEach(el => {
-                        el.textContent = user.nama;
-                    });
-                    
-                    // Update greeting
-                    const hour = new Date().getHours();
-                    const el = document.getElementById('greeting-text');
-                    if (el) {
-                        const firstName = user.nama.split(' ')[0];
-                        if (hour < 10) el.textContent = 'Selamat Pagi, ' + firstName + '! ☀️ Semangat belajar hari ini.';
-                        else if (hour < 15) el.textContent = 'Selamat Siang, ' + firstName + '! 📚 Terus semangat ya.';
-                        else if (hour < 18) el.textContent = 'Selamat Sore, ' + firstName + '! 🌤️ Waktunya review materi.';
-                        else el.textContent = 'Selamat Malam, ' + firstName + '! 🌙 Jangan lupa istirahat.';
+                // Update header info
+                document.getElementById('user-display-name').textContent = user.nama || 'Siswa';
+                document.getElementById('user-jenjang').textContent = `${user.jenjang || 'SMA'} Kelas ${user.kelas || '-'}`;
+                document.getElementById('user-citacita').textContent = user.citaCita || 'Belum diatur';
+                
+                // Initials
+                const initials = (user.nama || 'S').charAt(0).toUpperCase();
+                document.querySelectorAll('.bg-primary.text-white, .bg-primary\\/10.text-primary').forEach(el => {
+                    if (el.classList.contains('rounded-full') || el.classList.contains('w-10')) {
+                        // Assuming it's an avatar element
+                        if (!el.querySelector('span')) el.textContent = initials;
                     }
+                });
 
-                    // Update Avatar initials
-                    const initials = user.nama.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-                    const avatarSmall = document.getElementById('user-avatar-small');
-                    const avatarLarge = document.getElementById('user-avatar-large');
-                    if (avatarSmall) avatarSmall.textContent = initials;
-                    if (avatarLarge) avatarLarge.textContent = initials;
-                }
-                
-                // Update Jenjang/Kelas
-                const kelasEl = document.getElementById('siswa-kelas-jenjang');
-                if (kelasEl && user.jenjang && user.kelas) {
-                    kelasEl.textContent = user.jenjang + ' Kelas ' + user.kelas;
-                }
-                
-                // Update Cita-cita
-                const citaEl = document.getElementById('siswa-citacita');
-                if (citaEl && user.citaCita) {
-                    citaEl.textContent = user.citaCita;
-                }
-                
-                // Fetch DataStore for real Weekly Target data
-                updateWeeklyTarget(user.uid || user.id);
+                // Update Level & Archive ID
+                document.getElementById('user-level').textContent = user.level || 'Pemula';
+                if(user.archiveRefId) document.getElementById('archive-ref-id').textContent = user.archiveRefId;
+
+                // Load Upcoming Tasks
+                loadUpcomingTasks(user.uid);
             }
         });
+
+        async function loadUpcomingTasks(siswaId) {
+            const listEl = document.getElementById('upcoming-tasks-list');
+            if (!window.firebaseDb) {
+                listEl.innerHTML = '<div class="text-sm text-center text-error py-4">Koneksi database terputus.</div>';
+                dataLoaded = true;
+                return;
+            }
+            
+            try {
+                // Timeout wrapper
+                const fetchPromise = window.firebaseDb.collection('checkpoints')
+                    .where('siswaId', '==', siswaId)
+                    .where('status', '==', 'pending')
+                    .orderBy('deadline', 'asc')
+                    .limit(3)
+                    .get();
+                    
+                const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 7000));
+                
+                const snapshot = await Promise.race([fetchPromise, timeoutPromise]);
+
+                if (snapshot.empty) {
+                    listEl.innerHTML = '<div class="text-sm text-center text-on-surface-variant py-4">Tidak ada tugas/deadline terdekat. Semua tuntas! 🎉</div>';
+                    dataLoaded = true;
+                    return;
+                }
+
+                let html = '';
+                snapshot.forEach(doc => {
+                    const task = doc.data();
+                    const d = task.deadline ? task.deadline.toDate() : new Date();
+                    const formattedDate = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+                    html += `
+                    <div class="flex items-center justify-between p-3 bg-on-surface/5 rounded-lg border border-on-surface/10 hover:border-brand-gold/50 transition-colors">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-brand-gold">assignment</span>
+                            <div>
+                                <p class="text-sm font-bold text-brand-dark">${task.title || 'Tugas Checkpoint'}</p>
+                                <p class="text-[11px] text-error font-medium flex items-center gap-1 mt-0.5"><span class="material-symbols-outlined text-[12px]">timer</span> Deadline: ${formattedDate}</p>
+                            </div>
+                        </div>
+                        <a href="/?page=11_checkpoint-jumat" class="text-xs bg-brand-gold text-white px-3 py-1.5 rounded font-bold hover:bg-brand-gold-dark transition-colors">KERJAKAN</a>
+                    </div>`;
+                });
+                listEl.innerHTML = html;
+                dataLoaded = true;
+            } catch (error) {
+                console.error("Error loading tasks", error);
+                listEl.innerHTML = '<div class="text-sm text-center text-error py-4">Gagal memuat daftar tugas (' + (error.message || 'Error') + ').</div>';
+                dataLoaded = true;
+            }
+        }
     </script>
 
-<script>
-(function(){
-  function bindClick(selectors, handler) {
-    document.querySelectorAll(selectors).forEach(function(el) {
-      el.addEventListener('click', function(e) {
-        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
-            return;
-        }
-        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
-            return;
-        }
-        e.preventDefault();
-        handler(e, el);
-      });
-    });
-  }
-
-  // 1. Top Navbar Role Tabs
-  bindClick('header nav a', function(e, a) {
-    var text = a.textContent.trim().toLowerCase();
-    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
-    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
-  });
-
-  // 2. Header Icons & Avatar
-  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
-    var iconText = '';
-    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
-    else {
-      var icon = b.querySelector('.material-symbols-outlined');
-      if (icon) iconText = icon.textContent.trim();
-    }
-    
-    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
-      window.location.href = '/?page=18_profil';
-    }
-  });
-
-  // 3. Sidebar, Bottom Nav, and generic # links
-  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
-    var text = el.textContent.trim().toLowerCase();
-    if (!text) {
-        var icon = el.querySelector('.material-symbols-outlined');
-        if (icon) text = icon.textContent.trim().toLowerCase();
-    }
-    
-    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
-    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
-    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
-    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
-    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
-    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
-    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
-    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
-    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
-  });
-  
-  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
-})();
-</script>
-
-    <script>
-    (function(){
-      document.querySelectorAll('button, a').forEach(function(el){
-        var text = el.textContent.trim().toLowerCase();
-        if(text.includes('ambil tes') || text.includes('mulai tes')) {
-          el.addEventListener('click', function(e){ e.preventDefault(); window.location.href = '/?page=02_intro-diagnosis'; });
-        }
-      });
-    })();
-    </script>
 </body>
+
 </html>

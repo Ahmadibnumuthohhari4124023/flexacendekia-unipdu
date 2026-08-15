@@ -29,6 +29,7 @@ router.get('/', (req, res) => {
   const filePath = path.join(__dirname, '..', 'views', page + '.html');
 
   if (fs.existsSync(filePath)) {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.sendFile(filePath);
   } else {
     res.status(404).send(`
