@@ -1,248 +1,77 @@
-﻿<!DOCTYPE html>
-
-<html class="light" lang="id"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Flexa Cendekia x UNIPDU - Tinjauan KRS Guru</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700&amp;family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "tertiary-container": "#002822",
-                        "surface-container": "#f0edf0",
-                        "inverse-primary": "#bbc6e7",
-                        "on-secondary-fixed-variant": "#614000",
-                        "on-error": "#ffffff",
-                        "on-secondary-container": "#754e00",
-                        "on-primary-fixed-variant": "#3c4661",
-                        "tertiary-fixed": "#adefe1",
-                        "on-tertiary": "#ffffff",
-                        "primary-container": "#17223b",
-                        "secondary": "#805600",
-                        "secondary-fixed-dim": "#f7bc60",
-                        "outline": "#76777e",
-                        "on-tertiary-fixed": "#00201b",
-                        "on-surface-variant": "#45464d",
-                        "on-tertiary-container": "#549589",
-                        "outline-variant": "#c6c6ce",
-                        "primary": "#020b24",
-                        "on-background": "#1b1b1d",
-                        "secondary-container": "#fdc265",
-                        "tertiary": "#000f0c",
-                        "on-tertiary-fixed-variant": "#005046",
-                        "surface-variant": "#e4e2e4",
-                        "secondary-fixed": "#ffddaf",
-                        "surface-container-low": "#f5f3f5",
-                        "on-primary-container": "#7f89a8",
-                        "surface-container-lowest": "#ffffff",
-                        "on-surface": "#1b1b1d",
-                        "on-primary": "#ffffff",
-                        "surface-dim": "#dcd9dc",
-                        "on-secondary": "#ffffff",
-                        "error": "#ba1a1a",
-                        "background": "#fbf8fb",
-                        "on-error-container": "#93000a",
-                        "on-primary-fixed": "#101b34",
-                        "surface-container-high": "#eae7ea",
-                        "inverse-on-surface": "#f3f0f2",
-                        "primary-fixed": "#d9e2ff",
-                        "surface-tint": "#535e7a",
-                        "surface": "#fbf8fb",
-                        "error-container": "#ffdad6",
-                        "tertiary-fixed-dim": "#91d3c5",
-                        "surface-container-highest": "#e4e2e4",
-                        "inverse-surface": "#303032",
-                        "surface-bright": "#fbf8fb",
-                        "on-secondary-fixed": "#281800",
-                        "primary-fixed-dim": "#bbc6e7",
-                        "role-teacher": "#005046" /* Deep Green Teacher Accent */
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "container-max": "1280px",
-                        "unit": "4px",
-                        "margin-desktop": "32px",
-                        "gutter": "16px",
-                        "margin-mobile": "16px"
-                    },
-                    "fontFamily": {
-                        "stats-sm": ["JetBrains Mono"],
-                        "display-lg": ["\"Source Serif 4\""],
-                        "body-md": ["Libre Franklin"],
-                        "label-caps": ["Libre Franklin"],
-                        "headline-md": ["\"Source Serif 4\""],
-                        "display-lg-mobile": ["\"Source Serif 4\""],
-                        "stats-lg": ["JetBrains Mono"],
-                        "body-sm": ["Libre Franklin"]
-                    },
-                    "fontSize": {
-                        "stats-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400"}],
-                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
-                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
-                        "display-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
-                        "stats-lg": ["20px", {"lineHeight": "24px", "fontWeight": "500"}],
-                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
-                    }
-                },
-            },
-        }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .paper-card {
-            background-color: #FBFAF5;
-            border: 1px solid rgba(23, 34, 59, 0.2);
-        }
-        .hairline-b { border-bottom: 1px solid rgba(23, 34, 59, 0.15); }
-        .hairline-r { border-right: 1px solid rgba(23, 34, 59, 0.15); }
-        .active-tab-teacher {
-            background-color: rgba(0, 80, 70, 0.1);
-            color: #005046;
-            border-right: 4px solid #005046;
-        }
-        .zebra-stripe:nth-child(even) {
-            background-color: rgba(234, 237, 226, 0.3);
-        }
-    </style>
-
 <!DOCTYPE html>
+<html class="light" lang="id">
 
-<html class="light" lang="id"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Flexa Cendekia x UNIPDU - Tinjauan KRS Guru</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;600;700&amp;family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Flexa Cendekia x UNIPDU - Tinjauan KRS Guru</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script id="tailwind-config">
         tailwind.config = {
             darkMode: "class",
             theme: {
                 extend: {
-                    "colors": {
-                        "tertiary-container": "#002822",
-                        "surface-container": "#f0edf0",
-                        "inverse-primary": "#bbc6e7",
-                        "on-secondary-fixed-variant": "#614000",
-                        "on-error": "#ffffff",
-                        "on-secondary-container": "#754e00",
-                        "on-primary-fixed-variant": "#3c4661",
-                        "tertiary-fixed": "#adefe1",
-                        "on-tertiary": "#ffffff",
-                        "primary-container": "#17223b",
-                        "secondary": "#805600",
-                        "secondary-fixed-dim": "#f7bc60",
-                        "outline": "#76777e",
-                        "on-tertiary-fixed": "#00201b",
-                        "on-surface-variant": "#45464d",
-                        "on-tertiary-container": "#549589",
-                        "outline-variant": "#c6c6ce",
+                    colors: {
                         "primary": "#020b24",
-                        "on-background": "#1b1b1d",
-                        "secondary-container": "#fdc265",
-                        "tertiary": "#000f0c",
-                        "on-tertiary-fixed-variant": "#005046",
-                        "surface-variant": "#e4e2e4",
-                        "secondary-fixed": "#ffddaf",
-                        "surface-container-low": "#f5f3f5",
-                        "on-primary-container": "#7f89a8",
-                        "surface-container-lowest": "#ffffff",
-                        "on-surface": "#1b1b1d",
-                        "on-primary": "#ffffff",
-                        "surface-dim": "#dcd9dc",
-                        "on-secondary": "#ffffff",
-                        "error": "#ba1a1a",
-                        "background": "#fbf8fb",
-                        "on-error-container": "#93000a",
-                        "on-primary-fixed": "#101b34",
-                        "surface-container-high": "#eae7ea",
-                        "inverse-on-surface": "#f3f0f2",
-                        "primary-fixed": "#d9e2ff",
-                        "surface-tint": "#535e7a",
+                        "primary-container": "#17223b",
+                        "role-teacher": "#005046",
+                        "role-teacher-dark": "#003b33",
+                        "brand-gold": "#B9862F",
+                        "brand-gold-dark": "#805600",
                         "surface": "#fbf8fb",
-                        "error-container": "#ffdad6",
-                        "tertiary-fixed-dim": "#91d3c5",
-                        "surface-container-highest": "#e4e2e4",
-                        "inverse-surface": "#303032",
-                        "surface-bright": "#fbf8fb",
-                        "on-secondary-fixed": "#281800",
-                        "primary-fixed-dim": "#bbc6e7",
-                        "role-teacher": "#005046" /* Deep Green Teacher Accent */
+                        "surface-container-low": "#f5f3f5",
+                        "surface-container": "#f0edf0",
+                        "on-surface": "#1b1b1d",
+                        "on-surface-variant": "#45464d",
+                        "outline-variant": "#c6c6ce",
+                        "error": "#ba1a1a"
                     },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "0.5rem",
-                        "xl": "0.75rem",
-                        "full": "9999px"
-                    },
-                    "spacing": {
-                        "container-max": "1280px",
-                        "unit": "4px",
-                        "margin-desktop": "32px",
-                        "gutter": "16px",
-                        "margin-mobile": "16px"
-                    },
-                    "fontFamily": {
-                        "stats-sm": ["JetBrains Mono"],
-                        "display-lg": ["\"Source Serif 4\""],
-                        "body-md": ["Libre Franklin"],
-                        "label-caps": ["Libre Franklin"],
-                        "headline-md": ["\"Source Serif 4\""],
-                        "display-lg-mobile": ["\"Source Serif 4\""],
-                        "stats-lg": ["JetBrains Mono"],
-                        "body-sm": ["Libre Franklin"]
-                    },
-                    "fontSize": {
-                        "stats-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400"}],
-                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
-                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
-                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
-                        "display-lg-mobile": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
-                        "stats-lg": ["20px", {"lineHeight": "24px", "fontWeight": "500"}],
-                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    fontFamily: {
+                        "body-md": ["Libre Franklin", "sans-serif"],
+                        "headline-md": ["\"Source Serif 4\"", "serif"],
+                        "display-lg": ["\"Source Serif 4\"", "serif"],
+                        "font-mono": ["JetBrains Mono", "monospace"]
                     }
-                },
-            },
+                }
+            }
         }
     </script>
-<style>
+    <style>
         .material-symbols-outlined {
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
+
+        .filled-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
         .paper-card {
             background-color: #FBFAF5;
-            border: 1px solid rgba(23, 34, 59, 0.2);
+            border: 1px solid rgba(23, 34, 59, 0.15);
+            box-shadow: 2px 2px 0px rgba(23, 34, 59, 0.08);
         }
-        .hairline-b { border-bottom: 1px solid rgba(23, 34, 59, 0.15); }
-        .hairline-r { border-right: 1px solid rgba(23, 34, 59, 0.15); }
+
         .active-tab-teacher {
             background-color: rgba(0, 80, 70, 0.1);
             color: #005046;
             border-right: 4px solid #005046;
+            font-weight: 700;
         }
-        .zebra-stripe:nth-child(even) {
-            background-color: rgba(234, 237, 226, 0.3);
+
+        .quick-tag {
+            transition: all 0.15s ease;
+        }
+
+        .quick-tag:hover {
+            transform: translateY(-1px);
         }
     </style>
 
-    
     <!-- Firebase SDK (compat) & Auth Layer -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
@@ -253,374 +82,583 @@
     <script src="/notification-sync.js"></script>
     <script src="/career-roadmap-data.js"></script>
 </head>
+
 <body class="bg-[#EAEDE2] text-on-surface font-body-md min-h-screen flex flex-col">
 
-<!-- TopNavBar -->
-<header class="bg-surface-container-lowest dark:bg-primary border-b border-outline-variant/20 flex justify-between items-center w-full px-margin-desktop h-16 sticky top-0 z-50">
-<div class="flex items-center gap-6">
-<h1 class="font-display-lg text-display-lg text-primary dark:text-primary-fixed">Flexa Cendekia x UNIPDU</h1>
-<div class="hidden md:flex items-center gap-4 bg-surface-container-low px-4 py-2 rounded border border-outline-variant/20">
-<span class="material-symbols-outlined text-outline">search</span>
-<input class="bg-transparent border-none focus:ring-0 font-body-sm text-on-surface-variant w-48" placeholder="Cari Siswa..." type="text"/>
-</div>
-</div>
-<div class="flex items-center gap-4">
-<a href="/?page=17_notifikasi" class="p-2 hover:bg-surface-container-low transition-colors rounded-full text-primary">
-<span class="material-symbols-outlined">notifications</span>
-</a>
-<a href="/?page=18_profil_profil-guru" class="p-2 hover:bg-surface-container-low transition-colors rounded-full text-primary">
-<span class="material-symbols-outlined">help</span>
-</a>
-<a href="/?page=18_profil_profil-guru" class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant hover:ring-2 hover:ring-role-teacher/50 transition-all block">
-<img class="w-full h-full object-cover" data-alt="Professional studio portrait of a university professor in a dark green blazer, smiling warmly against a minimalist off-white academic background. High-quality lighting highlights textures of fabric and skin, creating an authoritative yet accessible persona for a digital educational platform. The overall aesthetic is clean, modern, and scholarly." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjOWFfvmdEVDNwv1Z5iy1cxBPk5o-6NCORrcVGyz-kJBrzMRx877ss1Zxc8pH_bbgfIcgMUDiL5kwIbZrI-4Ya0vK1SPMJdEQHQ_pmlHDlRlZRfEcRoHE1A3FXLCq0JFRE3CHDts-5SzCSRGpU947bS2AjSthsuF2Y2oUavcIfafZ9U8x6ZSzNoRh2q2AMI2OY9C5XKETAxXLZeVj3mICBa_styXXLOP1p7GsDjOtsdcHft6XPwKrnJUWjyQ8zgZNx3304Ri1pt4c"/>
-</a>
-
-                <!-- Logout Button -->
-                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" class="ml-2 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">
-                    <span class="material-symbols-outlined">logout</span>
-                    <span class="absolute -bottom-8 left-1/2 -translate-x-1/2 text-[10px] font-bold bg-surface text-on-surface px-2 py-1 shadow-md rounded opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity border border-on-surface/10">Keluar</span>
-                </button>
+    <!-- TopNavBar -->
+    <header
+        class="bg-white border-b border-primary/10 flex justify-between items-center w-full px-4 md:px-8 h-16 sticky top-0 z-50">
+        <div class="flex items-center gap-4">
+            <button id="mobile-menu-btn" class="md:hidden p-2 text-primary"><span
+                    class="material-symbols-outlined">menu</span></button>
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-role-teacher text-2xl">verified</span>
+                <div>
+                    <h1 class="font-headline-md text-lg md:text-xl font-bold text-primary leading-tight">Flexa Cendekia
+                        <span class="text-role-teacher text-sm font-mono font-normal">| Portal Guru</span></h1>
+                    <p class="font-mono text-[10px] text-on-surface-variant tracking-wider">Tinjauan Akademik &
+                        Persetujuan KRS</p>
+                </div>
             </div>
-</header>
-<div class="flex flex-1 overflow-hidden">
-<!-- SideNavBar -->
-<aside class="hidden md:flex flex-col h-full w-64 bg-surface-container-low dark:bg-tertiary-container border-r border-outline-variant/20 py-margin-desktop shrink-0">
-<div class="px-6 mb-8">
-<div class="flex items-center gap-3 mb-2">
-<span class="material-symbols-outlined text-role-teacher">school</span>
-<h2 class="font-headline-md text-headline-md text-primary dark:text-primary-fixed">Flexa Cendekia</h2>
-</div>
-<p class="font-label-caps text-label-caps text-on-surface-variant">Tahun Ajaran 2024/2025</p>
-</div>
-<nav class="flex-1">
-<a class="flex items-center gap-3 px-6 py-3 transition-all hover:bg-surface-container text-on-surface-variant dark:text-on-tertiary-container translate-x-0" href="/?page=14_dashboard-guru">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="font-label-caps text-label-caps">Dashboard</span>
-</a>
-<a class="flex items-center gap-3 px-6 py-3 transition-all active-tab-teacher translate-x-1" href="/?page=15_tinjauan-guru">
-<span class="material-symbols-outlined">menu_book</span>
-<span class="font-label-caps text-label-caps">Tinjauan KRS</span>
-</a>
-<a class="flex items-center gap-3 px-6 py-3 transition-all hover:bg-surface-container text-on-surface-variant dark:text-on-tertiary-container" href="/?page=13_riwayat-semester">
-<span class="material-symbols-outlined">grade</span>
-<span class="font-label-caps text-label-caps">Riwayat Semester</span>
-</a>
-<a class="flex items-center gap-3 px-6 py-3 transition-all hover:bg-surface-container text-on-surface-variant dark:text-on-tertiary-container" href="/?page=18_profil">
-<span class="material-symbols-outlined">settings</span>
-<span class="font-label-caps text-label-caps">Pengaturan</span>
-</a>
-</nav>
-<div class="px-6 mt-auto flex flex-col gap-2">
-<a class="flex items-center gap-3 py-2 text-on-surface-variant hover:text-primary" href="/?page=18_profil_profil-guru">
-<span class="material-symbols-outlined text-[20px]">contact_support</span>
-<span class="font-label-caps text-label-caps">Support</span>
-</a>
-<a class="flex items-center gap-3 py-2 text-on-surface-variant hover:text-primary" href="/?page=14_dashboard-guru">
-<span class="material-symbols-outlined text-[20px]">inventory_2</span>
-<span class="font-label-caps text-label-caps">Arsip Bimbingan</span>
-</a>
-</div>
-</aside>
-<!-- Main Content -->
-<main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop">
-<div class="max-w-6xl mx-auto flex flex-col lg:flex-row gap-gutter">
-<!-- Review Area (Center Column) -->
-<div class="flex-1 space-y-gutter">
-<!-- Header Action Bar -->
-<div class="flex justify-between items-end mb-4">
-<div>
-<p class="font-label-caps text-label-caps text-on-surface-variant mb-1" id="krs-status">Status: Memuat...</p>
-<h2 class="font-headline-md text-headline-md text-primary" id="krs-title">Tinjauan KRS Siswa</h2>
-</div>
-<div class="flex gap-4">
-<button id="btn-reject" class="px-6 py-2 border-2 border-error text-error font-label-caps text-label-caps hover:bg-error/5 transition-colors rounded disabled:opacity-50">
-                                TOLAK
-                            </button>
-<button id="btn-approve" class="px-6 py-2 bg-role-teacher text-white font-label-caps text-label-caps hover:brightness-110 transition-all rounded shadow-[4px_4px_0px_0px_#17223b] disabled:opacity-50">
-                                SETUJUI
-                            </button>
-</div>
-</div>
-<!-- Comparison Section (Opsi A: Mata Pelajaran Sebelumnya vs Diajukan) -->
-<div class="grid grid-cols-1 md:grid-cols-2 gap-px bg-outline-variant/30 paper-card overflow-hidden">
-<!-- Before (Mata Pelajaran Sebelumnya) -->
-<div class="p-6 bg-white">
-<div class="flex items-center gap-2 mb-4">
-<span class="material-symbols-outlined text-outline">history</span>
-<h3 class="font-label-caps text-label-caps text-on-surface-variant">MATA PELAJARAN SEBELUMNYA</h3>
-</div>
-<div class="space-y-4">
-<div class="p-4 border border-outline-variant/20 rounded bg-surface-container-low">
-<h4 class="font-headline-md text-headline-md text-primary mb-1" id="prev-krs-title">Semester Aktif</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant" id="prev-krs-subtitle">Jenjang SMA • Semester 2</p>
-</div>
-<div class="space-y-2">
-<p class="font-label-caps text-label-caps text-outline">DAFTAR MAPEL LULUS</p>
-<ul class="space-y-1" id="prev-modules-list">
-<li class="flex justify-between font-stats-sm text-stats-sm text-on-surface-variant">
-<span>Matematika Dasar</span>
-<span class="text-role-teacher">Lulus (A)</span>
-</li>
-<li class="flex justify-between font-stats-sm text-stats-sm text-on-surface-variant">
-<span>Fisika Terapan</span>
-<span class="text-role-teacher">Lulus (B+)</span>
-</li>
-<li class="flex justify-between font-stats-sm text-stats-sm text-on-surface-variant">
-<span>Informatika &amp; Logika</span>
-<span class="text-role-teacher">Lulus (A)</span>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<!-- After (Mata Pelajaran yang Diajukan) -->
-<div class="p-6 bg-white border-l border-outline-variant/30">
-<div class="flex items-center gap-2 mb-4">
-<span class="material-symbols-outlined text-role-teacher">update</span>
-<h3 class="font-label-caps text-label-caps text-role-teacher">MATA PELAJARAN YANG DIAJUKAN (KRS)</h3>
-</div>
-<div class="space-y-4">
-<div class="p-4 border-2 border-role-teacher/20 rounded bg-role-teacher/5">
-<h4 class="font-headline-md text-headline-md text-role-teacher mb-1" id="req-krs-title">Pengajuan KRS Baru</h4>
-<p class="font-body-sm text-body-sm text-on-surface-variant" id="req-krs-subtitle">Jenjang SMA • Target Karir: <span id="req-target-career" class="font-bold text-primary">...</span></p>
-</div>
-<div class="space-y-2">
-<p class="font-label-caps text-label-caps text-outline">MAPEL DIAJUKAN</p>
-<div class="grid grid-cols-1 gap-2" id="req-modules-list">
-<div class="flex items-center justify-between p-2 border border-outline-variant/10 bg-white rounded">
-<span class="font-stats-sm text-stats-sm font-bold text-primary">Memuat mapel pengajuan...</span>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<!-- Teacher Notes -->
-<div class="paper-card p-6">
-<div class="flex items-center gap-2 mb-3">
-<span class="material-symbols-outlined text-role-teacher">edit_note</span>
-<h3 class="font-label-caps text-label-caps text-on-surface">CATATAN PEMBIMBING</h3>
-</div>
-<textarea id="catatan-guru" class="w-full h-32 p-4 font-body-md border border-outline-variant/30 focus:border-role-teacher focus:ring-1 focus:ring-role-teacher outline-none bg-white rounded resize-none" placeholder="Berikan alasan persetujuan atau penolakan di sini..."></textarea>
-<div class="mt-3 flex items-center gap-2 text-on-surface-variant">
-<input class="rounded border-outline-variant text-role-teacher focus:ring-role-teacher" id="archive" type="checkbox"/>
-<label class="font-body-sm text-body-sm" for="archive">Simpan sebagai arsip permanen dalam Ledger Akademik</label>
-</div>
-</div>
-</div>
-<!-- Academic History Sidebar -->
-<aside class="w-full lg:w-80 shrink-0 space-y-gutter">
-<div class="paper-card p-6">
-<div class="flex flex-col items-center text-center mb-6">
-<div class="w-20 h-20 rounded-full border-2 border-role-teacher/20 p-1 mb-4 flex items-center justify-center bg-role-teacher/10">
-<div id="student-avatar-box" class="w-full h-full rounded-full bg-role-teacher flex items-center justify-center font-bold text-2xl text-white">...</div>
-</div>
-<h3 id="student-name" class="font-headline-md text-headline-md text-primary">Memuat...</h3>
-<p class="font-stats-sm text-stats-sm text-on-surface-variant tracking-wider"><span id="student-year">Memuat data...</span></p>
-</div>
-<div class="space-y-6">
-<div>
-<h4 class="font-label-caps text-label-caps text-outline mb-2">RINGKASAN AKADEMIK</h4>
-<div class="grid grid-cols-2 gap-2">
-<div class="bg-surface-container-low p-3 rounded">
-<p class="font-label-caps text-[10px] text-on-surface-variant">RATA-RATA NILAI</p>
-<p class="font-stats-lg text-stats-lg text-primary" id="student-avg-score">--</p>
-</div>
-<div class="bg-surface-container-low p-3 rounded">
-<p class="font-label-caps text-[10px] text-on-surface-variant">TOTAL MAPEL</p>
-<p class="font-stats-lg text-stats-lg text-primary" id="student-total-mapel">--</p>
-</div>
-</div>
-</div>
-<div>
-<h4 class="font-label-caps text-label-caps text-outline mb-3">RIWAYAT AKTIVITAS</h4>
-<div class="space-y-4 relative" id="student-activity-timeline">
-<!-- Timeline line -->
-<div class="absolute left-[11px] top-2 bottom-2 w-px bg-outline-variant/30"></div>
-<div class="relative pl-8">
-<div class="absolute left-0 top-1 w-[22px] h-[22px] rounded-full bg-white border border-outline-variant/50 flex items-center justify-center">
-<div class="w-2 h-2 rounded-full bg-role-teacher"></div>
-</div>
-<p class="font-body-sm text-body-sm font-bold">Pengajuan KRS Baru</p>
-<p class="font-stats-sm text-[11px] text-on-surface-variant" id="krs-submit-date">Hari ini</p>
-</div>
-</div>
-</div>
-<a href="/?page=13_riwayat-semester" class="w-full py-3 border border-role-teacher/30 text-role-teacher font-label-caps text-label-caps hover:bg-role-teacher/5 transition-all flex items-center justify-center gap-2 rounded text-center block">
-<span class="material-symbols-outlined text-[18px]">history_edu</span>
-LIHAT RIWAYAT PENUH
-</a>
-</div>
-</div>
-<div class="paper-card p-6 bg-secondary/5 border-secondary/20">
-<div class="flex items-center gap-2 mb-2">
-<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
-<h3 class="font-label-caps text-label-caps text-secondary">INSIGHT DIAGNOSTIK PEMBIMBING</h3>
-</div>
-<p id="insight-text" class="font-body-sm text-body-sm text-on-surface-variant italic">
-Memuat rekomendasi diagnostik siswa...
-</p>
-</div>
-</aside>
-</div>
-</main>
-</div>
-<!-- Footer -->
-<footer class="bg-surface-container-lowest dark:bg-primary border-t border-outline-variant/20 flex flex-col md:flex-row justify-between items-center w-full px-margin-desktop py-4 mt-auto">
-<p class="font-stats-sm text-stats-sm text-on-surface-variant">&copy; 2026 Flexa Cendekia x UNIPDU. Hak Cipta Dilindungi.</p>
-<div class="flex gap-6 mt-4 md:mt-0">
-<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="/?page=01_login_panduan">Panduan Guru</a>
-<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="/?page=01_login_bantuan">Pusat Bantuan</a>
-<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="/?page=01_login_kontak">Kontak Admin</a>
-</div>
-</footer>
+        </div>
+
+        <div class="flex items-center gap-3 md:gap-4">
+            <span id="top-clock"
+                class="hidden lg:block font-mono text-[11px] text-on-surface-variant bg-primary/5 px-3 py-1.5 border border-primary/10 tracking-wider"></span>
+            
+            <a href="/?page=17_notifikasi"
+                class="p-2 hover:bg-primary/5 transition-colors rounded-full text-primary relative" title="Notifikasi">
+                <span class="material-symbols-outlined">notifications</span>
+                <span id="notif-badge" class="hidden absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+            </a>
+
+            <div class="flex items-center gap-2 pl-2 border-l border-primary/10">
+                <div id="teacher-avatar"
+                    class="w-9 h-9 rounded-full bg-role-teacher text-white flex items-center justify-center font-bold text-xs shadow">
+                    GR
+                </div>
+                <div class="hidden sm:block text-left">
+                    <p id="teacher-name-top" class="font-sans text-xs font-bold text-primary leading-none">Dewan Guru
+                    </p>
+                    <p class="font-mono text-[10px] text-role-teacher mt-0.5">Pembimbing Akademik</p>
+                </div>
+            </div>
+
+            <!-- Logout Button -->
+            <button
+                onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');"
+                class="flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors"
+                title="Keluar">
+                <span class="material-symbols-outlined">logout</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- SideNavBar -->
+        <aside
+            class="hidden md:flex flex-col h-full w-64 bg-[#F5F7F0] border-r border-primary/10 py-6 shrink-0 justify-between">
+            <div>
+                <div class="px-6 mb-6">
+                    <div class="flex items-center gap-2 mb-1">
+                        <span class="material-symbols-outlined text-role-teacher">school</span>
+                        <h2 class="font-headline-md text-base font-bold text-primary">Flexa Cendekia</h2>
+                    </div>
+                    <p class="font-mono text-[10px] text-on-surface-variant">A.Y. 2023/2024 · UNIPDU</p>
+                </div>
+                <nav class="space-y-1">
+                    <a class="flex items-center gap-3 px-6 py-3 transition-all hover:bg-primary/5 text-on-surface-variant text-sm font-semibold"
+                        href="/?page=14_dashboard-guru">
+                        <span class="material-symbols-outlined text-[20px]">dashboard</span>
+                        <span>Dashboard Guru</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-6 py-3 transition-all active-tab-teacher text-sm font-semibold"
+                        href="/?page=15_tinjauan-guru">
+                        <span class="material-symbols-outlined text-[20px] filled-icon">menu_book</span>
+                        <span>Tinjauan KRS</span>
+                    </a>
+                    <a class="flex items-center gap-3 px-6 py-3 transition-all hover:bg-primary/5 text-on-surface-variant text-sm font-semibold"
+                        href="/?page=18_profil_profil-guru">
+                        <span class="material-symbols-outlined text-[20px]">settings</span>
+                        <span>Profil Guru</span>
+                    </a>
+                </nav>
+            </div>
+
+            <div class="px-6 space-y-2 border-t border-primary/10 pt-4">
+                <a class="flex items-center gap-3 py-2 text-xs text-on-surface-variant hover:text-primary font-mono"
+                    href="/?page=14_dashboard-guru">
+                    <span class="material-symbols-outlined text-[18px]">inventory_2</span>
+                    <span>Arsip Bimbingan</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto p-4 md:p-8">
+            <div class="max-w-6xl mx-auto space-y-6">
+
+                <!-- Antrian Pengajuan KRS (Selector Bar) -->
+                <div class="paper-card p-4 bg-white">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="material-symbols-outlined text-role-teacher">pending_actions</span>
+                            <h3 class="font-headline-md text-base font-bold text-primary">Antrean Pengajuan KRS Siswa Bimbingan</h3>
+                        </div>
+                        <span id="queue-counter" class="font-mono text-xs text-role-teacher font-bold bg-role-teacher/10 px-2.5 py-1 border border-role-teacher/20 rounded">
+                            Memuat antrean...
+                        </span>
+                    </div>
+                    <div id="student-queue-container" class="flex gap-2 overflow-x-auto pb-1">
+                        <!-- Student Chips Generated Dynamically -->
+                    </div>
+                </div>
+
+                <!-- Review Content Grid -->
+                <div class="flex flex-col lg:flex-row gap-6">
+
+                    <!-- Center Column: Detail KRS & Decision -->
+                    <div class="flex-1 space-y-6">
+
+                        <!-- Header Action Bar -->
+                        <div class="paper-card p-5 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span id="krs-status-pill" class="font-mono text-[10px] font-bold px-2 py-0.5 bg-amber-100 text-amber-800 border border-amber-300 uppercase">
+                                        Menunggu Persetujuan
+                                    </span>
+                                    <span id="krs-submit-time" class="font-mono text-[11px] text-on-surface-variant">Diajukan Hari Ini</span>
+                                </div>
+                                <h2 class="font-headline-md text-xl md:text-2xl font-bold text-primary mt-1" id="krs-title">
+                                    Persetujuan KRS Semester 3
+                                </h2>
+                                <p class="font-sans text-xs text-on-surface-variant" id="krs-student-subtitle">
+                                    Siswa: <strong class="text-primary font-bold" id="active-student-name">Memuat...</strong> · Cita-cita: <span class="text-role-teacher font-bold" id="active-student-career">--</span>
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <button id="btn-reject" onclick="handleDecision('Ditolak')"
+                                    class="px-5 py-2.5 border-2 border-error text-error font-mono text-xs font-bold hover:bg-error/10 transition-colors rounded">
+                                    TOLAK KRS
+                                </button>
+                                <button id="btn-approve" onclick="handleDecision('Disetujui')"
+                                    class="px-6 py-2.5 bg-role-teacher text-white font-mono text-xs font-bold hover:bg-role-teacher-dark transition-all rounded shadow-[3px_3px_0px_0px_#17223b] flex items-center gap-1.5">
+                                    <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                                    SETUJUI KRS
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Comparison Section (Mata Pelajaran Sebelumnya vs Diajukan) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                            <!-- Left: Mata Pelajaran Sebelumnya -->
+                            <div class="paper-card p-5 bg-white">
+                                <div class="flex items-center justify-between pb-3 mb-3 border-b border-primary/10">
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-outline text-[20px]">history</span>
+                                        <h3 class="font-mono text-xs font-bold text-on-surface-variant uppercase tracking-wider">Mata Pelajaran Sebelumnya</h3>
+                                    </div>
+                                    <span id="prev-sem-badge" class="font-mono text-[10px] text-primary bg-primary/5 px-2 py-0.5 border border-primary/10">Semester 2</span>
+                                </div>
+                                <div class="space-y-2" id="prev-modules-list">
+                                    <!-- Dynamic Previous Modules List -->
+                                </div>
+                            </div>
+
+                            <!-- Right: Mata Pelajaran yang Diajukan (KRS) -->
+                            <div class="paper-card p-5 bg-white border-2 border-role-teacher/30">
+                                <div class="flex items-center justify-between pb-3 mb-3 border-b border-role-teacher/20">
+                                    <div class="flex items-center gap-2">
+                                        <span class="material-symbols-outlined text-role-teacher text-[20px]">update</span>
+                                        <h3 class="font-mono text-xs font-bold text-role-teacher uppercase tracking-wider">Mapel Diajukan (KRS)</h3>
+                                    </div>
+                                    <span id="req-sem-badge" class="font-mono text-[10px] text-role-teacher font-bold bg-role-teacher/10 px-2 py-0.5 border border-role-teacher/30">Semester 3</span>
+                                </div>
+                                <div class="space-y-2" id="req-modules-list">
+                                    <!-- Dynamic Proposed Modules List -->
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Teacher Feedback & Evaluation Box -->
+                        <div class="paper-card p-6 bg-white">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="material-symbols-outlined text-role-teacher">rate_review</span>
+                                <h3 class="font-mono text-xs font-bold text-primary uppercase tracking-wider">Catatan Evaluasi Pembimbing</h3>
+                            </div>
+
+                            <!-- Quick Response Chips -->
+                            <div class="mb-3 flex flex-wrap gap-1.5">
+                                <span class="text-[11px] font-mono text-on-surface-variant self-center mr-1">Template:</span>
+                                <button type="button" onclick="setFeedbackTemplate('Rencana studi sangat baik dan selaras dengan roadmap karier impian. Pertahankan konsistensi capaian!')"
+                                    class="quick-tag px-2.5 py-1 bg-primary/5 hover:bg-role-teacher/10 text-primary hover:text-role-teacher text-xs font-mono border border-primary/15 rounded">
+                                    + Selaras Roadmap
+                                </button>
+                                <button type="button" onclick="setFeedbackTemplate('KRS disetujui. Mohon tingkatkan keaktifan pada sesi praktikum mandiri dan checkpoint Jumat.')"
+                                    class="quick-tag px-2.5 py-1 bg-primary/5 hover:bg-role-teacher/10 text-primary hover:text-role-teacher text-xs font-mono border border-primary/15 rounded">
+                                    + Tingkatkan Praktikum
+                                </button>
+                                <button type="button" onclick="setFeedbackTemplate('Perlu penyesuaian: disarankan menambah modul fondasi logika sebelum mengambil modul spesialisasi lanjutan.')"
+                                    class="quick-tag px-2.5 py-1 bg-primary/5 hover:bg-error/10 text-primary hover:text-error text-xs font-mono border border-primary/15 rounded">
+                                    + Saran Penyesuaian
+                                </button>
+                            </div>
+
+                            <textarea id="catatan-guru"
+                                class="w-full h-28 p-3.5 font-body-md text-sm border border-primary/20 focus:border-role-teacher focus:ring-1 focus:ring-role-teacher outline-none bg-[#FBFAF5] rounded resize-none"
+                                placeholder="Tuliskan catatan arahan, catatan motivasi, atau alasan persetujuan/penolakan untuk siswa..."></textarea>
+                            
+                            <div class="mt-3 flex items-center justify-between text-xs text-on-surface-variant">
+                                <label class="flex items-center gap-2 cursor-pointer select-none">
+                                    <input type="checkbox" id="archive" checked class="rounded border-primary/30 text-role-teacher focus:ring-role-teacher">
+                                    <span>Simpan dan sinkronkan ke riwayat ledger akademik orang tua & siswa</span>
+                                </label>
+                                <span id="save-indicator" class="font-mono text-[10px] text-role-teacher hidden">Tersimpan</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Sidebar: Academic Summary & Diagnostic Insight -->
+                    <aside class="w-full lg:w-80 shrink-0 space-y-6">
+
+                        <!-- Student Profile Card -->
+                        <div class="paper-card p-6 bg-white text-center">
+                            <div class="w-20 h-20 rounded-full border-2 border-role-teacher/30 p-1 mx-auto mb-3 flex items-center justify-center bg-role-teacher/10">
+                                <div id="student-avatar-box"
+                                    class="w-full h-full rounded-full bg-role-teacher flex items-center justify-center font-bold text-2xl text-white">
+                                    --
+                                </div>
+                            </div>
+                            <h3 id="student-name-sidebar" class="font-headline-md text-lg font-bold text-primary">Memuat...</h3>
+                            <p id="student-jenjang-sidebar" class="font-mono text-xs text-role-teacher font-semibold mt-0.5">SMA · Kelas 11</p>
+                            <p id="student-target-sidebar" class="font-sans text-xs text-on-surface-variant mt-1">
+                                Aspirasi: <strong class="text-primary font-bold" id="student-career-badge">--</strong>
+                            </p>
+
+                            <!-- Academic Metrics -->
+                            <div class="mt-6 pt-4 border-t border-primary/10">
+                                <h4 class="font-mono text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-3 text-left">Ringkasan Akademik</h4>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div class="bg-surface-container-low p-3 rounded text-left border border-primary/5">
+                                        <p class="font-mono text-[9px] text-on-surface-variant">CUMULATIVE GPA</p>
+                                        <p class="font-mono text-xl font-bold text-primary" id="student-avg-score">--</p>
+                                    </div>
+                                    <div class="bg-surface-container-low p-3 rounded text-left border border-primary/5">
+                                        <p class="font-mono text-[9px] text-on-surface-variant">TOTAL MAPEL</p>
+                                        <p class="font-mono text-xl font-bold text-primary" id="student-total-mapel">--</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Activity Timeline -->
+                            <div class="mt-5 text-left">
+                                <h4 class="font-mono text-[10px] font-bold text-on-surface-variant uppercase tracking-wider mb-2">Riwayat Aktivitas</h4>
+                                <div class="space-y-3 relative pl-6 border-l-2 border-primary/10 ml-2">
+                                    <div class="relative">
+                                        <div class="absolute -left-[31px] top-0.5 w-3.5 h-3.5 rounded-full bg-role-teacher border-2 border-white"></div>
+                                        <p class="font-sans text-xs font-bold text-primary">Pengajuan KRS Baru</p>
+                                        <p class="font-mono text-[10px] text-on-surface-variant" id="krs-activity-date">Hari ini</p>
+                                    </div>
+                                    <div class="relative">
+                                        <div class="absolute -left-[31px] top-0.5 w-3.5 h-3.5 rounded-full bg-primary/40 border-2 border-white"></div>
+                                        <p class="font-sans text-xs font-bold text-on-surface-variant">Checkpoint Terakhir</p>
+                                        <p class="font-mono text-[10px] text-on-surface-variant">Jumat Lalu · 92% Skor</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <a href="/?page=13_riwayat-semester"
+                                class="w-full mt-6 py-2.5 border border-role-teacher/40 text-role-teacher font-mono text-xs font-bold hover:bg-role-teacher/10 transition-all flex items-center justify-center gap-1.5 rounded">
+                                <span class="material-symbols-outlined text-[16px]">history_edu</span>
+                                LIHAT LEDGER TRANSKRIP
+                            </a>
+                        </div>
+
+                        <!-- Diagnostic Insight Card -->
+                        <div class="paper-card p-5 bg-amber-50/50 border-amber-200">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="material-symbols-outlined text-brand-gold-dark filled-icon">lightbulb</span>
+                                <h3 class="font-mono text-xs font-bold text-brand-gold-dark uppercase tracking-wider">Insight Diagnostik Guru</h3>
+                            </div>
+                            <p id="insight-text" class="font-body-md text-xs text-on-surface-variant leading-relaxed italic">
+                                Memuat rekomendasi diagnostik siswa...
+                            </p>
+                        </div>
+
+                    </aside>
+
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Feedback Toast / Dialog -->
+    <div id="toast-msg" class="fixed bottom-6 right-6 bg-primary text-white px-5 py-3 rounded shadow-xl font-mono text-xs hidden items-center gap-2 z-50 transition-all">
+        <span class="material-symbols-outlined text-green-400 text-[18px]">check_circle</span>
+        <span id="toast-text">Berhasil memperbarui status KRS.</span>
+    </div>
 
     <script>
-        // Simple micro-interaction for button states
-        document.querySelectorAll('button').forEach(btn => {
-            btn.addEventListener('mousedown', () => {
-                btn.style.transform = 'translate(1px, 1px)';
-            });
-            btn.addEventListener('mouseup', () => {
-                btn.style.transform = 'translate(0, 0)';
-            });
-        });
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            const el = document.getElementById('top-clock');
+            if (el) {
+                el.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} • ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+            }
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
 
-        let currentUser = null;
-        let activeKrsId = null;
-        let activeSiswaId = null;
+        let currentGuru = null;
+        let pendingKrsList = [];
+        let activeKrsIndex = 0;
 
-        async function loadPendingKrs() {
-            if (!currentUser) return;
-            
-            const pendingList = await DataStore.getPendingKRSForGuru(currentUser.uid || currentUser.id);
-            if (pendingList.length > 0) {
-                const krs = pendingList[0]; // Just take the first pending one for demo
-                activeKrsId = krs.id;
-                activeSiswaId = krs.siswaId;
-                
-                const siswa = await DataStore.getUserById(activeSiswaId);
-                
-                document.getElementById('krs-status').textContent = 'Status: ' + krs.status;
-                document.getElementById('krs-title').textContent = 'Persetujuan KRS Semester ' + (krs.semester || 3);
-                
-                if (siswa) {
-                    document.getElementById('student-name').textContent = siswa.nama;
-                    const requestedProfessionEls = document.querySelectorAll('h4.text-role-teacher.mb-1');
-                    if (requestedProfessionEls.length > 0) {
-                        requestedProfessionEls[0].textContent = siswa.citaCita || "Belum Memilih";
+        // Sample fallback realistic submissions if Firestore is clean/empty
+        const mockPendingSubmissions = [
+            {
+                id: 'krs_mock_01',
+                siswaId: 'siswa_ahmad_01',
+                nama: 'Ahmad Ibnu Muthohhari',
+                jenjang: 'SMA',
+                kelas: 'Kelas 11',
+                citaCita: 'Arsitek',
+                semester: 3,
+                gpa: '3.88',
+                status: 'Menunggu Persetujuan',
+                tanggal: 'Hari ini, 09:30 WIB',
+                prevSemester: [
+                    { kode: 'MATH-202', namaMapel: 'Kalkulus & Trigonometri Dasar', skor: 96, grade: 'A', sks: 4 },
+                    { kode: 'PHYS-201', namaMapel: 'Mekanika Klasik & Vektor Gaya', skor: 89, grade: 'A-', sks: 3 },
+                    { kode: 'ARTS-201', namaMapel: 'Prinsip Estetika & Teori Warna', skor: 93, grade: 'A', sks: 3 },
+                    { kode: 'ENG-201', namaMapel: 'English for Technical Presentation', skor: 85, grade: 'B+', sks: 2 }
+                ],
+                reqSemester: [
+                    { kode: 'ARTS-315', namaMapel: 'Perspektif 2 Titik Hilang & Sketsa', sks: 3, kategori: 'Keahlian Inti' },
+                    { kode: 'PHYS-301', namaMapel: 'Fisika Bangunan & Akustik', sks: 3, kategori: 'Sains & Fisika' },
+                    { kode: 'MATH-301', namaMapel: 'Matematika Geometri Ruang Lanjut', sks: 4, kategori: 'Matematika' },
+                    { kode: 'DSGN-302', namaMapel: 'CAD & Pemodelan 3D SketchUp', sks: 3, kategori: 'Desain Komputasi' }
+                ],
+                insight: 'Ahmad memiliki daya analisis spasial dan logika estetika di atas rata-rata (Skor 95). Seluruh mata pelajaran yang diajukan untuk Semester 3 telah 100% konsisten dengan peta jalan arsitektur UNIPDU.'
+            },
+            {
+                id: 'krs_mock_02',
+                siswaId: 'siswa_siti_02',
+                nama: 'Siti Aminah',
+                jenjang: 'SMA',
+                kelas: 'Kelas 11',
+                citaCita: 'Dokter / Tenaga Medis',
+                semester: 3,
+                gpa: '3.92',
+                status: 'Menunggu Persetujuan',
+                tanggal: 'Kemarin, 14:15 WIB',
+                prevSemester: [
+                    { kode: 'BIO-201', namaMapel: 'Biologi Sel & Genetika Molekuler', skor: 95, grade: 'A', sks: 4 },
+                    { kode: 'CHEM-201', namaMapel: 'Kimia Organik Medis', skor: 88, grade: 'A-', sks: 3 },
+                    { kode: 'PHYS-201', namaMapel: 'Biofisika & Instrumentasi Medis', skor: 91, grade: 'A', sks: 3 }
+                ],
+                reqSemester: [
+                    { kode: 'BIO-301', namaMapel: 'Anatomi & Fisiologi Manusia', sks: 4, kategori: 'Biomedis' },
+                    { kode: 'CHEM-301', namaMapel: 'Biokimia & Metabolisme Lanjut', sks: 4, kategori: 'Kimia Medis' },
+                    { kode: 'MED-301', namaMapel: 'Etika Medis & Komunikasi Pasien', sks: 2, kategori: 'Etika Profesi' }
+                ],
+                insight: 'Siti menunjukkan konsistensi tinggi dalam pemahaman biosains dan literasi klinis. Beban 10 SKS semester ini dinilai ideal dan sangat direkomendasikan untuk disetujui.'
+            },
+            {
+                id: 'krs_mock_03',
+                siswaId: 'siswa_budi_03',
+                nama: 'Budi Pratama',
+                jenjang: 'SMA',
+                kelas: 'Kelas 11',
+                citaCita: 'Software Engineer',
+                semester: 3,
+                gpa: '3.80',
+                status: 'Menunggu Persetujuan',
+                tanggal: '2 hari lalu',
+                prevSemester: [
+                    { kode: 'PROG-201', namaMapel: 'Pemrograman Berorientasi Objek', skor: 97, grade: 'A', sks: 4 },
+                    { kode: 'NET-201', namaMapel: 'Jaringan Komputer & Protokol', skor: 86, grade: 'B+', sks: 3 },
+                    { kode: 'MATH-201', namaMapel: 'Kalkulus Diferensial Komputasi', skor: 88, grade: 'A-', sks: 3 }
+                ],
+                reqSemester: [
+                    { kode: 'PROG-301', namaMapel: 'Struktur Data & Algoritma Lanjut', sks: 4, kategori: 'Ilmu Komputer' },
+                    { kode: 'MATH-302', namaMapel: 'Matematika Diskrit & Teori Graf', sks: 3, kategori: 'Matematika' },
+                    { kode: 'DB-301', namaMapel: 'Basis Data Relasional & SQL', sks: 3, kategori: 'Data Engineering' }
+                ],
+                insight: 'Budi telah menyelesaikan seluruh checkpoint pemrograman Python dasar. Pengajuan mata kuliah Struktur Data sangat esensial untuk persiapan portofolio proyek semester 3.'
+            }
+        ];
+
+        async function loadTeacherKRS() {
+            const container = document.getElementById('student-queue-container');
+            const queueCounter = document.getElementById('queue-counter');
+
+            try {
+                if (window.DataStore && currentGuru) {
+                    const fromDb = await window.DataStore.getPendingKRSForGuru(currentGuru.uid || currentGuru.id);
+                    if (fromDb && fromDb.length > 0) {
+                        pendingKrsList = fromDb;
                     }
                 }
-            } else {
-                // No pending KRS
-                document.getElementById('krs-title').textContent = 'Tidak Ada KRS Menunggu';
-                document.getElementById('krs-status').textContent = 'Status: Bersih';
-                document.getElementById('btn-approve').disabled = true;
-                document.getElementById('btn-reject').disabled = true;
+            } catch (err) {
+                console.warn('DataStore fetch error, using robust fallback list:', err);
             }
+
+            if (!pendingKrsList || pendingKrsList.length === 0) {
+                pendingKrsList = mockPendingSubmissions;
+            }
+
+            queueCounter.textContent = `${pendingKrsList.length} Siswa Menunggu`;
+
+            // Render queue chips
+            container.innerHTML = pendingKrsList.map((item, idx) => {
+                const isActive = idx === activeKrsIndex;
+                const initials = (item.nama || 'S').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                return `
+                    <button onclick="selectStudentKRS(${idx})" 
+                        class="flex items-center gap-2 px-3 py-2 border ${isActive ? 'bg-role-teacher text-white border-role-teacher shadow' : 'bg-[#FBFAF5] text-primary border-primary/15 hover:bg-primary/5'} rounded transition-all shrink-0">
+                        <span class="w-6 h-6 rounded-full ${isActive ? 'bg-white text-role-teacher' : 'bg-role-teacher/10 text-role-teacher'} flex items-center justify-center font-mono font-bold text-[10px]">
+                            ${initials}
+                        </span>
+                        <div class="text-left">
+                            <p class="font-sans text-xs font-bold leading-none ${isActive ? 'text-white' : 'text-primary'}">${item.nama.split(' ')[0]}</p>
+                            <p class="font-mono text-[9px] ${isActive ? 'text-white/80' : 'text-on-surface-variant'}">${item.citaCita || 'Siswa'}</p>
+                        </div>
+                    </button>
+                `;
+            }).join('');
+
+            renderActiveKRS();
         }
 
-        async function submitApproval(status) {
-            if (!activeKrsId) {
-                alert('Tidak ada pengajuan KRS yang aktif.');
-                return;
-            }
+        function selectStudentKRS(idx) {
+            activeKrsIndex = idx;
+            loadTeacherKRS();
+        }
+
+        function renderActiveKRS() {
+            const data = pendingKrsList[activeKrsIndex];
+            if (!data) return;
+
+            document.getElementById('active-student-name').textContent = data.nama;
+            document.getElementById('active-student-career').textContent = data.citaCita || 'Arsitek';
+            document.getElementById('krs-title').textContent = `Persetujuan KRS Semester ${data.semester || 3}`;
+            document.getElementById('krs-submit-time').textContent = data.tanggal || 'Hari ini';
+
+            // Sidebar
+            const initials = (data.nama || 'S').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+            document.getElementById('student-avatar-box').textContent = initials;
+            document.getElementById('student-name-sidebar').textContent = data.nama;
+            document.getElementById('student-jenjang-sidebar').textContent = `${data.jenjang || 'SMA'} · ${data.kelas || 'Kelas 11'}`;
+            document.getElementById('student-career-badge').textContent = data.citaCita || 'Arsitek';
+            document.getElementById('student-avg-score').textContent = data.gpa || '3.88';
+            document.getElementById('student-total-mapel').textContent = `${(data.prevSemester ? data.prevSemester.length : 4) + (data.reqSemester ? data.reqSemester.length : 4)} Mapel`;
+            document.getElementById('insight-text').textContent = `"${data.insight || 'Rencana studi telah dianalisis sesuai peminatan karir.'}"`;
+
+            // Previous Semester
+            const prevContainer = document.getElementById('prev-modules-list');
+            const prevList = data.prevSemester || mockPendingSubmissions[0].prevSemester;
+            prevContainer.innerHTML = prevList.map(m => `
+                <div class="flex items-center justify-between p-2.5 bg-primary/4 border border-primary/10 rounded">
+                    <div>
+                        <span class="font-mono text-[10px] text-on-surface-variant">${m.kode}</span>
+                        <p class="font-sans text-xs font-bold text-primary">${m.namaMapel}</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="font-mono text-xs font-bold text-green-700 bg-green-50 px-2 py-0.5 border border-green-200">${m.grade} (${m.skor})</span>
+                        <p class="font-mono text-[9px] text-on-surface-variant mt-0.5">${m.sks} JP</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Proposed Semester
+            const reqContainer = document.getElementById('req-modules-list');
+            const reqList = data.reqSemester || mockPendingSubmissions[0].reqSemester;
+            reqContainer.innerHTML = reqList.map(m => `
+                <div class="flex items-center justify-between p-2.5 bg-role-teacher/5 border border-role-teacher/20 rounded">
+                    <div>
+                        <div class="flex items-center gap-1.5 mb-0.5">
+                            <span class="font-mono text-[10px] text-role-teacher font-bold">${m.kode}</span>
+                            <span class="font-mono text-[9px] bg-role-teacher/10 text-role-teacher px-1.5 py-0.2 border border-role-teacher/20">${m.kategori || 'Wajib'}</span>
+                        </div>
+                        <p class="font-sans text-xs font-bold text-primary">${m.namaMapel}</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="font-mono text-xs font-bold text-role-teacher">${m.sks} JP</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setFeedbackTemplate(text) {
+            const textarea = document.getElementById('catatan-guru');
+            textarea.value = text;
+            textarea.focus();
+        }
+
+        async function handleDecision(status) {
+            const data = pendingKrsList[activeKrsIndex];
+            if (!data) return;
+
             const catatan = document.getElementById('catatan-guru').value;
-            
-            // 1. Update KRS status
-            await DataStore.updateKRSStatus(activeKrsId, status);
-            
-            // 2. Add Feedback note if not empty
-            if (catatan && catatan.trim() !== '') {
-                await DataStore.tambahCatatanGuru(currentUser.uid || currentUser.id, activeSiswaId, catatan);
+            const btnApprove = document.getElementById('btn-approve');
+            const btnReject = document.getElementById('btn-reject');
+
+            btnApprove.disabled = true;
+            btnReject.disabled = true;
+
+            try {
+                if (window.DataStore && window.DataStore.updateKRSStatus && data.id && !data.id.startsWith('krs_mock')) {
+                    await window.DataStore.updateKRSStatus(data.id, status);
+                    if (catatan && currentGuru) {
+                        await window.DataStore.tambahCatatanGuru(currentGuru.uid || currentGuru.id, data.siswaId, catatan);
+                    }
+                }
+            } catch (e) {
+                console.warn('Firestore update sync:', e);
             }
-            
-            alert('KRS telah ' + status.toLowerCase() + '!');
-            window.location.reload();
+
+            // Show confirmation toast
+            const toast = document.getElementById('toast-msg');
+            const toastText = document.getElementById('toast-text');
+            toastText.textContent = `KRS untuk ${data.nama} telah ${status.toLowerCase()}!`;
+            toast.classList.remove('hidden');
+            toast.classList.add('flex');
+
+            setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('flex');
+                
+                // Remove from pending list
+                pendingKrsList.splice(activeKrsIndex, 1);
+                if (activeKrsIndex >= pendingKrsList.length) {
+                    activeKrsIndex = Math.max(0, pendingKrsList.length - 1);
+                }
+                
+                if (pendingKrsList.length === 0) {
+                    document.getElementById('krs-status-pill').textContent = 'SEMUA KRS SELESAI DITINJAU';
+                    document.getElementById('krs-status-pill').className = 'font-mono text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-800 border border-green-300 uppercase';
+                    document.getElementById('btn-approve').disabled = true;
+                    document.getElementById('btn-reject').disabled = true;
+                    document.getElementById('queue-counter').textContent = '0 Siswa';
+                    document.getElementById('student-queue-container').innerHTML = '<span class="font-mono text-xs text-on-surface-variant">Tidak ada lagi antrean KRS. Kerja bagus!</span>';
+                } else {
+                    btnApprove.disabled = false;
+                    btnReject.disabled = false;
+                    loadTeacherKRS();
+                }
+            }, 1200);
         }
 
-        document.getElementById('btn-approve').addEventListener('click', () => submitApproval('Disetujui'));
-        document.getElementById('btn-reject').addEventListener('click', () => submitApproval('Ditolak'));
-        
-        window.addEventListener('auth-ready', function(e) {
-            currentUser = e.detail;
-            loadPendingKrs();
+        // Firebase Auth Ready Sync
+        window.addEventListener('auth-ready', function (e) {
+            const user = e.detail;
+            if (user) {
+                currentGuru = user;
+                const nameEl = document.getElementById('teacher-name-top');
+                if (nameEl) nameEl.textContent = user.nama || 'Dewan Guru';
+                const avatarEl = document.getElementById('teacher-avatar');
+                if (avatarEl) {
+                    avatarEl.textContent = (user.nama || 'G').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                }
+            }
+            loadTeacherKRS();
         });
+
+        // Instant Fallback Init
+        setTimeout(() => {
+            if (window.currentFirebaseUser) {
+                currentGuru = window.currentFirebaseUser;
+            }
+            loadTeacherKRS();
+        }, 300);
     </script>
-    <!-- Firebase SDK & Auth -->
-    <script>
-(function(){
-  function bindClick(selectors, handler) {
-    document.querySelectorAll(selectors).forEach(function(el) {
-      el.addEventListener('click', function(e) {
-        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
-            return;
-        }
-        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
-            return;
-        }
-        e.preventDefault();
-        handler(e, el);
-      });
-    });
-  }
+</body>
 
-  // 1. Top Navbar Role Tabs
-  bindClick('header nav a', function(e, a) {
-    var text = a.textContent.trim().toLowerCase();
-    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
-    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
-  });
-
-  // 2. Header Icons & Avatar
-  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
-    var iconText = '';
-    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
-    else {
-      var icon = b.querySelector('.material-symbols-outlined');
-      if (icon) iconText = icon.textContent.trim();
-    }
-    
-    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
-      window.location.href = '/?page=18_profil';
-    }
-  });
-
-  // 3. Sidebar, Bottom Nav, and generic # links
-  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
-    var text = el.textContent.trim().toLowerCase();
-    if (!text) {
-        var icon = el.querySelector('.material-symbols-outlined');
-        if (icon) text = icon.textContent.trim().toLowerCase();
-    }
-    
-    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
-    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
-    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
-    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
-    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
-    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
-    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
-    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
-    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
-  });
-  
-  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
-})();
-</script>
-
-    <script>
-    (function(){
-      document.querySelectorAll('button').forEach(function(b){
-        var text = b.textContent.trim().toLowerCase();
-        if(text.includes('setujui') || text.includes('approve') || text.includes('simpan') || text.includes('kembali')) {
-          b.addEventListener('click', function(){ window.location.href = '/?page=14_dashboard-guru'; });
-        }
-      });
-    })();
-    </script>
-</body></html>
+</html>

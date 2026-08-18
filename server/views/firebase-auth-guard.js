@@ -18,11 +18,21 @@
         return '/?page=01_login';
     }
 
+    // Normalisasi format role agar konsisten
+    function normalizeRole(role) {
+        if (!role) return 'Siswa';
+        var r = role.toString().trim().toLowerCase().replace(/[\s_-]/g, '');
+        if (r === 'guru' || r === 'teacher') return 'Guru';
+        if (r === 'orangtua' || r === 'ortu' || r === 'parent') return 'OrangTua';
+        return 'Siswa';
+    }
+
     // Helper untuk mengembalikan user ke dashboard asalnya
     function getRedirectUrlForRole(role) {
-        if (role === 'Siswa') return '/?page=08_dashboard-siswa';
-        if (role === 'Guru') return '/?page=14_dashboard-guru';
-        if (role === 'OrangTua') return '/?page=16_dashboard-ortu';
+        var r = normalizeRole(role);
+        if (r === 'Siswa') return '/?page=08_dashboard-siswa';
+        if (r === 'Guru') return '/?page=14_dashboard-guru';
+        if (r === 'OrangTua') return '/?page=16_dashboard-ortu';
         return '/?page=01_login';
     }
 
@@ -69,14 +79,14 @@
                             sudahDicekSekali = true;
                             setTimeout(function() {
                                 if (!window.firebaseAuth.currentUser) {
-                                    console.warn('[AuthGuard] Sesi dipastikan null. Redirect dinonaktifkan.');
-                                    dispatchDummyUser();
+                                    console.warn('[AuthGuard] Sesi null. Mengalihkan ke halaman login...');
+                                    window.location.href = getLoginUrl();
                                 }
-                            }, 1000);
+                            }, 1200);
                             return;
                         } else {
-                            console.warn('[AuthGuard] Sesi null. Redirect dinonaktifkan.');
-                            dispatchDummyUser();
+                            console.warn('[AuthGuard] Sesi null. Mengalihkan ke halaman login...');
+                            window.location.href = getLoginUrl();
                             return;
                         }
                     }
@@ -84,71 +94,84 @@
                     if (_authResolved) return; // Cegah duplikasi
                     _authResolved = true;
 
-            // User sudah login — ambil profil dari Firestore
-            window.firebaseDb.collection('users').doc(user.uid).get()
-                .then(function(doc) {
-                    if (doc.exists) {
-                        window.currentFirebaseUser = Object.assign({}, doc.data(), {
-                            uid: user.uid,
-                            email: user.email
+                    // User sudah login — ambil profil dari Firestore
+                    window.firebaseDb.collection('users').doc(user.uid).get()
+                        .then(function(doc) {
+                            if (doc.exists) {
+                                var data = doc.data();
+                                var role = normalizeRole(data.role);
+                                window.currentFirebaseUser = Object.assign({}, data, {
+                                    uid: user.uid,
+                                    email: user.email,
+                                    role: role
+                                });
+                            } else {
+                                // User tidak ditemukan di Firestore, logout dan arahkan ke login
+                                console.error('[AuthGuard] Profil pengguna tidak ditemukan di Firestore.');
+                                window.location.href = getLoginUrl();
+                                return;
+                            }
+
+                            // --- ROLE GUARD LOGIC ---
+                            var role = window.currentFirebaseUser.role;
+                            var path = window.location.pathname.toLowerCase();
+                            var query = window.location.search.toLowerCase();
+                            var fullPath = path + query;
+                            
+                            var isAllowed = true;
+
+                            // Cek berdasarkan path direktori atau parameter page
+                            if (fullPath.includes('14_') || fullPath.includes('15_')) {
+                                if (role !== 'Guru') isAllowed = false;
+                            } else if (fullPath.includes('16_')) {
+                                if (role !== 'OrangTua') isAllowed = false;
+                            } else if (
+                                fullPath.includes('02_') || fullPath.includes('03_') || fullPath.includes('04_') ||
+                                fullPath.includes('05_') || fullPath.includes('06_') || fullPath.includes('07_') ||
+                                fullPath.includes('08_') || fullPath.includes('09_') || fullPath.includes('10_') ||
+                                fullPath.includes('11_') || fullPath.includes('12_') || fullPath.includes('13_')
+                            ) {
+                                if (role !== 'Siswa') isAllowed = false;
+                            } else if (fullPath.includes('18_profil')) {
+                                if (fullPath.includes('profil-siswa') && role !== 'Siswa') isAllowed = false;
+                                if (fullPath.includes('profil-guru') && role !== 'Guru') isAllowed = false;
+                                if (fullPath.includes('profil-ortu') && role !== 'OrangTua') isAllowed = false;
+                                if (!fullPath.includes('profil-siswa') && !fullPath.includes('profil-guru') && !fullPath.includes('profil-ortu')) {
+                                    if (role === 'Guru') { window.location.href = '/?page=18_profil_profil-guru'; return; }
+                                    if (role === 'OrangTua') { window.location.href = '/?page=18_profil_profil-ortu'; return; }
+                                    if (role === 'Siswa') { window.location.href = '/?page=18_profil_profil-siswa'; return; }
+                                }
+                            }
+
+                            if (!isAllowed) {
+                                console.warn('[AuthGuard] Akses ditolak. Role ' + role + ' tidak diizinkan mengakses halaman ini. Mengalihkan ke dashboard...');
+                                window.location.href = getRedirectUrlForRole(role);
+                                return;
+                            }
+                            
+                            // --- END ROLE GUARD ---
+
+                            // LOLOS VALIDASI — tampilkan konten halaman
+                            showPageContent();
+
+                            window.getCurrentUserProfile = function() {
+                                return window.currentFirebaseUser;
+                            };
+
+                            // Dispatch event so page scripts know user is authenticated and allowed
+                            window.dispatchEvent(new CustomEvent('auth-ready', {
+                                detail: window.currentFirebaseUser
+                            }));
+                        })
+                        .catch(function(err) {
+                            console.error('[AuthGuard] Gagal mengambil profil:', err);
+                            window.location.href = getLoginUrl();
                         });
-                    } else {
-                        // User tidak ditemukan di Firestore, fail closed to login
-                        console.error('[AuthGuard] Profil pengguna tidak ditemukan di Firestore. Menggunakan dummy.');
-                        dispatchDummyUser();
-                        return;
-                    }
-
-                    // --- ROLE GUARD LOGIC ---
-                    var role = window.currentFirebaseUser.role;
-                    var path = window.location.pathname.toLowerCase();
-                    var query = window.location.search.toLowerCase();
-                    var fullPath = path + query;
-                    
-                    var isAllowed = true;
-
-                    // Cek berdasarkan path direktori atau parameter page
-                    if (fullPath.includes('14_') || fullPath.includes('15_')) {
-                        if (role !== 'Guru') isAllowed = false;
-                    } else if (fullPath.includes('16_')) {
-                        if (role !== 'OrangTua') isAllowed = false;
-                    } else if (
-                        fullPath.includes('02_') || fullPath.includes('03_') || fullPath.includes('04_') ||
-                        fullPath.includes('05_') || fullPath.includes('06_') || fullPath.includes('07_') ||
-                        fullPath.includes('08_') || fullPath.includes('09_') || fullPath.includes('10_') ||
-                        fullPath.includes('11_') || fullPath.includes('12_') || fullPath.includes('13_')
-                    ) {
-                        if (role !== 'Siswa') isAllowed = false;
-                    } else if (fullPath.includes('18_profil')) {
-                        if (fullPath.includes('profil-siswa') && role !== 'Siswa') isAllowed = false;
-                        if (fullPath.includes('profil-guru') && role !== 'Guru') isAllowed = false;
-                        if (fullPath.includes('profil-ortu') && role !== 'OrangTua') isAllowed = false;
-                    }
-
-                    if (!isAllowed) {
-                        console.warn('[AuthGuard] Akses ditolak. Role', role, 'tidak diizinkan mengakses halaman ini. Redirect dinonaktifkan.');
-                    }
-                    
-                    // --- END ROLE GUARD ---
-
-                    // LOLOS VALIDASI — tampilkan konten halaman
-                    showPageContent();
-
-                    window.getCurrentUserProfile = function() {
-                        return window.currentFirebaseUser;
-                    };
-
-                    // Dispatch event so page scripts know user is authenticated and allowed
-                    window.dispatchEvent(new CustomEvent('auth-ready', {
-                        detail: window.currentFirebaseUser
-                    }));
-                })
-                .catch(function(err) {
-                    console.error('[AuthGuard] Gagal mengambil profil:', err);
-                    dispatchDummyUser();
                 });
-                });
-            }).catch(function(err) { console.error("[AuthGuard] Set persistence error", err); dispatchDummyUser(); });
+            }).catch(function(err) { 
+                console.error("[AuthGuard] Set persistence error", err); 
+                window.location.href = getLoginUrl();
+            });
     }
 
     // Listen for firebase-ready event or check if already ready

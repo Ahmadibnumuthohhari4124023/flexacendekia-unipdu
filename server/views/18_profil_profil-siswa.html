@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="id"><head>
 <meta charset="utf-8"/>
@@ -280,41 +280,6 @@ onchange="gantiFoto(event)">
 </div>
 </section>
 <!-- Personal Info -->
-<section class="col-span-12 lg:col-span-8 ledger-card p-8">
-<div class="flex items-center gap-3 mb-8">
-<span class="material-symbols-outlined text-primary" data-icon="person_book">person_book</span>
-<h3 class="font-headline-md text-headline-md text-primary">Data Pribadi</h3>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-<div class="space-y-2">
-<label class="font-label-caps text-label-caps text-on-surface-variant block">Nama Lengkap</label>
-<input id="fullName" class="w-full bg-transparent border border-outline-variant/40 rounded px-4 py-2 focus:border-secondary focus:ring-0 font-body-md text-primary" type="text" value=""/>
-</div>
-<div class="space-y-2">
-<label class="font-label-caps text-label-caps text-on-surface-variant block">NISN </label>
-<input id="nisn" class="w-full bg-surface-container-low/50 border border-outline-variant/40 rounded px-4 py-2 font-stats-sm text-on-surface-variant cursor-not-allowed" readonly="" type="text" value=""/>
-</div>
-<div class="space-y-2">
-<label class="font-label-caps text-label-caps text-on-surface-variant block">Institusi</label>
-<input id="institution" class="w-full bg-transparent border border-outline-variant/40 rounded px-4 py-2 focus:border-secondary focus:ring-0 font-body-md text-primary" type="text" value=""/>
-</div>
-<div class="space-y-2">
-<label class="font-label-caps text-label-caps text-on-surface-variant block">Email</label>
-<input id="email" class="w-full bg-transparent border border-outline-variant/40 rounded px-4 py-2 focus:border-secondary focus:ring-0 font-body-md text-primary" type="email" value=""/>
-</div>
-</div>
-<div class="mt-8 flex justify-end">
-   <button
-    id="btnUpdate"
-    class="px-6 py-2 bg-primary text-white font-label-caps text-label-caps rounded hover:bg-primary/90 transition-colors">
-    Simpan Perubahan
-</button>
-</div>
-</section>
-
-<section class="col-span-12 lg:col-span-7 ledger-card p-8">
-<div class="flex items-center gap-3 mb-8">
-<span class="material-symbols-outlined text-primary" data-icon="target">track_changes</span>
 <h3 class="font-headline-md text-headline-md text-primary">Tujuan Akademik</h3>
 </div>
 <div class="space-y-6">
@@ -492,6 +457,34 @@ class="w-full text-left font-label-caps text-label-caps text-error hover:opacity
             const emEl = document.getElementById("email");
             if (emEl) emEl.value = email;
 
+            // Setup Jenjang & Kelas Selector
+            const jSelect = document.getElementById("userJenjangSelect");
+            const kSelect = document.getElementById("userKelasSelect");
+
+            const classMap = {
+                'SD': ['1', '2', '3', '4', '5', '6'],
+                'SMP': ['7', '8', '9'],
+                'SMA': ['10', '11', '12']
+            };
+
+            function populateKelasOptions(selectedJ, currentK) {
+                if (!kSelect) return;
+                const options = classMap[selectedJ] || classMap['SMA'];
+                kSelect.innerHTML = options.map(k => `<option value="${k}">Kelas ${k}</option>`).join('');
+                if (currentK && options.includes(currentK.toString())) {
+                    kSelect.value = currentK.toString();
+                }
+            }
+
+            if (jSelect) {
+                jSelect.value = (jenjang || 'SMA').toUpperCase();
+                populateKelasOptions(jSelect.value, kelas);
+
+                jSelect.addEventListener('change', function() {
+                    populateKelasOptions(this.value, null);
+                });
+            }
+
             // Foto profil jika ada
             if (currentSiswaUser.fotoUrl || currentSiswaUser.avatar) {
                 const foto = currentSiswaUser.fotoUrl || currentSiswaUser.avatar;
@@ -519,6 +512,8 @@ class="w-full text-left font-label-caps text-label-caps text-error hover:opacity
             const nama = document.getElementById("fullName").value.trim();
             const institusi = document.getElementById("institution").value.trim();
             const email = document.getElementById("email").value.trim();
+            const jenjangVal = document.getElementById("userJenjangSelect")?.value || 'SMA';
+            const kelasVal = document.getElementById("userKelasSelect")?.value || '11';
             const btn = document.getElementById("btnUpdate");
 
             if (!nama) {
@@ -536,16 +531,34 @@ class="w-full text-left font-label-caps text-label-caps text-error hover:opacity
                         nama: nama,
                         institusi: institusi,
                         email: email,
+                        jenjang: jenjangVal,
+                        kelas: kelasVal,
                         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 }
                 
-                // Update tampilan lokal
+                // Update tampilan & state lokal
+                currentSiswaUser.nama = nama;
+                currentSiswaUser.institusi = institusi;
+                currentSiswaUser.email = email;
+                currentSiswaUser.jenjang = jenjangVal;
+                currentSiswaUser.kelas = kelasVal;
+
+                try {
+                    const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                    u.nama = nama;
+                    u.jenjang = jenjangVal;
+                    u.kelas = kelasVal;
+                    localStorage.setItem('currentUser', JSON.stringify(u));
+                    localStorage.setItem('userJenjang', jenjangVal);
+                    localStorage.setItem('userKelas', kelasVal);
+                } catch(e) {}
+
                 document.querySelectorAll('.user-display-name').forEach(el => el.textContent = nama);
                 const profName = document.getElementById("profileName");
                 if (profName) profName.textContent = nama;
                 
-                alert("Data profil berhasil diperbarui!");
+                alert("Data profil, jenjang, dan kelas berhasil diperbarui!");
             } catch (err) {
                 console.error("Gagal update profil:", err);
                 alert("Berhasil menyimpan data secara lokal.");

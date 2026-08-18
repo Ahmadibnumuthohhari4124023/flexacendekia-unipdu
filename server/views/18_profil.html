@@ -74,13 +74,16 @@
                                         window.location.replace(LOGIN_URL);
                                         return;
                                     }
-                                    const role = doc.data().role;
-                                    const target = ROLE_TO_PAGE[role];
-                                    if (target) {
-                                        window.location.replace(target);
-                                    } else {
-                                        window.location.replace(LOGIN_URL);
+                                    function normalizeRole(role) {
+                                        if (!role) return 'Siswa';
+                                        var r = role.toString().trim().toLowerCase().replace(/[\s_-]/g, '');
+                                        if (r === 'guru' || r === 'teacher') return 'Guru';
+                                        if (r === 'orangtua' || r === 'ortu' || r === 'parent') return 'OrangTua';
+                                        return 'Siswa';
                                     }
+                                    const role = normalizeRole(doc.data().role);
+                                    const target = ROLE_TO_PAGE[role] || ROLE_TO_PAGE['Siswa'];
+                                    window.location.replace(target);
                                 })
                                 .catch(function() {
                                     window.location.replace(LOGIN_URL);

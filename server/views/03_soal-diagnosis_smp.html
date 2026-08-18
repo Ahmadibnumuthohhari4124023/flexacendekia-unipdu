@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 
 <html class="light" lang="id"><head>
 <meta charset="utf-8"/>
@@ -383,8 +383,27 @@
         render();
     }
     
-    function finish() {
+    async function finish() {
         localStorage.setItem('diagnosisAnswers', JSON.stringify(answers));
+        localStorage.setItem('userJenjang', 'SMP');
+        try {
+            const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            u.jenjang = u.jenjang || 'SMP';
+            localStorage.setItem('currentUser', JSON.stringify(u));
+        } catch(e) {}
+
+        if (window.firebaseDb && window._authUid) {
+            try {
+                await window.firebaseDb.collection('jawabanDiagnostik').doc(window._authUid).set({
+                    siswaId: window._authUid,
+                    jawaban: answers,
+                    jenjang: 'SMP',
+                    updatedAt: new Date().toISOString()
+                });
+            } catch(e) {
+                console.error('Failed to save to Firestore', e);
+            }
+        }
         window.location.href = '/?page=04_hasil-diagnosis';
     }
 
@@ -420,6 +439,19 @@
 
     render();
     timerInterval = setInterval(updateTimer, 1000);
+</script>
+
+<!-- Firebase SDK & Auth -->
+<script>
+    window.addEventListener('auth-ready', function(e) {
+        const user = e.detail;
+        window._authUid = user.uid;
+        if (user && user.nama) {
+            document.querySelectorAll('.user-display-name').forEach(el => {
+                el.textContent = user.nama;
+            });
+        }
+    });
 </script>
 
 <script>

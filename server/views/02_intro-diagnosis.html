@@ -339,11 +339,21 @@
                         <!-- CTA Section -->
                         <div class="pt-8 flex flex-col items-center gap-6">
                             <button id="btn-start-test"
-                                class="bg-academic-accent hover:opacity-90 active:scale-95 text-white font-bold py-4 px-12 rounded-sm shadow-lg transition-all duration-200 flex items-center gap-4 group">
-                                <span class="font-label-caps text-label-caps tracking-widest">Mulai Tes Sekarang</span>
+                                class="bg-academic-accent hover:opacity-90 active:scale-95 text-white font-bold py-4 px-12 rounded-sm shadow-lg transition-all duration-200 flex items-center gap-4 group cursor-pointer">
+                                <span class="font-label-caps text-label-caps tracking-widest" id="btn-start-test-text">Mulai Tes Sekarang</span>
                                 <span class="material-symbols-outlined transition-transform group-hover:translate-x-1"
                                     data-icon="arrow_forward">arrow_forward</span>
                             </button>
+
+                            <!-- Existing Student Status Badge (Hidden if not set) -->
+                            <div id="student-level-status" class="hidden flex items-center gap-2 px-4 py-2 bg-secondary/10 border border-secondary/20 rounded-full text-xs font-body-sm text-primary">
+                                <span class="material-symbols-outlined text-[16px] text-secondary">verified</span>
+                                <span>Terdaftar: <strong id="student-level-label" class="text-secondary font-bold">-</strong></span>
+                                <button type="button" id="btn-change-level" class="ml-2 underline text-primary/70 hover:text-secondary font-bold transition-colors">
+                                    Ubah Jenjang/Kelas
+                                </button>
+                            </div>
+
                             <div class="flex items-center gap-2">
                                 <div class="flex -space-x-2">
                                     <div
@@ -378,44 +388,96 @@
                         <div class="h-[1px] w-8 bg-primary"></div>
                     </div>
 
-                    <!-- Level Selection Modal (Hidden by default) -->
-                    <div id="level-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-primary/40 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
-                        <div class="bg-white p-8 rounded-sm hard-shadow max-w-md w-full relative transform scale-95 transition-transform duration-300 shadow-2xl hairline-border" id="level-modal-content">
-                            <button id="close-modal" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors">
-                                <span class="material-symbols-outlined">close</span>
+                    <!-- Level & Class Selection Modal (Two-step flow) -->
+                    <div id="level-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-primary/50 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+                        <div class="bg-white p-6 md:p-8 rounded-sm hard-shadow max-w-lg w-full relative transform scale-95 transition-transform duration-300 shadow-2xl hairline-border" id="level-modal-content">
+                            <button id="close-modal" type="button" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors p-1.5 rounded-full hover:bg-surface-container">
+                                <span class="material-symbols-outlined text-[20px]">close</span>
                             </button>
-                            <h2 class="font-display-lg text-2xl text-primary font-bold mb-2">Pilih Jenjang Pendidikan</h2>
-                            <p class="font-body-sm text-on-surface-variant mb-6">Pilih jenjang yang sesuai agar tes diagnostik lebih akurat.</p>
-                            
-                            <div class="space-y-3">
-                                <a href="/?page=03_soal-diagnosis_sd" class="block w-full text-left p-4 hairline-border hover:bg-secondary/10 hover:border-secondary transition-all rounded-sm group level-link">
-                                    <div class="flex items-center justify-between">
-                                        <div>
-                                            <h3 class="font-bold text-primary text-lg">Sekolah Dasar (SD)</h3>
-                                            <p class="text-xs text-on-surface-variant mt-1">Tes disesuaikan dengan psikologi & keseharian anak.</p>
-                                        </div>
-                                        <span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
-                                    </div>
-                                </a>
-                                <a href="/?page=03_soal-diagnosis_smp" class="block w-full text-left p-4 hairline-border hover:bg-secondary/10 hover:border-secondary transition-all rounded-sm group level-link">
-                                    <div class="flex items-center justify-between">
-                                        <div>
-                                            <h3 class="font-bold text-primary text-lg">Sekolah Menengah Pertama (SMP)</h3>
-                                            <p class="text-xs text-on-surface-variant mt-1">Fokus pada eksplorasi minat remaja awal.</p>
-                                        </div>
-                                        <span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
-                                    </div>
-                                </a>
-                                <a href="/?page=03_soal-diagnosis" class="block w-full text-left p-4 hairline-border hover:bg-secondary/10 hover:border-secondary transition-all rounded-sm group level-link">
-                                    <div class="flex items-center justify-between">
-                                        <div>
-                                            <h3 class="font-bold text-primary text-lg">Sekolah Menengah Atas (SMA)</h3>
-                                            <p class="text-xs text-on-surface-variant mt-1">Analisis mendalam untuk peminatan karier.</p>
-                                        </div>
-                                        <span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
-                                    </div>
-                                </a>
+
+                            <!-- Modal Progress Indicator -->
+                            <div class="flex items-center gap-2 mb-6 text-xs font-label-caps text-on-surface-variant">
+                                <span id="indicator-step1" class="px-2.5 py-1 rounded bg-secondary text-white font-bold">1. Jenjang</span>
+                                <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+                                <span id="indicator-step2" class="px-2.5 py-1 rounded bg-surface-container text-on-surface-variant font-medium">2. Kelas Spesifik</span>
                             </div>
+
+                            <!-- STEP 1: Pilih Jenjang -->
+                            <div id="modal-step-1" class="transition-all duration-300">
+                                <h2 class="font-display-lg text-2xl text-primary font-bold mb-1.5">Pilih Jenjang Pendidikan</h2>
+                                <p class="font-body-sm text-on-surface-variant mb-6 text-xs leading-relaxed">Pilih jenjang pendidikan saat ini agar materi tes dan modul belajar disesuaikan dengan kurikulummu.</p>
+                                
+                                <div class="space-y-3">
+                                    <!-- SD Card -->
+                                    <button type="button" onclick="pilihJenjang('SD')" class="w-full text-left p-4 hairline-border hover:bg-secondary/10 hover:border-secondary transition-all rounded-sm group flex items-center justify-between cursor-pointer">
+                                        <div class="flex items-center gap-3.5">
+                                            <div class="w-10 h-10 rounded-full bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
+                                                <span class="material-symbols-outlined text-[20px]">child_care</span>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-bold text-primary text-base group-hover:text-secondary transition-colors">Sekolah Dasar (SD)</h3>
+                                                <p class="text-xs text-on-surface-variant mt-0.5">Kelas 1 s/d Kelas 6 · Eksplorasi minat anak & dasar logika</p>
+                                            </div>
+                                        </div>
+                                        <span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+                                    </button>
+
+                                    <!-- SMP Card -->
+                                    <button type="button" onclick="pilihJenjang('SMP')" class="w-full text-left p-4 hairline-border hover:bg-secondary/10 hover:border-secondary transition-all rounded-sm group flex items-center justify-between cursor-pointer">
+                                        <div class="flex items-center gap-3.5">
+                                            <div class="w-10 h-10 rounded-full bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
+                                                <span class="material-symbols-outlined text-[20px]">menu_book</span>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-bold text-primary text-base group-hover:text-secondary transition-colors">Sekolah Menengah Pertama (SMP)</h3>
+                                                <p class="text-xs text-on-surface-variant mt-0.5">Kelas 7 s/d Kelas 9 · Pemantapan keterampilan & sains</p>
+                                            </div>
+                                        </div>
+                                        <span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+                                    </button>
+
+                                    <!-- SMA Card -->
+                                    <button type="button" onclick="pilihJenjang('SMA')" class="w-full text-left p-4 hairline-border hover:bg-secondary/10 hover:border-secondary transition-all rounded-sm group flex items-center justify-between cursor-pointer">
+                                        <div class="flex items-center gap-3.5">
+                                            <div class="w-10 h-10 rounded-full bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-colors">
+                                                <span class="material-symbols-outlined text-[20px]">school</span>
+                                            </div>
+                                            <div>
+                                                <h3 class="font-bold text-primary text-base group-hover:text-secondary transition-colors">Sekolah Menengah Atas (SMA / SMK)</h3>
+                                                <p class="text-xs text-on-surface-variant mt-0.5">Kelas 10 s/d Kelas 12 · Analisis karier, portofolio & PTN</p>
+                                            </div>
+                                        </div>
+                                        <span class="material-symbols-outlined text-secondary opacity-0 group-hover:opacity-100 transition-opacity">arrow_forward</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- STEP 2: Pilih Kelas Spesifik -->
+                            <div id="modal-step-2" class="hidden transition-all duration-300">
+                                <div class="flex items-center justify-between mb-1.5">
+                                    <h2 class="font-display-lg text-2xl text-primary font-bold">Pilih Kelas Spesifik</h2>
+                                    <span id="selected-jenjang-badge" class="px-2.5 py-0.5 bg-secondary/10 text-secondary border border-secondary/30 rounded font-label-caps text-xs font-bold uppercase tracking-wider">SMA</span>
+                                </div>
+                                <p class="font-body-sm text-on-surface-variant mb-6 text-xs leading-relaxed">Pilih kelasmu saat ini untuk memposisikan titik awal roadmap 6 tahun secara akurat.</p>
+                                
+                                <!-- Dynamic Class Cards Container -->
+                                <div id="class-cards-container" class="grid grid-cols-3 gap-3 mb-6">
+                                    <!-- Populated dynamically via JS -->
+                                </div>
+
+                                <!-- Action Buttons -->
+                                <div class="flex items-center justify-between pt-4 border-t border-primary/10 gap-3">
+                                    <button type="button" onclick="kembaliKeJenjang()" class="px-4 py-2.5 text-xs font-label-caps text-primary border border-primary/20 hover:bg-surface-container rounded-sm flex items-center gap-1.5 transition-colors cursor-pointer">
+                                        <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+                                        <span>Ganti Jenjang</span>
+                                    </button>
+                                    <button type="button" id="btn-confirm-class" onclick="simpanDanMulaiTes()" disabled class="px-6 py-2.5 text-xs font-label-caps tracking-wider font-bold bg-academic-accent text-white rounded-sm opacity-50 cursor-not-allowed hover:opacity-90 active:scale-95 transition-all flex items-center gap-2">
+                                        <span id="btn-confirm-text">Mulai Tes Sekarang</span>
+                                        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+                                    </button>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
 
@@ -459,39 +521,237 @@
         </a>
     </div>
     <script>
-        // Micro-interactions for academic feel
-        document.addEventListener('DOMContentLoaded', () => {
-            const cta = document.getElementById('btn-start-test');
+        // State Management for Level & Class
+        let currentChosenJenjang = '';
+        let currentChosenKelas = '';
+        let existingUserJenjang = '';
+        let existingUserKelas = '';
+
+        const classOptionsMap = {
+            'SD': [
+                { kelas: '1', title: 'Kelas 1', desc: 'Fase A · Dasar Awal' },
+                { kelas: '2', title: 'Kelas 2', desc: 'Fase A · Literasi & Berhitung' },
+                { kelas: '3', title: 'Kelas 3', desc: 'Fase B · Pemantapan Konsep' },
+                { kelas: '4', title: 'Kelas 4', desc: 'Fase B · Penalaran Logika' },
+                { kelas: '5', title: 'Kelas 5', desc: 'Fase C · Pra-SMP & Eksplorasi' },
+                { kelas: '6', title: 'Kelas 6', desc: 'Fase C · Persiapan Ujian' }
+            ],
+            'SMP': [
+                { kelas: '7', title: 'Kelas 7', desc: 'Fase D · Adaptasi & Sains Dasar' },
+                { kelas: '8', title: 'Kelas 8', desc: 'Fase D · Eksplorasi Bakat' },
+                { kelas: '9', title: 'Kelas 9', desc: 'Fase D · Persiapan Jalur SMA' }
+            ],
+            'SMA': [
+                { kelas: '10', title: 'Kelas 10', desc: 'Fase E · Fondasi Akademik' },
+                { kelas: '11', title: 'Kelas 11', desc: 'Fase F · Peminatan & Portofolio' },
+                { kelas: '12', title: 'Kelas 12', desc: 'Fase F · Persiapan PTN & Karier' }
+            ]
+        };
+
+        function getTestUrl(jenjang) {
+            const j = (jenjang || 'SMA').toUpperCase();
+            if (j === 'SD') return '/?page=03_soal-diagnosis_sd';
+            if (j === 'SMP') return '/?page=03_soal-diagnosis_smp';
+            return '/?page=03_soal-diagnosis';
+        }
+
+        function openLevelModal(startAtStep = 1) {
             const modal = document.getElementById('level-modal');
             const modalContent = document.getElementById('level-modal-content');
-            const closeBtn = document.getElementById('close-modal');
+            if (!modal || !modalContent) return;
 
-            if(cta) {
-                cta.addEventListener('mousedown', () => {
-                    cta.classList.add('translate-y-0.5');
-                });
-                cta.addEventListener('mouseup', () => {
-                    cta.classList.remove('translate-y-0.5');
-                });
+            if (startAtStep === 2 && currentChosenJenjang) {
+                renderClassOptions(currentChosenJenjang);
+                showStep(2);
+            } else {
+                showStep(1);
+            }
+
+            modal.classList.remove('hidden');
+            void modal.offsetWidth;
+            modal.classList.remove('opacity-0');
+            modalContent.classList.remove('scale-95');
+        }
+
+        function closeLevelModal() {
+            const modal = document.getElementById('level-modal');
+            const modalContent = document.getElementById('level-modal-content');
+            if (!modal || !modalContent) return;
+
+            modal.classList.add('opacity-0');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function showStep(stepNum) {
+            const s1 = document.getElementById('modal-step-1');
+            const s2 = document.getElementById('modal-step-2');
+            const ind1 = document.getElementById('indicator-step1');
+            const ind2 = document.getElementById('indicator-step2');
+
+            if (stepNum === 1) {
+                if (s1) s1.classList.remove('hidden');
+                if (s2) s2.classList.add('hidden');
+                if (ind1) {
+                    ind1.className = "px-2.5 py-1 rounded bg-secondary text-white font-bold";
+                }
+                if (ind2) {
+                    ind2.className = "px-2.5 py-1 rounded bg-surface-container text-on-surface-variant font-medium";
+                }
+            } else {
+                if (s1) s1.classList.add('hidden');
+                if (s2) s2.classList.remove('hidden');
+                if (ind1) {
+                    ind1.className = "px-2.5 py-1 rounded bg-surface-container text-on-surface-variant font-medium";
+                }
+                if (ind2) {
+                    ind2.className = "px-2.5 py-1 rounded bg-secondary text-white font-bold";
+                }
+            }
+        }
+
+        function pilihJenjang(jenjang) {
+            currentChosenJenjang = jenjang;
+            currentChosenKelas = ''; // Reset class when level changes
+            renderClassOptions(jenjang);
+            showStep(2);
+        }
+
+        function kembaliKeJenjang() {
+            showStep(1);
+        }
+
+        function renderClassOptions(jenjang) {
+            const container = document.getElementById('class-cards-container');
+            const badge = document.getElementById('selected-jenjang-badge');
+            const confirmBtn = document.getElementById('btn-confirm-class');
+            
+            if (badge) badge.textContent = jenjang;
+            if (confirmBtn) {
+                confirmBtn.disabled = true;
+                confirmBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            }
+
+            const items = classOptionsMap[jenjang] || [];
+            if (!container) return;
+
+            // Adjust grid column layout for 6 items vs 3 items
+            if (jenjang === 'SD') {
+                container.className = 'grid grid-cols-2 md:grid-cols-3 gap-3 mb-6';
+            } else {
+                container.className = 'grid grid-cols-3 gap-3 mb-6';
+            }
+
+            container.innerHTML = items.map(it => {
+                const isSelected = currentChosenKelas === it.kelas;
+                const activeStyle = isSelected 
+                    ? 'bg-secondary/15 border-secondary ring-2 ring-secondary/40 shadow-sm text-secondary' 
+                    : 'bg-white hairline-border hover:bg-secondary/5 hover:border-secondary/50 text-primary';
+
+                return `
+                    <button type="button" onclick="pilihKelas('${it.kelas}')" 
+                        class="p-3.5 text-center rounded-sm transition-all flex flex-col items-center justify-center gap-1 group cursor-pointer ${activeStyle}"
+                        id="class-card-${it.kelas}">
+                        <div class="flex items-center gap-1.5">
+                            <span class="font-headline-md font-bold text-base md:text-lg">${it.title}</span>
+                            ${isSelected ? '<span class="material-symbols-outlined text-[18px] text-secondary">check_circle</span>' : ''}
+                        </div>
+                        <p class="text-[11px] text-on-surface-variant font-body-sm leading-tight mt-0.5">${it.desc}</p>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        function pilihKelas(kelas) {
+            currentChosenKelas = kelas;
+            renderClassOptions(currentChosenJenjang);
+
+            const confirmBtn = document.getElementById('btn-confirm-class');
+            if (confirmBtn) {
+                confirmBtn.disabled = false;
+                confirmBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                confirmBtn.classList.add('cursor-pointer');
+            }
+        }
+
+        async function simpanDanMulaiTes() {
+            if (!currentChosenJenjang || !currentChosenKelas) return;
+
+            const confirmBtn = document.getElementById('btn-confirm-class');
+            const confirmText = document.getElementById('btn-confirm-text');
+            if (confirmBtn) {
+                confirmBtn.disabled = true;
+                if (confirmText) confirmText.textContent = "Menyimpan...";
+            }
+
+            // 1. Update localStorage
+            try {
+                const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                u.jenjang = currentChosenJenjang;
+                u.kelas = currentChosenKelas;
+                localStorage.setItem('currentUser', JSON.stringify(u));
+                localStorage.setItem('userJenjang', currentChosenJenjang);
+                localStorage.setItem('userKelas', currentChosenKelas);
+            } catch (e) {
+                console.warn('LocalStorage update error:', e);
+            }
+
+            // 2. Update Firestore if auth is active
+            if (window.firebaseDb && window.currentFirebaseUser && window.currentFirebaseUser.uid) {
+                try {
+                    const uid = window.currentFirebaseUser.uid;
+                    await window.firebaseDb.collection('users').doc(uid).update({
+                        jenjang: currentChosenJenjang,
+                        kelas: currentChosenKelas,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    window.currentFirebaseUser.jenjang = currentChosenJenjang;
+                    window.currentFirebaseUser.kelas = currentChosenKelas;
+                } catch (err) {
+                    console.error('Firestore save error:', err);
+                }
+            }
+
+            // 3. Redirect to corresponding diagnostic test
+            const targetUrl = getTestUrl(currentChosenJenjang);
+            window.location.href = targetUrl;
+        }
+
+        // Micro-interactions for academic feel & Modal Triggers
+        document.addEventListener('DOMContentLoaded', () => {
+            const cta = document.getElementById('btn-start-test');
+            const closeBtn = document.getElementById('close-modal');
+            const btnChangeLevel = document.getElementById('btn-change-level');
+
+            if (cta) {
+                cta.addEventListener('mousedown', () => cta.classList.add('translate-y-0.5'));
+                cta.addEventListener('mouseup', () => cta.classList.remove('translate-y-0.5'));
                 
                 cta.addEventListener('click', (e) => {
                     e.preventDefault();
-                    modal.classList.remove('hidden');
-                    // Trigger reflow
-                    void modal.offsetWidth;
-                    modal.classList.remove('opacity-0');
-                    modalContent.classList.remove('scale-95');
+                    // If user already has both valid jenjang and kelas, go directly to their test!
+                    if (existingUserJenjang && existingUserKelas) {
+                        window.location.href = getTestUrl(existingUserJenjang);
+                    } else {
+                        // User needs to choose level & class
+                        openLevelModal(1);
+                    }
                 });
             }
 
-            if(closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    modal.classList.add('opacity-0');
-                    modalContent.classList.add('scale-95');
-                    setTimeout(() => {
-                        modal.classList.add('hidden');
-                    }, 300);
+            if (btnChangeLevel) {
+                btnChangeLevel.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentChosenJenjang = existingUserJenjang || 'SMA';
+                    currentChosenKelas = existingUserKelas || '10';
+                    openLevelModal(1);
                 });
+            }
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeLevelModal);
             }
 
             // Dynamic student count
@@ -507,14 +767,38 @@
         });
     </script>
 
-    <!-- Firebase SDK & Auth -->
+    <!-- Firebase SDK & Auth Listener for Smart Level State -->
     <script>
         window.addEventListener('auth-ready', function(e) {
             const user = e.detail;
-            if (user && user.nama) {
-                document.querySelectorAll('.user-display-name').forEach(el => {
-                    el.textContent = user.nama;
-                });
+            if (user) {
+                if (user.nama) {
+                    document.querySelectorAll('.user-display-name').forEach(el => {
+                        el.textContent = user.nama;
+                    });
+                }
+
+                // Check existing level and class
+                if (user.jenjang && user.kelas) {
+                    existingUserJenjang = user.jenjang;
+                    existingUserKelas = user.kelas;
+                    currentChosenJenjang = user.jenjang;
+                    currentChosenKelas = user.kelas;
+
+                    // Show existing level badge
+                    const statusBadge = document.getElementById('student-level-status');
+                    const statusLabel = document.getElementById('student-level-label');
+                    const ctaText = document.getElementById('btn-start-test-text');
+
+                    if (statusBadge && statusLabel) {
+                        statusBadge.classList.remove('hidden');
+                        statusLabel.textContent = `${user.jenjang} Kelas ${user.kelas}`;
+                    }
+
+                    if (ctaText) {
+                        ctaText.textContent = `Lanjut Tes (${user.jenjang} Kelas ${user.kelas})`;
+                    }
+                }
             }
         });
     </script>

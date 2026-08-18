@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html class="light" lang="id">
 
 <head>
@@ -9,9 +8,6 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap"
-        rel="stylesheet" />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
         rel="stylesheet" />
     <link
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
@@ -28,9 +24,7 @@
             background-color: #FBFAF5;
             /* Level 1: Ivory White */
             border: 1px solid rgba(23, 34, 59, 0.20);
-            /* Hairline Border */
             box-shadow: none;
-            /* Strict flat design */
         }
 
         .paper-stack-effect {
@@ -156,6 +150,7 @@
     <!-- Subtle Background Pattern (Simulating Grid Paper) -->
     <div class="fixed inset-0 opacity-[0.03] pointer-events-none"
         style="background-image: radial-gradient(#17223B 0.5px, transparent 0.5px); background-size: 24px 24px;"></div>
+    
     <!-- Top Navigation Anchor -->
     <header class="w-full bg-surface border-b border-primary/20">
         <div
@@ -188,6 +183,7 @@
             </div>
         </div>
     </header>
+
     <!-- Main Content Area -->
     <main class="flex-grow flex items-center justify-center p-6">
         <div class="w-full max-w-lg">
@@ -195,24 +191,46 @@
             <div class="academic-ledger-card paper-stack-effect p-8 md:p-12 relative">
                 <!-- Brand Lockup -->
                 <div class="flex justify-center mb-8">
-                    <div class="h-12 w-12 border-2 border-primary flex items-center justify-center">
-                        <span class="material-symbols-outlined text-primary text-3xl"
+                    <div class="h-12 w-12 border-2 border-primary flex items-center justify-center bg-primary text-white">
+                        <span class="material-symbols-outlined text-3xl"
                             data-icon="menu_book">menu_book</span>
                     </div>
                 </div>
                 <!-- Headline -->
-                <div class="text-center mb-8">
+                <div class="text-center mb-6">
                     <h1 class="font-headline-md text-headline-md text-primary mb-2">Selamat Datang Kembali</h1>
-                    <p class="font-body-md text-body-md text-on-surface-variant max-w-sm mx-auto">
-                        Masuk untuk mengakses roadmap belajar 6 tahun menuju cita-cita profesi Anda.
+                    <p class="font-body-md text-body-md text-on-surface-variant max-w-sm mx-auto text-sm">
+                        Masuk untuk mengakses portal akademik dan roadmap 6 tahun menuju cita-cita profesi Anda.
                     </p>
                 </div>
 
-                <!-- Error Message -->
-                <div id="login-error" class="hidden mb-4 p-3 bg-error-container border border-error/30 text-on-error-container font-body-sm text-body-sm"></div>
+                <!-- Quick Demo Login Bar -->
+                <div class="mb-6 p-3 bg-primary/5 border border-primary/15 rounded">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-[10px] font-label-caps text-secondary font-bold tracking-wider">AKUN DEMO CEPAT (1-KLIK)</span>
+                        <span class="text-[10px] font-stats-sm text-outline">Klik untuk isi otomatis</span>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <button type="button" onclick="fillDemoAccount('Siswa')" class="py-1.5 px-2 bg-white border border-primary/20 hover:border-secondary hover:bg-secondary/10 text-primary text-xs font-semibold rounded flex items-center justify-center gap-1.5 transition-all shadow-sm">
+                            <span class="material-symbols-outlined text-sm text-secondary">school</span>
+                            <span>Siswa</span>
+                        </button>
+                        <button type="button" onclick="fillDemoAccount('Guru')" class="py-1.5 px-2 bg-white border border-primary/20 hover:border-secondary hover:bg-secondary/10 text-primary text-xs font-semibold rounded flex items-center justify-center gap-1.5 transition-all shadow-sm">
+                            <span class="material-symbols-outlined text-sm text-secondary">history_edu</span>
+                            <span>Guru</span>
+                        </button>
+                        <button type="button" onclick="fillDemoAccount('OrangTua')" class="py-1.5 px-2 bg-white border border-primary/20 hover:border-secondary hover:bg-secondary/10 text-primary text-xs font-semibold rounded flex items-center justify-center gap-1.5 transition-all shadow-sm">
+                            <span class="material-symbols-outlined text-sm text-secondary">family_restroom</span>
+                            <span>Orang Tua</span>
+                        </button>
+                    </div>
+                </div>
 
-                <!-- Success Message (for password reset) -->
-                <div id="login-success" class="hidden mb-4 p-3 bg-tertiary-fixed border border-on-tertiary-fixed-variant/30 text-on-tertiary-fixed font-body-sm text-body-sm"></div>
+                <!-- Error Message -->
+                <div id="login-error" class="hidden mb-4 p-3 bg-error-container border border-error/30 text-on-error-container font-body-sm text-xs leading-relaxed"></div>
+
+                <!-- Success Message (for password reset / register) -->
+                <div id="login-success" class="hidden mb-4 p-3 bg-tertiary-fixed border border-on-tertiary-fixed-variant/30 text-on-tertiary-fixed font-body-sm text-xs leading-relaxed"></div>
 
                 <!-- Login Form -->
                 <form id="login-form" class="space-y-4">
@@ -220,7 +238,7 @@
                         <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase tracking-wider">Masuk Sebagai</label>
                         <div class="grid grid-cols-3 gap-2">
                             <label class="relative flex flex-col items-center justify-center p-3 border border-primary/20 bg-surface-container-lowest cursor-pointer hover:bg-primary/5 transition-colors group">
-                                <input type="radio" name="login-role" value="Siswa" class="peer sr-only" required>
+                                <input type="radio" name="login-role" value="Siswa" class="peer sr-only" checked required>
                                 <span class="material-symbols-outlined text-lg mb-1 opacity-60 peer-checked:opacity-100 peer-checked:text-primary transition-opacity" data-icon="school">school</span>
                                 <span class="font-label-caps text-[10px] text-on-surface-variant peer-checked:text-primary peer-checked:font-bold text-center leading-tight">Siswa</span>
                                 <div class="absolute inset-0 border-2 border-transparent peer-checked:border-primary pointer-events-none transition-colors"></div>
@@ -239,6 +257,7 @@
                             </label>
                         </div>
                     </div>
+
                     <div>
                         <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase tracking-wider">Email</label>
                         <div class="relative">
@@ -248,90 +267,89 @@
                                 placeholder="nama@email.com" />
                         </div>
                     </div>
+
                     <div>
                         <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2 uppercase tracking-wider">Password</label>
                         <div class="relative">
                             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-lg">lock</span>
                             <input id="login-password" type="password" required autocomplete="current-password"
-                                class="w-full pl-10 pr-4 py-3 border border-primary/20 bg-surface-container-lowest font-body-md text-body-md text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-colors"
+                                class="w-full pl-10 pr-10 py-3 border border-primary/20 bg-surface-container-lowest font-body-md text-body-md text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-colors"
                                 placeholder="••••••••" />
+                            <button type="button" onclick="togglePasswordVisibility('login-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant/60 hover:text-primary">
+                                <span class="material-symbols-outlined text-lg">visibility</span>
+                            </button>
                         </div>
                     </div>
 
                     <!-- Login Button -->
                     <button id="btn-login" type="submit"
-                        class="w-full bg-primary text-on-primary py-4 px-6 flex items-center justify-center gap-3 hover:opacity-90 transition-all active:scale-[0.98] border border-primary mt-6">
+                        class="w-full bg-primary text-on-primary py-3.5 px-6 flex items-center justify-center gap-3 hover:opacity-90 transition-all active:scale-[0.98] border border-primary mt-6 shadow-sm">
                         <span class="material-symbols-outlined text-xl" data-icon="login">login</span>
-                        <span class="font-label-caps text-label-caps uppercase tracking-wider">Masuk</span>
+                        <span class="font-label-caps text-label-caps uppercase tracking-wider font-bold">Masuk ke Portal</span>
                     </button>
                 </form>
 
                 <!-- Forgot Password -->
                 <div class="text-center mt-4">
                     <button id="btn-forgot" type="button"
-                        class="font-body-sm text-body-sm text-secondary hover:underline underline-offset-4 transition-colors">
+                        class="font-body-sm text-xs text-secondary hover:underline underline-offset-4 transition-colors">
                         Lupa password?
                     </button>
                 </div>
 
+                <!-- Register Link -->
+                <div class="text-center mt-3 pt-3 border-t border-primary/10">
+                    <span class="font-body-sm text-xs text-on-surface-variant">Belum punya akun?</span>
+                    <button id="btn-open-register" type="button"
+                        class="font-body-sm text-xs text-primary font-bold hover:underline underline-offset-4 transition-colors ml-1">
+                        Daftar Akun Baru
+                    </button>
+                </div>
+
                 <!-- Numeric Context / Metadata (Academic Feel) -->
-                <div class="mt-12 pt-8 border-t border-dashed border-primary/10 flex justify-between items-end">
+                <div class="mt-8 pt-6 border-t border-dashed border-primary/10 flex justify-between items-end">
                     <div class="text-left">
-                        <p class="font-stats-sm text-stats-sm text-on-surface-variant/50">SESSION_ID</p>
-                        <p class="font-stats-lg text-stats-lg text-primary/30 tracking-tight">FC-2026-UP</p>
+                        <p class="font-stats-sm text-[10px] text-on-surface-variant/50">SESSION_ID</p>
+                        <p class="font-stats-lg text-xs text-primary/40 tracking-tight">FC-2026-UNIPDU</p>
                     </div>
                     <div class="text-right">
-                        <p class="font-stats-sm text-stats-sm text-on-surface-variant/50">TIMESTAMP</p>
-                        <p class="font-stats-lg text-stats-lg text-primary/30 tracking-tight" id="live-clock">00:00:00
-                        </p>
+                        <p class="font-stats-sm text-[10px] text-on-surface-variant/50">WAKTU SISTEM</p>
+                        <p class="font-stats-lg text-xs text-primary/40 tracking-tight" id="live-clock">00:00:00</p>
                     </div>
-                </div>
-            </div>
-            <!-- Supporting Imagery (Bento Minimal) -->
-            <div class="grid grid-cols-2 gap-4 mt-8 opacity-60 grayscale hover:grayscale-0 transition-all duration-700">
-                <div class="h-24 border border-primary/10 overflow-hidden">
-                    <img class="w-full h-full object-cover"
-                        data-alt="A macro close-up of a high-quality fountain pen nib touching textured ivory cream paper."
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjkE9Afo9IQcVxwk1is23XMh15Kx0snEeZLzV62e6ERGdSvURwTtqhdwq7qTsQiqN9RpUCy9LvnSu3VO_9OsUokF5T-DyVBb-k7YNzj8--wE-Sza0xlkPFGIihzztnTdGspBlcp8ARsrvM5lZCGkk5S4Rw-KRuWkodRVy1e_EZdH3HFRqfVu3zhIrbcNRBixvh8SWSkw6Bfv5qJQeRssOjmNzdkQsflR9ECHBA-RBo5st2XeBE6St0yytO_C2UWzPPpRhJPZoVZI4" />
-                </div>
-                <div class="h-24 border border-primary/10 overflow-hidden">
-                    <img class="w-full h-full object-cover"
-                        data-alt="A clean, minimalist workspace featuring a vintage wooden desk."
-                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJZYXcAiS588LlaHz_7dNk2D_eLWkCrVkijJg3bO-kWY8-0TNc9EzxUYcV5I_ioZusdxJ6UpUW1s5W_OG-RQloRnIM6qOlOm_I9856Hi-Al-OIJld19QIea7WnPK9HBYGdAmbzbmPicrsdiiKgtnDpYABPWgJiIZLc3D_NMpSlENjqboEjIldg6tBtD_0g3PupyPLT_u-n1WxH9whRC4QcTAnupr0QvFEb1ZGE7x373jR_otxmS0sSRIqeJmPcKPbTDkEfVw0fGoM" />
                 </div>
             </div>
         </div>
     </main>
+
     <!-- Footer -->
     <footer class="w-full bg-surface-container border-t border-primary/10">
         <div
-            class="flex flex-col md:flex-row justify-between items-center gap-4 px-margin-mobile md:px-margin-desktop py-8 max-w-container-max mx-auto">
-            <div class="flex flex-col items-center md:items-start gap-1">
-                <span class="font-label-caps text-label-caps uppercase tracking-widest text-primary">Kolaborasi
-                    Akademik</span>
-                <span class="font-body-sm text-body-sm text-on-surface-variant">Flexa Cendekia &amp; Universitas
-                    Pesantren Tinggi Darul Ulum</span>
+            class="flex flex-col md:flex-row justify-between items-center gap-4 px-margin-mobile md:px-margin-desktop py-6 max-w-container-max mx-auto">
+            <div class="flex flex-col items-center md:items-start gap-0.5">
+                <span class="font-label-caps text-xs uppercase tracking-widest text-primary font-bold">Kolaborasi Akademik Terpadu</span>
+                <span class="font-body-sm text-xs text-on-surface-variant">Flexa Cendekia &amp; Universitas Pesantren Tinggi Darul Ulum (UNIPDU)</span>
             </div>
             <div class="flex gap-6">
-                <a class="text-on-surface-variant font-body-sm text-body-sm hover:underline decoration-1 underline-offset-4"
-                    href="#">Kebijakan Privasi</a>
-                <a class="text-on-surface-variant font-body-sm text-body-sm hover:underline decoration-1 underline-offset-4"
-                    href="#">Syarat &amp; Ketentuan</a>
+                <a class="text-on-surface-variant font-body-sm text-xs hover:underline decoration-1 underline-offset-4"
+                    href="/?page=01_login_panduan">Kebijakan Privasi</a>
+                <a class="text-on-surface-variant font-body-sm text-xs hover:underline decoration-1 underline-offset-4"
+                    href="/?page=01_login_bantuan">Pusat Bantuan</a>
             </div>
-            <div class="font-body-sm text-body-sm text-on-surface-variant">
-                &copy; 2026 Flexa Cendekia x UNIPDU. Hak Cipta Dilindungi.
+            <div class="font-body-sm text-xs text-on-surface-variant">
+                &copy; <span id="footer-year">2026</span> Flexa Cendekia x UNIPDU. Hak Cipta Dilindungi.
             </div>
         </div>
     </footer>
 
-    <!-- Firebase SDK -->
+    <!-- Firebase SDK (compat) -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="/sso-sync.js"></script>
 
     <script>
         // =============================================
-        // Firebase Init (login page — no auth guard needed)
+        // Firebase Init
         // =============================================
         if (firebase.apps.length === 0) {
             firebase.initializeApp({
@@ -346,7 +364,7 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // If already logged in, redirect immediately
+        // Listen for already active sessions
         auth.onAuthStateChanged(function(user) {
             if (user) {
                 redirectByRole(user.uid);
@@ -356,34 +374,123 @@
         // =============================================
         // Helpers
         // =============================================
+        function normalizeRole(role) {
+            if (!role) return 'Siswa';
+            const r = role.toString().trim().toLowerCase().replace(/[\s_-]/g, '');
+            if (r === 'guru' || r === 'teacher') return 'Guru';
+            if (r === 'orangtua' || r === 'ortu' || r === 'parent') return 'OrangTua';
+            return 'Siswa';
+        }
+
+        function togglePasswordVisibility(inputId, btnEl) {
+            const input = document.getElementById(inputId);
+            const icon = btnEl.querySelector('.material-symbols-outlined');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = 'visibility_off';
+            } else {
+                input.type = 'password';
+                icon.textContent = 'visibility';
+            }
+        }
+
+        // 1-Click Demo Fill
+        function fillDemoAccount(role) {
+            const roleRadios = document.querySelectorAll('input[name="login-role"]');
+            roleRadios.forEach(r => {
+                r.checked = (r.value === role);
+            });
+
+            const emailInput = document.getElementById('login-email');
+            const passInput = document.getElementById('login-password');
+
+            if (role === 'Siswa') {
+                emailInput.value = 'siswa@flexa.test';
+                passInput.value = 'password123';
+            } else if (role === 'Guru') {
+                emailInput.value = 'guru@flexa.test';
+                passInput.value = 'password123';
+            } else if (role === 'OrangTua') {
+                emailInput.value = 'ortu@flexa.test';
+                passInput.value = 'password123';
+            }
+            
+            showSuccess(`Akun demo ${role === 'OrangTua' ? 'Orang Tua' : role} telah diisi otomatis. Klik tombol Masuk di bawah.`);
+        }
+
         function redirectByRole(uid) {
             db.collection('users').doc(uid).get().then(function(doc) {
-                if (doc.exists) {
-                    const actualRole = doc.data().role;
-                    const selectedRole = sessionStorage.getItem('selectedLoginRole');
-                    if (selectedRole && selectedRole !== actualRole) {
-                        let displayRole = actualRole === 'OrangTua' ? 'Orang Tua' : actualRole;
-                        showError(`Akun ini terdaftar sebagai ${displayRole}, silakan pilih opsi yang sesuai.`);
-                        sessionStorage.removeItem('selectedLoginRole');
-                        auth.signOut();
-                        setLoading(false);
-                        return;
-                    }
-                    
-                    sessionStorage.removeItem('selectedLoginRole');
+                const rawSelectedRole = sessionStorage.getItem('selectedLoginRole');
+                let actualRole = 'Siswa';
+                let userData = {};
 
-                    if (actualRole === 'Guru') {
-                        window.location.href = '/?page=14_dashboard-guru';
-                    } else if (actualRole === 'OrangTua') {
-                        window.location.href = '/?page=16_dashboard-ortu';
-                    } else {
-                        window.location.href = '/?page=08_dashboard-siswa';
+                if (doc.exists) {
+                    userData = doc.data();
+                    actualRole = normalizeRole(userData.role);
+                } else {
+                    // Self-heal: user exists in auth but doc was missing
+                    actualRole = rawSelectedRole ? normalizeRole(rawSelectedRole) : 'Siswa';
+                    userData = {
+                        email: auth.currentUser?.email || '',
+                        nama: auth.currentUser?.displayName || (actualRole === 'Guru' ? 'Ibu Sari Rahayu' : actualRole === 'OrangTua' ? 'Bpk. Heru' : 'Ahmad Faiz'),
+                        role: actualRole,
+                        jenjang: 'SMA',
+                        kelas: 10,
+                        citaCita: 'Arsitek'
+                    };
+                    db.collection('users').doc(uid).set(userData).catch(console.warn);
+                }
+
+                const selectedRole = rawSelectedRole ? normalizeRole(rawSelectedRole) : null;
+
+                // Validate selected role against actual account role
+                if (selectedRole && selectedRole !== actualRole) {
+                    let displayRole = actualRole === 'OrangTua' ? 'Orang Tua' : actualRole;
+                    showError(`Akun ini terdaftar sebagai ${displayRole}. Silakan pilih opsi role ${displayRole} untuk melanjutkan.`);
+                    sessionStorage.removeItem('selectedLoginRole');
+                    auth.signOut();
+                    setLoading(false);
+                    return;
+                }
+                
+                sessionStorage.removeItem('selectedLoginRole');
+
+                // Cache user profile in LocalStorage for smooth offline transition
+                try {
+                    const userCache = Object.assign({}, userData, {
+                        uid: uid,
+                        email: auth.currentUser?.email || userData.email,
+                        role: actualRole
+                    });
+                    localStorage.setItem('currentUser', JSON.stringify(userCache));
+                    if (userCache.citaCita) {
+                        localStorage.setItem('selectedCareer', userCache.citaCita);
                     }
+                    if (window.SSOSync) {
+                        window.SSOSync.init();
+                    }
+                } catch(e) {}
+
+                // Role-based target redirects
+                if (actualRole === 'Guru') {
+                    window.location.href = '/?page=14_dashboard-guru';
+                } else if (actualRole === 'OrangTua') {
+                    window.location.href = '/?page=16_dashboard-ortu';
                 } else {
                     window.location.href = '/?page=08_dashboard-siswa';
                 }
-            }).catch(function() {
-                window.location.href = '/?page=08_dashboard-siswa';
+            }).catch(function(err) {
+                console.error('[Login] Error redirectByRole:', err);
+                const rawSelectedRole = sessionStorage.getItem('selectedLoginRole');
+                const fallbackRole = rawSelectedRole ? normalizeRole(rawSelectedRole) : 'Siswa';
+                sessionStorage.removeItem('selectedLoginRole');
+                if (fallbackRole === 'Guru') {
+                    window.location.href = '/?page=14_dashboard-guru';
+                } else if (fallbackRole === 'OrangTua') {
+                    window.location.href = '/?page=16_dashboard-ortu';
+                } else {
+                    window.location.href = '/?page=08_dashboard-siswa';
+                }
             });
         }
 
@@ -405,7 +512,7 @@
             const btn = document.getElementById('btn-login');
             if (isLoading) {
                 btn.disabled = true;
-                btn.innerHTML = '<span class="material-symbols-outlined text-xl animate-spin">sync</span><span class="font-label-caps text-label-caps uppercase tracking-wider font-bold">Memproses...</span>';
+                btn.innerHTML = '<span class="material-symbols-outlined text-xl animate-spin">sync</span><span class="font-label-caps text-label-caps uppercase tracking-wider font-bold">Memverifikasi...</span>';
             } else {
                 btn.disabled = false;
                 btn.innerHTML = '<span class="material-symbols-outlined text-xl">login</span><span class="font-label-caps text-label-caps uppercase tracking-wider font-bold">Masuk ke Portal</span>';
@@ -413,45 +520,67 @@
         }
 
         // =============================================
-        // Login Form
+        // Login Form Submission
         // =============================================
         document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value;
-            const selectedRole = document.querySelector('input[name="login-role"]:checked')?.value;
+            const selectedRole = document.querySelector('input[name="login-role"]:checked')?.value || 'Siswa';
 
-            if (!email || !password || !selectedRole) {
-                showError('Email, password, dan pilihan role harus diisi.');
+            if (!email || !password) {
+                showError('Email dan password harus diisi.');
                 return;
             }
 
-            // Store selected role for validation after auth succeeds
             sessionStorage.setItem('selectedLoginRole', selectedRole);
-
             setLoading(true);
+
             auth.signInWithEmailAndPassword(email, password)
                 .then(function(cred) {
-                    // redirect and role validation handled by onAuthStateChanged -> redirectByRole
+                    // Handled automatically by onAuthStateChanged -> redirectByRole
                 })
                 .catch(function(err) {
+                    // Auto-seed for demo test accounts if not yet created in Firebase
+                    if ((email === 'siswa@flexa.test' || email === 'guru@flexa.test' || email === 'ortu@flexa.test') && err.code === 'auth/user-not-found') {
+                        auth.createUserWithEmailAndPassword(email, password)
+                            .then(function(newCred) {
+                                const uid = newCred.user.uid;
+                                const normRole = normalizeRole(selectedRole);
+                                const defaultName = (normRole === 'Guru') ? 'Ibu Sari Rahayu' : (normRole === 'OrangTua' ? 'Bpk. Heru' : 'Ahmad Faiz');
+                                return db.collection('users').doc(uid).set({
+                                    email: email,
+                                    nama: defaultName,
+                                    role: normRole,
+                                    citaCita: 'Arsitek',
+                                    jenjang: 'SMA',
+                                    kelas: 10
+                                });
+                            })
+                            .catch(function(createErr) {
+                                setLoading(false);
+                                showError('Gagal inisialisasi akun demo: ' + createErr.message);
+                            });
+                        return;
+                    }
+
                     setLoading(false);
                     switch (err.code) {
                         case 'auth/user-not-found':
-                            showError('Akun tidak ditemukan. Hubungi admin untuk pendaftaran.');
+                            showError('Akun tidak ditemukan. Silakan klik "Daftar Akun Baru" atau gunakan akun demo di atas.');
                             break;
                         case 'auth/wrong-password':
                         case 'auth/invalid-credential':
-                            showError('Password salah. Silakan coba lagi atau gunakan "Lupa password".');
+                            showError('Password salah. Silakan periksa kembali atau gunakan "Lupa password".');
                             break;
                         case 'auth/invalid-email':
                             showError('Format email tidak valid.');
                             break;
                         case 'auth/too-many-requests':
-                            showError('Terlalu banyak percobaan. Coba lagi beberapa menit.');
+                            showError('Terlalu banyak percobaan login gagal. Mohon tunggu beberapa saat.');
                             break;
                         default:
-                            showError('Terjadi kesalahan: ' + err.message);
+                            showError('Terjadi kesalahan masuk: ' + err.message);
                     }
                 });
         });
@@ -462,17 +591,17 @@
         document.getElementById('btn-forgot').addEventListener('click', function() {
             const email = document.getElementById('login-email').value.trim();
             if (!email) {
-                showError('Masukkan email Anda di kolom di atas, lalu klik "Lupa password" lagi.');
+                showError('Ketikkan alamat email Anda di kolom Email, lalu klik "Lupa password" kembali.');
                 return;
             }
             
             auth.sendPasswordResetEmail(email)
                 .then(function() {
-                    showSuccess('Link reset password telah dikirim ke ' + email + '. Periksa inbox Anda.');
+                    showSuccess('Tautan pengaturan ulang password telah dikirim ke ' + email + '. Silakan periksa kotak masuk email Anda.');
                 })
                 .catch(function(err) {
                     if (err.code === 'auth/user-not-found') {
-                        showError('Email tidak terdaftar. Hubungi admin.');
+                        showError('Email ini belum terdaftar di sistem.');
                     } else {
                         showError('Gagal mengirim email reset: ' + err.message);
                     }
@@ -480,117 +609,265 @@
         });
 
         // =============================================
-        // Clock & Micro-interactions
+        // Realtime Clock
         // =============================================
         function updateClock() {
             const now = new Date();
             const timeStr = now.getHours().toString().padStart(2, '0') + ':' +
                 now.getMinutes().toString().padStart(2, '0') + ':' +
-                now.getSeconds().toString().padStart(2, '0');
-            document.getElementById('live-clock').textContent = timeStr;
+                now.getSeconds().toString().padStart(2, '0') + ' WIB';
+            const clockEl = document.getElementById('live-clock');
+            if (clockEl) clockEl.textContent = timeStr;
         }
         setInterval(updateClock, 1000);
         updateClock();
 
-        const card = document.querySelector('.paper-stack-effect');
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const deltaX = (x - centerX) / 50;
-            const deltaY = (y - centerY) / 50;
-            card.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0)`;
-        });
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = `translate3d(0, 0, 0)`;
-        });
+        document.getElementById('footer-year').textContent = new Date().getFullYear();
 
         // Mobile menu toggle
         const menuBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
-        menuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
+        if (menuBtn && mobileMenu) {
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // =============================================
+        // Register Modal Handling
+        // =============================================
+        const regModal = document.getElementById('register-modal');
+        const openRegBtn = document.getElementById('btn-open-register');
+        const closeRegBtn = document.getElementById('btn-close-register');
+
+        if (openRegBtn) {
+            openRegBtn.addEventListener('click', function() {
+                regModal.classList.remove('hidden');
+                regModal.classList.add('flex');
+            });
+        }
+
+        if (closeRegBtn) {
+            closeRegBtn.addEventListener('click', function() {
+                regModal.classList.add('hidden');
+                regModal.classList.remove('flex');
+            });
+        }
+
+        if (regModal) {
+            regModal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.add('hidden');
+                    this.classList.remove('flex');
+                }
+            });
+        }
+
+        document.getElementById('register-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nama = document.getElementById('reg-nama').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('reg-password').value;
+            const confirmPassword = document.getElementById('reg-confirm-password').value;
+            const role = document.querySelector('input[name="reg-role"]:checked')?.value || 'Siswa';
+            const regError = document.getElementById('reg-error');
+            const btnRegister = document.getElementById('btn-register');
+
+            regError.classList.add('hidden');
+
+            if (!nama || !email || !password || !confirmPassword || !role) {
+                regError.textContent = 'Semua data pendaftaran wajib diisi.';
+                regError.classList.remove('hidden');
+                return;
+            }
+            if (nama.length < 3) {
+                regError.textContent = 'Nama lengkap minimal 3 karakter.';
+                regError.classList.remove('hidden');
+                return;
+            }
+            if (password.length < 6) {
+                regError.textContent = 'Password minimal 6 karakter.';
+                regError.classList.remove('hidden');
+                return;
+            }
+            if (password !== confirmPassword) {
+                regError.textContent = 'Konfirmasi password tidak cocok.';
+                regError.classList.remove('hidden');
+                return;
+            }
+
+            btnRegister.disabled = true;
+            btnRegister.innerHTML = '<span class="material-symbols-outlined text-xl animate-spin">sync</span><span class="font-label-caps text-label-caps uppercase tracking-wider font-bold">Mendaftarkan...</span>';
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then(function(cred) {
+                    const uid = cred.user.uid;
+                    const normalizedRole = normalizeRole(role);
+                    return db.collection('users').doc(uid).set({
+                        email: email,
+                        nama: nama,
+                        role: normalizedRole,
+                        citaCita: 'Arsitek',
+                        jenjang: 'SMA',
+                        kelas: 10,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }).then(function() {
+                        return auth.signOut();
+                    }).then(function() {
+                        regModal.classList.add('hidden');
+                        regModal.classList.remove('flex');
+                        showSuccess(`Pendaftaran berhasil sebagai ${role === 'OrangTua' ? 'Orang Tua' : role}! Silakan masuk.`);
+                        document.getElementById('login-email').value = email;
+                        document.getElementById('login-password').value = password;
+                        
+                        // Select corresponding role radio
+                        document.querySelectorAll('input[name="login-role"]').forEach(r => {
+                            r.checked = (r.value === role);
+                        });
+                        document.getElementById('register-form').reset();
+                    });
+                })
+                .catch(function(err) {
+                    switch (err.code) {
+                        case 'auth/email-already-in-use':
+                            regError.textContent = 'Email ini sudah terdaftar. Silakan langsung masuk.';
+                            break;
+                        case 'auth/invalid-email':
+                            regError.textContent = 'Format email tidak valid.';
+                            break;
+                        case 'auth/weak-password':
+                            regError.textContent = 'Password terlalu lemah. Gunakan minimal 6 karakter.';
+                            break;
+                        default:
+                            regError.textContent = 'Pendaftaran gagal: ' + err.message;
+                    }
+                    regError.classList.remove('hidden');
+                })
+                .finally(function() {
+                    btnRegister.disabled = false;
+                    btnRegister.innerHTML = '<span class="material-symbols-outlined text-xl">person_add</span><span class="font-label-caps text-label-caps uppercase tracking-wider font-bold">Daftar Sekarang</span>';
+                });
         });
     </script>
 
-<script>
-(function(){
-  function bindClick(selectors, handler) {
-    document.querySelectorAll(selectors).forEach(function(el) {
-      el.addEventListener('click', function(e) {
-        if (el.hasAttribute('onclick') || el.id === 'btn-unduh' || el.id === 'btn-bagikan' || el.id === 'btn-notifikasi' || el.id === 'btn-bantuan' || el.id === 'btn-profile' || el.closest('#notif-wrapper') || el.closest('#help-wrapper') || el.closest('#profile-wrapper')) {
-            return;
-        }
-        if (el.tagName.toLowerCase() === 'a' && el.getAttribute('href') !== '#') {
-            return;
-        }
-        e.preventDefault();
-        handler(e, el);
-      });
-    });
-  }
+    <!-- Register Modal Dialog -->
+    <div id="register-modal" class="hidden fixed inset-0 z-50 items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+        <div class="w-full max-w-md bg-surface-container-lowest border border-primary/20 p-8 md:p-10 relative max-h-[90vh] overflow-y-auto hard-shadow">
+            <!-- Close Button -->
+            <button id="btn-close-register" type="button" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
 
-  // 1. Top Navbar Role Tabs
-  bindClick('header nav a', function(e, a) {
-    var text = a.textContent.trim().toLowerCase();
-    if (text === 'siswa') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text === 'guru') window.location.href = '/?page=14_dashboard-guru';
-    else if (text === 'orang tua') window.location.href = '/?page=16_dashboard-ortu';
-  });
+            <!-- Header -->
+            <div class="flex justify-center mb-6">
+                <div class="h-12 w-12 border-2 border-primary flex items-center justify-center bg-primary text-white">
+                    <span class="material-symbols-outlined text-3xl">person_add</span>
+                </div>
+            </div>
+            <div class="text-center mb-6">
+                <h2 class="font-headline-md text-xl font-bold text-primary mb-1">Buat Akun Portal Baru</h2>
+                <p class="font-body-sm text-xs text-on-surface-variant">Daftarkan diri Anda untuk mengakses platform Flexa Cendekia x UNIPDU.</p>
+            </div>
 
-  // 2. Header Icons & Avatar
-  bindClick('header button, header div.rounded-full.bg-primary', function(e, b) {
-    var iconText = '';
-    if (b.classList.contains('material-symbols-outlined')) iconText = b.textContent.trim();
-    else {
-      var icon = b.querySelector('.material-symbols-outlined');
-      if (icon) iconText = icon.textContent.trim();
-    }
-    
-    if (iconText === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (iconText === 'settings' || iconText === 'account_circle' || iconText === 'person' || b.classList.contains('rounded-full')) {
-      window.location.href = '/?page=18_profil';
-    }
-  });
+            <!-- Error Message -->
+            <div id="reg-error" class="hidden mb-4 p-3 bg-error-container border border-error/30 text-on-error-container font-body-sm text-xs"></div>
 
-  // 3. Sidebar, Bottom Nav, and generic # links
-  bindClick('aside a, div.fixed.bottom-0 button, div[class*="md:hidden"] button, a[href="#"]', function(e, el) {
-    var text = el.textContent.trim().toLowerCase();
-    if (!text) {
-        var icon = el.querySelector('.material-symbols-outlined');
-        if (icon) text = icon.textContent.trim().toLowerCase();
-    }
-    
-    if (text === 'beranda' || text === 'dashboard' || text === 'home') window.location.href = '/?page=08_dashboard-siswa';
-    else if (text.includes('krs') || text.includes('rencana studi') || text.includes('study plans')) window.location.href = '/?page=09_krs-siswa';
-    else if (text.includes('roadmap') || text.includes('detail roadmap')) window.location.href = '/?page=10_detail-roadmap';
-    else if (text.includes('checkpoint') || text.includes('jumat')) window.location.href = '/?page=11_checkpoint-jumat';
-    else if (text.includes('riwayat') || text === 'grades') window.location.href = '/?page=13_riwayat-semester';
-    else if (text.includes('ganti cita')) window.location.href = '/?page=12_ganti-cita-cita';
-    else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
-    else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
-    else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
-    else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
-    else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
-  });
-  
-  document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
-})();
-</script>
+            <!-- Register Form -->
+            <form id="register-form" class="space-y-4">
+                <!-- Role Selection -->
+                <div>
+                    <label class="block font-label-caps text-xs text-on-surface-variant mb-2 uppercase tracking-wider font-bold">Daftar Sebagai</label>
+                    <div class="grid grid-cols-3 gap-2">
+                        <label class="relative flex flex-col items-center justify-center p-3 border border-primary/20 bg-surface-container-lowest cursor-pointer hover:bg-primary/5 transition-colors">
+                            <input type="radio" name="reg-role" value="Siswa" class="peer sr-only" checked required>
+                            <span class="material-symbols-outlined text-lg mb-1 opacity-60 peer-checked:opacity-100 peer-checked:text-primary transition-opacity">school</span>
+                            <span class="font-label-caps text-[10px] text-on-surface-variant peer-checked:text-primary peer-checked:font-bold text-center leading-tight">Siswa</span>
+                            <div class="absolute inset-0 border-2 border-transparent peer-checked:border-primary pointer-events-none transition-colors"></div>
+                        </label>
+                        <label class="relative flex flex-col items-center justify-center p-3 border border-primary/20 bg-surface-container-lowest cursor-pointer hover:bg-primary/5 transition-colors">
+                            <input type="radio" name="reg-role" value="Guru" class="peer sr-only" required>
+                            <span class="material-symbols-outlined text-lg mb-1 opacity-60 peer-checked:opacity-100 peer-checked:text-primary transition-opacity">history_edu</span>
+                            <span class="font-label-caps text-[10px] text-on-surface-variant peer-checked:text-primary peer-checked:font-bold text-center leading-tight">Guru</span>
+                            <div class="absolute inset-0 border-2 border-transparent peer-checked:border-primary pointer-events-none transition-colors"></div>
+                        </label>
+                        <label class="relative flex flex-col items-center justify-center p-3 border border-primary/20 bg-surface-container-lowest cursor-pointer hover:bg-primary/5 transition-colors">
+                            <input type="radio" name="reg-role" value="OrangTua" class="peer sr-only" required>
+                            <span class="material-symbols-outlined text-lg mb-1 opacity-60 peer-checked:opacity-100 peer-checked:text-primary transition-opacity">family_restroom</span>
+                            <span class="font-label-caps text-[10px] text-on-surface-variant peer-checked:text-primary peer-checked:font-bold text-center leading-tight">Orang Tua</span>
+                            <div class="absolute inset-0 border-2 border-transparent peer-checked:border-primary pointer-events-none transition-colors"></div>
+                        </label>
+                    </div>
+                </div>
 
-    <script>
-    (function(){
-      var ssoBtn = document.querySelector('button.bg-primary');
-      if(ssoBtn) ssoBtn.addEventListener('click', function(){ window.location.href = '/?page=02_intro-diagnosis'; });
-      var roleChips = document.querySelectorAll('.role-chip');
-      if(roleChips[0]) roleChips[0].addEventListener('click', function(){ window.location.href = '/?page=02_intro-diagnosis'; });
-      if(roleChips[1]) roleChips[1].addEventListener('click', function(){ window.location.href = '/?page=14_dashboard-guru'; });
-      if(roleChips[2]) roleChips[2].addEventListener('click', function(){ window.location.href = '/?page=16_dashboard-ortu'; });
-    })();
-    </script>
+                <!-- Nama Lengkap -->
+                <div>
+                    <label class="block font-label-caps text-xs text-on-surface-variant mb-1 uppercase tracking-wider font-bold">Nama Lengkap</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-lg">badge</span>
+                        <input id="reg-nama" type="text" required minlength="3"
+                            class="w-full pl-10 pr-4 py-2.5 border border-primary/20 bg-surface-container-lowest font-body-md text-xs text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-colors"
+                            placeholder="Masukkan nama lengkap" />
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="block font-label-caps text-xs text-on-surface-variant mb-1 uppercase tracking-wider font-bold">Email</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-lg">mail</span>
+                        <input id="reg-email" type="email" required autocomplete="email"
+                            class="w-full pl-10 pr-4 py-2.5 border border-primary/20 bg-surface-container-lowest font-body-md text-xs text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-colors"
+                            placeholder="nama@email.com" />
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="block font-label-caps text-xs text-on-surface-variant mb-1 uppercase tracking-wider font-bold">Password</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-lg">lock</span>
+                        <input id="reg-password" type="password" required minlength="6" autocomplete="new-password"
+                            class="w-full pl-10 pr-10 py-2.5 border border-primary/20 bg-surface-container-lowest font-body-md text-xs text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-colors"
+                            placeholder="Minimal 6 karakter" />
+                        <button type="button" onclick="togglePasswordVisibility('reg-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant/60 hover:text-primary">
+                            <span class="material-symbols-outlined text-lg">visibility</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Konfirmasi Password -->
+                <div>
+                    <label class="block font-label-caps text-xs text-on-surface-variant mb-1 uppercase tracking-wider font-bold">Konfirmasi Password</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-lg">lock_reset</span>
+                        <input id="reg-confirm-password" type="password" required minlength="6" autocomplete="new-password"
+                            class="w-full pl-10 pr-10 py-2.5 border border-primary/20 bg-surface-container-lowest font-body-md text-xs text-primary focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-colors"
+                            placeholder="Ulangi password" />
+                        <button type="button" onclick="togglePasswordVisibility('reg-confirm-password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant/60 hover:text-primary">
+                            <span class="material-symbols-outlined text-lg">visibility</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Register Button -->
+                <button id="btn-register" type="submit"
+                    class="w-full bg-primary text-on-primary py-3 px-6 flex items-center justify-center gap-3 hover:opacity-90 transition-all active:scale-[0.98] border border-primary mt-2">
+                    <span class="material-symbols-outlined text-xl">person_add</span>
+                    <span class="font-label-caps text-xs uppercase tracking-wider font-bold">Daftar Sekarang</span>
+                </button>
+            </form>
+
+            <!-- Back to Login -->
+            <div class="text-center mt-4">
+                <span class="font-body-sm text-xs text-on-surface-variant">Sudah punya akun?</span>
+                <button id="btn-back-to-login" type="button"
+                    class="font-body-sm text-xs text-primary font-bold hover:underline underline-offset-4 transition-colors ml-1"
+                    onclick="document.getElementById('register-modal').classList.add('hidden'); document.getElementById('register-modal').classList.remove('flex');">
+                    Masuk
+                </button>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
-

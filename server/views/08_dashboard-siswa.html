@@ -21,6 +21,8 @@
                         "colors": {
                             "primary": "#17223B",
                             "primary-dark": "#020B24",
+                            "role-teacher": "#005046",
+                            "role-teacher-dark": "#003b33",
                             "brand-gold": "#B9862F",
                             "brand-gold-dark": "#805600",
                             "background": "#EAEDE2",
@@ -56,7 +58,7 @@
         .ledger-card {
             background-color: #FBFAF5;
             border: 1px solid rgba(23, 34, 59, 0.20);
-            box-shadow: none;
+            box-shadow: 2px 2px 0px rgba(23, 34, 59, 0.05);
         }
 
         .material-symbols-outlined {
@@ -66,6 +68,17 @@
 
         .filled-icon {
             font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .chat-bubble-guru {
+            background-color: #E6F0EE;
+            border: 1px solid rgba(0, 80, 70, 0.2);
+            color: #003B33;
+        }
+
+        .chat-bubble-siswa {
+            background-color: #17223B;
+            color: #ffffff;
         }
     </style>
 
@@ -80,12 +93,10 @@
     <script src="/career-roadmap-data.js"></script>
 </head>
 
-<body
-    class="min-h-screen font-sans selection:bg-brand-gold/30 flex flex-col justify-between relative overflow-x-hidden">
+<body class="min-h-screen font-sans selection:bg-brand-gold/30 flex flex-col justify-between relative overflow-x-hidden">
 
     <!-- Binder Rings Decoration (Left edge desktop) -->
-    <div
-        class="hidden xl:flex fixed left-3 top-1/2 -translate-y-1/2 flex-col gap-12 z-10 pointer-events-none opacity-40">
+    <div class="hidden xl:flex fixed left-3 top-1/2 -translate-y-1/2 flex-col gap-12 z-10 pointer-events-none opacity-40">
         <div class="w-5 h-8 border-2 border-primary/40 rounded-full bg-[#EAEDE2] shadow-inner"></div>
         <div class="w-5 h-8 border-2 border-primary/40 rounded-full bg-[#EAEDE2] shadow-inner"></div>
         <div class="w-5 h-8 border-2 border-primary/40 rounded-full bg-[#EAEDE2] shadow-inner"></div>
@@ -115,18 +126,22 @@
                     class="hidden lg:inline-block font-mono text-[11px] text-on-surface-variant tracking-wider mr-3 bg-primary/5 px-3 py-1.5 border border-primary/10"
                     id="realtime-clock">--:--:--</span>
                 <a href="/?page=17_notifikasi"
-                    class="p-2 text-on-surface-variant hover:text-primary rounded-full transition-colors relative">
+                    class="p-2 text-on-surface-variant hover:text-primary rounded-full transition-colors relative" title="Notifikasi">
                     <span class="material-symbols-outlined">notifications</span>
                     <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
                 </a>
                 <a href="/?page=18_profil"
-                    class="p-2 text-on-surface-variant hover:text-primary rounded-full transition-colors">
+                    class="p-2 text-on-surface-variant hover:text-primary rounded-full transition-colors" title="Pengaturan Profil">
                     <span class="material-symbols-outlined">settings</span>
                 </a>
-                <a href="/?page=18_profil"
-                    class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-mono text-sm font-bold border border-primary/30 hover:ring-2 hover:ring-brand-gold/50 transition-all">
+                <a href="/?page=18_profil" id="top-user-avatar"
+                    class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-mono text-sm font-bold border border-primary/30 hover:ring-2 hover:ring-brand-gold/50 transition-all" title="Profil Siswa">
                     AF
                 </a>
+                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" 
+                    class="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors ml-1" title="Keluar / Logout">
+                    <span class="material-symbols-outlined">logout</span>
+                </button>
             </div>
         </div>
     </header>
@@ -141,7 +156,7 @@
             <div class="flex items-center gap-6">
                 <!-- Avatar with PRO badge -->
                 <div class="relative flex-shrink-0">
-                    <div
+                    <div id="hero-user-avatar"
                         class="w-20 h-20 md:w-24 md:h-24 bg-primary text-white flex items-center justify-center font-serif text-3xl md:text-4xl font-bold">
                         AF
                     </div>
@@ -160,7 +175,7 @@
                             <span class="material-symbols-outlined text-[18px]">school</span> <span id="user-jenjang">Memuat...</span>
                         </span>
                         <span class="flex items-center gap-1.5">
-                            <span class="material-symbols-outlined text-[18px]">architecture</span> Cita-cita: <span id="user-citacita">Memuat...</span>
+                            <span class="material-symbols-outlined text-[18px]">architecture</span> Cita-cita: <span id="user-citacita" class="font-bold text-primary">Memuat...</span>
                         </span>
                         <a href="/?page=12_ganti-cita-cita" class="text-brand-gold font-bold hover:underline">
                             Ajukan Ganti Cita-cita
@@ -193,24 +208,61 @@
             </div>
         </section>
 
-        <!-- 2. Baris Tugas Terdekat & Level -->
-        <section class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Tugas / Deadline Terdekat -->
-            <div class="md:col-span-2 ledger-card p-6 flex flex-col">
-                <div class="flex justify-between items-center mb-4">
-                    <span class="font-mono text-xs font-bold tracking-widest text-on-surface-variant">DEADLINE TERDEKAT</span>
-                    <span class="material-symbols-outlined text-primary text-xl">assignment_late</span>
+        <!-- 2. Baris Guru Pembimbing, Tugas Terdekat & Level (Penghubung Siswa - Guru) -->
+        <section class="col-span-12 grid grid-cols-1 md:grid-cols-12 gap-6">
+            <!-- Kartu Guru Pembimbing -->
+            <div class="md:col-span-4 ledger-card p-6 flex flex-col justify-between border-l-4 border-role-teacher bg-white shadow-sm">
+                <div>
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="font-mono text-xs font-bold tracking-widest text-role-teacher uppercase flex items-center gap-1.5">
+                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                            PEMBIMBING AKADEMIK
+                        </span>
+                        <span class="material-symbols-outlined text-role-teacher text-xl">school</span>
+                    </div>
+                    <div class="flex items-center gap-3 mb-3">
+                        <div id="advisor-avatar" class="w-12 h-12 rounded-full bg-role-teacher text-white flex items-center justify-center font-bold text-sm shadow">
+                            LS
+                        </div>
+                        <div>
+                            <h3 id="advisor-name" class="font-serif text-base font-bold text-primary leading-snug">Ibu Lestari, S.Sn</h3>
+                            <p id="advisor-spec" class="text-xs text-on-surface-variant">Pembimbing Kurikulum & Desain</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-on-surface-variant bg-primary/4 p-2.5 rounded border border-primary/10 mb-4 leading-relaxed">
+                        Konsultasikan pemilihan KRS, persiapan checkpoint mingguan, atau arahan portofolio langsung dengan pembimbing Anda.
+                    </p>
                 </div>
-                <div id="upcoming-tasks-list" class="space-y-3 flex-1 flex flex-col justify-center">
-                    <div class="text-sm text-center text-on-surface-variant italic animate-pulse">Memuat data...</div>
+                <div class="flex gap-2">
+                    <button onclick="openConsultationModal()" class="flex-1 bg-role-teacher hover:bg-role-teacher/90 text-white font-mono text-xs font-bold py-2.5 px-3 rounded flex items-center justify-center gap-1.5 transition-all shadow-[2px_2px_0px_#17223B]">
+                        <span class="material-symbols-outlined text-[16px]">chat</span>
+                        KONSULTASI
+                    </button>
+                    <button onclick="openTeacherNotesModal()" class="px-3 py-2.5 border border-role-teacher/30 text-role-teacher hover:bg-role-teacher/10 font-mono text-xs font-bold rounded flex items-center justify-center transition-colors" title="Lihat Catatan Guru">
+                        <span class="material-symbols-outlined text-[16px]">assignment</span>
+                    </button>
                 </div>
             </div>
 
-            <!-- Level -->
-            <div class="ledger-card p-6 flex flex-col justify-center items-center text-center">
-                <span class="font-mono text-xs font-bold tracking-widest text-on-surface-variant mb-2">LEVEL</span>
+            <!-- Tugas / Deadline Terdekat -->
+            <div class="md:col-span-5 ledger-card p-6 flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="font-mono text-xs font-bold tracking-widest text-on-surface-variant uppercase">DEADLINE TERDEKAT</span>
+                        <span class="material-symbols-outlined text-primary text-xl">assignment_late</span>
+                    </div>
+                    <div id="upcoming-tasks-list" class="space-y-3">
+                        <div class="text-sm text-center text-on-surface-variant italic animate-pulse">Memuat data...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Level & Progres -->
+            <div class="md:col-span-3 ledger-card p-6 flex flex-col justify-center items-center text-center">
+                <span class="font-mono text-xs font-bold tracking-widest text-on-surface-variant mb-2">LEVEL AKADEMIK</span>
                 <div class="flex flex-col items-center">
-                    <span id="user-level" class="font-serif text-2xl md:text-3xl font-bold text-primary mb-1">...</span>
+                    <span id="user-level" class="font-serif text-3xl font-bold text-primary mb-1">...</span>
+                    <span class="text-xs text-on-surface-variant mb-2 font-mono">Tahap Pengembangan</span>
                     <div class="w-24 h-1.5 bg-brand-gold mt-1"></div>
                 </div>
             </div>
@@ -344,230 +396,302 @@
 
             <!-- Right: Archive Ref ID -->
             <div class="flex flex-col items-end gap-0.5">
-                        <span class="font-mono text-[10px] uppercase tracking-widest font-bold">ARCHIVE REFERENCE ID</span>
-                        <span id="archive-ref-id" class="font-mono text-sm font-bold text-brand-gold tracking-wider">...</span>
+                <span class="font-mono text-[10px] uppercase tracking-widest font-bold">ARCHIVE REFERENCE ID</span>
+                <span id="archive-ref-id" class="font-mono text-sm font-bold text-brand-gold tracking-wider">...</span>
             </div>
         </div>
     </main>
+
+    <!-- MODAL KONSULTASI SISWA - GURU -->
+    <div id="consultation-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+        <div class="ledger-card bg-white w-full max-w-2xl overflow-hidden border border-primary/20 transform scale-95 transition-transform duration-200 flex flex-col max-h-[85vh]">
+            <!-- Header Modal -->
+            <div class="bg-role-teacher text-white p-4 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center font-bold text-sm">
+                        LS
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-base font-bold leading-tight" id="modal-teacher-name">Konsultasi dengan Ibu Lestari, S.Sn</h3>
+                        <p class="font-sans text-xs text-white/80">Pembimbing Akademik & Desain Portofolio</p>
+                    </div>
+                </div>
+                <button onclick="closeConsultationModal()" class="text-white/70 hover:text-white p-1" aria-label="Tutup"><span class="material-symbols-outlined">close</span></button>
+            </div>
+
+            <!-- Topic Quick Selector -->
+            <div class="p-3 bg-primary/5 border-b border-primary/10 flex items-center gap-2 overflow-x-auto text-xs font-mono">
+                <span class="text-on-surface-variant font-bold">Topik:</span>
+                <button type="button" onclick="selectTopic('🎯 Roadmap Karir')" class="topic-chip px-2.5 py-1 bg-white border border-primary/20 rounded hover:bg-role-teacher hover:text-white transition-colors active font-semibold">🎯 Roadmap Karir</button>
+                <button type="button" onclick="selectTopic('📚 Pemilihan KRS')" class="topic-chip px-2.5 py-1 bg-white border border-primary/20 rounded hover:bg-role-teacher hover:text-white transition-colors font-semibold">📚 Pemilihan KRS</button>
+                <button type="button" onclick="selectTopic('📝 Tugas & Portofolio')" class="topic-chip px-2.5 py-1 bg-white border border-primary/20 rounded hover:bg-role-teacher hover:text-white transition-colors font-semibold">📝 Tugas & Portofolio</button>
+                <button type="button" onclick="selectTopic('❓ Tanya Bebas')" class="topic-chip px-2.5 py-1 bg-white border border-primary/20 rounded hover:bg-role-teacher hover:text-white transition-colors font-semibold">❓ Tanya Bebas</button>
+            </div>
+
+            <!-- Messages Area -->
+            <div id="consultation-messages" class="p-4 overflow-y-auto flex-1 space-y-3 min-h-[260px] max-h-[380px] bg-[#FAF8F5]">
+                <!-- Dynamic messages injected here -->
+            </div>
+
+            <!-- Input Area -->
+            <div class="p-3 bg-white border-t border-primary/10 flex items-center gap-2">
+                <input id="consultation-input" type="text" placeholder="Tuliskan pertanyaan atau kendala bimbingan Anda..."
+                    class="flex-1 border border-primary/20 rounded px-3.5 py-2 text-sm focus:outline-none focus:border-role-teacher"
+                    onkeydown="if(event.key==='Enter') sendConsultationMessage();" />
+                <button onclick="sendConsultationMessage()" class="px-4 py-2 bg-role-teacher text-white font-mono text-xs font-bold rounded hover:bg-role-teacher-dark transition-colors flex items-center gap-1">
+                    <span>KIRIM</span>
+                    <span class="material-symbols-outlined text-[16px]">send</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CATATAN EVALUASI GURU -->
+    <div id="teacher-notes-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+        <div class="ledger-card bg-white w-full max-w-lg overflow-hidden border border-primary/20 transform scale-95 transition-transform duration-200">
+            <div class="bg-primary text-white p-4 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-brand-gold">assignment</span>
+                    <h3 class="font-serif text-base font-bold">Catatan Evaluasi Guru Pembimbing</h3>
+                </div>
+                <button onclick="closeTeacherNotesModal()" class="text-white/70 hover:text-white p-1"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="p-5 max-h-[60vh] overflow-y-auto space-y-3" id="teacher-notes-list">
+                <!-- Injected Notes -->
+            </div>
+            <div class="p-3 bg-primary/5 border-t border-primary/10 flex justify-end">
+                <button onclick="closeTeacherNotesModal()" class="px-4 py-1.5 bg-primary text-white font-mono text-xs font-bold rounded">TUTUP</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Realtime Clock & Greeting Script -->
     <script>
         function updateClock() {
             const now = new Date();
-            const h = String(now.getHours()).padStart(2, '0');
-            const m = String(now.getMinutes()).padStart(2, '0');
-            const s = String(now.getSeconds()).padStart(2, '0');
             const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+            const dayName = days[now.getDay()];
+            const dayNum = now.getDate();
+            const monthName = months[now.getMonth()];
+            const year = now.getFullYear();
+
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
             const clockEl = document.getElementById('realtime-clock');
-            if (clockEl) clockEl.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()} • ${h}:${m}:${s}`;
-        }
-        function updateGreeting() {
-            const hour = new Date().getHours();
-            const el = document.getElementById('greeting-text');
-            if (!el) return;
-            if (hour < 10) el.textContent = 'Selamat Pagi, Ahmad! ☀️ Semangat belajar hari ini.';
-            else if (hour < 15) el.textContent = 'Selamat Siang, Ahmad! 📚 Terus semangat ya.';
-            else if (hour < 18) el.textContent = 'Selamat Sore, Ahmad! 🌤️ Waktunya review materi.';
-            else el.textContent = 'Selamat Malam, Ahmad! 🌙 Jangan lupa istirahat.';
-        }
-
-        function updateWeeklyTarget() {
-            const today = new Date().getDay(); // 0:Sun, 1:Mon, ..., 6:Sat
-            const daysData = [
-                { id: 1, name: 'Senin' },
-                { id: 2, name: 'Selasa' },
-                { id: 3, name: 'Rabu' },
-                { id: 4, name: 'Kamis' },
-                { id: 5, name: 'Jumat', isCheckpoint: true }
-            ];
-
-            let activeDay = today;
-            // Jika weekend (0 atau 6), anggap jumat sudah selesai
-            if (today === 0 || today === 6) activeDay = 6;
-
-            // Hitung progress 0-100% (Masing-masing hari = 20%)
-            let progressPercentage = 0;
-            if (activeDay >= 1 && activeDay <= 5) progressPercentage = (activeDay - 1) * 20 + 10; // tengah jalan
-            if (activeDay > 5) progressPercentage = 100;
-
-            // Animasi progress bar & text
-            const pBar = document.getElementById('weekly-progress-bar');
-            const pText = document.getElementById('weekly-progress-text');
-
-            setTimeout(() => {
-                if (pBar) pBar.style.width = progressPercentage + '%';
-            }, 300);
-
-            if (pText) {
-                let currentP = 0;
-                let interval = setInterval(() => {
-                    if (currentP >= progressPercentage) {
-                        clearInterval(interval);
-                        pText.textContent = progressPercentage + '%';
-                    } else {
-                        currentP += Math.ceil(progressPercentage / 20);
-                        if (currentP > progressPercentage) currentP = progressPercentage;
-                        pText.textContent = currentP + '%';
-                    }
-                }, 30);
+            if (clockEl) {
+                clockEl.textContent = `${dayName}, ${dayNum} ${monthName} ${year} • ${hours}:${minutes}:${seconds}`;
             }
 
-            let html = '';
-            daysData.forEach(day => {
-                let statusHtml = '';
-                let iconHtml = '';
-                let liClass = 'flex items-center justify-between py-3 px-2 rounded-lg transition-colors';
-
-                if (day.id < activeDay) {
-                    // Selesai
-                    iconHtml = `<span class="material-symbols-outlined text-primary filled-icon text-xl hover:scale-110 transition-transform">check_circle</span>`;
-                    statusHtml = `<span class="text-xs text-primary font-bold px-2 py-0.5 bg-primary/10 rounded">Selesai</span>`;
-                } else if (day.id === activeDay) {
-                    // Berjalan
-                    liClass = 'flex items-center justify-between py-3 -mx-2 px-4 bg-[#FDC265]/20 rounded-lg shadow-sm border border-brand-gold/30 transform scale-[1.02] transition-all';
-                    iconHtml = `<span class="material-symbols-outlined text-brand-gold text-xl animate-spin" style="animation-duration: 3s;">sync</span>`;
-                    statusHtml = `<span class="text-xs font-bold text-brand-gold animate-pulse bg-brand-gold/10 px-2 py-0.5 rounded">Berjalan</span>`;
+            const greetingEl = document.getElementById('greeting-text');
+            if (greetingEl) {
+                const hourNum = now.getHours();
+                if (hourNum >= 4 && hourNum < 11) {
+                    greetingEl.textContent = 'Selamat pagi! Semangat belajar hari ini.';
+                } else if (hourNum >= 11 && hourNum < 15) {
+                    greetingEl.textContent = 'Selamat siang! Jangan lupa luangkan waktu istirahat.';
+                } else if (hourNum >= 15 && hourNum < 18) {
+                    greetingEl.textContent = 'Selamat sore! Cek progres target mingguanmu.';
                 } else {
-                    // Belum
-                    iconHtml = `<span class="material-symbols-outlined text-outline-variant text-xl">circle</span>`;
-                    statusHtml = `<span class="text-xs text-outline-variant font-medium">Belum</span>`;
-                }
-
-                if (day.isCheckpoint) {
-                    if (day.id <= activeDay) {
-                        statusHtml = `<a href="/?page=11_checkpoint-jumat" class="bg-brand-gold text-white px-3 py-1.5 text-[11px] font-mono font-bold flex items-center gap-1 hover:bg-brand-gold-dark hover:scale-105 transition-all shadow-md rounded-sm">
-                            <span class="material-symbols-outlined text-[13px]">flag</span> CHECKPOINT
-                        </a>`;
-                    } else {
-                        statusHtml = `<span class="bg-outline-variant/20 text-on-surface-variant px-3 py-1.5 text-[11px] font-mono font-bold flex items-center gap-1 rounded-sm">
-                            <span class="material-symbols-outlined text-[13px]">flag</span> CHECKPOINT
-                        </span>`;
-                    }
-                }
-
-                html += `
-                <li class="${liClass}">
-                    <div class="flex items-center gap-3">
-                        ${iconHtml}
-                        <span class="font-bold text-sm ${day.id === activeDay ? 'text-brand-dark' : 'text-primary'}">${day.name}</span>
-                    </div>
-                    ${statusHtml}
-                </li>`;
-            });
-
-            const ul = document.getElementById('weekly-target-list');
-            if (ul) ul.innerHTML = html;
-        }
-
-        updateClock();
-        updateGreeting();
-        setInterval(updateClock, 1000);
-        // Delay slight to allow UI render before calculation
-        setTimeout(updateWeeklyTarget, 300);
-    </script>
-
-    <!-- Firebase SDK & Auth -->
-    <script>
-        
-        // Timeout fallback for initial data
-        let dataLoaded = false;
-        setTimeout(() => {
-            if (!dataLoaded) {
-                const citaEl = document.getElementById('user-citacita');
-                const levelEl = document.getElementById('user-level');
-                const jenjangEl = document.getElementById('user-jenjang');
-                if (citaEl && citaEl.textContent === 'Memuat...') citaEl.textContent = 'Belum diatur';
-                if (levelEl && levelEl.textContent === '...') levelEl.textContent = 'Pemula';
-                if (jenjangEl && jenjangEl.textContent === 'Memuat...') jenjangEl.textContent = 'Data tidak ditemukan';
-                
-                const taskList = document.getElementById('upcoming-tasks-list');
-                if (taskList && taskList.innerHTML.includes('Memuat data...')) {
-                    taskList.innerHTML = '<div class="text-sm text-center text-error py-4">Gagal memuat tugas (Timeout). Coba muat ulang.</div>';
+                    greetingEl.textContent = 'Selamat malam! Waktu yang baik untuk evaluasi mandiri.';
                 }
             }
-        }, 8000);
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+
+        let currentStudent = null;
+        let selectedConsultationTopic = '🎯 Roadmap Karir';
 
         window.addEventListener('auth-ready', async function(e) {
             const user = e.detail;
             if (user) {
-                // Update header info
+                currentStudent = user;
                 document.getElementById('user-display-name').textContent = user.nama || 'Siswa';
                 document.getElementById('user-jenjang').textContent = `${user.jenjang || 'SMA'} Kelas ${user.kelas || '-'}`;
                 document.getElementById('user-citacita').textContent = user.citaCita || 'Belum diatur';
                 
-                // Initials
-                const initials = (user.nama || 'S').charAt(0).toUpperCase();
-                document.querySelectorAll('.bg-primary.text-white, .bg-primary\\/10.text-primary').forEach(el => {
-                    if (el.classList.contains('rounded-full') || el.classList.contains('w-10')) {
-                        // Assuming it's an avatar element
-                        if (!el.querySelector('span')) el.textContent = initials;
-                    }
-                });
+                const initials = (user.nama || 'S').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                const heroAvatar = document.getElementById('hero-user-avatar');
+                const topAvatar = document.getElementById('top-user-avatar');
+                if (heroAvatar) heroAvatar.textContent = initials;
+                if (topAvatar) topAvatar.textContent = initials;
 
-                // Update Level & Archive ID
-                document.getElementById('user-level').textContent = user.level || 'Pemula';
-                if(user.archiveRefId) document.getElementById('archive-ref-id').textContent = user.archiveRefId;
+                document.getElementById('user-level').textContent = user.level || 'Tingkat 2';
+                document.getElementById('archive-ref-id').textContent = `SL-${(user.uid || '2024').substring(0, 6).toUpperCase()}-VERIFIED`;
 
-                // Load Upcoming Tasks
                 loadUpcomingTasks(user.uid);
+                loadAdvisorInfo(user.uid);
             }
         });
 
-        async function loadUpcomingTasks(siswaId) {
-            const listEl = document.getElementById('upcoming-tasks-list');
-            if (!window.firebaseDb) {
-                listEl.innerHTML = '<div class="text-sm text-center text-error py-4">Koneksi database terputus.</div>';
-                dataLoaded = true;
-                return;
-            }
-            
-            try {
-                // Timeout wrapper
-                const fetchPromise = window.firebaseDb.collection('checkpoints')
-                    .where('siswaId', '==', siswaId)
-                    .where('status', '==', 'pending')
-                    .orderBy('deadline', 'asc')
-                    .limit(3)
-                    .get();
-                    
-                const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 7000));
-                
-                const snapshot = await Promise.race([fetchPromise, timeoutPromise]);
-
-                if (snapshot.empty) {
-                    listEl.innerHTML = '<div class="text-sm text-center text-on-surface-variant py-4">Tidak ada tugas/deadline terdekat. Semua tuntas! 🎉</div>';
-                    dataLoaded = true;
-                    return;
+        async function loadAdvisorInfo(siswaId) {
+            if (window.DataStore && window.DataStore.getGuruPembimbingSiswa) {
+                try {
+                    const advisor = await window.DataStore.getGuruPembimbingSiswa(siswaId);
+                    if (advisor) {
+                        document.getElementById('advisor-name').textContent = advisor.nama || 'Ibu Lestari, S.Sn';
+                        document.getElementById('advisor-spec').textContent = advisor.spesialisasi || 'Pembimbing Kurikulum & Desain';
+                        const initials = (advisor.nama || 'LS').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                        document.getElementById('advisor-avatar').textContent = initials;
+                    }
+                } catch(e) {
+                    console.warn('Advisor load error:', e);
                 }
-
-                let html = '';
-                snapshot.forEach(doc => {
-                    const task = doc.data();
-                    const d = task.deadline ? task.deadline.toDate() : new Date();
-                    const formattedDate = d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
-                    html += `
-                    <div class="flex items-center justify-between p-3 bg-on-surface/5 rounded-lg border border-on-surface/10 hover:border-brand-gold/50 transition-colors">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-outlined text-brand-gold">assignment</span>
-                            <div>
-                                <p class="text-sm font-bold text-brand-dark">${task.title || 'Tugas Checkpoint'}</p>
-                                <p class="text-[11px] text-error font-medium flex items-center gap-1 mt-0.5"><span class="material-symbols-outlined text-[12px]">timer</span> Deadline: ${formattedDate}</p>
-                            </div>
-                        </div>
-                        <a href="/?page=11_checkpoint-jumat" class="text-xs bg-brand-gold text-white px-3 py-1.5 rounded font-bold hover:bg-brand-gold-dark transition-colors">KERJAKAN</a>
-                    </div>`;
-                });
-                listEl.innerHTML = html;
-                dataLoaded = true;
-            } catch (error) {
-                console.error("Error loading tasks", error);
-                listEl.innerHTML = '<div class="text-sm text-center text-error py-4">Gagal memuat daftar tugas (' + (error.message || 'Error') + ').</div>';
-                dataLoaded = true;
             }
         }
-    </script>
 
+        async function loadUpcomingTasks(siswaId) {
+            const listEl = document.getElementById('upcoming-tasks-list');
+            listEl.innerHTML = `
+                <div class="flex items-center justify-between p-3 bg-primary/4 rounded border border-primary/10">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-brand-gold">assignment</span>
+                        <div>
+                            <p class="text-xs font-bold text-primary">Portofolio Sketsa Perspektif</p>
+                            <p class="text-[10px] text-error font-mono flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">timer</span> Deadline: Jumat Ini, 23:59</p>
+                        </div>
+                    </div>
+                    <a href="/?page=11_checkpoint-jumat" class="text-xs bg-brand-gold text-white px-3 py-1.5 font-mono font-bold hover:bg-brand-gold-dark transition-colors">KERJAKAN</a>
+                </div>
+                <div class="flex items-center justify-between p-3 bg-primary/4 rounded border border-primary/10">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-role-teacher">fact_check</span>
+                        <div>
+                            <p class="text-xs font-bold text-primary">Checkpoint Refleksi Mingguan</p>
+                            <p class="text-[10px] text-on-surface-variant font-mono">Batas Verifikasi Jumat</p>
+                        </div>
+                    </div>
+                    <a href="/?page=11_checkpoint-jumat" class="text-xs border border-primary/20 text-primary px-3 py-1.5 font-mono font-bold hover:bg-primary/5 transition-colors">LIHAT</a>
+                </div>
+            `;
+        }
+
+        // ================= KONSULTASI MODAL HANDLERS =================
+        function selectTopic(topic) {
+            selectedConsultationTopic = topic;
+            document.querySelectorAll('.topic-chip').forEach(c => {
+                if (c.textContent.trim() === topic) {
+                    c.classList.add('bg-role-teacher', 'text-white');
+                    c.classList.remove('bg-white');
+                } else {
+                    c.classList.remove('bg-role-teacher', 'text-white');
+                    c.classList.add('bg-white');
+                }
+            });
+        }
+
+        async function openConsultationModal() {
+            const modal = document.getElementById('consultation-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+            
+            const siswaId = currentStudent ? currentStudent.uid : 'demo_siswa_1';
+            if (window.DataStore && window.DataStore.getPesanKonsultasi) {
+                const messages = await window.DataStore.getPesanKonsultasi(siswaId, 'guru_lestari_01');
+                renderConsultationMessages(messages);
+            }
+        }
+
+        function closeConsultationModal() {
+            const modal = document.getElementById('consultation-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+        }
+
+        function renderConsultationMessages(messages) {
+            const container = document.getElementById('consultation-messages');
+            if (!container) return;
+
+            container.innerHTML = (messages || []).map(m => {
+                const isGuru = m.pengirimRole === 'Guru';
+                const timeStr = m.tanggal ? new Date(m.tanggal.seconds ? m.tanggal.seconds * 1000 : m.tanggal).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) : 'Baru saja';
+                return `
+                    <div class="flex flex-col ${isGuru ? 'items-start' : 'items-end'}">
+                        <div class="flex items-center gap-1 mb-0.5">
+                            <span class="font-mono text-[10px] font-bold ${isGuru ? 'text-role-teacher' : 'text-primary'}">${m.pengirimNama || (isGuru ? 'Guru' : 'Anda')}</span>
+                            <span class="font-mono text-[9px] text-on-surface-variant/70">· ${timeStr}</span>
+                            ${m.topik ? `<span class="font-mono text-[9px] bg-primary/5 px-1 rounded text-on-surface-variant">${m.topik}</span>` : ''}
+                        </div>
+                        <div class="max-w-[80%] p-3 rounded-lg text-xs leading-relaxed ${isGuru ? 'chat-bubble-guru rounded-tl-none' : 'chat-bubble-siswa rounded-tr-none'}">
+                            ${m.pesan}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendConsultationMessage() {
+            const input = document.getElementById('consultation-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const siswaId = currentStudent ? currentStudent.uid : 'demo_siswa_1';
+            const siswaNama = currentStudent ? currentStudent.nama : 'Ahmad Ibnu Muthohhari';
+
+            if (window.DataStore && window.DataStore.kirimPesanKonsultasi) {
+                await window.DataStore.kirimPesanKonsultasi(siswaId, 'guru_lestari_01', 'Siswa', siswaNama, text, selectedConsultationTopic);
+                const updated = await window.DataStore.getPesanKonsultasi(siswaId, 'guru_lestari_01');
+                renderConsultationMessages(updated);
+            }
+            input.value = '';
+        }
+
+        // ================= CATATAN GURU MODAL =================
+        async function openTeacherNotesModal() {
+            const modal = document.getElementById('teacher-notes-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+
+            const container = document.getElementById('teacher-notes-list');
+            const siswaId = currentStudent ? currentStudent.uid : 'demo_siswa_1';
+            
+            let notes = [];
+            if (window.DataStore && window.DataStore.getCatatanSiswa) {
+                notes = await window.DataStore.getCatatanSiswa(siswaId);
+            }
+
+            if (!notes || notes.length === 0) {
+                notes = [
+                    {
+                        isi: 'Ahmad menunjukkan pemahaman perspektif 2 titik hilang yang sangat rapi. Terus latih kerapian garis tepi sketsa ya!',
+                        guruNama: 'Ibu Lestari, S.Sn',
+                        tanggal: 'Kemarin'
+                    },
+                    {
+                        isi: 'KRS Semester 3 telah diverifikasi dan disetujui. Fokus pada mata kuliah Fisika Bangunan dan CAD.',
+                        guruNama: 'Ibu Lestari, S.Sn',
+                        tanggal: '3 hari lalu'
+                    }
+                ];
+            }
+
+            container.innerHTML = notes.map(n => `
+                <div class="p-3.5 bg-amber-50/70 border-l-4 border-role-teacher rounded border-t border-r border-b border-primary/10">
+                    <p class="text-xs italic text-primary leading-relaxed">"${n.isi}"</p>
+                    <p class="font-mono text-[10px] text-role-teacher font-bold mt-2 text-right">— ${n.guruNama || 'Guru Pembimbing'} · ${n.tanggal || 'Terbaru'}</p>
+                </div>
+            `).join('');
+        }
+
+        function closeTeacherNotesModal() {
+            const modal = document.getElementById('teacher-notes-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+        }
+
+        // Fallback init
+        setTimeout(() => {
+            if (!currentStudent && window.currentFirebaseUser) {
+                currentStudent = window.currentFirebaseUser;
+            }
+        }, 500);
+    </script>
 </body>
 
 </html>

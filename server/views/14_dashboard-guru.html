@@ -253,6 +253,25 @@
                 </div>
             </section>
 
+            <!-- Pusat Konsultasi & Pesan Siswa Binaan (Bridge Siswa-Guru) -->
+            <section class="ledger-card lg:col-span-2 flex flex-col">
+                <div class="p-6 border-b border-on-surface/10 bg-role-teacher/5 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <span class="material-symbols-outlined text-role-teacher text-2xl">forum</span>
+                        <div>
+                            <h3 class="font-headline-md text-primary font-bold">Pusat Konsultasi & Pesan Siswa Binaan</h3>
+                            <p class="font-sans text-xs text-on-surface-variant">Tanya jawab langsung seputar pemilihan roadmap, KRS, dan evaluasi checkpoint</p>
+                        </div>
+                    </div>
+                    <span id="consultation-count-badge" class="font-stats-sm text-xs bg-role-teacher text-white px-3 py-1 rounded font-bold">
+                        2 PESAN AKTIF
+                    </span>
+                </div>
+                <div id="guru-consultation-inbox" class="p-6 divide-y divide-primary/10">
+                    <!-- Dynamic consultation threads injected -->
+                </div>
+            </section>
+
             <!-- Aspiration Changes (Wide Section) -->
             <section class="ledger-card lg:col-span-2">
                 <div class="p-6 border-b border-on-surface/10 bg-surface-container-low/30 flex justify-between items-center">
@@ -335,7 +354,8 @@
                 loadCheckpointQueue(),
                 loadAspirasiQueue(),
                 loadRiskStudents(),
-                loadClassPerformance()
+                loadClassPerformance(),
+                loadConsultationInbox()
             ]);
         });
 
@@ -745,6 +765,109 @@
 
             chartContainer.innerHTML = html;
         }
+
+        // ================= KONSULTASI INBOX GURU =================
+        let activeConsultationSiswa = null;
+
+        async function loadConsultationInbox() {
+            const container = document.getElementById('guru-consultation-inbox');
+            const badge = document.getElementById('consultation-count-badge');
+            if (!container) return;
+
+            let messages = [];
+            try {
+                if (window.DataStore && window.DataStore.getPesanKonsultasi) {
+                    messages = await window.DataStore.getPesanKonsultasi('demo_siswa_1', currentGuru ? (currentGuru.uid || 'guru_lestari_01') : 'guru_lestari_01');
+                }
+            } catch (err) {
+                console.warn('Consultation fetch error:', err);
+            }
+
+            if (!messages || messages.length === 0) {
+                messages = [
+                    {
+                        id: 'c1',
+                        siswaId: 'siswa_ahmad_01',
+                        pengirimNama: 'Ahmad Ibnu Muthohhari',
+                        jenjang: 'SMA Kelas 11',
+                        topik: '🎯 Roadmap Karir',
+                        pesan: 'Selamat siang Bu, untuk portofolio arsitektur semester 3 apakah disarankan mengambil fokus di sketsa fasad atau pemodelan digital SketchUp terlebih dahulu?',
+                        tanggal: 'Hari ini, 10:15 WIB',
+                        status: 'Perlu Balasan'
+                    },
+                    {
+                        id: 'c2',
+                        siswaId: 'siswa_siti_02',
+                        pengirimNama: 'Siti Aminah',
+                        jenjang: 'SMA Kelas 11',
+                        topik: '📚 Pemilihan KRS',
+                        pesan: 'Ibu, pengajuan KRS biokimia lanjutan saya sudah saya submit, mohon arahan jadwal praktikumnya ya Bu.',
+                        tanggal: 'Kemarin, 16:30 WIB',
+                        status: 'Sudah Dibalas'
+                    }
+                ];
+            }
+
+            if (badge) badge.textContent = `${messages.length} KONSULTASI`;
+
+            container.innerHTML = messages.map((msg, idx) => `
+                <div class="py-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex items-start gap-3">
+                        <div class="w-10 h-10 rounded-full bg-role-teacher/10 text-role-teacher flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-role-teacher/20">
+                            ${(msg.pengirimNama || 'S').split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase()}
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h4 class="font-sans text-sm font-bold text-primary">${msg.pengirimNama || 'Siswa'}</h4>
+                                <span class="font-mono text-[10px] bg-primary/5 px-2 py-0.5 border border-primary/10 text-on-surface-variant">${msg.topik || 'Konsultasi'}</span>
+                                <span class="font-mono text-[10px] text-on-surface-variant/70">· ${msg.tanggal ? (typeof msg.tanggal === 'string' ? msg.tanggal : new Date(msg.tanggal.seconds ? msg.tanggal.seconds*1000 : msg.tanggal).toLocaleTimeString('id-ID')) : 'Baru saja'}</span>
+                            </div>
+                            <p class="font-sans text-xs text-on-surface-variant mt-1 leading-relaxed max-w-2xl bg-white p-2.5 rounded border border-primary/10">
+                                "${msg.pesan}"
+                            </p>
+                        </div>
+                    </div>
+                    <button onclick="openGuruReplyModal('${msg.siswaId || 'demo_siswa_1'}', '${msg.pengirimNama || 'Siswa'}', '${msg.topik || 'Bimbingan'}')"
+                        class="px-4 py-2 bg-role-teacher text-white font-mono text-xs font-bold rounded hover:bg-role-teacher/90 transition-all shadow-[2px_2px_0px_#17223B] flex items-center justify-center gap-1.5 self-start md:self-center shrink-0">
+                        <span class="material-symbols-outlined text-[16px]">reply</span>
+                        BALAS BIMBINGAN
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function openGuruReplyModal(siswaId, siswaNama, topik) {
+            activeConsultationSiswa = { id: siswaId, nama: siswaNama, topik: topik };
+            const modal = document.getElementById('guru-reply-modal');
+            document.getElementById('reply-student-name').textContent = `Balas Konsultasi: ${siswaNama}`;
+            document.getElementById('reply-topic-badge').textContent = topik;
+            modal.classList.remove('hidden');
+            setTimeout(() => modal.classList.remove('opacity-0'), 10);
+        }
+
+        function closeGuruReplyModal() {
+            const modal = document.getElementById('guru-reply-modal');
+            modal.classList.add('opacity-0');
+            setTimeout(() => modal.classList.add('hidden'), 200);
+        }
+
+        async function sendGuruReply() {
+            const input = document.getElementById('guru-reply-input');
+            const text = input.value.trim();
+            if (!text || !activeConsultationSiswa) return;
+
+            const guruId = currentGuru ? (currentGuru.uid || currentGuru.id) : 'guru_lestari_01';
+            const guruNama = currentGuru ? (currentGuru.nama || 'Ibu Lestari, S.Sn') : 'Ibu Lestari, S.Sn';
+
+            if (window.DataStore && window.DataStore.kirimPesanKonsultasi) {
+                await window.DataStore.kirimPesanKonsultasi(activeConsultationSiswa.id, guruId, 'Guru', guruNama, text, activeConsultationSiswa.topik);
+            }
+
+            alert(`Balasan berhasil dikirimkan ke ${activeConsultationSiswa.nama}! Siswa akan menerima notifikasi real-time.`);
+            input.value = '';
+            closeGuruReplyModal();
+            loadConsultationInbox();
+        }
     </script>
 
     <!-- Generic Link Routing Handler -->
@@ -805,12 +928,28 @@
         else if (text.includes('profil') || text === 'settings' || text === 'person') window.location.href = '/?page=18_profil';
         else if (text.includes('notifikasi') || text === 'notifications') window.location.href = '/?page=17_notifikasi';
         else if (text.includes('tinjauan') || text.includes('review') || text.includes('tinjau')) window.location.href = '/?page=15_tinjauan-guru';
-        else if (text.includes('keluar') || text.includes('logout')) window.location.href = '/?page=01_login';
-        else if (text.includes('tes diagnostik')) window.location.href = '/?page=02_intro-diagnosis';
-      });
-      
-      document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
-    })();
-    </script>
+    <!-- MODAL BALAS BIMBINGAN GURU -->
+    <div id="guru-reply-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-200">
+        <div class="ledger-card bg-white w-full max-w-lg overflow-hidden border border-primary/20 transform scale-95 transition-transform duration-200">
+            <div class="bg-role-teacher text-white p-4 flex items-center justify-between">
+                <div>
+                    <h3 id="reply-student-name" class="font-serif text-base font-bold">Balas Konsultasi Siswa</h3>
+                    <span id="reply-topic-badge" class="font-mono text-[10px] bg-white/20 px-2 py-0.5 rounded text-white/90">Topik Bimbingan</span>
+                </div>
+                <button onclick="closeGuruReplyModal()" class="text-white/70 hover:text-white p-1"><span class="material-symbols-outlined">close</span></button>
+            </div>
+            <div class="p-5 space-y-3">
+                <p class="font-sans text-xs text-on-surface-variant">Tuliskan pesan arahan, saran roadmap, atau feedback untuk siswa bimbingan Anda:</p>
+                <textarea id="guru-reply-input" class="w-full h-32 p-3 text-sm font-sans border border-primary/20 rounded focus:border-role-teacher focus:outline-none resize-none bg-[#FBFAF5]" placeholder="Tuliskan balasan bimbingan di sini..."></textarea>
+            </div>
+            <div class="p-3 bg-primary/5 border-t border-primary/10 flex justify-end gap-2">
+                <button onclick="closeGuruReplyModal()" class="px-4 py-2 border border-primary/20 text-primary font-mono text-xs font-bold rounded hover:bg-primary/5 transition-colors">BATAL</button>
+                <button onclick="sendGuruReply()" class="px-5 py-2 bg-role-teacher text-white font-mono text-xs font-bold rounded hover:bg-role-teacher-dark transition-all flex items-center gap-1.5 shadow-[2px_2px_0px_#17223B]">
+                    <span class="material-symbols-outlined text-[16px]">send</span>
+                    KIRIM BALASAN
+                </button>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
