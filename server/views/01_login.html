@@ -621,13 +621,13 @@
 
             if (role === 'Siswa') {
                 emailInput.value = 'siswa@flexa.test';
-                passInput.value = 'password123';
+                passInput.value = 'flexa123';
             } else if (role === 'Guru') {
                 emailInput.value = 'guru@flexa.test';
-                passInput.value = 'password123';
+                passInput.value = 'flexa123';
             } else if (role === 'OrangTua') {
                 emailInput.value = 'ortu@flexa.test';
-                passInput.value = 'password123';
+                passInput.value = 'flexa123';
             }
             
             showSuccess(`Akun demo ${role === 'OrangTua' ? 'Orang Tua' : role} telah diisi otomatis. Klik tombol 'Masuk ke Portal' di bawah.`);
@@ -679,6 +679,12 @@
                 } else if (actualRole === 'OrangTua') {
                     window.location.href = '/?page=16_dashboard-ortu';
                 } else {
+                    // Check if student already has career or diagnostic
+                    if (userData.hasilDiagnostik || userData.citaCita || userData.roadmapBelajar) {
+                        window.location.href = '/?page=08_dashboard-siswa';
+                        return;
+                    }
+
                     db.collection('hasilDiagnostik').doc(uid).get().then(function(diagDoc) {
                         if (diagDoc && diagDoc.exists) {
                             window.location.href = '/?page=08_dashboard-siswa';

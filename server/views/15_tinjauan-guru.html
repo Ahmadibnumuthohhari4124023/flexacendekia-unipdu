@@ -399,91 +399,6 @@
         let pendingKrsList = [];
         let activeKrsIndex = 0;
 
-        function getDefaultPendingKRS() {
-            let activeStudent = {};
-            try { activeStudent = JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch(e) {}
-            if (!activeStudent.nama && localStorage.getItem('userNama')) {
-                activeStudent = {
-                    nama: localStorage.getItem('userNama'),
-                    jenjang: localStorage.getItem('userJenjang') || 'SD',
-                    kelas: localStorage.getItem('userKelas') || 1,
-                    nisn: localStorage.getItem('userNisn') || '7JtTafT1z7',
-                    citaCita: localStorage.getItem('selectedCareer') || 'Aktor'
-                };
-            }
-
-            const activeName = activeStudent.nama || 'Ahmad Ibnu MUthohhari';
-            const activeJenjang = (activeStudent.jenjang || 'SD').toUpperCase();
-            const activeKelas = activeStudent.kelas || (activeJenjang === 'SD' ? 1 : (activeJenjang === 'SMP' ? 7 : 10));
-            const activeCita = activeStudent.citaCita || 'Aktor';
-
-            return [
-                {
-                    id: 'krs_active_01',
-                    siswaId: activeStudent.uid || 'siswa_active',
-                    nama: activeName,
-                    jenjang: activeJenjang,
-                    kelas: `Kelas ${activeKelas}`,
-                    citaCita: activeCita,
-                    semester: 1,
-                    tanggal: 'Hari ini, 09:15 WIB',
-                    gpa: '3.88',
-                    status: 'Menunggu Persetujuan',
-                    insight: `Minat kuat pada bidang ${activeCita}. Capaian literasi dan portofolio berekspresi berkembang sangat pesat.`,
-                    mataPelajaran: [
-                        { kode: `${activeJenjang}-LIT-01`, namaMapel: 'Bahasa Indonesia & Literasi Cerita', sks: 4, kategori: 'Wajib' },
-                        { kode: `${activeJenjang}-MAT-01`, namaMapel: 'Matematika & Logika Konkret', sks: 4, kategori: 'Wajib' },
-                        { kode: `${activeJenjang}-SENI-01`, namaMapel: `Seni Budaya & Olah Peran (${activeCita})`, sks: 3, kategori: 'Peminatan' },
-                        { kode: `${activeJenjang}-PANC-01`, namaMapel: 'Pendidikan Pancasila & Karakter', sks: 2, kategori: 'Wajib' },
-                        { kode: `${activeJenjang}-IPAS-01`, namaMapel: 'IPAS (Eksplorasi Alam & Sosial)', sks: 3, kategori: 'Wajib' },
-                        { kode: `${activeJenjang}-PJOK-01`, namaMapel: 'PJOK & Aktivitas Motorik Sehat', sks: 2, kategori: 'Wajib' },
-                        { kode: `${activeJenjang}-P5-01`, namaMapel: 'Proyek Profil Pelajar Pancasila (P5)', sks: 2, kategori: 'Proyek' }
-                    ]
-                },
-                {
-                    id: 'krs_mock_02',
-                    siswaId: 'siswa_04',
-                    nama: 'Zahra Amelia Ramadhani',
-                    jenjang: 'SMP',
-                    kelas: 'Kelas 9',
-                    citaCita: 'Desainer Grafis & Animator 3D',
-                    semester: 1,
-                    tanggal: 'Kemarin, 14:20 WIB',
-                    gpa: '3.92',
-                    status: 'Menunggu Persetujuan',
-                    insight: 'Siswa berbakat dalam pemodelan visual dan ilustrasi digital. Direkomendasikan mengambil modul matrikulasi DKV UNIPDU.',
-                    mataPelajaran: [
-                        { kode: 'SMP-BIN-01', namaMapel: 'Bahasa Indonesia & Penulisan Kreatif', sks: 4, kategori: 'Wajib' },
-                        { kode: 'SMP-MAT-01', namaMapel: 'Matematika Terapan & Logika Geometri', sks: 4, kategori: 'Wajib' },
-                        { kode: 'SMP-DESAIN-01', namaMapel: 'Desain Komunikasi Visual & Vektor', sks: 3, kategori: 'Peminatan' },
-                        { kode: 'SMP-ANIM-01', namaMapel: 'Dasar Animasi 2D & Storyboarding', sks: 3, kategori: 'Peminatan' },
-                        { kode: 'SMP-ENG-01', namaMapel: 'English for Creative Portfolio', sks: 3, kategori: 'Wajib' },
-                        { kode: 'SMP-P5-01', namaMapel: 'Proyek P5 Gelar Karya Desain', sks: 2, kategori: 'Proyek' }
-                    ]
-                },
-                {
-                    id: 'krs_mock_03',
-                    siswaId: 'siswa_05',
-                    nama: 'Kevin Anggara Putra',
-                    jenjang: 'SMA',
-                    kelas: 'Kelas 11',
-                    citaCita: 'Arsitek & Perancang Kota',
-                    semester: 1,
-                    tanggal: 'Kemarin, 16:45 WIB',
-                    gpa: '3.96',
-                    status: 'Menunggu Persetujuan',
-                    insight: 'Siap mengambil program matrikulasi akselerasi 2 mata kuliah S1 Arsitektur UNIPDU semester ini.',
-                    mataPelajaran: [
-                        { kode: 'SMA-MAT-01', namaMapel: 'Kalkulus & Matematika Lanjut Arsitektur', sks: 4, kategori: 'Wajib' },
-                        { kode: 'SMA-ARS-01', namaMapel: 'Studio Perancangan Arsitektur 1 (S1 UNIPDU)', sks: 4, kategori: 'Matrikulasi S1' },
-                        { kode: 'SMA-CAD-01', namaMapel: 'BIM & Computer Aided Design (CAD)', sks: 3, kategori: 'Peminatan' },
-                        { kode: 'SMA-ENG-01', namaMapel: 'Academic English & Architecture Presentation', sks: 3, kategori: 'Wajib' },
-                        { kode: 'SMA-PORTO-01', namaMapel: 'Kurasi Portofolio Sayembara Pelajar', sks: 3, kategori: 'Peminatan' }
-                    ]
-                }
-            ];
-        }
-
         async function loadTeacherKRS() {
             const container = document.getElementById('student-queue-container');
             const queueCounter = document.getElementById('queue-counter');
@@ -499,11 +414,14 @@
                     }
                 }
             } catch (err) {
-                console.warn('DataStore fetch error:', err);
+                console.warn('[Tinjauan Guru] DataStore fetch error:', err);
             }
 
             if (!pendingKrsList || pendingKrsList.length === 0) {
-                pendingKrsList = getDefaultPendingKRS();
+                queueCounter.textContent = '0 Siswa Menunggu';
+                container.innerHTML = '<span class="font-mono text-xs text-on-surface-variant italic py-1">Tidak ada antrean pengajuan KRS saat ini.</span>';
+                renderEmptyKRSState();
+                return;
             }
 
             queueCounter.textContent = `${pendingKrsList.length} Siswa Menunggu`;

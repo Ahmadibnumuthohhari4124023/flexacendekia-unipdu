@@ -403,6 +403,56 @@ Data disinkronkan via SSO Flexa Cendekia
     </div>
 </div>
 
+<!-- Modal Tautkan Akun Anak -->
+<div id="modal-tautkan-anak" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="paper-card w-full max-w-md p-6 border-2 border-primary/20 hard-shadow relative">
+        <button onclick="closeTautkanAnakModal()" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-full bg-role-parent/15 text-role-parent flex items-center justify-center">
+                <span class="material-symbols-outlined text-xl">family_restroom</span>
+            </div>
+            <div>
+                <h3 class="font-bold text-lg text-primary">Tautkan Akun Anak</h3>
+                <p class="text-xs text-on-surface-variant">Hubungkan portal orang tua dengan akun siswa</p>
+            </div>
+        </div>
+
+        <div id="tautkan-anak-alert" class="hidden mb-4 p-3 rounded text-xs font-mono"></div>
+
+        <form id="form-tautkan-anak" onsubmit="handleTautkanAnakSubmit(event)" class="space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-primary mb-1 uppercase tracking-wider font-label-caps">NISN atau Kode Tautan Siswa</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-base">badge</span>
+                    <input id="input-siswa-id" type="text" required placeholder="Contoh: 0082918273 atau FLX-FAIZ-8821" 
+                        class="w-full pl-9 pr-3 py-2 text-xs border border-primary/20 rounded font-mono text-primary focus:outline-none focus:border-role-parent">
+                </div>
+                <p class="text-[10px] text-on-surface-variant mt-1">Dapatkan kode tautan dari halaman profil siswa anak Anda.</p>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-primary mb-1 uppercase tracking-wider font-label-caps">PIN Verifikasi Keluarga (Opsional)</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-base">lock</span>
+                    <input id="input-siswa-pin" type="password" placeholder="Contoh: 1234" 
+                        class="w-full pl-9 pr-3 py-2 text-xs border border-primary/20 rounded font-mono text-primary focus:outline-none focus:border-role-parent">
+                </div>
+            </div>
+
+            <div class="pt-2 flex gap-2 justify-end">
+                <button type="button" onclick="closeTautkanAnakModal()" class="px-4 py-2 border border-primary/20 text-xs font-bold text-primary rounded hover:bg-primary/5 transition-colors">
+                    Batal
+                </button>
+                <button id="btn-submit-tautan" type="submit" class="px-5 py-2 bg-role-parent text-white text-xs font-bold rounded hover:opacity-90 transition-opacity flex items-center gap-1.5 shadow-sm">
+                    <span class="material-symbols-outlined text-sm">link</span> Tautkan Sekarang
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!-- Toast notification -->
 <div id="toast" class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-primary text-white px-6 py-3 font-label-caps text-label-caps hidden z-50 shadow-lg rounded">
     Balasan terkirim!
@@ -425,6 +475,78 @@ Data disinkronkan via SSO Flexa Cendekia
         let activeStudentId = null;
         let activeCatatanId = null;
         let allNotifs = [];
+
+        function openTautkanAnakModal() {
+            const modal = document.getElementById('modal-tautkan-anak');
+            const alertEl = document.getElementById('tautkan-anak-alert');
+            if (alertEl) alertEl.className = 'hidden';
+            if (modal) {
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            }
+        }
+
+        function closeTautkanAnakModal() {
+            const modal = document.getElementById('modal-tautkan-anak');
+            if (modal) {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }
+        }
+
+        async function handleTautkanAnakSubmit(e) {
+            e.preventDefault();
+            const identifier = document.getElementById('input-siswa-id')?.value.trim();
+            const pin = document.getElementById('input-siswa-pin')?.value.trim();
+            const alertEl = document.getElementById('tautkan-anak-alert');
+            const btn = document.getElementById('btn-submit-tautan');
+
+            if (!identifier) return;
+
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">sync</span> Memverifikasi...';
+            }
+
+            try {
+                const parentUid = (currentUser && (currentUser.uid || currentUser.id));
+                if (!window.DataStore || !window.DataStore.tautkanAnak) {
+                    throw new Error('DataStore belum siap.');
+                }
+                const res = await window.DataStore.tautkanAnak(parentUid, identifier, pin);
+                if (res.success) {
+                    if (alertEl) {
+                        alertEl.className = 'mb-4 p-3 rounded text-xs font-mono bg-green-100 text-green-800 border border-green-300';
+                        alertEl.textContent = '✓ ' + res.message;
+                    }
+                    setTimeout(async () => {
+                        closeTautkanAnakModal();
+                        if (currentUser) {
+                            if (!currentUser.anakIds) currentUser.anakIds = [];
+                            if (res.siswa && !currentUser.anakIds.includes(res.siswa.id)) {
+                                currentUser.anakIds.push(res.siswa.id);
+                            }
+                        }
+                        await loadChildren();
+                    }, 1200);
+                } else {
+                    if (alertEl) {
+                        alertEl.className = 'mb-4 p-3 rounded text-xs font-mono bg-red-100 text-red-800 border border-red-300';
+                        alertEl.textContent = '✗ ' + res.message;
+                    }
+                }
+            } catch(err) {
+                if (alertEl) {
+                    alertEl.className = 'mb-4 p-3 rounded text-xs font-mono bg-red-100 text-red-800 border border-red-300';
+                    alertEl.textContent = '✗ Terjadi kesalahan: ' + err.message;
+                }
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span class="material-symbols-outlined text-sm">link</span> Tautkan Sekarang';
+                }
+            }
+        }
 
         async function initOrtuDashboard(user) {
             currentUser = user || (function() {
@@ -467,68 +589,37 @@ Data disinkronkan via SSO Flexa Cendekia
             if (!childSelectorContainer) return;
 
             try {
-                // Query children via DataStore
-                const parentUid = (currentUser && (currentUser.uid || currentUser.id)) || 'ortu_01';
+                const parentUid = (currentUser && (currentUser.uid || currentUser.id));
                 let list = [];
-                if (window.DataStore && DataStore.getAnakByOrtuId) {
+                if (window.DataStore && DataStore.getAnakByOrtuId && parentUid) {
                     try {
                         list = await DataStore.getAnakByOrtuId(parentUid);
-                    } catch(e) {}
-                }
-
-                if (!list || list.length === 0) {
-                    if (currentUser && currentUser.anakIds && currentUser.anakIds.length > 0 && window.DataStore) {
-                        list = [];
-                        for (const aid of currentUser.anakIds) {
-                            const u = await DataStore.getUserById(aid);
-                            if (u) list.push(u);
-                        }
+                    } catch(e) {
+                        console.warn('[Dashboard Ortu] Error getAnakByOrtuId:', e);
                     }
                 }
 
-                if (!list || list.length === 0) {
-                    // Fallback to active registered student
-                    let activeStudent = {};
-                    try { activeStudent = JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch(e) {}
-                    const sName = activeStudent.nama || localStorage.getItem('userNama') || 'Ahmad Ibnu MUthohhari';
-                    const sJenjang = (activeStudent.jenjang || localStorage.getItem('userJenjang') || 'SD').toUpperCase();
-                    const sKelas = activeStudent.kelas || localStorage.getItem('userKelas') || (sJenjang === 'SD' ? '1' : (sJenjang === 'SMP' ? '7' : '10'));
-                    const sCita = activeStudent.citaCita || localStorage.getItem('selectedCareer') || 'Aktor';
-                    const sNisn = activeStudent.nisn || localStorage.getItem('userNisn') || '7JtTafT1z7';
-
-                    list = [
-                        {
-                            id: activeStudent.uid || 'anak_01',
-                            uid: activeStudent.uid || 'anak_01',
-                            nama: sName,
-                            jenjang: sJenjang,
-                            kelas: sKelas,
-                            citaCita: sCita,
-                            nisn: sNisn,
-                            tahunAjaran: '2025/2026',
-                            roadmapProgress: 88
-                        },
-                        {
-                            id: 'anak_02',
-                            uid: 'anak_02',
-                            nama: 'Zahra Amelia Ramadhani',
-                            jenjang: 'SMP',
-                            kelas: '9',
-                            citaCita: 'Desainer Grafis & Animator 3D',
-                            nisn: '4M8Z09182Y',
-                            tahunAjaran: '2025/2026',
-                            roadmapProgress: 94
-                        }
-                    ];
+                if ((!list || list.length === 0) && currentUser && currentUser.anakIds && currentUser.anakIds.length > 0 && window.DataStore) {
+                    list = [];
+                    for (const aid of currentUser.anakIds) {
+                        const u = await DataStore.getUserById(aid);
+                        if (u) list.push(u);
+                    }
                 }
 
                 childrenList = list || [];
 
                 if (childrenList.length === 0) {
                     childSelectorContainer.innerHTML = `
-                        <button class="bg-surface-container text-on-surface-variant px-5 py-2 rounded-full font-label-caps text-xs flex items-center border border-on-surface/20">
-                            <span class="material-symbols-outlined mr-2 text-sm">person_off</span> Belum ada data anak terhubung
-                        </button>`;
+                        <div class="flex items-center gap-2">
+                            <span class="bg-surface-container text-on-surface-variant px-4 py-2 rounded-full font-label-caps text-xs flex items-center border border-on-surface/20">
+                                <span class="material-symbols-outlined mr-1.5 text-sm">person_off</span> Belum ada data anak terhubung
+                            </span>
+                            <button onclick="openTautkanAnakModal()" class="bg-role-parent text-white hover:opacity-90 px-4 py-2 rounded-full font-label-caps text-xs font-bold flex items-center shadow-sm transition-all">
+                                <span class="material-symbols-outlined mr-1 text-sm">add_link</span> + Tautkan Akun Anak
+                            </button>
+                        </div>`;
+                    renderEmptyOrtuDashboard();
                     return;
                 }
 
@@ -549,11 +640,20 @@ Data disinkronkan via SSO Flexa Cendekia
             }
         }
 
+        function renderEmptyOrtuDashboard() {
+            const nameEl = document.getElementById('student-nama');
+            if (nameEl) nameEl.textContent = 'Belum Ada Anak Terhubung';
+            const citaEl = document.getElementById('student-cita-cita');
+            if (citaEl) citaEl.textContent = '-';
+            const jenjangEl = document.getElementById('student-jenjang');
+            if (jenjangEl) jenjangEl.textContent = '-';
+        }
+
         function renderChildSelectorPills() {
             const container = document.getElementById('child-selector');
             if (!container || childrenList.length === 0) return;
 
-            container.innerHTML = childrenList.map(child => {
+            let html = childrenList.map(child => {
                 const childId = child.id || child.uid;
                 const isActive = childId === activeStudentId;
                 const activeClass = "bg-role-parent text-white font-bold hard-shadow";
@@ -566,6 +666,14 @@ Data disinkronkan via SSO Flexa Cendekia
                     </button>
                 `;
             }).join('');
+
+            html += `
+                <button onclick="openTautkanAnakModal()" class="bg-white hover:bg-primary/5 text-primary border border-dashed border-primary/40 px-4 py-2 rounded-full font-label-caps text-xs font-bold flex items-center transition-all ml-1" title="Tautkan Anak Baru">
+                    <span class="material-symbols-outlined mr-1 text-sm text-role-parent">add</span> Tautkan Anak
+                </button>
+            `;
+
+            container.innerHTML = html;
         }
 
         async function selectChild(studentId) {

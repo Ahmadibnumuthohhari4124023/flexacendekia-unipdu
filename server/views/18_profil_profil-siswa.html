@@ -500,6 +500,59 @@
                         </div>
                     </form>
                 </div>
+
+                <!-- Section: Kode Tautan Keluarga & Guru Pembimbing -->
+                <div class="ledger-card p-6 md:p-8 border-2 border-secondary/30 bg-secondary/5">
+                    <div class="flex items-center justify-between mb-4 pb-3 border-b border-secondary/20">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-secondary/20 text-secondary flex items-center justify-center">
+                                <span class="material-symbols-outlined text-xl">qr_code_2</span>
+                            </div>
+                            <div>
+                                <h3 class="font-headline-md text-base font-bold text-primary">Kode Tautan Keluarga &amp; Pembimbing</h3>
+                                <p class="text-xs text-on-surface-variant">Berikan kode atau NISN ini kepada Orang Tua dan Guru Wali untuk menghubungkan akun portal.</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 bg-secondary text-white text-[10px] font-mono font-bold rounded">
+                            SINKRONISASI
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                        <!-- Kode Tautan -->
+                        <div class="p-4 bg-white border border-primary/15 rounded flex flex-col justify-between shadow-sm">
+                            <span class="text-[10px] font-mono text-on-surface-variant uppercase font-bold block mb-1">KODE TAUTAN SISWA</span>
+                            <div class="flex items-center justify-between mt-1">
+                                <code id="display-kode-tautan" class="text-sm font-mono font-bold text-primary bg-primary/5 px-2 py-1 rounded">FLX-FAIZ-8821</code>
+                                <button type="button" onclick="salinTeks('display-kode-tautan')" class="p-1.5 hover:bg-primary/10 text-primary rounded transition-colors" title="Salin Kode">
+                                    <span class="material-symbols-outlined text-base">content_copy</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- NISN -->
+                        <div class="p-4 bg-white border border-primary/15 rounded flex flex-col justify-between shadow-sm">
+                            <span class="text-[10px] font-mono text-on-surface-variant uppercase font-bold block mb-1">NISN RESMI</span>
+                            <div class="flex items-center justify-between mt-1">
+                                <code id="display-nisn-tautan" class="text-sm font-mono font-bold text-primary bg-primary/5 px-2 py-1 rounded">0082918273</code>
+                                <button type="button" onclick="salinTeks('display-nisn-tautan')" class="p-1.5 hover:bg-primary/10 text-primary rounded transition-colors" title="Salin NISN">
+                                    <span class="material-symbols-outlined text-base">content_copy</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- PIN Keluarga -->
+                        <div class="p-4 bg-white border border-primary/15 rounded flex flex-col justify-between shadow-sm">
+                            <span class="text-[10px] font-mono text-on-surface-variant uppercase font-bold block mb-1">PIN VERIFIKASI KELUARGA</span>
+                            <div class="flex items-center justify-between mt-1">
+                                <code id="display-pin-tautan" class="text-sm font-mono font-bold text-secondary bg-secondary/10 px-2 py-1 rounded">1234</code>
+                                <button type="button" onclick="salinTeks('display-pin-tautan')" class="p-1.5 hover:bg-secondary/20 text-secondary rounded transition-colors" title="Salin PIN">
+                                    <span class="material-symbols-outlined text-base">content_copy</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- TAB 2: Minat Karir & Hasil Diagnostik -->
@@ -1003,6 +1056,16 @@
                 if (heroFoto) heroFoto.src = fotoUrl;
             }
 
+            // Linking Codes (Kode Tautan, NISN, PIN)
+            const kodeTautan = user.kodeTautan || `FLX-${(user.nama || 'SISWA').split(' ')[0].toUpperCase()}-${(user.nisn || '8821').slice(-4)}`;
+            const pinTautan = user.pinTautan || '1234';
+            const displayKodeEl = document.getElementById('display-kode-tautan');
+            if (displayKodeEl) displayKodeEl.textContent = kodeTautan;
+            const displayNisnEl = document.getElementById('display-nisn-tautan');
+            if (displayNisnEl) displayNisnEl.textContent = nisn;
+            const displayPinEl = document.getElementById('display-pin-tautan');
+            if (displayPinEl) displayPinEl.textContent = pinTautan;
+
             // Form Fields
             const bioNama = document.getElementById('bio-nama');
             if (bioNama) bioNama.value = nama;
@@ -1037,6 +1100,17 @@
                 }
                 if (ta.kriteria && document.getElementById('target-kriteria')) document.getElementById('target-kriteria').textContent = ta.kriteria;
             }
+        }
+
+        function salinTeks(elementId) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            const text = el.textContent.trim();
+            navigator.clipboard.writeText(text).then(() => {
+                tampilkanAlert(`✓ Berhasil menyalin: ${text}`, 'success');
+            }).catch(() => {
+                tampilkanAlert(`Kode: ${text}`, 'info');
+            });
         }
 
         function muatUlangDataSiswa() {

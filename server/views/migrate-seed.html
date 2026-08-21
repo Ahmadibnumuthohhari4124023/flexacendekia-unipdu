@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Seed Database Flexa Cendekia</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 2rem; max-width: 720px; margin: 0 auto; background: #EAEDE2; color: #020b24; }
+        .card { background: #FBFAF5; border: 1px solid rgba(2,11,36,0.2); padding: 1.5rem; border-radius: 8px; box-shadow: 4px 4px 0 rgba(2,11,36,0.15); margin-bottom: 1.5rem; }
+        button { padding: 12px 24px; font-size: 15px; font-weight: bold; cursor: pointer; background: #020b24; color: white; border: none; border-radius: 6px; transition: all 0.2s; }
+        button:hover { background: #17223b; }
+        button:disabled { background: #94a3b8; cursor: not-allowed; }
+        #log { margin-top: 15px; background: #020b24; color: #a3e635; padding: 15px; border-radius: 6px; font-family: "SFMono-Regular", Consolas, Menlo, monospace; font-size: 12px; white-space: pre-wrap; height: 350px; overflow-y: auto; line-height: 1.5; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; font-family: monospace; }
+        .badge-student { background: #e0f2fe; color: #0369a1; }
+        .badge-teacher { background: #fef3c7; color: #92400e; }
+        .badge-parent { background: #fce7f3; color: #9d174d; }
+        .uids-summary { background: #fff; border: 1px solid #cbd5e1; padding: 12px; border-radius: 6px; margin-top: 15px; font-family: monospace; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1 style="margin-top:0; font-size:22px;">Data Seeder Idempoten (Flexa Cendekia x UNIPDU)</h1>
+        <p style="font-size:13px; color:#475569;">
+            Skrip ini menginisialisasi 3 akun profil terintegrasi secara profesional dengan kata sandi <code>flexa123</code> dan relasi data (Foreign Key) terhubung secara utuh.
+        </p>
+        
+        <div style="font-size:12px; line-height:1.8; margin-bottom:15px; background:#fff; padding:12px; border-radius:6px; border:1px solid #e2e8f0;">
+            <strong>Daftar Akun yang Dibuat / Diselaraskan:</strong><br>
+            🎓 <span class="badge badge-student">Siswa</span> <strong>Muhammad Faiz Pratama</strong> — <code>siswa@flexa.test</code> / <code>flexa123</code> (SMA Kelas 11)<br>
+            👩‍🏫 <span class="badge badge-teacher">Guru</span> <strong>Ibu Sari Rahayu, M.Pd.</strong> — <code>guru@flexa.test</code> / <code>flexa123</code> (Wali Kelas & Pembimbing)<br>
+            👨‍👩‍👦 <span class="badge badge-parent">Orang Tua</span> <strong>Bpk. Hendra Pratama</strong> — <code>ortu@flexa.test</code> / <code>flexa123</code> (Orang Tua Faiz)
+        </div>
+
+        <button id="btn-seed">🚀 Mulai Seeding &amp; Hubungkan Relasi</button>
+        <button id="btn-reset" style="background:#dc2626; margin-left:8px;">🗑️ Hapus &amp; Buat Ulang Akun</button>
+        <a href="/?page=01_login" style="margin-left: 12px; font-size:13px; color:#020b24; font-weight:bold;">Ke Halaman Login &rarr;</a>
+
+        <div id="uids-box" class="uids-summary" style="display:none;"></div>
+        <div id="log">Siap mengeksekusi seeder data... Klik tombol di atas.
+Jika akun sudah ada dengan password lama, klik "Hapus &amp; Buat Ulang Akun" terlebih dahulu.</div>
+    </div>
+
+    <!-- Firebase SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        const btn = document.getElementById('btn-seed');
+        const logEl = document.getElementById('log');
+        const uidsBox = document.getElementById('uids-box');
+
+        function log(msg) {
+            logEl.textContent += msg + '\n';
+            logEl.scrollTop = logEl.scrollHeight;
+            console.log(msg);
+        }
+
+        btn.addEventListener('click', async () => {
+            if (!window.firebaseAuth || !window.firebaseDb) {
+                alert('Firebase SDK belum siap!');
+                return;
+            }
+            btn.disabled = true;
+            log('==================================================');
+            log('🚀 MEMULAI SEEDING DATA IDEMPOTEN FLEXA CENDEKIA');
+            log('==================================================');
+
+            const auth = window.firebaseAuth;
+            const db = window.firebaseDb;
+
+            const demoAccounts = [
+                {
+                    email: 'siswa@flexa.test',
+                    password: 'flexa123',
+                    nama: 'Muhammad Faiz Pratama',
+                    role: 'Siswa',
+                    jenjang: 'SMA',
+                    kelas: 11,
+                    nisn: '0082918273',
+                    kodeTautan: 'FLX-FAIZ-8821',
+                    pinTautan: '1234',
+                    citaCita: 'Arsitek & Perancang Kota',
+                    programStudiTarget: 'S1 Arsitektur UNIPDU',
+                    fakultasTarget: 'Fakultas Sains & Teknologi UNIPDU',
+                    institusi: 'Homeschooling Flexa Cendekia x UNIPDU',
+                    poinAkademik: 1450,
+                    roadmapProgress: 88,
+                    statusKRS: 'Menunggu Validasi',
+                    telepon: '0812-3456-7890',
+                    namaOrtu: 'Bpk. Hendra Pratama',
+                    teleponOrtu: '0813-9876-5432'
+                },
+                {
+                    email: 'guru@flexa.test',
+                    password: 'flexa123',
+                    nama: 'Ibu Sari Rahayu, M.Pd.',
+                    role: 'Guru',
+                    nip: '198704122015042001',
+                    jabatan: 'Wali Kelas & Pembimbing Akademik SMA',
+                    institusi: 'Homeschooling Flexa Cendekia x UNIPDU'
+                },
+                {
+                    email: 'ortu@flexa.test',
+                    password: 'flexa123',
+                    nama: 'Bpk. Hendra Pratama',
+                    role: 'OrangTua',
+                    institusi: 'Wiraswasta / Konsultan Properti',
+                    kontak: '0813-9876-5432',
+                    telepon: '0813-9876-5432'
+                }
+            ];
+
+            const createdUids = {};
+
+            // 1. Buat / Login Akun Auth (dengan migrasi password lama)
+            const OLD_PASSWORDS = ['password123', 'Password123', 'flexa2024'];
+            for (const acc of demoAccounts) {
+                try {
+                    log(`\n[Auth] Mendaftarkan ${acc.email}...`);
+                    const cred = await auth.createUserWithEmailAndPassword(acc.email, acc.password);
+                    createdUids[acc.role] = cred.user.uid;
+                    log(`✓ Berhasil membuat akun Auth: ${acc.role} (UID: ${cred.user.uid})`);
+                } catch (err) {
+                    if (err.code === 'auth/email-already-in-use') {
+                        log(`ℹ️ Akun ${acc.email} sudah terdaftar. Mencoba login...`);
+                        
+                        // Coba login dengan password baru (flexa123)
+                        try {
+                            const cred = await auth.signInWithEmailAndPassword(acc.email, acc.password);
+                            createdUids[acc.role] = cred.user.uid;
+                            log(`✓ Berhasil login: ${acc.role} (UID: ${cred.user.uid})`);
+                        } catch (loginErr) {
+                            log(`⚠️ Password 'flexa123' tidak cocok. Mencoba password lama...`);
+                            
+                            // Coba login dengan password-password lama
+                            let loggedIn = false;
+                            for (const oldPwd of OLD_PASSWORDS) {
+                                try {
+                                    const cred = await auth.signInWithEmailAndPassword(acc.email, oldPwd);
+                                    createdUids[acc.role] = cred.user.uid;
+                                    log(`✓ Login berhasil dengan password lama '${oldPwd}': ${acc.role} (UID: ${cred.user.uid})`);
+                                    
+                                    // Update password ke flexa123
+                                    try {
+                                        await cred.user.updatePassword('flexa123');
+                                        log(`✓ Password ${acc.email} berhasil diperbarui ke 'flexa123'`);
+                                    } catch (updateErr) {
+                                        log(`⚠️ Gagal update password: ${updateErr.message}`);
+                                    }
+                                    loggedIn = true;
+                                    break;
+                                } catch (oldErr) {
+                                    // Password lama ini juga tidak cocok, coba yang berikutnya
+                                }
+                            }
+                            
+                            if (!loggedIn) {
+                                log(`❌ Gagal login ${acc.email} dengan semua password yang diketahui.`);
+                                log(`   Hapus akun ini di Firebase Console → Authentication, lalu jalankan seeder ulang.`);
+                            }
+                        }
+                    } else {
+                        log(`❌ Error Auth ${acc.email}: ${err.message}`);
+                    }
+                }
+            }
+
+            const siswaUid = createdUids['Siswa'];
+            const guruUid = createdUids['Guru'];
+            const ortuUid = createdUids['OrangTua'];
+
+            if (!siswaUid || !guruUid || !ortuUid) {
+                log(`\n❌ Seeder gagal mendapatkan seluruh UID (Siswa: ${siswaUid}, Guru: ${guruUid}, Ortu: ${ortuUid})`);
+                btn.disabled = false;
+                return;
+            }
+
+            log('\n==================================================');
+            log(`UID SISWA: ${siswaUid}`);
+            log(`UID GURU : ${guruUid}`);
+            log(`UID ORTU : ${ortuUid}`);
+            log('==================================================');
+
+            try {
+                // ===== LOGIN SEBAGAI SISWA, TULIS PROFIL SISWA + DATA TERKAIT =====
+                log('\n[Firestore] Login sebagai siswa untuk menyimpan profil...');
+                await auth.signInWithEmailAndPassword('siswa@flexa.test', 'flexa123');
+                
+                const siswaDocData = Object.assign({}, demoAccounts[0], {
+                    uid: siswaUid,
+                    guruWaliId: guruUid,
+                    guruWaliNama: demoAccounts[1].nama,
+                    orangTuaId: ortuUid,
+                    orangTuaNama: demoAccounts[2].nama,
+                    targetAkademik: {
+                        nama: 'Tuntas Studio Desain Arsitektur Dasar & Portofolio Karya',
+                        periode: 'Semester Ganjil 2026/2027',
+                        progress: 88,
+                        kriteria: 'Nilai minimal A dan portofolio 10 maket/render'
+                    },
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                delete siswaDocData.password;
+                await db.collection('users').doc(siswaUid).set(siswaDocData, { merge: true });
+                log('✓ Profil Siswa (Muhammad Faiz Pratama) tersimpan.');
+
+                // Seed hasilDiagnostik (tetap login siswa)
+                log('[Firestore] Menyimpan hasil diagnostik RIASEC & modalitas...');
+                await db.collection('hasilDiagnostik').doc(siswaUid).set({
+                    siswaId: siswaUid,
+                    namaSiswa: 'Muhammad Faiz Pratama',
+                    riasec: {
+                        R: 85, I: 90, A: 95, S: 70, E: 75, C: 80,
+                        dominan: 'Investigatif - Artistik - Realistik (IAR)'
+                    },
+                    gayaBelajarDominan: 'Visual Spasial',
+                    persentase: { visual: 65, auditori: 20, kinestetik: 15 },
+                    profesiRekomendasi: ['Arsitek & Perancang Kota', 'Desainer Interior BIM', 'Landscape Architect'],
+                    tanggalTes: new Date().toISOString()
+                }, { merge: true });
+                log('✓ Hasil Diagnostik tersimpan.');
+
+                // Seed roadmapBelajar (tetap login siswa)
+                log('[Firestore] Menyimpan roadmap belajar 6 tahun...');
+                await db.collection('roadmapBelajar').doc(siswaUid).set({
+                    siswaId: siswaUid,
+                    targetProfesi: 'Arsitek & Perancang Kota',
+                    progresTotal: 88,
+                    tahapan: [
+                        { urutan: 1, judul: 'Dasar Gambar Teknik & Sketsa Bebas', status: 'Selesai', sks: 6 },
+                        { urutan: 2, judul: 'Geometri Terapan & Matematika Struktur', status: 'Selesai', sks: 8 },
+                        { urutan: 3, judul: 'Studio Desain Hunian Tropis & BIM Modeling', status: 'Berjalan', sks: 12 },
+                        { urutan: 4, judul: 'Matrikulasi Akselerasi S1 Arsitektur UNIPDU', status: 'Belum', sks: 24 }
+                    ],
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                log('✓ Roadmap Belajar tersimpan.');
+
+                // Seed Kehadiran (tetap login siswa)
+                log('[Firestore] Menyimpan absensi & nilai akademik...');
+                await db.collection('kehadiran').doc(siswaUid).set({
+                    siswaId: siswaUid,
+                    namaSiswa: 'Muhammad Faiz Pratama',
+                    hadir: 92, izin: 2, sakit: 1, alpa: 0, total: 95,
+                    persentase: 97,
+                    status: 'Sangat Baik',
+                    semester: 'Semester Ganjil 2026/2027',
+                    catatan: 'Kehadiran sangat disiplin di kelas Studio dan Matematika.',
+                    updateTerakhir: new Date().toISOString()
+                }, { merge: true });
+                log('✓ Data Kehadiran tersimpan.');
+
+                // Seed Pengajuan KRS (tetap login siswa — dia yang mengajukan)
+                log('[Firestore] Menyimpan Pengajuan KRS Aktif...');
+                const krsData = {
+                    id: 'krs-faiz-active',
+                    siswaId: siswaUid,
+                    guruId: guruUid,
+                    namaSiswa: 'Muhammad Faiz Pratama',
+                    nisn: '0082918273',
+                    jenjang: 'SMA',
+                    kelas: 11,
+                    citaCita: 'Arsitek & Perancang Kota',
+                    programStudiTarget: 'S1 Arsitektur UNIPDU',
+                    status: 'Menunggu Validasi',
+                    semester: 'Semester Ganjil 2026/2027',
+                    totalSks: 18,
+                    mataPelajaran: [
+                        { kode: 'ARS-301', nama: 'Gambar Arsitektur & Perspektif 3D', sks: 3, hari: 'Senin', jam: '08:00 - 10:30', ruang: 'Lab Desain 1', guru: 'Ibu Sari Rahayu, M.Pd.' },
+                        { kode: 'MAT-302', nama: 'Kalkulus & Geometri Spasial Terapan', sks: 4, hari: 'Selasa', jam: '08:00 - 11:00', ruang: 'Kelas B-201', guru: 'Dr. Aris Subagyo' },
+                        { kode: 'FIS-301', nama: 'Fisika Bangunan & Struktur Material', sks: 3, hari: 'Rabu', jam: '10:00 - 12:30', ruang: 'Lab Sains', guru: 'Drs. Amir Santoso' },
+                        { kode: 'TIK-305', nama: 'CAD & Pemodelan BIM Arsitektur', sks: 3, hari: 'Kamis', jam: '13:00 - 15:30', ruang: 'Lab Komputer A', guru: 'Bpk. Hendra W., M.Kom' },
+                        { kode: 'SEJ-201', nama: 'Sejarah Perkembangan Arsitektur Dunia', sks: 2, hari: 'Jumat', jam: '08:00 - 09:40', ruang: 'Auditorium', guru: 'Prof. Siti Aminah' },
+                        { kode: 'UNP-101', nama: 'Studi Kepesantrenan & Nilai Luhur UNIPDU', sks: 3, hari: 'Jumat', jam: '13:30 - 15:30', ruang: 'Gedung Rektorat Lt. 2', guru: 'Dr. KH. Zulfikar, M.Ag' }
+                    ],
+                    tanggalPengajuan: firebase.firestore.FieldValue.serverTimestamp(),
+                    catatanSiswa: 'Mohon persetujuan KRS untuk akselerasi studio arsitektur semester 3.'
+                };
+                await db.collection('pengajuanKRS').doc('krs-faiz-active').set(krsData, { merge: true });
+                log('✓ Pengajuan KRS pending berhasil disimpan.');
+
+                // ===== LOGIN SEBAGAI GURU, TULIS PROFIL GURU + CATATAN =====
+                log('\n[Firestore] Login sebagai guru untuk menyimpan profil...');
+                await auth.signInWithEmailAndPassword('guru@flexa.test', 'flexa123');
+
+                const guruDocData = Object.assign({}, demoAccounts[1], {
+                    uid: guruUid,
+                    siswaBimbinganIds: [siswaUid],
+                    targetPendampingan: {
+                        nama: 'Sertifikasi Pembimbing Akademik & Pendampingan Portofolio',
+                        periode: 'Semester Ganjil 2026/2027',
+                        progress: '85',
+                        target: 'Bimbingan 5 Siswa Lolos Akselerasi S1 UNIPDU'
+                    },
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                delete guruDocData.password;
+                await db.collection('users').doc(guruUid).set(guruDocData, { merge: true });
+                log('✓ Profil Guru (Ibu Sari Rahayu, M.Pd.) tersimpan.');
+
+                // Seed Catatan Guru (tetap login guru)
+                log('[Firestore] Menyimpan catatan pembimbingan guru...');
+                await db.collection('catatanGuru').doc(`catatan-${siswaUid}`).set({
+                    guruId: guruUid,
+                    siswaId: siswaUid,
+                    namaGuru: 'Ibu Sari Rahayu, M.Pd.',
+                    namaSiswa: 'Muhammad Faiz Pratama',
+                    isi: 'Faiz menunjukkan dedikasi luar biasa dalam studio desain 3D. Portofolio maket siap diujikan untuk matrikulasi S1 UNIPDU.',
+                    tanggal: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                log('✓ Catatan Guru tersimpan.');
+
+                // ===== LOGIN SEBAGAI ORTU, TULIS PROFIL ORTU + NOTIFIKASI =====
+                log('\n[Firestore] Login sebagai ortu untuk menyimpan profil...');
+                await auth.signInWithEmailAndPassword('ortu@flexa.test', 'flexa123');
+
+                const ortuDocData = Object.assign({}, demoAccounts[2], {
+                    uid: ortuUid,
+                    anakIds: [siswaUid],
+                    targetPendampingan: {
+                        nama: 'Dukungan Fasilitas Perangkat CAD 3D & Pemantauan Checkpoint Jumat',
+                        periode: 'Semester Ganjil 2026/2027',
+                        progress: '90',
+                        target: 'Portofolio Arsitektur Tuntas 100%'
+                    },
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                delete ortuDocData.password;
+                await db.collection('users').doc(ortuUid).set(ortuDocData, { merge: true });
+                log('✓ Profil Orang Tua (Bpk. Hendra Pratama) tersimpan.');
+
+                // Seed Notifikasi Orang Tua (tetap login ortu)
+                log('[Firestore] Menyimpan notifikasi portal orang tua...');
+                await db.collection('notifikasi').doc('notif-ortu-krs').set({
+                    untukRole: 'OrangTua',
+                    untukUserId: ortuUid,
+                    tipe: 'pengajuan',
+                    judul: 'Pengajuan KRS Semester Ganjil',
+                    isi: 'Muhammad Faiz Pratama telah mengajukan rencana studi 18 SKS untuk Semester Ganjil 2026/2027.',
+                    siswaId: siswaUid,
+                    dibaca: false,
+                    tanggal: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                log('✓ Notifikasi Orang Tua tersimpan.');
+
+                log('\n🎉 ==================================================');
+                log('✅ SEEDING DATA SELESAI DENGAN SUKSES & IDEMPOTEN!');
+                log('==================================================');
+
+                uidsBox.style.display = 'block';
+                uidsBox.innerHTML = `
+                    <h3 style="margin-top:0; color:#020b24;">📊 Hasil Identitas Akun (Firebase UID):</h3>
+                    <ul>
+                        <li><strong>UID Siswa:</strong> <code>${siswaUid}</code> (Muhammad Faiz Pratama)</li>
+                        <li><strong>UID Guru :</strong> <code>${guruUid}</code> (Ibu Sari Rahayu, M.Pd.)</li>
+                        <li><strong>UID Ortu :</strong> <code>${ortuUid}</code> (Bpk. Hendra Pratama)</li>
+                    </ul>
+                    <p style="margin-bottom:0; color:#16a34a; font-weight:bold;">
+                        ✓ Seluruh Foreign Key (guruWaliId, orangTuaId, anakIds, siswaBimbinganIds) tersambung 100%.
+                    </p>
+                `;
+
+            } catch (firestoreErr) {
+                log(`❌ Error Firestore Seeder: ${firestoreErr.message}`);
+                log(`   Stack: ${firestoreErr.stack || 'N/A'}`);
+            } finally {
+                btn.disabled = false;
+                await auth.signOut().catch(() => {});
+            }
+        });
+    </script>
+</body>
+</html>

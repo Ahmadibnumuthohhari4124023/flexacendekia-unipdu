@@ -135,6 +135,134 @@ const DataStore = {
         return [];
     },
 
+    async tautkanAnak(ortuUid, identifier, pin) {
+        const db = this._ensureDb();
+        if (!db || !ortuUid || !identifier) {
+            return { success: false, message: 'Data penautan tidak lengkap.' };
+        }
+        try {
+            const cleanId = identifier.trim();
+            let siswaDoc = null;
+            
+            // 1. Cek kodeTautan
+            let snap = await db.collection('users').where('kodeTautan', '==', cleanId).get();
+            if (!snap.empty) {
+                siswaDoc = snap.docs[0];
+            } else {
+                // 2. Cek NISN
+                snap = await db.collection('users').where('nisn', '==', cleanId).get();
+                if (!snap.empty) {
+                    siswaDoc = snap.docs[0];
+                } else {
+                    // 3. Cek direct doc ID
+                    const docCheck = await db.collection('users').doc(cleanId).get();
+                    if (docCheck.exists && docCheck.data().role === 'Siswa') {
+                        siswaDoc = docCheck;
+                    }
+                }
+            }
+
+            if (!siswaDoc || !siswaDoc.exists) {
+                return { success: false, message: `Siswa dengan kode/NISN "${identifier}" tidak ditemukan.` };
+            }
+
+            const siswaData = siswaDoc.data();
+            const siswaUid = siswaDoc.id;
+
+            // Verifikasi PIN jika diatur
+            if (siswaData.pinTautan && pin && String(siswaData.pinTautan) !== String(pin).trim()) {
+                return { success: false, message: 'PIN verifikasi keluarga tidak cocok.' };
+            }
+
+            // Update profile siswa dengan orangTuaId
+            await db.collection('users').doc(siswaUid).update({
+                orangTuaId: ortuUid
+            });
+
+            // Tambahkan ke anakIds di dokumen orang tua
+            const ortuRef = db.collection('users').doc(ortuUid);
+            const ortuSnap = await ortuRef.get();
+            let currentAnakIds = [];
+            if (ortuSnap.exists && Array.isArray(ortuSnap.data().anakIds)) {
+                currentAnakIds = ortuSnap.data().anakIds;
+            }
+            if (!currentAnakIds.includes(siswaUid)) {
+                currentAnakIds.push(siswaUid);
+            }
+            await ortuRef.set({ anakIds: currentAnakIds }, { merge: true });
+
+            return { 
+                success: true, 
+                message: `Berhasil menautkan ${siswaData.nama || 'Siswa'} sebagai anak.`,
+                siswa: Object.assign({ id: siswaUid, uid: siswaUid }, siswaData)
+            };
+        } catch (e) {
+            console.error('[DataStore] tautkanAnak error:', e);
+            return { success: false, message: 'Terjadi kesalahan sistem: ' + e.message };
+        }
+    },
+
+    async tautkanSiswaBimbingan(guruUid, identifier) {
+        const db = this._ensureDb();
+        if (!db || !guruUid || !identifier) {
+            return { success: false, message: 'Data penautan tidak lengkap.' };
+        }
+        try {
+            const cleanId = identifier.trim();
+            let siswaDoc = null;
+            
+            // 1. Cek kodeTautan
+            let snap = await db.collection('users').where('kodeTautan', '==', cleanId).get();
+            if (!snap.empty) {
+                siswaDoc = snap.docs[0];
+            } else {
+                // 2. Cek NISN
+                snap = await db.collection('users').where('nisn', '==', cleanId).get();
+                if (!snap.empty) {
+                    siswaDoc = snap.docs[0];
+                } else {
+                    const docCheck = await db.collection('users').doc(cleanId).get();
+                    if (docCheck.exists && docCheck.data().role === 'Siswa') {
+                        siswaDoc = docCheck;
+                    }
+                }
+            }
+
+            if (!siswaDoc || !siswaDoc.exists) {
+                return { success: false, message: `Siswa dengan kode/NISN "${identifier}" tidak ditemukan.` };
+            }
+
+            const siswaData = siswaDoc.data();
+            const siswaUid = siswaDoc.id;
+
+            // Update guruWaliId pada siswa
+            await db.collection('users').doc(siswaUid).update({
+                guruWaliId: guruUid
+            });
+
+            // Update array siswaBimbinganIds pada dokumen Guru
+            const guruRef = db.collection('users').doc(guruUid);
+            const guruSnap = await guruRef.get();
+            let currentList = [];
+            if (guruSnap.exists && Array.isArray(guruSnap.data().siswaBimbinganIds)) {
+                currentList = guruSnap.data().siswaBimbinganIds;
+            }
+            if (!currentList.includes(siswaUid)) {
+                currentList.push(siswaUid);
+            }
+            await guruRef.set({ siswaBimbinganIds: currentList }, { merge: true });
+
+            return { 
+                success: true, 
+                message: `Berhasil menautkan ${siswaData.nama || 'Siswa'} sebagai siswa bimbingan.`,
+                siswa: Object.assign({ id: siswaUid, uid: siswaUid }, siswaData)
+            };
+        } catch (e) {
+            console.error('[DataStore] tautkanSiswaBimbingan error:', e);
+            return { success: false, message: 'Terjadi kesalahan: ' + e.message };
+        }
+    },
+
     async getTugasMendatang(siswaId) {
         const db = this._ensureDb();
         if (!db || !siswaId) return [];
@@ -192,23 +320,73 @@ const DataStore = {
 
     async getPendingKRSForGuru(guruId) {
         const db = this._ensureDb();
-        if (!db) return [];
+        if (!db || !guruId) return [];
         try {
-            // Get all students for this guru
+            // 1. Ambil daftar ID siswa bimbingan dari guru ini
+            let studentIds = [];
+            
+            // Cek array siswaBimbinganIds pada profil guru
+            const guruDoc = await db.collection('users').doc(guruId).get();
+            if (guruDoc.exists && Array.isArray(guruDoc.data().siswaBimbinganIds)) {
+                studentIds = guruDoc.data().siswaBimbinganIds.slice();
+            }
+
+            // Cek siswa dengan guruWaliId == guruId
             const studentsSnap = await db.collection('users')
                 .where('role', '==', 'Siswa')
                 .where('guruWaliId', '==', guruId)
                 .get();
-            const studentIds = studentsSnap.docs.map(d => d.id);
             
-            if (studentIds.length === 0) return [];
+            studentsSnap.docs.forEach(d => {
+                if (!studentIds.includes(d.id)) studentIds.push(d.id);
+            });
+            
+            let krsList = [];
 
-            // Firestore 'in' query supports max 30 items
-            const snap = await db.collection('pengajuanKRS')
-                .where('siswaId', 'in', studentIds)
-                .where('status', '==', 'Menunggu Persetujuan')
-                .get();
-            return snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+            // A. Query pengajuan KRS by siswaId
+            if (studentIds.length > 0) {
+                const chunks = [];
+                for (let i = 0; i < studentIds.length; i += 10) {
+                    chunks.push(studentIds.slice(i, i + 10));
+                }
+                for (const chunk of chunks) {
+                    const snap = await db.collection('pengajuanKRS')
+                        .where('siswaId', 'in', chunk)
+                        .where('status', '==', 'Menunggu Persetujuan')
+                        .get();
+                    snap.docs.forEach(d => {
+                        krsList.push(Object.assign({ id: d.id }, d.data()));
+                    });
+                }
+            }
+
+            // B. Cek juga pengajuan KRS yang secara langsung memiliki field guruId == guruId
+            try {
+                const directSnap = await db.collection('pengajuanKRS')
+                    .where('guruId', '==', guruId)
+                    .where('status', '==', 'Menunggu Persetujuan')
+                    .get();
+                directSnap.docs.forEach(d => {
+                    if (!krsList.some(item => item.id === d.id)) {
+                        krsList.push(Object.assign({ id: d.id }, d.data()));
+                    }
+                });
+            } catch(e) {}
+
+            // C. Perkaya data krs dengan profil siswa jika field nama/citaCita belum lengkap
+            for (let item of krsList) {
+                if (item.siswaId && (!item.nama || !item.citaCita || !item.jenjang)) {
+                    const sData = await this.getUserById(item.siswaId);
+                    if (sData) {
+                        item.nama = item.nama || sData.nama;
+                        item.citaCita = item.citaCita || sData.citaCita;
+                        item.jenjang = item.jenjang || sData.jenjang;
+                        item.kelas = item.kelas || sData.kelas;
+                    }
+                }
+            }
+
+            return krsList;
         } catch (e) {
             console.error('[DataStore] getPendingKRSForGuru error:', e);
             return [];
@@ -224,10 +402,16 @@ const DataStore = {
 
             const newKrs = {
                 siswaId: siswaId,
-                semester: semester,
+                nama: siswa.nama || 'Siswa',
+                jenjang: siswa.jenjang || 'SMA',
+                kelas: siswa.kelas || 11,
+                citaCita: siswa.citaCita || 'Arsitek',
+                guruId: siswa.guruWaliId || null,
+                semester: semester || 1,
                 mataPelajaran: mataPelajaran,
                 status: 'Menunggu Persetujuan',
-                tanggal: firebase.firestore.FieldValue.serverTimestamp()
+                tanggal: 'Hari ini, ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
             const docRef = await db.collection('pengajuanKRS').add(newKrs);
 
@@ -238,7 +422,7 @@ const DataStore = {
                     untukUserId: siswa.guruWaliId,
                     tipe: 'KRS',
                     judul: 'Pengajuan KRS Baru',
-                    isi: 'Siswa ' + siswa.nama + ' mengajukan KRS untuk semester ' + semester + '.',
+                    isi: 'Siswa ' + siswa.nama + ' mengajukan KRS untuk semester ' + (semester || 1) + '.',
                     terkaitId: docRef.id
                 });
             }
