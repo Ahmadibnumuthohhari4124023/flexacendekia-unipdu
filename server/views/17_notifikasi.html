@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Notifikasi | Flexa Cendekia x UNIPDU</title>
+    <title>Pusat Notifikasi | Homeschooling Flexa Cendekia</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <!-- Material Symbols -->
@@ -100,12 +100,14 @@
 
 <!-- Sidebar (SideNavBar Anchor) -->
 <aside class="hidden md:flex flex-col h-screen w-64 fixed left-0 top-0 bg-surface-container-low border-r border-outline-variant/20 py-6 z-20">
-    <div class="px-6 mb-8">
+    <div class="px-6 mb-6">
         <div class="flex items-center gap-2.5 mb-1">
-            <div class="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-bold text-sm">FC</div>
-            <h1 class="font-headline-md text-base font-bold text-primary tracking-tight">Flexa Cendekia</h1>
+            <div class="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-bold text-sm shadow-sm">FC</div>
+            <div>
+                <h1 class="font-headline-md text-sm font-bold text-primary tracking-tight leading-tight">Homeschooling Flexa Cendekia</h1>
+                <p class="font-mono text-[9px] text-secondary font-bold tracking-wider uppercase">Powered by UNIPDU</p>
+            </div>
         </div>
-        <p class="font-mono text-[10px] text-on-surface-variant/70 tracking-wider">x UNIPDU • TP 2025/2026</p>
     </div>
 
     <!-- Dynamic Role-aware Navigation Links -->
@@ -384,7 +386,16 @@
         const avatarLink = document.getElementById('topbar-avatar-link');
 
         if (nameEl) nameEl.textContent = name;
-        if (avatarEl) avatarEl.textContent = name.charAt(0).toUpperCase();
+        const initials = name.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'U';
+        const fotoUrl = user.fotoUrl || user.avatar || localStorage.getItem('userAvatar') || '';
+        if (avatarEl) {
+            if (fotoUrl) {
+                avatarEl.innerHTML = `<img src="${fotoUrl}" alt="${name}" class="w-full h-full object-cover rounded-full" />`;
+                avatarEl.classList.add('overflow-hidden');
+            } else {
+                avatarEl.textContent = initials;
+            }
+        }
 
         if (roleBadge) {
             roleBadge.textContent = role === 'OrangTua' ? 'Orang Tua' : role;
@@ -467,117 +478,17 @@
         const uid = currentUser.uid || currentUser.id;
 
         try {
-            // Read from Firestore via DataStore
+            // Read real notifications from Firestore via DataStore
             let list = await DataStore.getNotifikasi(role, uid);
-
-            // Fallback realistic school seeds if Firestore empty
-            if (!list || list.length === 0) {
-                list = getRoleDefaultNotifications(role);
-            }
-
-            rawNotifications = list;
+            rawNotifications = Array.isArray(list) ? list : [];
             updateCounts();
             renderNotificationList();
 
         } catch (e) {
             console.error('[Notifikasi] Error loading notifications:', e);
-            rawNotifications = getRoleDefaultNotifications(role);
+            rawNotifications = [];
             updateCounts();
             renderNotificationList();
-        }
-    }
-
-    function getRoleDefaultNotifications(role) {
-        if (role === 'Guru') {
-            return [
-                {
-                    id: 'g-notif-1',
-                    judul: 'Pengajuan KRS Baru Menunggu Tinjauan',
-                    isi: `Siswa ${window.currentFirebaseUser?.nama || 'Siswa'} (SMA Kelas 11) telah mengajukan mata pelajaran untuk semester ini. Silakan verifikasi.`, 
-                    tipe: 'pengajuan',
-                    dibaca: false,
-                    tanggal: new Date(Date.now() - 1000 * 60 * 35)
-                },
-                {
-                    id: 'g-notif-2',
-                    judul: 'Balasan Catatan dari Orang Tua',
-                    isi: 'Bpk. Heru (Orang Tua Ahmad) mengirim balasan: "Terima kasih atas masukannya Bu, kami akan dampingi belajarnya di rumah."',
-                    tipe: 'akademik',
-                    dibaca: false,
-                    tanggal: new Date(Date.now() - 1000 * 60 * 120)
-                },
-                {
-                    id: 'g-notif-3',
-                    judul: 'Peringatan Checkpoint Jumat',
-                    isi: 'Batas akhir evaluasi checkpoint mingguan seluruh siswa binaan akan ditutup hari Jumat pukul 17:00 WIB.',
-                    tipe: 'sistem',
-                    dibaca: true,
-                    tanggal: new Date(Date.now() - 1000 * 60 * 60 * 24)
-                }
-            ];
-        } else if (role === 'OrangTua') {
-            return [
-                {
-                    id: 'o-notif-1',
-                    judul: 'Alert Keterlambatan: 1 Hari Alpa Terdeteksi',
-                    isi: 'Ananda Ahmad tercatat tidak hadir pada mata pelajaran Biologi jam pertama. Mohon konfirmasi ke wali kelas.',
-                    tipe: 'keterlambatan',
-                    dibaca: false,
-                    tanggal: new Date(Date.now() - 1000 * 60 * 45)
-                },
-                {
-                    id: 'o-notif-2',
-                    judul: 'Rencana Studi Semester 4 Disetujui',
-                    isi: 'Guru Pembimbing telah menyetujui paket modul belajar untuk semester genap ananda.',
-                    tipe: 'pengajuan',
-                    dibaca: false,
-                    tanggal: new Date(Date.now() - 1000 * 60 * 180)
-                },
-                {
-                    id: 'o-notif-3',
-                    judul: 'Nilai Ujian Tengah Semester Telah Direkap',
-                    isi: 'Hasil penilaian UTS Fisika dan Matematika Lanjut ananda telah dimasukkan ke transkrip akademik.',
-                    tipe: 'akademik',
-                    dibaca: true,
-                    tanggal: new Date(Date.now() - 1000 * 60 * 60 * 30)
-                }
-            ];
-        } else {
-            // Siswa Default
-            return [
-                {
-                    id: 's-notif-1',
-                    judul: 'Rencana Studi (KRS) Disetujui Guru Pembimbing',
-                    isi: 'Ibu Guru Pembimbing telah menyetujui seluruh mata pelajaran semester aktif Anda. Selamat belajar!',
-                    tipe: 'pengajuan',
-                    dibaca: false,
-                    tanggal: new Date(Date.now() - 1000 * 60 * 25)
-                },
-                {
-                    id: 's-notif-2',
-                    judul: 'Tugas Checkpoint Minggu 8: Kalkulus & Matematika',
-                    isi: 'Ibu Sari memberikan catatan: "Bagus sekali pada penurunan rumus nomor 2, pertahankan ketelitiannya."',
-                    tipe: 'akademik',
-                    dibaca: false,
-                    tanggal: new Date(Date.now() - 1000 * 60 * 90)
-                },
-                {
-                    id: 's-notif-3',
-                    judul: 'Pengingat Batas Akhir Tugas Kimia Organik',
-                    isi: 'Laporan praktikum Kimia Organik batas pengumpulan tersisa 24 jam. Segera unggah sebelum tenggat.',
-                    tipe: 'akademik',
-                    dibaca: true,
-                    tanggal: new Date(Date.now() - 1000 * 60 * 60 * 18)
-                },
-                {
-                    id: 's-notif-4',
-                    judul: 'Jadwal Pemeliharaan Server Rutin',
-                    isi: 'Portal Flexa Cendekia akan melakukan sinkronisasi sistem hari Minggu pukul 01:00 - 03:00 WIB.',
-                    tipe: 'sistem',
-                    dibaca: true,
-                    tanggal: new Date(Date.now() - 1000 * 60 * 60 * 48)
-                }
-            ];
         }
     }
 

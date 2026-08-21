@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Pilih Cita-Cita Profesi - Flexa Cendekia x UNIPDU</title>
+    <title>Pilih Cita-Cita Profesi | Homeschooling Flexa Cendekia</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -122,11 +122,19 @@
 <body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
 
 <!-- TopNavBar -->
-<nav class="bg-background dark:bg-surface border-b border-primary/20 sticky top-0 z-50">
-    <div class="flex justify-between items-center w-full px-margin-desktop max-w-container-max mx-auto h-16">
-        <div class="flex items-center gap-8">
-            <span class="font-headline-md text-headline-md font-bold text-primary">Flexa Cendekia x UNIPDU</span>
-            <div class="hidden md:flex items-center self-end h-full">
+<nav class="bg-[#FBFAF5] dark:bg-surface border-b border-primary/20 sticky top-0 z-50">
+    <div class="flex justify-between items-center w-full px-4 md:px-margin-desktop max-w-container-max mx-auto h-16">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-bold text-sm shadow-sm">FC</div>
+            <div>
+                <a href="/?page=08_dashboard-siswa" class="font-headline-md text-base md:text-xl font-bold text-primary hover:opacity-90">
+                    Homeschooling Flexa Cendekia
+                </a>
+                <span class="hidden sm:inline-block ml-2 text-[10px] font-mono px-2 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded font-bold uppercase tracking-wider">
+                    Powered by UNIPDU
+                </span>
+            </div>
+            <div class="hidden md:flex items-center self-end h-full ml-4">
                 <span class="bg-secondary text-white px-4 py-1.5 rounded-t font-label-caps text-xs tracking-wider">PILIH CITA-CITA</span>
             </div>
         </div>
@@ -171,86 +179,115 @@
         <!-- Left Column: Recommendations & Search -->
         <div class="lg:col-span-7 space-y-10">
             <!-- Recommendation Section -->
-            <section>
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="font-headline-md text-headline-md text-primary">Rekomendasi Berdasarkan Profilmu</h2>
-                    <span class="font-stats-sm text-stats-sm text-on-surface-variant bg-surface-container px-2 py-1 border border-outline-variant/30 inline-flex items-center gap-1" id="riasec-badge">
-                        <span class="material-symbols-outlined text-xs text-secondary">auto_awesome</span> Gemini AI
+            <section class="bg-surface-container-lowest p-6 border border-student-gold/30 rounded hard-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h2 class="font-headline-md text-xl font-bold text-primary">Top Rekomendasi Asesmen AI</h2>
+                        <p class="font-body-sm text-xs text-on-surface-variant">Pilihan terbaik yang paling selaras dengan minat dan bakatmu.</p>
+                    </div>
+                    <span class="font-stats-sm text-xs text-secondary bg-secondary-container/30 px-2.5 py-1 border border-secondary/30 rounded-full font-bold inline-flex items-center gap-1" id="riasec-badge">
+                        <span class="material-symbols-outlined text-xs">auto_awesome</span> Flexa AI
                     </span>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="career-cards-container">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5" id="recommended-cards-container">
                     <!-- Will be populated dynamically by JS -->
                 </div>
             </section>
 
-            <!-- Career Explorer -->
-            <section class="bg-surface-container-low p-8 border border-outline-variant/20">
-                <h3 class="font-label-caps text-label-caps text-primary mb-6">TELUSURI PROFESI LAIN</h3>
-                <div class="flex gap-4 mb-6">
-                    <div class="relative flex-grow">
-                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
-                        <input id="career-search" class="w-full bg-white border-outline-variant/50 focus:border-student-gold focus:ring-0 pl-10 h-12 font-body-sm" placeholder="Cari profesi (e.g. Dokter, Desainer, Data Scientist...)" type="text"/>
+            <!-- Complete Career Explorer (All 36 Professions) -->
+            <section class="bg-surface-container-lowest p-6 border border-primary/20 rounded">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+                    <div>
+                        <h3 class="font-headline-md text-lg font-bold text-primary">Jelajahi Seluruh Profesi (36 Pilihan)</h3>
+                        <p class="font-body-sm text-xs text-on-surface-variant">Kamu bebas memilih profesi apa pun yang menjadi cita-cita impianmu.</p>
                     </div>
+                    <span class="font-stats-sm text-xs text-primary/70 bg-primary/5 px-2 py-1 rounded" id="career-count-badge">36 Profesi</span>
                 </div>
-                <div class="flex flex-wrap gap-2" id="filter-container">
-                    <button class="filter-btn px-4 py-2 bg-primary text-white ledger-border text-[12px] font-medium transition-all" data-category="Semua">Semua</button>
-                    <button class="filter-btn px-4 py-2 bg-white ledger-border text-[12px] font-medium hover:bg-primary hover:text-white transition-all" data-category="Sosial & Hukum">Sosial & Hukum</button>
-                    <button class="filter-btn px-4 py-2 bg-white ledger-border text-[12px] font-medium hover:bg-primary hover:text-white transition-all" data-category="Kesehatan">Kesehatan</button>
-                    <button class="filter-btn px-4 py-2 bg-white ledger-border text-[12px] font-medium hover:bg-primary hover:text-white transition-all" data-category="Pendidikan">Pendidikan</button>
-                    <button class="filter-btn px-4 py-2 bg-white ledger-border text-[12px] font-medium hover:bg-primary hover:text-white transition-all" data-category="Sains & Teknologi">Sains & Teknologi</button>
-                    <button class="filter-btn px-4 py-2 bg-white ledger-border text-[12px] font-medium hover:bg-primary hover:text-white transition-all" data-category="Kreatif">Kreatif</button>
-                    <button class="filter-btn px-4 py-2 bg-white ledger-border text-[12px] font-medium hover:bg-primary hover:text-white transition-all" data-category="Bisnis">Bisnis</button>
-                    <button class="filter-btn px-4 py-2 bg-white ledger-border text-[12px] font-medium hover:bg-primary hover:text-white transition-all" data-category="Olahraga & Seni">Olahraga & Seni</button>
+
+                <!-- Search Input -->
+                <div class="relative mb-4">
+                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/60">search</span>
+                    <input id="career-search" class="w-full bg-white border border-primary/20 focus:border-primary focus:ring-1 focus:ring-primary pl-10 pr-4 py-2.5 font-body-sm text-xs text-primary rounded" placeholder="Ketik untuk mencari profesi (misal: Dokter, Arsitek, Programmer, Diplomat, Polisi...)" type="text"/>
+                </div>
+
+                <!-- Category Filters -->
+                <div class="flex flex-wrap gap-1.5 mb-6" id="filter-container">
+                    <button class="filter-btn px-3 py-1.5 bg-primary text-white text-[11px] font-bold rounded transition-all" data-category="Semua">Semua (36)</button>
+                    <button class="filter-btn px-3 py-1.5 bg-white border border-primary/20 text-primary text-[11px] font-medium hover:bg-primary/10 rounded transition-all" data-category="Sains & Teknologi">Sains &amp; Teknologi (8)</button>
+                    <button class="filter-btn px-3 py-1.5 bg-white border border-primary/20 text-primary text-[11px] font-medium hover:bg-primary/10 rounded transition-all" data-category="Sosial & Hukum">Sosial &amp; Hukum (6)</button>
+                    <button class="filter-btn px-3 py-1.5 bg-white border border-primary/20 text-primary text-[11px] font-medium hover:bg-primary/10 rounded transition-all" data-category="Kesehatan">Kesehatan (6)</button>
+                    <button class="filter-btn px-3 py-1.5 bg-white border border-primary/20 text-primary text-[11px] font-medium hover:bg-primary/10 rounded transition-all" data-category="Pendidikan">Pendidikan (5)</button>
+                    <button class="filter-btn px-3 py-1.5 bg-white border border-primary/20 text-primary text-[11px] font-medium hover:bg-primary/10 rounded transition-all" data-category="Kreatif">Kreatif (5)</button>
+                    <button class="filter-btn px-3 py-1.5 bg-white border border-primary/20 text-primary text-[11px] font-medium hover:bg-primary/10 rounded transition-all" data-category="Bisnis">Bisnis (5)</button>
+                    <button class="filter-btn px-3 py-1.5 bg-white border border-primary/20 text-primary text-[11px] font-medium hover:bg-primary/10 rounded transition-all" data-category="Olahraga & Seni">Olahraga &amp; Seni (5)</button>
+                </div>
+
+                <!-- Full Career Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 max-h-[560px] overflow-y-auto pr-1 custom-scrollbar" id="all-careers-container">
+                    <!-- Populated dynamically with all 36 careers -->
                 </div>
             </section>
         </div>
 
         <!-- Right Column: Career Details / Backward Mapping -->
         <div class="lg:col-span-5">
-            <div class="sticky top-24 bg-surface-container-lowest border border-primary/10 p-8 hard-shadow flex flex-col min-h-[600px]">
-                <div class="mb-8 border-b border-primary/5 pb-6">
-                    <div class="flex items-start justify-between mb-4">
+            <div class="sticky top-24 bg-surface-container-lowest border border-primary/20 p-6 md:p-8 hard-shadow flex flex-col min-h-[600px] rounded">
+                <div class="mb-6 border-b border-primary/10 pb-5">
+                    <div class="flex items-start justify-between mb-3">
                         <div>
-                            <h2 class="font-headline-md text-headline-md text-primary" id="detail-title">Arsitek</h2>
-                            <p class="text-student-gold font-stats-sm text-stats-sm">LEVEL: PROFESIONAL</p>
+                            <span class="inline-block font-mono text-[10px] text-secondary font-bold uppercase tracking-wider bg-secondary-container/20 px-2 py-0.5 rounded border border-secondary/20 mb-1" id="detail-category">Sains &amp; Teknologi</span>
+                            <h2 class="font-headline-md text-2xl font-bold text-primary" id="detail-title">Arsitek</h2>
                         </div>
-                        <span class="material-symbols-outlined text-4xl text-student-gold" id="detail-icon" data-icon="architecture">architecture</span>
+                        <span class="material-symbols-outlined text-4xl text-student-gold bg-primary/5 p-2 rounded" id="detail-icon">architecture</span>
                     </div>
-                    <div id="career-image" class="w-full h-40 bg-cover bg-center mb-4 border border-outline-variant/20 transition-all duration-300"></div>
+                    <div id="career-image" class="w-full h-40 bg-cover bg-center mb-3 border border-primary/20 rounded shadow-inner transition-all duration-300"></div>
+                    <p class="font-body-sm text-xs text-on-surface-variant italic" id="detail-desc">Merancang desain bangunan, estetika ruang, dan tata lingkungan masa depan.</p>
                 </div>
-                <div class="flex-grow space-y-6">
-                    <h4 class="font-label-caps text-[11px] text-primary tracking-widest border-l-2 border-student-gold pl-3">BACKWARD MAPPING PREVIEW</h4>
+
+                <div class="flex-grow space-y-5">
+                    <h4 class="font-label-caps text-[11px] text-primary tracking-widest border-l-2 border-student-gold pl-3 font-bold uppercase">PETA JALUR PENDIDIKAN (BACKWARD MAPPING)</h4>
+                    
                     <!-- Timeline/Mapping -->
-                    <div id="timeline-container" class="relative pl-6 space-y-8 before:content-[''] before:absolute before:left-[7px] before:top-2 before:bottom-2 before:w-[1px] before:bg-outline-variant/50">
-                        <!-- Higher Ed -->
+                    <div id="timeline-container" class="relative pl-6 space-y-6 before:content-[''] before:absolute before:left-[7px] before:top-2 before:bottom-2 before:w-[1px] before:bg-primary/20">
+                        <!-- Higher Ed (UNIPDU) -->
                         <div class="relative">
-                            <div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-student-gold border-4 border-white"></div>
-                            <h5 class="font-bold text-sm text-primary mb-1">Pendidikan Tinggi (4-5 Tahun)</h5>
-                            <p class="text-[13px] text-on-surface-variant" id="timeline-pt">S1 Arsitektur. Fokus: Perancangan Ruang, Struktur Bangunan, &amp; Estetika Lingkungan.</p>
+                            <div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-student-gold border-2 border-white"></div>
+                            <div class="flex items-center gap-2 mb-0.5">
+                                <h5 class="font-bold text-xs text-primary">Pendidikan Tinggi / S1 UNIPDU</h5>
+                                <span class="font-mono text-[9px] bg-primary/10 text-primary px-1.5 py-0.2 rounded font-bold">Matrikulasi S1</span>
+                            </div>
+                            <p class="text-[12px] text-on-surface-variant leading-snug" id="timeline-pt">S1 Arsitektur. Fokus: Studio Perancangan, Sains Bangunan, &amp; Struktur.</p>
                         </div>
-                        <!-- Senior High -->
+                        
+                        <!-- High School (Flexa Cendekia) -->
                         <div class="relative">
-                            <div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-student-gold border-4 border-white"></div>
-                            <h5 class="font-bold text-sm text-primary mb-1">Sekolah Menengah Atas (3 Tahun)</h5>
-                            <p class="text-[13px] text-on-surface-variant" id="timeline-sma">Fokus: Matematika Terapan, Fisika Mekanika, &amp; Seni Rupa/Desain Grafis.</p>
-                            <div class="mt-2 flex flex-wrap gap-2" id="timeline-kegiatan">
-                                <span class="bg-surface-container px-2 py-1 text-[10px] font-stats-sm text-primary">Klub Gambar</span>
-                                <span class="bg-surface-container px-2 py-1 text-[10px] font-stats-sm text-primary">Olimpiade Fisika</span>
+                            <div class="absolute -left-[23px] top-1 w-3 h-3 rounded-full bg-primary border-2 border-white"></div>
+                            <div class="flex items-center gap-2 mb-0.5">
+                                <h5 class="font-bold text-xs text-primary">Homeschooling Flexa Cendekia (Fase E &amp; F)</h5>
+                                <span class="font-mono text-[9px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded font-bold">SMA 10-12</span>
+                            </div>
+                            <p class="text-[12px] text-on-surface-variant leading-snug" id="timeline-sma">Fokus: Matematika Geometri, Fisika, &amp; Seni Rupa.</p>
+                            <div class="mt-2 flex flex-wrap gap-1.5" id="timeline-kegiatan">
+                                <span class="bg-primary/5 px-2 py-0.5 text-[10px] font-mono text-primary rounded">Klub Menggambar</span>
+                                <span class="bg-primary/5 px-2 py-0.5 text-[10px] font-mono text-primary rounded">Pameran Karya</span>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-student-gold/5 p-4 border-l-4 border-student-gold mt-auto">
-                        <p id="career-quote" class="font-body-sm text-[12px] italic text-on-secondary-container">
-                            "Arsitek tidak hanya menggambar bangunan, tapi menciptakan solusi hidup bagi manusia."
+
+                    <div class="bg-student-gold/10 p-3 border-l-4 border-student-gold rounded-r">
+                        <p class="font-body-sm text-[11px] text-primary italic leading-relaxed" id="career-quote">
+                            "Arsitektur adalah perpaduan antara presisi dan kebebasan berekspresi."
                         </p>
                     </div>
                 </div>
-                <div class="mt-10">
-                    <button id="btn-confirm-career" onclick="confirmCareer()" class="w-full bg-student-gold text-white h-16 font-label-caps text-sm tracking-widest hover:brightness-90 transition-all flex items-center justify-center gap-3 cursor-pointer shadow-md">
-                        KONFIRMASI &amp; SUSUN ROADMAP SAYA
-                        <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+
+                <div class="mt-6 pt-4 border-t border-primary/10 space-y-2">
+                    <button class="w-full bg-primary text-white font-label-caps text-xs py-3.5 px-4 font-bold flex items-center justify-center gap-2 hover:bg-primary/90 transition-all uppercase tracking-wider rounded hard-shadow" id="btn-confirm-career" onclick="confirmCareer()">
+                        <span>PILIH PROFESI INI &amp; BUAT ROADMAP</span>
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
                     </button>
-                    <div id="error-message-container" class="hidden mt-3"></div>
+                    <p class="text-center text-[10px] text-on-surface-variant font-mono">Pilihan cita-cita dapat disesuaikan kembali nanti bersama tutor.</p>
+                    <div class="hidden" id="error-message-container"></div>
                 </div>
             </div>
         </div>
@@ -258,16 +295,13 @@
 </main>
 
 <!-- Footer -->
-<footer class="bg-surface-container-highest dark:bg-tertiary-container border-t border-primary/10">
-    <div class="w-full py-8 px-margin-desktop max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-        <div class="flex items-center gap-6">
-            <span class="font-label-caps text-label-caps font-bold text-primary">FLEXA CENDEKIA x UNIPDU</span>
-            <p class="font-body-sm text-body-sm text-on-surface-variant opacity-80">&copy; 2026 Seluruh Hak Cipta Dilindungi.</p>
-        </div>
-        <div class="flex gap-8">
-            <a class="font-label-caps text-[11px] text-on-surface-variant hover:text-secondary transition-colors" href="/?page=01_login_panduan">PANDUAN PENGGUNA</a>
-            <a class="font-label-caps text-[11px] text-on-surface-variant hover:text-secondary transition-colors" href="/?page=01_login_bantuan">KEBIJAKAN PRIVASI</a>
-            <a class="font-label-caps text-[11px] text-on-surface-variant hover:text-secondary transition-colors" href="/?page=01_login_kontak">KONTAK KAMI</a>
+<footer class="w-full bg-surface-container border-t border-primary/10 py-6">
+    <div class="max-w-container-max mx-auto px-margin-desktop flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-on-surface-variant">
+        <span>&copy; 2026 Homeschooling Flexa Cendekia • Powered by UNIPDU.</span>
+        <div class="flex gap-6">
+            <a href="/?page=01_login_panduan" class="hover:underline">Panduan</a>
+            <a href="/?page=01_login_bantuan" class="hover:underline">Bantuan</a>
+            <a href="/?page=01_login_kontak" class="hover:underline">Kontak</a>
         </div>
     </div>
 </footer>
@@ -275,99 +309,192 @@
 <script>
 let selectedCareerTitle = 'Arsitek';
 
-// Get careers from CareerRoadmapStore or fallback
+// Complete 36-Career Database
+const FALLBACK_ALL_CAREERS = [
+    // Sosial & Hukum
+    { id: 'polisi', title: 'Polisi', category: 'Sosial & Hukum', icon: 'local_police', desc: 'Menegakkan hukum dan menjaga ketertiban masyarakat.', img: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?q=80&w=600&auto=format&fit=crop', pt: 'Akademi Kepolisian. Fokus: Hukum, Strategi, & Kepemimpinan.', sma: 'Fokus: PKN, Olahraga, & Sosiologi.', kegiatan: ['Paskibra', 'Pramuka'], quote: '"Melindungi dan mengayomi masyarakat sepenuh hati."' },
+    { id: 'tentara', title: 'Tentara', category: 'Sosial & Hukum', icon: 'military_tech', desc: 'Mempertahankan kedaulatan negara dari berbagai ancaman.', img: 'https://plus.unsplash.com/premium_photo-1663126955030-f24fae72ec73?q=80&w=600&auto=format&fit=crop', pt: 'Akademi Militer. Fokus: Strategi Militer, Ketahanan, & Kepemimpinan.', sma: 'Fokus: Olahraga, PKN, & Fisika.', kegiatan: ['Paskibra', 'Bela Diri'], quote: '"Mengabdi untuk negara adalah panggilan jiwa tertinggi."' },
+    { id: 'hakim', title: 'Hakim', category: 'Sosial & Hukum', icon: 'gavel', desc: 'Memimpin jalannya sidang dan memutuskan perkara secara adil.', img: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=600&auto=format&fit=crop', pt: 'S1 Hukum. Fokus: Hukum Pidana/Perdata, Etika Profesi.', sma: 'Fokus: PKN, Bahasa, & Sosiologi.', kegiatan: ['Debat', 'OSIS'], quote: '"Keadilan harus ditegakkan walaupun langit runtuh."' },
+    { id: 'pengacara', title: 'Pengacara', category: 'Sosial & Hukum', icon: 'balance', desc: 'Memberikan nasihat hukum dan mewakili kepentingan klien.', img: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=600&auto=format&fit=crop', pt: 'S1 Hukum. Fokus: Hukum Perdata, Pidana, & Ketatanegaraan.', sma: 'Fokus: PKN, Sosiologi, & Bahasa Indonesia.', kegiatan: ['Debat', 'Moot Court'], quote: '"Hukum adalah perisai bagi yang lemah dan pedang bagi keadilan."' },
+    { id: 'diplomat', title: 'Diplomat', category: 'Sosial & Hukum', icon: 'public', desc: 'Mewakili dan melindungi kepentingan bangsa di kancah global.', img: 'https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?q=80&w=600&auto=format&fit=crop', pt: 'S1 Hubungan Internasional. Fokus: Diplomasi, Hukum Internasional, & Politik Global.', sma: 'Fokus: Bahasa Asing, Sejarah, & PKN.', kegiatan: ['Model United Nations', 'English Club'], quote: '"Diplomasi adalah seni membangun jembatan antar bangsa."' },
+    { id: 'pekerja_sosial', title: 'Pekerja Sosial', category: 'Sosial & Hukum', icon: 'volunteer_activism', desc: 'Membantu individu dan komunitas memecahkan masalah sosial.', img: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?q=80&w=600&auto=format&fit=crop', pt: 'S1 Kesejahteraan Sosial. Fokus: Intervensi Sosial, Advokasi Komunitas.', sma: 'Fokus: Sosiologi, PKN, & Bahasa.', kegiatan: ['Relawan', 'PMR'], quote: '"Perubahan sosial dimulai dari satu tangan yang terulur."' },
+
+    // Kesehatan
+    { id: 'dokter', title: 'Dokter', category: 'Kesehatan', icon: 'stethoscope', desc: 'Mendiagnosis, mengobati, dan mencegah penyakit manusia.', img: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=600&auto=format&fit=crop', pt: 'S1 Kedokteran. Fokus: Anatomi, Fisiologi, & Patologi Klinik.', sma: 'Fokus: Biologi Medis, Kimia Organik, & Fisika.', kegiatan: ['PMR', 'Olimpiade Biologi'], quote: '"Menyembuhkan satu kehidupan, berarti menjaga kelangsungan umat manusia."' },
+    { id: 'perawat', title: 'Perawat', category: 'Kesehatan', icon: 'medical_services', desc: 'Memberikan asuhan keperawatan dan pendampingan pasien.', img: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=600&auto=format&fit=crop', pt: 'S1 Keperawatan. Fokus: Keperawatan Klinik & Manajemen Pasien.', sma: 'Fokus: Biologi, Kimia, & Kesehatan Masyarakat.', kegiatan: ['PMR', 'Relawan Kesehatan'], quote: '"Perawat adalah jantung dari pelayanan kesehatan yang berkesinambungan."' },
+    { id: 'apoteker', title: 'Apoteker', category: 'Kesehatan', icon: 'vaccines', desc: 'Menyiapkan, memformulasi, dan mengedukasi penggunaan obat.', img: 'https://images.unsplash.com/photo-1585435557343-3b092031a831?q=80&w=600&auto=format&fit=crop', pt: 'S1 Farmasi. Fokus: Farmakologi, Formulasi Obat, & Kimia Farmasi.', sma: 'Fokus: Kimia, Biologi, & Matematika.', kegiatan: ['Olimpiade Kimia', 'Lab Kimia'], quote: '"Obat yang tepat di tangan yang tepat menyelamatkan nyawa."' },
+    { id: 'bidan', title: 'Bidan', category: 'Kesehatan', icon: 'pregnant_woman', desc: 'Mendampingi persalinan serta kesehatan ibu dan anak.', img: 'https://plus.unsplash.com/premium_photo-1661578335002-1469e38e87ad?q=80&w=600&auto=format&fit=crop', pt: 'S1 Kebidanan. Fokus: Asuhan Kebidanan & Kesehatan Reproduksi.', sma: 'Fokus: Biologi, Kimia, & Sosiologi.', kegiatan: ['PMR', 'Penyuluhan'], quote: '"Menyambut kehidupan baru dengan kasih sayang dan profesionalisme."' },
+    { id: 'ahli_gizi', title: 'Ahli Gizi', category: 'Kesehatan', icon: 'restaurant_menu', desc: 'Merancang pola makan sehat dan terapi nutrisi berbasis sains.', img: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=600&auto=format&fit=crop', pt: 'S1 Gizi. Fokus: Ilmu Gizi Klinis, Dietetika, & Keamanan Pangan.', sma: 'Fokus: Biologi, Kimia, & Kesehatan.', kegiatan: ['UKS', 'Kantin Sehat'], quote: '"Nutrisi yang baik adalah investasi terbaik untuk masa depan."' },
+    { id: 'psikolog', title: 'Psikolog', category: 'Kesehatan', icon: 'psychology', desc: 'Memahami perilaku, mental, dan emosi manusia untuk konseling.', img: 'https://images.unsplash.com/photo-1573497620053-ea5300f94f21?q=80&w=600&auto=format&fit=crop', pt: 'S1 Psikologi. Fokus: Psikologi Klinis, Perkembangan, & Asesmen.', sma: 'Fokus: Sosiologi, Biologi, & Bahasa.', kegiatan: ['Konseling Sebaya', 'Debat'], quote: '"Memahami pikiran manusia adalah kunci membangun masyarakat yang sehat."' },
+
+    // Pendidikan
+    { id: 'guru', title: 'Guru', category: 'Pendidikan', icon: 'school', desc: 'Mendidik, membimbing, dan membentuk karakter generasi bangsa.', img: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=600&auto=format&fit=crop', pt: 'S1 Pendidikan. Fokus: Pedagogi, Kurikulum, & Psikologi Pendidikan.', sma: 'Fokus: Mata pelajaran pilihan, Bahasa, & Sosiologi.', kegiatan: ['Tutor Sebaya', 'OSIS'], quote: '"Guru yang hebat menginspirasi muridnya untuk melampaui batas kemampuan diri."' },
+    { id: 'dosen', title: 'Dosen', category: 'Pendidikan', icon: 'local_library', desc: 'Mengajar tingkat tinggi dan melakukan penelitian akademis.', img: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=600&auto=format&fit=crop', pt: 'S2/S3 Bidang Ilmu. Fokus: Riset, Publikasi, & Pengajaran Tinggi.', sma: 'Fokus: Bidang minat akademik, Riset, & Penulisan.', kegiatan: ['Karya Ilmiah', 'Debat Ilmiah'], quote: '"Dosen bukan hanya pengajar, tapi juga pencipta pengetahuan baru."' },
+    { id: 'ustadz', title: 'Ustad/Ustadzah', category: 'Pendidikan', icon: 'menu_book', desc: 'Mengajarkan ilmu agama, tafsir, dan pembinaan akhlak mulia.', img: 'https://images.unsplash.com/photo-1623869926661-d7fa85b19b78?q=80&w=600&auto=format&fit=crop', pt: 'S1 Pendidikan Agama / Tarbiyah. Fokus: Ilmu Agama, Pedagogi Islam.', sma: 'Fokus: Agama, Sejarah, & Bahasa Arab.', kegiatan: ['Rohis', 'Dakwah Sekolah'], quote: '"Membangun karakter bangsa dengan fondasi iman yang kuat."' },
+    { id: 'kepala_sekolah', title: 'Kepala Sekolah', category: 'Pendidikan', icon: 'admin_panel_settings', desc: 'Memimpin visi sekolah dan manajemen institusi pendidikan.', img: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?q=80&w=600&auto=format&fit=crop', pt: 'S2 Manajemen Pendidikan. Fokus: Kepemimpinan, Kebijakan Sekolah.', sma: 'Fokus: Sosiologi, Ekonomi, & Bahasa.', kegiatan: ['OSIS', 'Organisasi'], quote: '"Kepemimpinan yang baik menciptakan lingkungan belajar yang optimal."' },
+    { id: 'pustakawan', title: 'Pustakawan', category: 'Pendidikan', icon: 'library_books', desc: 'Mengelola literasi, sistem informasi, dan repositori ilmu.', img: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?q=80&w=600&auto=format&fit=crop', pt: 'S1 Ilmu Perpustakaan. Fokus: Manajemen Informasi, Arsip, & Literasi.', sma: 'Fokus: Bahasa, TIK, & Sosiologi.', kegiatan: ['Klub Buku', 'Majalah Sekolah'], quote: '"Perpustakaan adalah gerbang menuju pengetahuan tak terbatas."' },
+
+    // Sains & Teknologi
+    { id: 'arsitek', title: 'Arsitek', category: 'Sains & Teknologi', icon: 'architecture', desc: 'Merancang desain bangunan, estetika ruang, dan tata lingkungan.', img: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=600&auto=format&fit=crop', pt: 'S1 Arsitektur. Fokus: Studio Perancangan, Sains Bangunan, & Struktur.', sma: 'Fokus: Matematika Geometri, Fisika, & Seni Rupa.', kegiatan: ['Klub Menggambar', 'Pameran Karya'], quote: '"Arsitektur adalah perpaduan antara presisi dan kebebasan berekspresi."' },
+    { id: 'programmer', title: 'Programmer', category: 'Sains & Teknologi', icon: 'code', desc: 'Membangun aplikasi, website, dan sistem komputasi modern.', img: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=600&auto=format&fit=crop', pt: 'S1 Teknik Informatika. Fokus: Algoritma, Rekayasa Perangkat Lunak, & Cloud.', sma: 'Fokus: Matematika, Logika Komputasi, & Bahasa Inggris.', kegiatan: ['Klub Coding', 'OSN Komputer'], quote: '"Kode yang baik adalah puisi yang dapat dijalankan oleh mesin."' },
+    { id: 'data_scientist', title: 'Data Scientist', category: 'Sains & Teknologi', icon: 'query_stats', desc: 'Mengolah pola data besar, kecerdasan buatan, dan machine learning.', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop', pt: 'S1 Sains Data / Informatika. Fokus: Machine Learning, Big Data, & Statistika Terapan.', sma: 'Fokus: Matematika Lanjut, Pemrograman Dasar, & Probabilitas.', kegiatan: ['Klub Coding', 'Karya Ilmiah Remaja'], quote: '"Data adalah minyak baru, namun insight adalah energi penggeraknya."' },
+    { id: 'arsitek_sistem', title: 'Arsitek Sistem', category: 'Sains & Teknologi', icon: 'dns', desc: 'Merancang arsitektur server cloud, jaringan, dan keamanan siber skala besar.', img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop', pt: 'S1 Sistem Informasi / TI. Fokus: Cloud, Microservices, & Cyber Security.', sma: 'Fokus: Jaringan Komputer, Matematika Diskrit, Linux.', kegiatan: ['Klub Jaringan', 'Robotik'], quote: '"Infrastruktur yang kokoh adalah fondasi inovasi digital."' },
+    { id: 'peneliti_sains', title: 'Peneliti Sains', category: 'Sains & Teknologi', icon: 'science', desc: 'Melakukan riset dan eksperimen laboratorium untuk penemuan ilmiah.', img: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=600&auto=format&fit=crop', pt: 'S1/S2 Fisika / Kimia. Fokus: Metodologi Riset, Analisis Eksperimental.', sma: 'Fokus: Sains Terapan (Fis/Kim/Bio), Matematika.', kegiatan: ['Karya Ilmiah Remaja', 'Lab Sekolah'], quote: '"Setiap eksperimen adalah langkah mendekati kebenaran alam."' },
+    { id: 'peneliti_biologi', title: 'Peneliti Biologi', category: 'Sains & Teknologi', icon: 'biotech', desc: 'Mempelajari organisme hayati, rekayasa genetika, dan bioteknologi.', img: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=600&auto=format&fit=crop', pt: 'S1 Biologi / Bioteknologi. Fokus: Mikrobiologi, Genetika, & Bioinformatika.', sma: 'Fokus: Biologi, Kimia Organik, Matematika.', kegiatan: ['Karya Ilmiah Biologi', 'Pecinta Alam'], quote: '"Di setiap mikroskop, terdapat dunia tak terlihat yang membentuk kehidupan kita."' },
+    { id: 'insinyur', title: 'Insinyur Mesin/Sipil', category: 'Sains & Teknologi', icon: 'engineering', desc: 'Merancang infrastruktur fisik, mesin cerdas, dan konstruksi modern.', img: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=600&auto=format&fit=crop', pt: 'S1 Teknik Mesin/Sipil. Fokus: Mekanika, Termodinamika, & Kekuatan Material.', sma: 'Fokus: Fisika, Matematika Lanjut, & Kimia.', kegiatan: ['Olimpiade Fisika', 'Klub Robotik'], quote: '"Insinyur mengubah ilmu pengetahuan menjadi solusi nyata bagi kehidupan."' },
+    { id: 'teknisi', title: 'Teknisi Elektro & IoT', category: 'Sains & Teknologi', icon: 'build', desc: 'Memasang, menguji, dan memelihara sistem otomatisasi dan perangkat cerdas.', img: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=600&auto=format&fit=crop', pt: 'D3/S1 Vokasi Elektro. Fokus: Elektronika Daya, Mikrokontroler, & IoT.', sma: 'Fokus: Fisika, Keterampilan Praktis, TIK.', kegiatan: ['Klub Robotik', 'Prakarya'], quote: '"Keterampilan teknis memastikan dunia tetap berputar."' },
+
+    // Kreatif
+    { id: 'desainer_grafis', title: 'Desainer Grafis', category: 'Kreatif', icon: 'brush', desc: 'Menciptakan identitas visual, branding, dan ilustrasi digital yang memukau.', img: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?q=80&w=600&auto=format&fit=crop', pt: 'S1 DKV (Desain Komunikasi Visual). Fokus: Tipografi, UI/UX, & Ilustrasi.', sma: 'Fokus: Seni Rupa, TIK, & Bahasa Inggris.', kegiatan: ['Klub Desain', 'Mading Kreatif'], quote: '"Desain yang baik adalah invisible — ia bekerja tanpa harus meminta perhatian."' },
+    { id: 'fotografer', title: 'Fotografer', category: 'Kreatif', icon: 'photo_camera', desc: 'Menangkap momen artistik, fotografi komersial, dan jurnalisme visual.', img: 'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?q=80&w=600&auto=format&fit=crop', pt: 'S1 Fotografi / DKV. Fokus: Komposisi, Lighting, & Digital Darkroom.', sma: 'Fokus: Seni Rupa, TIK, & Fisika Optik.', kegiatan: ['Klub Fotografi', 'Jurnalistik'], quote: '"Setiap foto menceritakan kisah yang tak bisa diungkapkan oleh kata-kata."' },
+    { id: 'penulis', title: 'Penulis & Jurnalis', category: 'Kreatif', icon: 'edit', desc: 'Menulis novel, karya sastra, naskah film, dan reportase investigatif.', img: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?q=80&w=600&auto=format&fit=crop', pt: 'S1 Sastra / Ilmu Komunikasi. Fokus: Creative Writing, Media, & Linguistik.', sma: 'Fokus: Bahasa Indonesia, Bahasa Inggris, & Sosiologi.', kegiatan: ['Majalah Sekolah', 'Lomba Cerpen'], quote: '"Kata-kata yang tepat memiliki kekuatan untuk mengubah dunia."' },
+    { id: 'musisi', title: 'Musisi & Komposer', category: 'Kreatif', icon: 'music_note', desc: 'Menciptakan harmoni musik, aransemen, dan produksi audio rekaman.', img: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?q=80&w=600&auto=format&fit=crop', pt: 'S1 Seni Musik. Fokus: Teori Harmoni, Audio Production, & Komposisi.', sma: 'Fokus: Seni Musik, Bahasa, & Matematika.', kegiatan: ['Band Sekolah', 'Paduan Suara'], quote: '"Musik adalah bahasa universal yang menyentuh jiwa tanpa kata."' },
+    { id: 'animator', title: 'Animator 3D & 2D', category: 'Kreatif', icon: 'animation', desc: 'Membuat animasi film, efek visual game, dan motion graphics interaktif.', img: 'https://images.unsplash.com/photo-1535016120720-40c646be5580?q=80&w=600&auto=format&fit=crop', pt: 'S1 Animasi / Film. Fokus: 3D Rigging, Visual FX, & Character Animation.', sma: 'Fokus: Seni Rupa, Matematika, & TIK.', kegiatan: ['Klub Film', 'Lomba Animasi'], quote: '"Animasi memberi kehidupan pada imajinasi dan menghidupkan cerita."' },
+
+    // Bisnis
+    { id: 'akuntan', title: 'Akuntan Publik', category: 'Bisnis', icon: 'account_balance', desc: 'Menganalisis laporan keuangan, audit kepatuhan, dan strategi fiskal.', img: 'https://images.unsplash.com/photo-1554224155-6726b3ff858f?q=80&w=600&auto=format&fit=crop', pt: 'S1 Akuntansi. Fokus: Financial Accounting, Audit, & Perpajakan.', sma: 'Fokus: Ekonomi, Akuntansi Dasar, & Matematika Bisnis.', kegiatan: ['Koperasi Siswa', 'Olimpiade Ekonomi'], quote: '"Kesehatan finansial adalah cermin dari keberhasilan sebuah strategi."' },
+    { id: 'marketing', title: 'Manajer Pemasaran', category: 'Bisnis', icon: 'campaign', desc: 'Merancang strategi kampanye digital, branding pasar, dan pertumbuhan bisnis.', img: 'https://images.unsplash.com/photo-1533750516457-a7f992034fec?q=80&w=600&auto=format&fit=crop', pt: 'S1 Manajemen Bisnis / Marketing. Fokus: Consumer Behavior & Digital Growth.', sma: 'Fokus: Ekonomi, Sosiologi, & Bahasa.', kegiatan: ['Bazar Sekolah', 'Klub Kewirausahaan'], quote: '"Pemasaran yang hebat tidak terasa seperti pemasaran."' },
+    { id: 'wirausaha', title: 'Wirausaha / Founder', category: 'Bisnis', icon: 'store', desc: 'Mendirikan startup, memvalidasi model bisnis, dan menciptakan lapangan kerja.', img: 'https://images.unsplash.com/photo-1556761175-4b46a572b786?q=80&w=600&auto=format&fit=crop', pt: 'S1 Kewirausahaan / Manajemen. Fokus: Business Model Canvas & Scale-Up.', sma: 'Fokus: Ekonomi, TIK, & Kepemimpinan.', kegiatan: ['Kewirausahaan', 'OSIS'], quote: '"Pengusaha melihat peluang di mana orang lain melihat hambatan."' },
+    { id: 'analis_keuangan', title: 'Analis Investasi', category: 'Bisnis', icon: 'trending_up', desc: 'Meneliti valuasi perusahaan, pasar modal, dan manajemen portofolio aset.', img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=600&auto=format&fit=crop', pt: 'S1 Manajemen Keuangan / Aktuaria. Fokus: Capital Markets & Risk Modeling.', sma: 'Fokus: Ekonomi, Matematika Lanjut, & Statistik.', kegiatan: ['Olimpiade Ekonomi', 'Klub Saham'], quote: '"Angka menceritakan cerita yang tak pernah bohong."' },
+    { id: 'hrd', title: 'Spesialis SDM / HRD', category: 'Bisnis', icon: 'groups', desc: 'Mengembangkan talenta organisasi, budaya kerja prima, dan kepemimpinan tim.', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=600&auto=format&fit=crop', pt: 'S1 Manajemen SDM / Psikologi Organisasi. Fokus: Talent Acquisition & Training.', sma: 'Fokus: Sosiologi, Psikologi, & Komunikasi.', kegiatan: ['OSIS', 'Organisasi'], quote: '"Aset paling berharga dari sebuah perusahaan adalah manusianya."' },
+
+    // Olahraga & Seni
+    { id: 'atlet', title: 'Atlet Profesional', category: 'Olahraga & Seni', icon: 'sports_gymnastics', desc: 'Berlatih intensif dan berkompetisi di kejuaraan olahraga nasional/internasional.', img: 'https://images.unsplash.com/photo-1461896836934-bd45ba43ad80?q=80&w=600&auto=format&fit=crop', pt: 'S1 Ilmu Keolahragaan. Fokus: Biomekanika, Nutrisi Atlet, & Sport Science.', sma: 'Fokus: PJOK, Biologi, & Kedisiplinan Fisik.', kegiatan: ['Tim Olahraga', 'Kejuaraan Daerah'], quote: '"Kemenangan adalah hasil dari ribuan jam latihan dalam hening."' },
+    { id: 'pelatih', title: 'Pelatih / Coach Olahraga', category: 'Olahraga & Seni', icon: 'sports', desc: 'Menyusun taktik pertandingan dan membangun mental juara atlet binaan.', img: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=600&auto=format&fit=crop', pt: 'S1 Kepelatihan Olahraga. Fokus: Metodologi Latihan & Sport Psychology.', sma: 'Fokus: PJOK, Biologi, & Kepemimpinan.', kegiatan: ['Tim Olahraga', 'Asisten Pelatih'], quote: '"Pelatih hebat mencetak juara, baik di lapangan maupun dalam kehidupan."' },
+    { id: 'pelukis', title: 'Pelukis & Perupa', category: 'Olahraga & Seni', icon: 'palette', desc: 'Mengeksplorasi media lukis, pameran galeri, dan ekspresi seni rupa murni.', img: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=600&auto=format&fit=crop', pt: 'S1 Seni Murni / Fine Arts. Fokus: Studio Seni Lukis, Sejarah Seni, & Kurasi.', sma: 'Fokus: Seni Budaya & Sejarah.', kegiatan: ['Pameran Seni', 'Klub Melukis'], quote: '"Setiap kanvas adalah cermin dari jiwa pelukisnya."' },
+    { id: 'penari', title: 'Penari & Koreografer', category: 'Olahraga & Seni', icon: 'accessibility_new', desc: 'Menciptakan koreografi tari tradisional dan kontemporer berkelas panggung.', img: 'https://images.unsplash.com/photo-1547153760-18fc86324498?q=80&w=600&auto=format&fit=crop', pt: 'S1 Seni Tari. Fokus: Koreografi Tari, Komposisi Gerak, & Manajemen Panggung.', sma: 'Fokus: Seni Budaya & Olahraga.', kegiatan: ['Klub Tari', 'Festival Budaya'], quote: '"Tarian adalah puisi tersembunyi dari jiwa."' },
+    { id: 'aktor', title: 'Aktor Seni Peran', category: 'Olahraga & Seni', icon: 'theater_comedy', desc: 'Mendalami olah vokal, rasa, dan karakter untuk film dan teater pentas.', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&auto=format&fit=crop', pt: 'S1 Seni Peran / Teater. Fokus: Keaktoran Karakter, Dramaturgi, & Olah Tubuh.', sma: 'Fokus: Seni Budaya, Bahasa, & Sosiologi.', kegiatan: ['Teater Sekolah', 'Klub Drama'], quote: '"Seni peran membantu kita memahami kemanusiaan secara lebih mendalam."' }
+];
+
 function getCareerList() {
-    if (window.CareerRoadmapStore && window.CareerRoadmapStore.allCareers) {
+    if (window.CareerRoadmapStore && window.CareerRoadmapStore.allCareers && window.CareerRoadmapStore.allCareers.length >= 36) {
         return window.CareerRoadmapStore.allCareers;
     }
-    return [
-        { id: 'data_scientist', title: 'Data Scientist', category: 'Sains & Teknologi', icon: 'query_stats', desc: 'Mengolah data besar, statistik, dan AI.', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop', pt: 'S1 Sains Data. Fokus: Machine Learning & Big Data.', sma: 'Fokus: Matematika & Coding.', kegiatan: ['Klub Coding'], quote: '"Data adalah minyak baru, insight adalah penggeraknya."' },
-        { id: 'arsitek', title: 'Arsitek', category: 'Kreatif', icon: 'architecture', desc: 'Merancang bangunan dan tata ruang.', img: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?q=80&w=600&auto=format&fit=crop', pt: 'S1 Arsitektur. Fokus: Desain Bangunan.', sma: 'Fokus: Matematika & Seni.', kegiatan: ['Klub Gambar'], quote: '"Menciptakan ruang hidup manusia."' },
-        { id: 'dokter', title: 'Dokter', category: 'Kesehatan', icon: 'stethoscope', desc: 'Mendiagnosis dan merawat kesehatan.', img: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=600&auto=format&fit=crop', pt: 'S1 Kedokteran. Fokus: Anatomi & Fisiologi.', sma: 'Fokus: Biologi & Kimia.', kegiatan: ['PMR'], quote: '"Menyembuhkan kehidupan manusia."' }
-    ];
+    return FALLBACK_ALL_CAREERS;
 }
 
 function getCareerData(title) {
     const list = getCareerList();
-    return list.find(c => c.title.toLowerCase() === title.toLowerCase()) || list[0];
+    return list.find(c => c.title.toLowerCase() === String(title).toLowerCase()) || list.find(c => c.id.toLowerCase() === String(title).toLowerCase()) || list[0];
 }
 
 function selectCareer(title) {
     selectedCareerTitle = title;
     const data = getCareerData(title);
     
-    document.getElementById('detail-title').innerText = data.title;
-    const detailIcon = document.getElementById('detail-icon');
-    if(detailIcon) detailIcon.innerText = data.icon || 'star';
+    // Update Right Panel Info
+    const detailTitle = document.getElementById('detail-title');
+    if (detailTitle) detailTitle.innerText = data.title;
     
-    // Highlight selected card
-    document.querySelectorAll('.career-card').forEach(el => {
-        el.classList.remove('border-2', 'border-student-gold');
-        el.classList.add('ledger-border');
-        const badge = el.querySelector('.bg-student-gold.text-white');
-        if (badge) badge.remove();
-        
-        const icon = el.querySelector('.material-symbols-outlined');
-        if(icon) {
-            icon.classList.remove('text-student-gold');
-            icon.classList.add('text-primary/60');
-        }
-    });
+    const detailCat = document.getElementById('detail-category');
+    if (detailCat) detailCat.innerText = data.category || 'Pilihan Profesi';
 
-    const cardId = `career-card-${title.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
-    const selectedEl = document.getElementById(cardId);
-    if (selectedEl) {
-        selectedEl.classList.remove('ledger-border');
-        selectedEl.classList.add('border-2', 'border-student-gold');
-        selectedEl.insertAdjacentHTML('afterbegin', `<div class="absolute top-0 right-0 bg-student-gold text-white px-2 py-1 text-[10px] font-bold">TERPILIH</div>`);
-        
-        const icon = selectedEl.querySelector('.material-symbols-outlined');
-        if(icon) {
-            icon.classList.add('text-student-gold');
-            icon.classList.remove('text-primary/60');
-        }
-    }
+    const detailIcon = document.getElementById('detail-icon');
+    if (detailIcon) detailIcon.innerText = data.icon || 'star';
 
-    // Update Dynamic Content
+    const detailDesc = document.getElementById('detail-desc');
+    if (detailDesc) detailDesc.innerText = data.desc || `Membangun karier profesional sebagai ${data.title}.`;
+    
     const imgEl = document.getElementById('career-image');
     if (imgEl && data.img) imgEl.style.backgroundImage = `url('${data.img}')`;
+
     const ptEl = document.getElementById('timeline-pt');
-    if (ptEl) ptEl.innerText = data.pt || 'Pendidikan Tinggi Terkait.';
+    if (ptEl) ptEl.innerText = data.pt || `Program Sarjana S1 UNIPDU terkait ${data.title}.`;
+
     const smaEl = document.getElementById('timeline-sma');
-    if (smaEl) smaEl.innerText = data.sma || 'Pendidikan SMA Terkait.';
+    if (smaEl) smaEl.innerText = data.sma || `Homeschooling Flexa Cendekia: Modul Pilihan ${data.title}.`;
+
     const quoteEl = document.getElementById('career-quote');
-    if (quoteEl) quoteEl.innerText = data.quote || `"${data.title} profesional membangun masa depan."`;
+    if (quoteEl) quoteEl.innerText = data.quote || `"${data.title} profesional berintegritas tinggi."`;
     
     const kegiatanContainer = document.getElementById('timeline-kegiatan');
     if (kegiatanContainer) {
         kegiatanContainer.innerHTML = '';
-        const kegiatan = data.kegiatan || ['Ekstrakurikuler Relevan', 'Olimpiade/Kompetisi'];
+        const kegiatan = data.kegiatan || ['Proyek Pembelajaran', 'Portofolio Mandiri'];
         kegiatan.forEach(keg => {
-            kegiatanContainer.innerHTML += `<span class="bg-surface-container px-2 py-1 text-[10px] font-stats-sm text-primary">${keg}</span>`;
+            kegiatanContainer.innerHTML += `<span class="bg-primary/5 px-2 py-0.5 text-[10px] font-mono text-primary rounded">${keg}</span>`;
         });
     }
-}
 
-function renderCareers(careersToRender, selectedTitle) {
-    let containerHtml = '';
-    careersToRender.forEach((c) => {
-        const isSelected = c.title === selectedTitle;
-        const cardId = `career-card-${c.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
-        const borderClass = isSelected ? 'border-2 border-student-gold' : 'ledger-border hover:border-primary/40';
-        const iconColor = isSelected ? 'text-student-gold' : 'text-primary/60';
-        const badgeHtml = isSelected ? '<div class="absolute top-0 right-0 bg-student-gold text-white px-2 py-1 text-[10px] font-bold">TERPILIH</div>' : '';
-
-        containerHtml += `
-        <div class="bg-surface-container-lowest ${borderClass} p-5 cursor-pointer relative group transition-all career-card" id="${cardId}" onclick="selectCareer('${c.title}')">
-            ${badgeHtml}
-            <span class="material-symbols-outlined ${iconColor} mb-3 block" style="font-size: 32px;">${c.icon || 'star'}</span>
-            <h3 class="font-bold text-primary mb-1">${c.title}</h3>
-            <p class="font-body-sm text-[12px] text-on-surface-variant">${c.desc}</p>
-        </div>`;
+    // Highlight All matching cards in both containers
+    document.querySelectorAll('.career-card').forEach(el => {
+        el.classList.remove('border-2', 'border-student-gold', 'ring-2', 'ring-student-gold/50');
+        el.classList.add('border-primary/20');
+        
+        const badge = el.querySelector('.selected-badge');
+        if (badge) badge.remove();
+        
+        const icon = el.querySelector('.career-card-icon');
+        if (icon) {
+            icon.classList.remove('text-student-gold');
+            icon.classList.add('text-primary/70');
+        }
     });
 
-    const container = document.getElementById('career-cards-container');
-    if (container) container.innerHTML = containerHtml;
+    const safeTitle = title.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    document.querySelectorAll(`[data-career-key="${safeTitle}"]`).forEach(selectedEl => {
+        selectedEl.classList.remove('border-primary/20');
+        selectedEl.classList.add('border-2', 'border-student-gold', 'ring-2', 'ring-student-gold/30');
+        selectedEl.insertAdjacentHTML('afterbegin', `<div class="selected-badge absolute top-0 right-0 bg-student-gold text-white px-2 py-0.5 text-[9px] font-bold rounded-bl uppercase tracking-wider">TERPILIH</div>`);
+        
+        const icon = selectedEl.querySelector('.career-card-icon');
+        if (icon) {
+            icon.classList.add('text-student-gold');
+            icon.classList.remove('text-primary/70');
+        }
+    });
+}
+
+function renderCareerCard(c, isRecommendation = false) {
+    const isSelected = c.title.toLowerCase() === selectedCareerTitle.toLowerCase();
+    const safeTitle = c.title.toLowerCase().replace(/[^a-z0-9]/g, '-');
+    const borderClass = isSelected ? 'border-2 border-student-gold ring-2 ring-student-gold/30' : 'border border-primary/20 hover:border-primary/50';
+    const iconColor = isSelected ? 'text-student-gold' : 'text-primary/70';
+    const badgeHtml = isSelected ? '<div class="selected-badge absolute top-0 right-0 bg-student-gold text-white px-2 py-0.5 text-[9px] font-bold rounded-bl uppercase tracking-wider">TERPILIH</div>' : '';
+
+    return `
+    <div class="bg-white ${borderClass} p-4 cursor-pointer relative group transition-all rounded shadow-sm hover:shadow career-card" data-career-key="${safeTitle}" onclick="selectCareer('${c.title.replace(/'/g, "\\'")}')">
+        ${badgeHtml}
+        <div class="flex items-start gap-3">
+            <span class="material-symbols-outlined career-card-icon ${iconColor} text-2xl transition-colors">${c.icon || 'star'}</span>
+            <div class="flex-grow">
+                <div class="flex items-center justify-between">
+                    <h4 class="font-bold text-xs text-primary leading-tight">${c.title}</h4>
+                </div>
+                <span class="text-[10px] font-mono text-secondary font-medium block mt-0.5">${c.category}</span>
+                <p class="font-body-sm text-[11px] text-on-surface-variant line-clamp-2 mt-1 leading-snug">${c.desc}</p>
+            </div>
+        </div>
+    </div>`;
+}
+
+function renderAllCareers(list) {
+    const container = document.getElementById('all-careers-container');
+    const countBadge = document.getElementById('career-count-badge');
+    if (!container) return;
+
+    if (countBadge) {
+        countBadge.textContent = `${list.length} Profesi`;
+    }
+
+    if (list.length === 0) {
+        container.innerHTML = `
+            <div class="col-span-full py-8 text-center bg-primary/5 rounded border border-dashed border-primary/20">
+                <span class="material-symbols-outlined text-3xl text-on-surface-variant/40 mb-1">search_off</span>
+                <p class="font-body-sm text-xs text-on-surface-variant font-medium">Profesi tidak ditemukan dengan kata kunci tersebut.</p>
+                <button type="button" onclick="document.getElementById('career-search').value=''; document.querySelector('.filter-btn[data-category=\\'Semua\\']').click();" class="mt-2 text-xs text-primary font-bold underline">Lihat Semua 36 Profesi</button>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = list.map(c => renderCareerCard(c, false)).join('');
+}
+
+function renderRecommendedCareers(list) {
+    const container = document.getElementById('recommended-cards-container');
+    if (!container) return;
+    container.innerHTML = list.map(c => renderCareerCard(c, true)).join('');
 }
 
 async function confirmCareer() {
@@ -382,168 +509,135 @@ async function confirmCareer() {
         selectedCareerTitle = 'Arsitek';
     }
 
-    // 1. Update button state to loading
     if (btn) {
         btn.disabled = true;
-        btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">progress_activity</span> Menyusun Roadmap...';
+        btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-sm">sync</span> Menyusun Roadmap...';
         btn.classList.add('opacity-80', 'cursor-not-allowed');
     }
 
-    // 2. Save locally immediately
+    // 1. Immediately store to localStorage and memory
     try {
         localStorage.setItem('selectedCareer', selectedCareerTitle);
-    } catch(e) {
-        console.warn('LocalStorage error:', e);
-    }
+        const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+        u.citaCita = selectedCareerTitle;
+        localStorage.setItem('currentUser', JSON.stringify(u));
+        if (window.currentFirebaseUser) {
+            window.currentFirebaseUser.citaCita = selectedCareerTitle;
+        }
+    } catch(e) {}
 
-    try {
-        // 3. Attempt Firestore sync with max 3.5-second timeout
-        const syncToFirestore = async () => {
-            if (!window.firebaseDb) return;
-            const authUser = window.firebaseAuth && window.firebaseAuth.currentUser;
-            const uid = (authUser && authUser.uid) || window._authUid;
-            if (uid) {
-                await window.firebaseDb.collection('users').doc(uid).set({
-                    citaCita: selectedCareerTitle
-                }, { merge: true });
-            }
-        };
-
-        const timeoutPromise = new Promise((_, reject) => 
-            setTimeout(() => reject(new Error('timeout')), 3500)
-        );
-
+    // 2. Non-blocking Firestore save with safety timeout
+    if (window.firebaseDb && window.firebaseAuth && window.firebaseAuth.currentUser) {
+        const uid = window.firebaseAuth.currentUser.uid;
         try {
-            await Promise.race([syncToFirestore(), timeoutPromise]);
-        } catch (syncErr) {
-            console.warn('Firestore sync timeout or notice (continuing with local cache):', syncErr);
-        }
-
-        // 4. Notification sync
-        if (window.NotificationSync && window.NotificationSync.addNotification) {
-            try {
-                window.NotificationSync.addNotification('siswa', 'Cita-cita Dipilih!', 'Kamu telah memilih profesi ' + selectedCareerTitle + '. Roadmap karier 6 tahun telah disusun.');
-            } catch (notifErr) {
-                console.warn('Notification sync error:', notifErr);
-            }
-        }
-
-        // 5. Navigate to roadmap build screen
-        window.location.href = '/?page=06_roadmap-disusun';
-
-    } catch (err) {
-        console.error('Error during confirmCareer process:', err);
-        if (btn) {
-            btn.disabled = false;
-            btn.innerHTML = 'KONFIRMASI &amp; SUSUN ROADMAP SAYA <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>';
-            btn.classList.remove('opacity-80', 'cursor-not-allowed');
-        }
-        if (errContainer) {
-            errContainer.classList.remove('hidden');
-            errContainer.innerHTML = `
-                <div class="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded flex items-center justify-between">
-                    <span>Gagal menyimpan pilihan. Silakan coba lagi.</span>
-                    <button type="button" onclick="confirmCareer()" class="font-bold underline ml-2 hover:text-red-900">Coba Lagi</button>
-                </div>
-            `;
+            const savePromise = window.firebaseDb.collection('users').doc(uid).set({
+                citaCita: selectedCareerTitle,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+            const timeoutPromise = new Promise(resolve => setTimeout(resolve, 600));
+            await Promise.race([savePromise, timeoutPromise]);
+        } catch(err) {
+            console.warn('Firestore career save warning (continuing):', err);
         }
     }
+
+    // 3. Immediately redirect to roadmap generation page
+    window.location.href = '/?page=06_roadmap-disusun';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const allCareers = getCareerList();
 
-    const aiDataStr = localStorage.getItem('aiDiagnosisResult');
+    // 1. Diagnosis AI Recommendations (Top 3)
     let aiData = null;
-    if (aiDataStr) {
-        try { aiData = JSON.parse(aiDataStr); } catch (e) {}
-    }
+    try {
+        const aiDataStr = localStorage.getItem('aiDiagnosisResult');
+        if (aiDataStr) aiData = JSON.parse(aiDataStr);
+    } catch (e) {}
 
-    let initialCareers = allCareers.slice(0, 3);
-
+    let recommendedCareers = [];
     if (aiData && aiData.rekomendasiKarir && aiData.rekomendasiKarir.length > 0) {
-        initialCareers = aiData.rekomendasiKarir.map(aiCareer => {
-            const matched = allCareers.find(c => c.title.toLowerCase() === aiCareer.title.toLowerCase());
-            return matched || { ...allCareers[0], title: aiCareer.title, desc: aiCareer.desc, icon: aiCareer.icon || 'star' };
-        });
+        recommendedCareers = aiData.rekomendasiKarir.map(aiCareer => {
+            return getCareerData(aiCareer.title);
+        }).slice(0, 3);
         const badge = document.getElementById('riasec-badge');
         if (badge && aiData.source) {
-            badge.innerHTML = '<span class="material-symbols-outlined text-xs text-secondary">auto_awesome</span> ' + aiData.source;
+            badge.innerHTML = '<span class="material-symbols-outlined text-xs">auto_awesome</span> ' + aiData.source;
         }
+    } else {
+        // Default top 3 recommendations
+        recommendedCareers = [
+            getCareerData('Arsitek'),
+            getCareerData('Data Scientist'),
+            getCareerData('Dokter')
+        ];
     }
 
+    // 2. Select initial career
     const savedCareer = localStorage.getItem('selectedCareer');
     if (savedCareer && allCareers.some(c => c.title.toLowerCase() === savedCareer.toLowerCase())) {
         selectedCareerTitle = savedCareer;
-    } else if (initialCareers.length > 0) {
-        selectedCareerTitle = initialCareers[0].title;
+    } else if (recommendedCareers.length > 0) {
+        selectedCareerTitle = recommendedCareers[0].title;
     }
 
-    renderCareers(initialCareers, selectedCareerTitle);
+    // 3. Initial Renders
+    renderRecommendedCareers(recommendedCareers);
+    renderAllCareers(allCareers);
     selectCareer(selectedCareerTitle);
 
-    // Filter buttons
+    // 4. Category Filter Buttons
     const filterBtns = document.querySelectorAll('.filter-btn');
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             filterBtns.forEach(b => {
-                b.classList.remove('bg-primary', 'text-white');
-                b.classList.add('bg-white', 'text-on-surface-variant');
+                b.classList.remove('bg-primary', 'text-white', 'font-bold');
+                b.classList.add('bg-white', 'text-primary', 'font-medium', 'border', 'border-primary/20');
             });
-            btn.classList.remove('bg-white', 'text-on-surface-variant');
-            btn.classList.add('bg-primary', 'text-white');
+            btn.classList.remove('bg-white', 'text-primary', 'border', 'border-primary/20');
+            btn.classList.add('bg-primary', 'text-white', 'font-bold');
 
             const category = btn.getAttribute('data-category');
             const searchInput = document.getElementById('career-search');
             if (searchInput) searchInput.value = '';
 
             if (category === 'Semua') {
-                renderCareers(initialCareers, selectedCareerTitle);
+                renderAllCareers(allCareers);
             } else {
                 const filtered = allCareers.filter(c => c.category === category);
-                if (filtered.length > 0) {
-                    if (!filtered.find(c => c.title === selectedCareerTitle)) {
-                        selectedCareerTitle = filtered[0].title;
-                        selectCareer(selectedCareerTitle);
-                    }
-                    renderCareers(filtered, selectedCareerTitle);
-                } else {
-                    document.getElementById('career-cards-container').innerHTML = '<p class="text-on-surface-variant text-sm col-span-3 py-4">Tidak ada profesi di kategori ini.</p>';
-                }
+                renderAllCareers(filtered);
             }
         });
     });
 
-    // Search logic
+    // 5. Search Logic
     const searchInput = document.getElementById('career-search');
-    if(searchInput) {
+    if (searchInput) {
         searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            if(query.trim() === '') {
+            const query = e.target.value.toLowerCase().trim();
+            if (query === '') {
                 const activeFilter = document.querySelector('.filter-btn.bg-primary');
-                if(activeFilter) activeFilter.click();
+                const cat = activeFilter ? activeFilter.getAttribute('data-category') : 'Semua';
+                if (cat === 'Semua') {
+                    renderAllCareers(allCareers);
+                } else {
+                    renderAllCareers(allCareers.filter(c => c.category === cat));
+                }
                 return;
             }
-            
+
             const filtered = allCareers.filter(c => 
                 c.title.toLowerCase().includes(query) || 
+                (c.category && c.category.toLowerCase().includes(query)) ||
                 (c.desc && c.desc.toLowerCase().includes(query))
             );
-            
+
             filterBtns.forEach(b => {
-                b.classList.remove('bg-primary', 'text-white');
-                b.classList.add('bg-white', 'text-on-surface-variant');
+                b.classList.remove('bg-primary', 'text-white', 'font-bold');
+                b.classList.add('bg-white', 'text-primary', 'font-medium', 'border', 'border-primary/20');
             });
 
-            if(filtered.length > 0) {
-                if(!filtered.find(c => c.title === selectedCareerTitle)) {
-                    selectedCareerTitle = filtered[0].title;
-                    selectCareer(selectedCareerTitle);
-                }
-                renderCareers(filtered, selectedCareerTitle);
-            } else {
-                document.getElementById('career-cards-container').innerHTML = '<p class="text-on-surface-variant text-sm col-span-3 py-4">Profesi tidak ditemukan.</p>';
-            }
+            renderAllCareers(filtered);
         });
     }
 });
@@ -551,7 +645,6 @@ document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('auth-ready', async function(e) {
     const user = e.detail;
     if (user) {
-        window._authUid = user.uid;
         if (user.nama) {
             document.querySelectorAll('.user-display-name').forEach(el => {
                 el.textContent = user.nama;
@@ -564,24 +657,8 @@ window.addEventListener('auth-ready', async function(e) {
             selectedCareerTitle = user.citaCita;
             selectCareer(selectedCareerTitle);
         }
-        
-        // Load AI diagnosis from Firestore to populate recommended careers
-        if (window.DataStore && window.DataStore.getHasilDiagnostik) {
-            try {
-                const hasil = await window.DataStore.getHasilDiagnostik(user.uid);
-                if (hasil && hasil.rekomendasiKarir && hasil.rekomendasiKarir.length > 0) {
-                    localStorage.setItem('aiDiagnosisResult', JSON.stringify({
-                        rekomendasiKarir: hasil.rekomendasiKarir,
-                        source: 'Flexa AI Diagnostik'
-                    }));
-                }
-            } catch (err) {
-                console.warn('Diagnosis fetch notice:', err);
-            }
-        }
     }
 });
 </script>
-
 </body>
 </html>

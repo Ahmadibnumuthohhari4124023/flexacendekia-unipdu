@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Profil Guru | Flexa Cendekia x UNIPDU</title>
+    <title>Profil Tutor | Homeschooling Flexa Cendekia</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <!-- Fonts & Icons -->
@@ -84,10 +84,16 @@
 
     <!-- TopNavBar -->
     <header class="bg-surface-container-lowest text-primary flex justify-between items-center w-full px-6 md:px-8 h-16 border-b border-outline-variant/20 sticky top-0 z-50">
-        <div class="flex items-center gap-4">
-            <div class="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-bold text-sm">FC</div>
-            <a href="/?page=14_dashboard-guru" class="font-display-lg text-lg md:text-xl font-bold text-primary hover:opacity-90">Flexa Cendekia x UNIPDU</a>
-            <span class="hidden sm:inline-block text-xs font-mono px-2.5 py-0.5 bg-blue-100 text-blue-800 rounded font-bold">Guru Pembimbing</span>
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-bold text-sm shadow-sm">FC</div>
+            <div>
+                <a href="/?page=14_dashboard-guru" class="font-display-lg text-base md:text-xl font-bold text-primary hover:opacity-90">
+                    Homeschooling Flexa Cendekia
+                </a>
+                <span class="hidden sm:inline-block ml-2 text-[10px] font-mono px-2 py-0.5 bg-role-teacher/10 text-role-teacher border border-role-teacher/20 rounded font-bold uppercase tracking-wider">
+                    Portal Tutor • Powered by UNIPDU
+                </span>
+            </div>
         </div>
 
         <div class="flex items-center gap-4">
@@ -380,10 +386,11 @@
         });
 
         function populateUserData(user) {
-            const nama = user.nama || 'Guru Pembimbing';
-            const email = user.email || 'guru@flexa.test';
-            const nip = user.nip || '198503152010012004';
-            const institusi = user.institusi || 'Flexa Cendekia x UNIPDU';
+            const u = user || {};
+            const nama = u.nama || localStorage.getItem('guruNama') || 'Ibu Sari Rahayu, M.Pd.';
+            const email = u.email || localStorage.getItem('guruEmail') || 'sari.rahayu@flexacendekia.sch.id';
+            const nip = u.nip || localStorage.getItem('guruNip') || '198704122015042001';
+            const institusi = u.institusi || localStorage.getItem('guruInstitusi') || 'Homeschooling Flexa Cendekia x UNIPDU';
 
             // Topbar & Header
             document.querySelectorAll('.user-display-name').forEach(el => el.textContent = nama);
@@ -391,7 +398,7 @@
             if (profNameEl) profNameEl.textContent = nama;
 
             // Avatar Fallback Initial
-            const initial = nama.charAt(0).toUpperCase();
+            const initial = (nama.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2) || 'SR').toUpperCase();
             const navAvatar = document.getElementById('navbar-avatar');
             const initialEl = document.getElementById('avatar-initial');
             if (navAvatar) navAvatar.textContent = initial;
@@ -412,6 +419,8 @@
         async function simpanDataPribadi() {
             const fullName = document.getElementById('fullName').value.trim();
             const email = document.getElementById('email').value.trim();
+            const nip = document.getElementById('nip') ? document.getElementById('nip').value.trim() : '';
+            const institution = document.getElementById('institution') ? document.getElementById('institution').value.trim() : '';
 
             if (!fullName) {
                 showToast('Nama lengkap tidak boleh kosong.', 'error');
@@ -430,32 +439,55 @@
             }
 
             try {
+                // Save to localStorage for instant cross-tab sync
+                localStorage.setItem('guruNama', fullName);
+                localStorage.setItem('guruEmail', email);
+                if (nip) localStorage.setItem('guruNip', nip);
+                if (institution) localStorage.setItem('guruInstitusi', institution);
+
+                let currUser = {};
+                try { currUser = JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch(e) {}
+                if (currUser && (currUser.role === 'Guru' || currUser.role === 'Tutor')) {
+                    currUser.nama = fullName;
+                    currUser.email = email;
+                    currUser.nip = nip;
+                    currUser.institusi = institution;
+                    localStorage.setItem('currentUser', JSON.stringify(currUser));
+                }
+
                 if (currentGuruUser && window.firebaseDb) {
                     const uid = currentGuruUser.uid || currentGuruUser.id;
                     if (uid) {
                         await firebaseDb.collection('users').doc(uid).update({
                             nama: fullName,
-                            email: email
+                            email: email,
+                            nip: nip,
+                            institusi: institution
                         });
                     }
                 }
 
-                // Update SSO Sync / Local
+                // Update SSO Sync
                 if (window.SSOSync) {
                     const guru = SSOSync.getGuru() || {};
                     guru.nama = fullName;
                     guru.email = email;
+                    guru.nip = nip;
+                    guru.institusi = institution;
                     SSOSync.set('guru', guru);
                 }
 
+                if (!currentGuruUser) currentGuruUser = {};
                 currentGuruUser.nama = fullName;
                 currentGuruUser.email = email;
+                currentGuruUser.nip = nip;
+                currentGuruUser.institusi = institution;
                 populateUserData(currentGuruUser);
 
-                showToast('Data pribadi berhasil disimpan ke server!');
+                showToast('Data profil pendidik berhasil diperbarui!');
             } catch (err) {
                 console.error('Error saving profile:', err);
-                showToast('Data tersimpan secara lokal.', 'info');
+                showToast('Data tersimpan di penyimpanan lokal.', 'info');
             } finally {
                 if (btn) {
                     btn.disabled = false;

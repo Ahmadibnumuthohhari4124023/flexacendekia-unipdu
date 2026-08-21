@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Mulai Petualangan Belajarmu - Flexa Cendekia</title>
+    <title>Mulai Petualangan Belajarmu | Homeschooling Flexa Cendekia</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&amp;family=Libre+Franklin:wght@400;500;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap"
@@ -147,25 +147,30 @@
     <script src="/career-roadmap-data.js"></script>
 </head>
 
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col justify-between">
 
     <!-- TopNavBar -->
     <nav
-        class="bg-surface-container-lowest flex justify-between items-center w-full px-gutter md:px-margin-desktop h-16 border-b border-primary/20 sticky top-0 z-50">
-        <div class="flex items-center gap-8">
-            <span class="font-headline-md text-headline-md font-bold text-primary">Flexa Cendekia x UNIPDU</span>
-            <div class="hidden md:flex items-center h-full">
-                    <span class="px-4 py-1.5 font-label-caps text-[11px] font-bold text-primary bg-primary/5 rounded-full border border-primary/10 tracking-widest uppercase">Aplikasi Aktif</span>
-                </div>
+        class="bg-[#FBFAF5] flex justify-between items-center w-full px-4 md:px-margin-desktop h-16 border-b border-primary/20 sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-bold text-sm shadow-sm">FC</div>
+            <div>
+                <a href="/?page=08_dashboard-siswa" class="font-headline-md text-base md:text-xl font-bold text-primary hover:opacity-90">
+                    Homeschooling Flexa Cendekia
+                </a>
+                <span class="hidden sm:inline-block ml-2 text-[10px] font-mono px-2 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded font-bold uppercase tracking-wider">
+                    Powered by UNIPDU
+                </span>
+            </div>
         </div>
         <div class="flex items-center gap-4">
             <a href="/?page=17_notifikasi" class="p-2 rounded-full hover:bg-surface-container transition-colors"
-                style="text-decoration:none;">
+                style="text-decoration:none;" title="Notifikasi">
                 <span class="material-symbols-outlined text-on-surface-variant"
                     data-icon="notifications">notifications</span>
             </a>
             <a href="/?page=18_profil_profil-siswa" class="p-2 rounded-full hover:bg-surface-container transition-colors"
-                style="text-decoration:none;">
+                style="text-decoration:none;" title="Profil Siswa">
                 <span class="material-symbols-outlined text-on-surface-variant"
                     data-icon="account_circle">account_circle</span>
             </a>
@@ -173,8 +178,7 @@
     </nav>
     <div class="flex flex-1 overflow-hidden">
         <!-- SideNavBar -->
-        <aside
-            class="hidden md:flex flex-col h-[calc(100vh-64px)] sticky top-16 w-64 bg-surface-container-low border-r border-primary/10">
+        <aside class="hidden md:flex flex-col h-[calc(100vh-64px)] sticky top-16 w-64 bg-surface-container-low border-r border-primary/10">
             <div class="p-6 border-b border-primary/10">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full border border-primary/20 overflow-hidden bg-academic-ivory">
@@ -686,7 +690,7 @@
                 if (confirmText) confirmText.textContent = "Menyimpan...";
             }
 
-            // 1. Update localStorage
+            // 1. Update localStorage immediately
             try {
                 const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
                 u.jenjang = currentChosenJenjang;
@@ -698,24 +702,29 @@
                 console.warn('LocalStorage update error:', e);
             }
 
-            // 2. Update Firestore if auth is active
+            // 2. Non-blocking Firestore save with safety timeout
+            const targetUrl = getTestUrl(currentChosenJenjang);
+            
             if (window.firebaseDb && window.currentFirebaseUser && window.currentFirebaseUser.uid) {
+                const uid = window.currentFirebaseUser.uid;
+                window.currentFirebaseUser.jenjang = currentChosenJenjang;
+                window.currentFirebaseUser.kelas = currentChosenKelas;
+                
                 try {
-                    const uid = window.currentFirebaseUser.uid;
-                    await window.firebaseDb.collection('users').doc(uid).update({
+                    const savePromise = window.firebaseDb.collection('users').doc(uid).set({
                         jenjang: currentChosenJenjang,
                         kelas: currentChosenKelas,
                         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    window.currentFirebaseUser.jenjang = currentChosenJenjang;
-                    window.currentFirebaseUser.kelas = currentChosenKelas;
+                    }, { merge: true });
+
+                    const timeoutPromise = new Promise(resolve => setTimeout(resolve, 600));
+                    await Promise.race([savePromise, timeoutPromise]);
                 } catch (err) {
-                    console.error('Firestore save error:', err);
+                    console.warn('Firestore save warning (proceeding anyway):', err);
                 }
             }
 
-            // 3. Redirect to corresponding diagnostic test
-            const targetUrl = getTestUrl(currentChosenJenjang);
+            // 3. Instant redirect to corresponding diagnostic test
             window.location.href = targetUrl;
         }
 

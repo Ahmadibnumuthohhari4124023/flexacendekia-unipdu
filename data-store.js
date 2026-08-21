@@ -5,24 +5,11 @@
 
 const STORAGE_KEY = 'flexa_cendekia_db_v1';
 
-// Initial Mock Data
+// Initial Clean Data (Start from 0)
 const DEFAULT_DATA = {
-    users: [
-        { id: 'S001', nama: 'Ahmad Fauzi', role: 'Siswa', kelas: '11', citaCita: 'Arsitek', guruWaliId: 'G001', orangTuaId: 'O001', avatar: 'AF' },
-        { id: 'G001', nama: 'Bapak Budi', role: 'Guru', avatar: 'BB' },
-        { id: 'O001', nama: 'Bpk/Ibu Fauzi', role: 'OrangTua', anakIds: ['S001'], avatar: 'OF' }
-    ],
-    krs: [
-        { id: 'KRS-001', siswaId: 'S001', semester: 3, mataPelajaran: ['Fisika Terapan', 'Seni Rupa'], status: 'Disetujui', tanggal: '2023-08-01T10:00:00Z' }
-    ],
-    catatan: [
-        { 
-            id: 'C-001', guruId: 'G001', siswaId: 'S001', 
-            isi: 'Ahmad menunjukkan progres luar biasa di Fisika. Tolong dipertahankan!', 
-            tanggal: '2023-08-15T09:00:00Z', 
-            balasan: [] 
-        }
-    ],
+    users: [],
+    krs: [],
+    catatan: [],
     notifikasi: []
 };
 

@@ -119,9 +119,7 @@
 
             <div class="flex items-center space-x-4">
                 <a href="/?page=17_notifikasi" class="material-symbols-outlined text-primary hover:text-secondary transition-colors" title="Notifikasi">notifications</a>
-                <a href="/?page=18_profil_profil-siswa" id="top-user-avatar" class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-mono text-xs font-bold border border-primary/30 hover:ring-2 hover:ring-secondary/50 transition-all overflow-hidden" title="Profil Siswa">
-                    SW
-                </a>
+                <a href="/?page=18_profil_profil-siswa" class="material-symbols-outlined text-primary hover:text-secondary transition-colors" title="Profil Siswa">account_circle</a>
                 <button onclick="if(window.flexaLogout) flexaLogout(); else firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" class="text-red-600 hover:opacity-80 material-symbols-outlined text-lg" title="Keluar">logout</button>
             </div>
         </div>
@@ -171,9 +169,9 @@
                         </div>
                     </div>
 
-                    <div class="pt-3 border-t border-primary/10 flex flex-wrap justify-between items-center gap-2 text-xs text-on-surface-variant">
+                    <div class="pt-3 border-t border-primary/10 flex justify-between items-center text-xs text-on-surface-variant">
                         <span>Pembimbing Akademik: <strong class="text-primary" id="krs-pembimbing">Memuat...</strong></span>
-                        <span id="krs-total-beban-wrapper">Total Beban Studi: <strong class="text-secondary font-mono font-bold" id="krs-total-beban">14 Jam / Minggu</strong></span>
+                        <span>Beban Studi: <strong class="text-secondary font-mono">20 Jam / Minggu</strong></span>
                     </div>
                 </section>
 
@@ -450,50 +448,27 @@
             const pembimbingEl = document.getElementById('krs-pembimbing');
             if (pembimbingEl) pembimbingEl.textContent = advisorName;
 
-            // 3. Render Modules & Compute Total Study Load
+            // 3. Render Modules
             const modules = generateKRSModules(jenjang, kelas, careerTitle);
             const tbody = document.getElementById('krs-table-body');
             if (tbody) {
                 tbody.innerHTML = modules.map(m => `
                     <tr class="hover:bg-primary/2 transition-colors">
-                        <td class="py-3.5 px-4 font-mono font-bold text-primary">${m.code}</td>
-                        <td class="py-3.5 px-4 font-bold text-primary">
-                            <span class="text-xs text-primary font-bold block">${m.nama}</span>
-                            <span class="block text-[11px] text-on-surface-variant font-normal mt-0.5 leading-relaxed">${m.desc}</span>
+                        <td class="py-3 px-4 font-mono font-bold text-primary">${m.code}</td>
+                        <td class="py-3 px-4 font-bold text-primary">
+                            ${m.nama}
+                            <span class="block text-[10px] text-on-surface-variant font-normal mt-0.5">${m.desc}</span>
                         </td>
-                        <td class="py-3.5 px-4">
-                            <span class="px-2.5 py-1 rounded font-semibold text-[10px] ${m.badgeClass}">${m.kategori}</span>
+                        <td class="py-3 px-4">
+                            <span class="px-2 py-0.5 rounded font-semibold text-[10px] ${m.badgeClass}">${m.kategori}</span>
                         </td>
-                        <td class="py-3.5 px-4 text-center font-mono font-bold text-primary">${m.beban}</td>
-                        <td class="py-3.5 px-4 text-center text-emerald-700 font-bold flex items-center justify-center gap-1">
-                            <span class="material-symbols-outlined text-[15px]">check_circle</span>
+                        <td class="py-3 px-4 text-center font-mono text-primary">${m.beban}</td>
+                        <td class="py-3 px-4 text-center text-green-700 font-bold flex items-center justify-center gap-1">
+                            <span class="material-symbols-outlined text-[14px]">check_circle</span>
                             <span>${m.status}</span>
                         </td>
                     </tr>
                 `).join('');
-            }
-
-            // Compute total load
-            let totalJam = 0;
-            let totalSks = 0;
-            modules.forEach(m => {
-                const b = m.beban || '';
-                if (b.includes('Jam')) {
-                    const num = parseInt(b, 10) || 0;
-                    totalJam += num;
-                } else if (b.includes('SKS')) {
-                    const num = parseInt(b, 10) || 0;
-                    totalSks += num;
-                }
-            });
-
-            const totalBebanEl = document.getElementById('krs-total-beban');
-            if (totalBebanEl) {
-                if (totalSks > 0) {
-                    totalBebanEl.textContent = `${totalJam} Jam / Minggu + ${totalSks} SKS UNIPDU`;
-                } else {
-                    totalBebanEl.textContent = `${totalJam} Jam Belajar Mandiri / Minggu`;
-                }
             }
         }
 

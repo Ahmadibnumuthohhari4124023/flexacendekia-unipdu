@@ -3,7 +3,7 @@
 <html lang="id"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Roadmap Karier: Siswa - Arsitek | Flexa Cendekia</title>
+<title>Roadmap Karier | Homeschooling Flexa Cendekia</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -202,11 +202,19 @@
 <body class="bg-background text-on-surface font-body-md overflow-x-hidden">
 
 <!-- TopNavBar -->
-<nav class="fixed top-0 w-full bg-surface z-50 border-b border-on-surface/20 flex justify-between items-center h-16 px-margin-mobile md:px-margin-desktop">
-<div class="flex items-center gap-4">
-<span class="font-display-lg text-display-lg font-bold text-primary">Flexa Cendekia</span>
+<nav class="fixed top-0 w-full bg-[#FBFAF5] z-50 border-b border-on-surface/20 flex justify-between items-center h-16 px-4 md:px-margin-desktop">
+<div class="flex items-center gap-3">
+    <div class="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-bold text-sm shadow-sm">FC</div>
+    <div>
+        <a href="/?page=08_dashboard-siswa" class="font-display-lg text-base md:text-xl font-bold text-primary hover:opacity-90">
+            Homeschooling Flexa Cendekia
+        </a>
+        <span class="hidden sm:inline-block ml-2 text-[10px] font-mono px-2 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded font-bold uppercase tracking-wider">
+            Powered by UNIPDU
+        </span>
+    </div>
 </div>
-<div class="hidden md:flex gap-8 items-center h-full">
+<div class="hidden md:flex gap-8 items-center h-full ml-4">
 <a class="font-body-md text-on-surface-variant hover:bg-on-surface/5 px-3 py-2 transition-colors" href="/?page=08_dashboard-siswa">Dashboard</a>
 <a class="font-body-md text-secondary border-b-2 border-secondary px-3 py-2" href="/?page=07_hasil-roadmap">Kurikulum</a>
 <a class="font-body-md text-on-surface-variant hover:bg-on-surface/5 px-3 py-2 transition-colors flex items-center gap-2" href="/?page=07_hasil-roadmap_milestones">Pencapaian <span class="milestone-nav-badge" id="nav-milestone-badge">0</span></a>
@@ -280,8 +288,8 @@ notifications
 </div>
 </div>
 <!-- Profile Avatar -->
-<a href="/?page=18_profil_profil-siswa" class="w-8 h-8 rounded-full border border-primary/20 overflow-hidden block hover:ring-2 hover:ring-secondary/50 transition-all">
-<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a young male student named Siswa, looking confident and focused. He is wearing a clean, modern navy blazer over a white shirt. The background is a soft, blurred library setting with warm, scholarly lighting, reflecting an academic and ambitious atmosphere. The overall style is clean, sharp, and high-quality photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYyODgzRK4CCp_SNxv5IJ6Wlf6Tnr8jFKI_qfGBrkfvk3UKT42fp75pqKJ7fqrq2qoC3Tsxtp5Ydwt-ggsbgs75gGUp5LjRYprk9Pe0247Wy5JS2WcWTBoEspHHJm_rjfqEJB_H6vGA0UC3mt461K2OKLUibytbZ3kNYuCM8WVWXZ_P-l0Uhjw5_QJy1f8Rd5Pkc8UpEktwhEXn3M8Py90COyMq6MWaNUQEr7tKhWqRUByvmdI4nig5qJ3GD3rYbvbO7mMxHh7cCw"/>
+<a href="/?page=18_profil_profil-siswa" id="top-user-avatar" class="w-8 h-8 rounded-full border border-primary/20 overflow-hidden flex items-center justify-center bg-primary text-white font-mono text-xs font-bold hover:ring-2 hover:ring-secondary/50 transition-all" title="Profil Siswa">
+    SW
 </a>
 
                 <!-- Logout Button -->
@@ -581,7 +589,7 @@ notifications
 
         const roadmap = store.getCareerRoadmap(careerTitle, jenjang, kelas);
 
-        document.title = `Roadmap Karier: ${roadmap.title} | Flexa Cendekia`;
+        document.title = `Roadmap Karier: ${roadmap.title} | Homeschooling Flexa Cendekia`;
         
         const elTitle = document.getElementById('roadmap-title');
         if (elTitle) elTitle.innerText = `Roadmap Karier: ${roadmap.title}`;

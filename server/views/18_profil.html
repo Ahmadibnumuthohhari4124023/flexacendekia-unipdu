@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Flexa Cendekia | Profil</title>
+    <title>Homeschooling Flexa Cendekia | Profil</title>
     <style>
         body {
             display: flex;
@@ -43,6 +43,19 @@
                 'Guru': '/?page=18_profil_profil-guru',
                 'OrangTua': '/?page=18_profil_profil-ortu'
             };
+
+            // Fast redirect from local cache (Zero delay)
+            try {
+                const raw = localStorage.getItem('currentUser');
+                if (raw) {
+                    const u = JSON.parse(raw);
+                    const r = u.role ? u.role.toString().trim().toLowerCase().replace(/[\s_-]/g, '') : 'siswa';
+                    if (r === 'guru') { window.location.replace(ROLE_TO_PAGE['Guru']); return; }
+                    if (r === 'orangtua' || r === 'ortu') { window.location.replace(ROLE_TO_PAGE['OrangTua']); return; }
+                    window.location.replace(ROLE_TO_PAGE['Siswa']);
+                    return;
+                }
+            } catch(e) {}
 
             function waitForFirebase(cb) {
                 if (window.firebaseAuth) { cb(); }

@@ -502,23 +502,10 @@
             if (citaEl) citaEl.textContent = careerTitle;
 
             const initials = nama.split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'FC';
-            const fotoUrl = user.fotoUrl || user.avatar || localStorage.getItem('userAvatar') || '';
             const heroAvatar = document.getElementById('hero-user-avatar');
             const topAvatar = document.getElementById('top-user-avatar');
-            if (heroAvatar) {
-                if (fotoUrl) {
-                    heroAvatar.innerHTML = `<img src="${fotoUrl}" alt="${nama}" class="w-full h-full object-cover" />`;
-                } else {
-                    heroAvatar.textContent = initials;
-                }
-            }
-            if (topAvatar) {
-                if (fotoUrl) {
-                    topAvatar.innerHTML = `<img src="${fotoUrl}" alt="${nama}" class="w-full h-full object-cover rounded-full" />`;
-                } else {
-                    topAvatar.textContent = initials;
-                }
-            }
+            if (heroAvatar) heroAvatar.textContent = initials;
+            if (topAvatar) topAvatar.textContent = initials;
 
             // 2. Academic Level & Fase
             let faseTitle = 'Fase E';
@@ -569,48 +556,23 @@
                 roadmapData = window.CareerRoadmapStore.getCareerRoadmap(careerTitle, jenjang, kelas);
             }
 
-            const j = (jenjang || 'SMA').toUpperCase();
-            const k = parseInt(kelas, 10) || (j === 'SD' ? 1 : (j === 'SMP' ? 7 : 10));
-
-            let years = [];
-            if (j === 'SD') {
-                years = [
-                    { yearCode: `SD ${k}`, yearTitle: `SD Kelas ${k}`, desc: `Fondasi dasar literasi, adab mulia, dan minat awal ${careerTitle}.` },
-                    { yearCode: `SD ${Math.min(k+1, 6)}`, yearTitle: `SD Kelas ${Math.min(k+1, 6)}`, desc: 'Pengembangan rasa percaya diri dan eksplorasi karya terpandu.' },
-                    { yearCode: `SD ${Math.min(k+2, 6)}`, yearTitle: `SD Kelas ${Math.min(k+2, 6)}`, desc: 'Pemantapan konsep logika, numerasi, dan proyek tematik.' },
-                    { yearCode: `SD ${Math.min(k+3, 6)}`, yearTitle: `SD Kelas ${Math.min(k+3, 6)}`, desc: 'Penyusunan portofolio karya kreatif dan unjuk bakat mandiri.' },
-                    { yearCode: `SD ${Math.min(k+4, 6)}`, yearTitle: `SD Kelas ${Math.min(k+4, 6)}`, desc: 'Praktikum sains terapan dan pemantapan minat bidang karier.' },
-                    { yearCode: `SD ${Math.min(k+5, 6)}`, yearTitle: `SD Kelas ${Math.min(k+5, 6)}`, desc: 'Kelulusan SD dan persiapan transisi ke jenjang menengah.' }
-                ];
-            } else if (j === 'SMP') {
-                years = [
-                    { yearCode: `SMP ${k}`, yearTitle: `SMP Kelas ${k}`, desc: `Fase D: Fondasi sains, logika analitis, dan wawasan profesi ${careerTitle}.` },
-                    { yearCode: `SMP ${Math.min(k+1, 9)}`, yearTitle: `SMP Kelas ${Math.min(k+1, 9)}`, desc: 'Fase D: Proyek terarah, klub minat bakat, dan studi kasus peminatan.' },
-                    { yearCode: `SMP ${Math.min(k+2, 9)}`, yearTitle: `SMP Kelas ${Math.min(k+2, 9)}`, desc: 'Fase D: Portofolio mandiri dan seleksi peminatan SMA Flexa x UNIPDU.' },
-                    { yearCode: 'SMA 10', yearTitle: 'SMA Kelas 10', desc: 'Fase E: Eksplorasi kurikulum merdeka dan matrikulasi dasar kampus.' },
-                    { yearCode: 'SMA 11', yearTitle: 'SMA Kelas 11', desc: `Fase F: Awal perkuliahan matrikulasi S1 ${careerTitle} UNIPDU.` },
-                    { yearCode: 'SMA 12', yearTitle: 'SMA Kelas 12', desc: 'Fase F: Uji kompetensi, karya ilmiah P5, dan seleksi sertifikasi.' }
-                ];
-            } else {
-                // SMA
-                years = [
-                    { yearCode: `SMA ${k}`, yearTitle: `SMA Kelas ${k}`, desc: `Fase E/F: Penguatan fondasi peminatan dan kompetensi inti ${careerTitle}.` },
-                    { yearCode: `SMA ${Math.min(k+1, 12)}`, yearTitle: `SMA Kelas ${Math.min(k+1, 12)}`, desc: `Fase F: Matrikulasi resmi mata kuliah S1 ${careerTitle} UNIPDU.` },
-                    { yearCode: `SMA 12`, yearTitle: 'SMA Kelas 12', desc: 'Fase F: Kurasi portofolio 10 karya unggulan dan kelulusan SMA.' },
-                    { yearCode: 'S1 Thn 1', yearTitle: 'Perkuliahan S1 (Sm 1-2)', desc: `Laboratorium terapan, sains komputasi, dan studio ${careerTitle}.` },
-                    { yearCode: 'S1 Thn 2', yearTitle: 'Perkuliahan S1 (Sm 3-4)', desc: 'Magang industri MBKM bersertifikat di mitra resmi UNIPDU.' },
-                    { yearCode: 'S1 Thn 3-4', yearTitle: 'Perkuliahan S1 (Sm 5-8)', desc: `Skripsi riset terapan, uji sertifikasi BNSP, dan penerbitan gelar sarjana.` }
-                ];
-            }
+            const years = (roadmapData && roadmapData.years) ? roadmapData.years : [
+                { yearCode: 'Tahun 1', yearTitle: `${jenjang} ${kelas}`, desc: `Tahap awal penguatan fondasi profesi ${careerTitle}.` },
+                { yearCode: 'Tahun 2', yearTitle: 'Tahun 2', desc: 'Pengembangan keterampilan dan portofolio awal.' },
+                { yearCode: 'Tahun 3', yearTitle: 'Tahun 3', desc: 'Persiapan tingkat lanjut dan uji kompetensi.' },
+                { yearCode: 'Tahun 4', yearTitle: 'Tahun 4', desc: 'Matrikulasi dan pembelajaran perguruan tinggi.' },
+                { yearCode: 'Tahun 5', yearTitle: 'Tahun 5', desc: 'Pendalaman spesialisasi kurikulum UNIPDU.' },
+                { yearCode: 'Tahun 6', yearTitle: 'Tahun 6', desc: 'Magang profesional dan sertifikasi profesi.' }
+            ];
 
             if (timelineContainer) {
-                timelineContainer.innerHTML = years.map((yr, idx) => {
+                timelineContainer.innerHTML = years.slice(0, 6).map((yr, idx) => {
                     const isCurrent = idx === 0;
                     if (isCurrent) {
                         return `
                             <div class="flex flex-col items-center relative group">
                                 <div class="absolute -top-14 bg-brand-gold text-white px-3 py-1.5 text-xs font-bold whitespace-nowrap shadow-[3px_3px_0px_#17223B] z-20 animate-bounce cursor-default">
-                                    Siswa Saat Ini: ${j} ${k}
+                                    Siswa Saat Ini: ${jenjang} ${kelas}
                                     <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2.5 h-2.5 bg-brand-gold rotate-45"></div>
                                 </div>
                                 <div class="w-7 h-7 bg-brand-gold border-2 border-primary flex items-center justify-center text-white z-10 animate-pulse group-hover:scale-125 transition-transform cursor-pointer shadow-[0_0_15px_rgba(253,194,101,0.6)]">
@@ -635,13 +597,13 @@
             const mTitle = document.getElementById('milestone-title');
             const mDesc = document.getElementById('milestone-desc');
 
-            if (mTag) mTag.textContent = `MILESTONE ${j} KELAS ${k}`;
+            if (mTag) mTag.textContent = `MILESTONE ${jenjang} KELAS ${kelas}`;
             if (roadmapData && roadmapData.milestones && roadmapData.milestones[0]) {
                 if (mTitle) mTitle.textContent = roadmapData.milestones[0].title;
                 if (mDesc) mDesc.textContent = roadmapData.milestones[0].desc;
             } else {
                 if (mTitle) mTitle.textContent = `Penguasaan Fondasi Karier ${careerTitle}`;
-                if (mDesc) mDesc.textContent = `Fokus pada modul pembelajaran mandiri ${j} Kelas ${k}, proyek semester, dan bimbingan terpadu bersama UNIPDU.`;
+                if (mDesc) mDesc.textContent = `Fokus pada modul pembelajaran mandiri, proyek semester, dan bimbingan terpadu bersama UNIPDU.`;
             }
         }
 

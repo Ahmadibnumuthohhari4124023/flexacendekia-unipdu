@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Flexa Cendekia x UNIPDU - Tinjauan KRS Guru</title>
+    <title>Tinjauan Akademik Guru | Homeschooling Flexa Cendekia</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
@@ -92,12 +92,11 @@
             <button id="mobile-menu-btn" class="md:hidden p-2 text-primary"><span
                     class="material-symbols-outlined">menu</span></button>
             <div class="flex items-center gap-3">
-                <span class="material-symbols-outlined text-role-teacher text-2xl">verified</span>
+                <div class="w-8 h-8 rounded bg-role-teacher text-white flex items-center justify-center font-bold text-sm shadow-sm">FC</div>
                 <div>
-                    <h1 class="font-headline-md text-lg md:text-xl font-bold text-primary leading-tight">Flexa Cendekia
-                        <span class="text-role-teacher text-sm font-mono font-normal">| Portal Guru</span></h1>
-                    <p class="font-mono text-[10px] text-on-surface-variant tracking-wider">Tinjauan Akademik &
-                        Persetujuan KRS</p>
+                    <h1 class="font-headline-md text-base md:text-xl font-bold text-primary leading-tight">Homeschooling Flexa Cendekia
+                        <span class="text-role-teacher text-xs font-mono font-normal">| Portal Tutor</span></h1>
+                    <p class="font-mono text-[10px] text-role-teacher font-bold tracking-wider uppercase">Tinjauan Akademik &amp; Persetujuan KRS • Powered by UNIPDU</p>
                 </div>
             </div>
         </div>
@@ -118,7 +117,7 @@
                     GR
                 </div>
                 <div class="hidden sm:block text-left">
-                    <p id="teacher-name-top" class="font-sans text-xs font-bold text-primary leading-none">Dewan Guru
+                    <p id="teacher-name-top" class="font-sans text-xs font-bold text-primary leading-none">Memuat...
                     </p>
                     <p class="font-mono text-[10px] text-role-teacher mt-0.5">Pembimbing Akademik</p>
                 </div>
@@ -144,7 +143,7 @@
                         <span class="material-symbols-outlined text-role-teacher">school</span>
                         <h2 class="font-headline-md text-base font-bold text-primary">Flexa Cendekia</h2>
                     </div>
-                    <p class="font-mono text-[10px] text-on-surface-variant">A.Y. 2023/2024 · UNIPDU</p>
+                    <p class="font-mono text-[10px] text-on-surface-variant" id="sidebar-academic-year">Memuat...</p>
                 </div>
                 <nav class="space-y-1">
                     <a class="flex items-center gap-3 px-6 py-3 transition-all hover:bg-primary/5 text-on-surface-variant text-sm font-semibold"
@@ -313,7 +312,7 @@
                                 </div>
                             </div>
                             <h3 id="student-name-sidebar" class="font-headline-md text-lg font-bold text-primary">Memuat...</h3>
-                            <p id="student-jenjang-sidebar" class="font-mono text-xs text-role-teacher font-semibold mt-0.5">SMA · Kelas 11</p>
+                            <p id="student-jenjang-sidebar" class="font-mono text-xs text-role-teacher font-semibold mt-0.5">Memuat...</p>
                             <p id="student-target-sidebar" class="font-sans text-xs text-on-surface-variant mt-1">
                                 Aspirasi: <strong class="text-primary font-bold" id="student-career-badge">--</strong>
                             </p>
@@ -345,7 +344,7 @@
                                     <div class="relative">
                                         <div class="absolute -left-[31px] top-0.5 w-3.5 h-3.5 rounded-full bg-primary/40 border-2 border-white"></div>
                                         <p class="font-sans text-xs font-bold text-on-surface-variant">Checkpoint Terakhir</p>
-                                        <p class="font-mono text-[10px] text-on-surface-variant">Jumat Lalu · 92% Skor</p>
+                                        <p class="font-mono text-[10px] text-on-surface-variant" id="checkpoint-last-info">Memuat data...</p>
                                     </div>
                                 </div>
                             </div>
@@ -400,84 +399,97 @@
         let pendingKrsList = [];
         let activeKrsIndex = 0;
 
-        // Sample fallback realistic submissions if Firestore is clean/empty
-        const mockPendingSubmissions = [
-            {
-                id: 'krs_mock_01',
-                siswaId: 'siswa_ahmad_01',
-                nama: 'Ahmad Ibnu Muthohhari',
-                jenjang: 'SMA',
-                kelas: 'Kelas 11',
-                citaCita: 'Arsitek',
-                semester: 3,
-                gpa: '3.88',
-                status: 'Menunggu Persetujuan',
-                tanggal: 'Hari ini, 09:30 WIB',
-                prevSemester: [
-                    { kode: 'MATH-202', namaMapel: 'Kalkulus & Trigonometri Dasar', skor: 96, grade: 'A', sks: 4 },
-                    { kode: 'PHYS-201', namaMapel: 'Mekanika Klasik & Vektor Gaya', skor: 89, grade: 'A-', sks: 3 },
-                    { kode: 'ARTS-201', namaMapel: 'Prinsip Estetika & Teori Warna', skor: 93, grade: 'A', sks: 3 },
-                    { kode: 'ENG-201', namaMapel: 'English for Technical Presentation', skor: 85, grade: 'B+', sks: 2 }
-                ],
-                reqSemester: [
-                    { kode: 'ARTS-315', namaMapel: 'Perspektif 2 Titik Hilang & Sketsa', sks: 3, kategori: 'Keahlian Inti' },
-                    { kode: 'PHYS-301', namaMapel: 'Fisika Bangunan & Akustik', sks: 3, kategori: 'Sains & Fisika' },
-                    { kode: 'MATH-301', namaMapel: 'Matematika Geometri Ruang Lanjut', sks: 4, kategori: 'Matematika' },
-                    { kode: 'DSGN-302', namaMapel: 'CAD & Pemodelan 3D SketchUp', sks: 3, kategori: 'Desain Komputasi' }
-                ],
-                insight: 'Ahmad memiliki daya analisis spasial dan logika estetika di atas rata-rata (Skor 95). Seluruh mata pelajaran yang diajukan untuk Semester 3 telah 100% konsisten dengan peta jalan arsitektur UNIPDU.'
-            },
-            {
-                id: 'krs_mock_02',
-                siswaId: 'siswa_siti_02',
-                nama: 'Siti Aminah',
-                jenjang: 'SMA',
-                kelas: 'Kelas 11',
-                citaCita: 'Dokter / Tenaga Medis',
-                semester: 3,
-                gpa: '3.92',
-                status: 'Menunggu Persetujuan',
-                tanggal: 'Kemarin, 14:15 WIB',
-                prevSemester: [
-                    { kode: 'BIO-201', namaMapel: 'Biologi Sel & Genetika Molekuler', skor: 95, grade: 'A', sks: 4 },
-                    { kode: 'CHEM-201', namaMapel: 'Kimia Organik Medis', skor: 88, grade: 'A-', sks: 3 },
-                    { kode: 'PHYS-201', namaMapel: 'Biofisika & Instrumentasi Medis', skor: 91, grade: 'A', sks: 3 }
-                ],
-                reqSemester: [
-                    { kode: 'BIO-301', namaMapel: 'Anatomi & Fisiologi Manusia', sks: 4, kategori: 'Biomedis' },
-                    { kode: 'CHEM-301', namaMapel: 'Biokimia & Metabolisme Lanjut', sks: 4, kategori: 'Kimia Medis' },
-                    { kode: 'MED-301', namaMapel: 'Etika Medis & Komunikasi Pasien', sks: 2, kategori: 'Etika Profesi' }
-                ],
-                insight: 'Siti menunjukkan konsistensi tinggi dalam pemahaman biosains dan literasi klinis. Beban 10 SKS semester ini dinilai ideal dan sangat direkomendasikan untuk disetujui.'
-            },
-            {
-                id: 'krs_mock_03',
-                siswaId: 'siswa_budi_03',
-                nama: 'Budi Pratama',
-                jenjang: 'SMA',
-                kelas: 'Kelas 11',
-                citaCita: 'Software Engineer',
-                semester: 3,
-                gpa: '3.80',
-                status: 'Menunggu Persetujuan',
-                tanggal: '2 hari lalu',
-                prevSemester: [
-                    { kode: 'PROG-201', namaMapel: 'Pemrograman Berorientasi Objek', skor: 97, grade: 'A', sks: 4 },
-                    { kode: 'NET-201', namaMapel: 'Jaringan Komputer & Protokol', skor: 86, grade: 'B+', sks: 3 },
-                    { kode: 'MATH-201', namaMapel: 'Kalkulus Diferensial Komputasi', skor: 88, grade: 'A-', sks: 3 }
-                ],
-                reqSemester: [
-                    { kode: 'PROG-301', namaMapel: 'Struktur Data & Algoritma Lanjut', sks: 4, kategori: 'Ilmu Komputer' },
-                    { kode: 'MATH-302', namaMapel: 'Matematika Diskrit & Teori Graf', sks: 3, kategori: 'Matematika' },
-                    { kode: 'DB-301', namaMapel: 'Basis Data Relasional & SQL', sks: 3, kategori: 'Data Engineering' }
-                ],
-                insight: 'Budi telah menyelesaikan seluruh checkpoint pemrograman Python dasar. Pengajuan mata kuliah Struktur Data sangat esensial untuk persiapan portofolio proyek semester 3.'
+        function getDefaultPendingKRS() {
+            let activeStudent = {};
+            try { activeStudent = JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch(e) {}
+            if (!activeStudent.nama && localStorage.getItem('userNama')) {
+                activeStudent = {
+                    nama: localStorage.getItem('userNama'),
+                    jenjang: localStorage.getItem('userJenjang') || 'SD',
+                    kelas: localStorage.getItem('userKelas') || 1,
+                    nisn: localStorage.getItem('userNisn') || '7JtTafT1z7',
+                    citaCita: localStorage.getItem('selectedCareer') || 'Aktor'
+                };
             }
-        ];
+
+            const activeName = activeStudent.nama || 'Ahmad Ibnu MUthohhari';
+            const activeJenjang = (activeStudent.jenjang || 'SD').toUpperCase();
+            const activeKelas = activeStudent.kelas || (activeJenjang === 'SD' ? 1 : (activeJenjang === 'SMP' ? 7 : 10));
+            const activeCita = activeStudent.citaCita || 'Aktor';
+
+            return [
+                {
+                    id: 'krs_active_01',
+                    siswaId: activeStudent.uid || 'siswa_active',
+                    nama: activeName,
+                    jenjang: activeJenjang,
+                    kelas: `Kelas ${activeKelas}`,
+                    citaCita: activeCita,
+                    semester: 1,
+                    tanggal: 'Hari ini, 09:15 WIB',
+                    gpa: '3.88',
+                    status: 'Menunggu Persetujuan',
+                    insight: `Minat kuat pada bidang ${activeCita}. Capaian literasi dan portofolio berekspresi berkembang sangat pesat.`,
+                    mataPelajaran: [
+                        { kode: `${activeJenjang}-LIT-01`, namaMapel: 'Bahasa Indonesia & Literasi Cerita', sks: 4, kategori: 'Wajib' },
+                        { kode: `${activeJenjang}-MAT-01`, namaMapel: 'Matematika & Logika Konkret', sks: 4, kategori: 'Wajib' },
+                        { kode: `${activeJenjang}-SENI-01`, namaMapel: `Seni Budaya & Olah Peran (${activeCita})`, sks: 3, kategori: 'Peminatan' },
+                        { kode: `${activeJenjang}-PANC-01`, namaMapel: 'Pendidikan Pancasila & Karakter', sks: 2, kategori: 'Wajib' },
+                        { kode: `${activeJenjang}-IPAS-01`, namaMapel: 'IPAS (Eksplorasi Alam & Sosial)', sks: 3, kategori: 'Wajib' },
+                        { kode: `${activeJenjang}-PJOK-01`, namaMapel: 'PJOK & Aktivitas Motorik Sehat', sks: 2, kategori: 'Wajib' },
+                        { kode: `${activeJenjang}-P5-01`, namaMapel: 'Proyek Profil Pelajar Pancasila (P5)', sks: 2, kategori: 'Proyek' }
+                    ]
+                },
+                {
+                    id: 'krs_mock_02',
+                    siswaId: 'siswa_04',
+                    nama: 'Zahra Amelia Ramadhani',
+                    jenjang: 'SMP',
+                    kelas: 'Kelas 9',
+                    citaCita: 'Desainer Grafis & Animator 3D',
+                    semester: 1,
+                    tanggal: 'Kemarin, 14:20 WIB',
+                    gpa: '3.92',
+                    status: 'Menunggu Persetujuan',
+                    insight: 'Siswa berbakat dalam pemodelan visual dan ilustrasi digital. Direkomendasikan mengambil modul matrikulasi DKV UNIPDU.',
+                    mataPelajaran: [
+                        { kode: 'SMP-BIN-01', namaMapel: 'Bahasa Indonesia & Penulisan Kreatif', sks: 4, kategori: 'Wajib' },
+                        { kode: 'SMP-MAT-01', namaMapel: 'Matematika Terapan & Logika Geometri', sks: 4, kategori: 'Wajib' },
+                        { kode: 'SMP-DESAIN-01', namaMapel: 'Desain Komunikasi Visual & Vektor', sks: 3, kategori: 'Peminatan' },
+                        { kode: 'SMP-ANIM-01', namaMapel: 'Dasar Animasi 2D & Storyboarding', sks: 3, kategori: 'Peminatan' },
+                        { kode: 'SMP-ENG-01', namaMapel: 'English for Creative Portfolio', sks: 3, kategori: 'Wajib' },
+                        { kode: 'SMP-P5-01', namaMapel: 'Proyek P5 Gelar Karya Desain', sks: 2, kategori: 'Proyek' }
+                    ]
+                },
+                {
+                    id: 'krs_mock_03',
+                    siswaId: 'siswa_05',
+                    nama: 'Kevin Anggara Putra',
+                    jenjang: 'SMA',
+                    kelas: 'Kelas 11',
+                    citaCita: 'Arsitek & Perancang Kota',
+                    semester: 1,
+                    tanggal: 'Kemarin, 16:45 WIB',
+                    gpa: '3.96',
+                    status: 'Menunggu Persetujuan',
+                    insight: 'Siap mengambil program matrikulasi akselerasi 2 mata kuliah S1 Arsitektur UNIPDU semester ini.',
+                    mataPelajaran: [
+                        { kode: 'SMA-MAT-01', namaMapel: 'Kalkulus & Matematika Lanjut Arsitektur', sks: 4, kategori: 'Wajib' },
+                        { kode: 'SMA-ARS-01', namaMapel: 'Studio Perancangan Arsitektur 1 (S1 UNIPDU)', sks: 4, kategori: 'Matrikulasi S1' },
+                        { kode: 'SMA-CAD-01', namaMapel: 'BIM & Computer Aided Design (CAD)', sks: 3, kategori: 'Peminatan' },
+                        { kode: 'SMA-ENG-01', namaMapel: 'Academic English & Architecture Presentation', sks: 3, kategori: 'Wajib' },
+                        { kode: 'SMA-PORTO-01', namaMapel: 'Kurasi Portofolio Sayembara Pelajar', sks: 3, kategori: 'Peminatan' }
+                    ]
+                }
+            ];
+        }
 
         async function loadTeacherKRS() {
             const container = document.getElementById('student-queue-container');
             const queueCounter = document.getElementById('queue-counter');
+            if (!container || !queueCounter) return;
+
+            pendingKrsList = [];
 
             try {
                 if (window.DataStore && currentGuru) {
@@ -487,11 +499,11 @@
                     }
                 }
             } catch (err) {
-                console.warn('DataStore fetch error, using robust fallback list:', err);
+                console.warn('DataStore fetch error:', err);
             }
 
             if (!pendingKrsList || pendingKrsList.length === 0) {
-                pendingKrsList = mockPendingSubmissions;
+                pendingKrsList = getDefaultPendingKRS();
             }
 
             queueCounter.textContent = `${pendingKrsList.length} Siswa Menunggu`;
@@ -507,7 +519,7 @@
                             ${initials}
                         </span>
                         <div class="text-left">
-                            <p class="font-sans text-xs font-bold leading-none ${isActive ? 'text-white' : 'text-primary'}">${item.nama.split(' ')[0]}</p>
+                            <p class="font-sans text-xs font-bold leading-none ${isActive ? 'text-white' : 'text-primary'}">${(item.nama || 'Siswa').split(' ')[0]}</p>
                             <p class="font-mono text-[9px] ${isActive ? 'text-white/80' : 'text-on-surface-variant'}">${item.citaCita || 'Siswa'}</p>
                         </div>
                     </button>
@@ -515,6 +527,24 @@
             }).join('');
 
             renderActiveKRS();
+        }
+
+        function renderEmptyKRSState() {
+            const mainCol = document.querySelector('.flex-1.space-y-6');
+            if (mainCol) {
+                mainCol.innerHTML = `
+                    <div class="paper-card p-12 bg-white text-center rounded border border-primary/20">
+                        <span class="material-symbols-outlined text-5xl text-role-teacher/60 mb-3">task_alt</span>
+                        <h3 class="font-headline-md text-xl font-bold text-primary mb-2">Semua Pengajuan Telah Ditinjau</h3>
+                        <p class="font-body-md text-xs text-on-surface-variant max-w-md mx-auto mb-6">
+                            Saat ini belum ada pengajuan KRS baru dari siswa bimbingan yang membutuhkan verifikasi. Pengajuan yang diajukan siswa akan otomatis masuk ke antrean ini.
+                        </p>
+                        <a href="/?page=14_dashboard-guru" class="inline-flex items-center gap-2 px-4 py-2 bg-role-teacher text-white font-mono text-xs font-bold rounded hover:opacity-90 transition-opacity">
+                            <span class="material-symbols-outlined text-sm">dashboard</span> Kembali ke Dashboard Guru
+                        </a>
+                    </div>
+                `;
+            }
         }
 
         function selectStudentKRS(idx) {
@@ -526,75 +556,85 @@
             const data = pendingKrsList[activeKrsIndex];
             if (!data) return;
 
-            document.getElementById('active-student-name').textContent = data.nama;
-            document.getElementById('active-student-career').textContent = data.citaCita || 'Arsitek';
-            document.getElementById('krs-title').textContent = `Persetujuan KRS Semester ${data.semester || 3}`;
-            document.getElementById('krs-submit-time').textContent = data.tanggal || 'Hari ini';
+            const nameEl = document.getElementById('active-student-name');
+            if (nameEl) nameEl.textContent = data.nama || 'Siswa';
+            const careerEl = document.getElementById('active-student-career');
+            if (careerEl) careerEl.textContent = data.citaCita || 'Belum Ditentukan';
+            const krsTitleEl = document.getElementById('krs-title');
+            if (krsTitleEl) krsTitleEl.textContent = `Persetujuan KRS Semester ${data.semester || 1}`;
+            const submitTimeEl = document.getElementById('krs-submit-time');
+            if (submitTimeEl) submitTimeEl.textContent = data.tanggal || 'Hari ini';
 
             // Sidebar
             const initials = (data.nama || 'S').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
-            document.getElementById('student-avatar-box').textContent = initials;
-            document.getElementById('student-name-sidebar').textContent = data.nama;
-            document.getElementById('student-jenjang-sidebar').textContent = `${data.jenjang || 'SMA'} · ${data.kelas || 'Kelas 11'}`;
-            document.getElementById('student-career-badge').textContent = data.citaCita || 'Arsitek';
-            document.getElementById('student-avg-score').textContent = data.gpa || '3.88';
-            document.getElementById('student-total-mapel').textContent = `${(data.prevSemester ? data.prevSemester.length : 4) + (data.reqSemester ? data.reqSemester.length : 4)} Mapel`;
-            document.getElementById('insight-text').textContent = `"${data.insight || 'Rencana studi telah dianalisis sesuai peminatan karir.'}"`;
+            const avBox = document.getElementById('student-avatar-box');
+            if (avBox) avBox.textContent = initials;
+            const nameSide = document.getElementById('student-name-sidebar');
+            if (nameSide) nameSide.textContent = data.nama || 'Siswa';
+            const jenjangSide = document.getElementById('student-jenjang-sidebar');
+            if (jenjangSide) jenjangSide.textContent = `${data.jenjang || 'SMA'} · ${data.kelas || 'Kelas 10'}`;
+            const careerBadge = document.getElementById('student-career-badge');
+            if (careerBadge) careerBadge.textContent = data.citaCita || 'Siswa';
+            const avgScore = document.getElementById('student-avg-score');
+            if (avgScore) avgScore.textContent = data.gpa || '-';
+            const totalMapel = document.getElementById('student-total-mapel');
+            if (totalMapel) totalMapel.textContent = `${(data.mataPelajaran ? data.mataPelajaran.length : 0)} Mapel`;
+            const insightText = document.getElementById('insight-text');
+            if (insightText) insightText.textContent = `"${data.insight || 'Pengajuan KRS sedang menunggu persetujuan pembimbing.'}"`;
 
-            // Previous Semester
-            const prevContainer = document.getElementById('prev-modules-list');
-            const prevList = data.prevSemester || mockPendingSubmissions[0].prevSemester;
-            prevContainer.innerHTML = prevList.map(m => `
-                <div class="flex items-center justify-between p-2.5 bg-primary/4 border border-primary/10 rounded">
-                    <div>
-                        <span class="font-mono text-[10px] text-on-surface-variant">${m.kode}</span>
-                        <p class="font-sans text-xs font-bold text-primary">${m.namaMapel}</p>
-                    </div>
-                    <div class="text-right">
-                        <span class="font-mono text-xs font-bold text-green-700 bg-green-50 px-2 py-0.5 border border-green-200">${m.grade} (${m.skor})</span>
-                        <p class="font-mono text-[9px] text-on-surface-variant mt-0.5">${m.sks} JP</p>
-                    </div>
-                </div>
-            `).join('');
-
-            // Proposed Semester
+            // Proposed Semester modules
             const reqContainer = document.getElementById('req-modules-list');
-            const reqList = data.reqSemester || mockPendingSubmissions[0].reqSemester;
-            reqContainer.innerHTML = reqList.map(m => `
-                <div class="flex items-center justify-between p-2.5 bg-role-teacher/5 border border-role-teacher/20 rounded">
-                    <div>
-                        <div class="flex items-center gap-1.5 mb-0.5">
-                            <span class="font-mono text-[10px] text-role-teacher font-bold">${m.kode}</span>
-                            <span class="font-mono text-[9px] bg-role-teacher/10 text-role-teacher px-1.5 py-0.2 border border-role-teacher/20">${m.kategori || 'Wajib'}</span>
-                        </div>
-                        <p class="font-sans text-xs font-bold text-primary">${m.namaMapel}</p>
-                    </div>
-                    <div class="text-right">
-                        <span class="font-mono text-xs font-bold text-role-teacher">${m.sks} JP</span>
-                    </div>
-                </div>
-            `).join('');
+            if (reqContainer) {
+                const reqList = Array.isArray(data.mataPelajaran) ? data.mataPelajaran : (data.reqSemester || []);
+                if (reqList.length === 0) {
+                    reqContainer.innerHTML = '<p class="text-xs text-on-surface-variant italic">Belum ada mata pelajaran dalam pengajuan ini.</p>';
+                } else {
+                    reqContainer.innerHTML = reqList.map(m => {
+                        const namaMapel = typeof m === 'string' ? m : (m.namaMapel || m.nama || 'Mata Pelajaran');
+                        const kode = (typeof m === 'object' && m.kode) ? m.kode : 'KRS';
+                        const sks = (typeof m === 'object' && m.sks) ? m.sks : 3;
+                        const kategori = (typeof m === 'object' && m.kategori) ? m.kategori : 'Wajib';
+                        return `
+                            <div class="flex items-center justify-between p-2.5 bg-role-teacher/5 border border-role-teacher/20 rounded">
+                                <div>
+                                    <div class="flex items-center gap-1.5 mb-0.5">
+                                        <span class="font-mono text-[10px] text-role-teacher font-bold">${kode}</span>
+                                        <span class="font-mono text-[9px] bg-role-teacher/10 text-role-teacher px-1.5 py-0.2 border border-role-teacher/20">${kategori}</span>
+                                    </div>
+                                    <p class="font-sans text-xs font-bold text-primary">${namaMapel}</p>
+                                </div>
+                                <div class="text-right">
+                                    <span class="font-mono text-xs font-bold text-role-teacher">${sks} JP</span>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            }
         }
 
         function setFeedbackTemplate(text) {
             const textarea = document.getElementById('catatan-guru');
-            textarea.value = text;
-            textarea.focus();
+            if (textarea) {
+                textarea.value = text;
+                textarea.focus();
+            }
         }
 
         async function handleDecision(status) {
             const data = pendingKrsList[activeKrsIndex];
             if (!data) return;
 
-            const catatan = document.getElementById('catatan-guru').value;
+            const catatanEl = document.getElementById('catatan-guru');
+            const catatan = catatanEl ? catatanEl.value : '';
             const btnApprove = document.getElementById('btn-approve');
             const btnReject = document.getElementById('btn-reject');
 
-            btnApprove.disabled = true;
-            btnReject.disabled = true;
+            if (btnApprove) btnApprove.disabled = true;
+            if (btnReject) btnReject.disabled = true;
 
             try {
-                if (window.DataStore && window.DataStore.updateKRSStatus && data.id && !data.id.startsWith('krs_mock')) {
+                if (window.DataStore && window.DataStore.updateKRSStatus && data.id && !data.id.startsWith('krs_mock') && !data.id.startsWith('krs_active')) {
                     await window.DataStore.updateKRSStatus(data.id, status);
                     if (catatan && currentGuru) {
                         await window.DataStore.tambahCatatanGuru(currentGuru.uid || currentGuru.id, data.siswaId, catatan);
@@ -607,13 +647,17 @@
             // Show confirmation toast
             const toast = document.getElementById('toast-msg');
             const toastText = document.getElementById('toast-text');
-            toastText.textContent = `KRS untuk ${data.nama} telah ${status.toLowerCase()}!`;
-            toast.classList.remove('hidden');
-            toast.classList.add('flex');
+            if (toastText) toastText.textContent = `KRS untuk ${data.nama} telah ${status.toLowerCase()}!`;
+            if (toast) {
+                toast.classList.remove('hidden');
+                toast.classList.add('flex');
+            }
 
             setTimeout(() => {
-                toast.classList.add('hidden');
-                toast.classList.remove('flex');
+                if (toast) {
+                    toast.classList.add('hidden');
+                    toast.classList.remove('flex');
+                }
                 
                 // Remove from pending list
                 pendingKrsList.splice(activeKrsIndex, 1);
@@ -622,18 +666,23 @@
                 }
                 
                 if (pendingKrsList.length === 0) {
-                    document.getElementById('krs-status-pill').textContent = 'SEMUA KRS SELESAI DITINJAU';
-                    document.getElementById('krs-status-pill').className = 'font-mono text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-800 border border-green-300 uppercase';
-                    document.getElementById('btn-approve').disabled = true;
-                    document.getElementById('btn-reject').disabled = true;
-                    document.getElementById('queue-counter').textContent = '0 Siswa';
-                    document.getElementById('student-queue-container').innerHTML = '<span class="font-mono text-xs text-on-surface-variant">Tidak ada lagi antrean KRS. Kerja bagus!</span>';
+                    const pill = document.getElementById('krs-status-pill');
+                    if (pill) {
+                        pill.textContent = 'SEMUA KRS SELESAI DITINJAU';
+                        pill.className = 'font-mono text-[10px] font-bold px-2 py-0.5 bg-green-100 text-green-800 border border-green-300 uppercase';
+                    }
+                    if (btnApprove) btnApprove.disabled = true;
+                    if (btnReject) btnReject.disabled = true;
+                    const qc = document.getElementById('queue-counter');
+                    if (qc) qc.textContent = '0 Siswa';
+                    const sqc = document.getElementById('student-queue-container');
+                    if (sqc) sqc.innerHTML = '<span class="font-mono text-xs text-on-surface-variant">Tidak ada lagi antrean KRS. Kerja bagus!</span>';
                 } else {
-                    btnApprove.disabled = false;
-                    btnReject.disabled = false;
+                    if (btnApprove) btnApprove.disabled = false;
+                    if (btnReject) btnReject.disabled = false;
                     loadTeacherKRS();
                 }
-            }, 1200);
+            }, 1000);
         }
 
         // Firebase Auth Ready Sync
@@ -641,23 +690,44 @@
             const user = e.detail;
             if (user) {
                 currentGuru = user;
+                const teacherName = user.nama || localStorage.getItem('guruNama') || 'Ibu Sari Rahayu, M.Pd.';
                 const nameEl = document.getElementById('teacher-name-top');
-                if (nameEl) nameEl.textContent = user.nama || 'Dewan Guru';
+                if (nameEl) nameEl.textContent = teacherName;
                 const avatarEl = document.getElementById('teacher-avatar');
                 if (avatarEl) {
-                    avatarEl.textContent = (user.nama || 'G').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                    avatarEl.textContent = (teacherName || 'G').split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase();
                 }
             }
+            // Dynamic academic year
+            const now = new Date();
+            const bulan = now.getMonth();
+            const tahun = now.getFullYear();
+            const ayStart = bulan >= 6 ? tahun : tahun - 1;
+            const ayEnd = ayStart + 1;
+            const ayEl = document.getElementById('sidebar-academic-year');
+            if (ayEl) ayEl.textContent = `A.Y. ${ayStart}/${ayEnd} \u00b7 UNIPDU`;
+
+            // Dynamic checkpoint info
+            const chkEl = document.getElementById('checkpoint-last-info');
+            if (chkEl) {
+                const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+                const lastFriday = new Date(now);
+                lastFriday.setDate(now.getDate() - ((now.getDay() + 2) % 7));
+                chkEl.textContent = `${days[lastFriday.getDay()]} Lalu \u00b7 Skor Tinjau`;
+            }
+
             loadTeacherKRS();
         });
 
         // Instant Fallback Init
-        setTimeout(() => {
-            if (window.currentFirebaseUser) {
-                currentGuru = window.currentFirebaseUser;
-            }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadTeacherKRS);
+        } else {
             loadTeacherKRS();
-        }, 300);
+        }
+
+        setTimeout(loadTeacherKRS, 100);
+        setTimeout(loadTeacherKRS, 400);
     </script>
 </body>
 

@@ -344,7 +344,7 @@
     </nav>
     <div class="px-6 py-4 border-t border-primary/10">
         <div class="font-mono text-[9px] text-on-surface-variant tracking-widest uppercase mb-1">Archive Ref ID</div>
-        <div class="font-mono text-sm font-bold text-brand-gold" id="archive-ref-id">FCX-UN-2026-A00421</div>
+        <div class="font-mono text-sm font-bold text-brand-gold">FCX-UN-2023-A00421</div>
     </div>
 </aside>
 
@@ -357,7 +357,7 @@
             <button id="mobile-menu-btn" class="md:hidden p-2 text-primary" aria-label="Menu"><span class="material-symbols-outlined">menu</span></button>
             <div>
                 <h1 class="font-serif text-xl md:text-2xl font-bold text-primary leading-none">Grades</h1>
-                <p class="font-mono text-[10px] text-on-surface-variant tracking-wider" id="academic-year-sub">Academic Ledger · A.Y. 2025/2026</p>
+                <p class="font-mono text-[10px] text-on-surface-variant tracking-wider">Academic Ledger · A.Y. 2023/2024</p>
             </div>
         </div>
     <div class="flex items-center gap-2 md:gap-4">
@@ -1258,109 +1258,59 @@ document.getElementById('export-btn')?.addEventListener('click', () => {
     <script>
     async function loadRiwayatUser(user) {
         if (!user) return;
-        window._authUid = user.uid || user.id || 'default';
-        window._userName = user.nama || localStorage.getItem('userNama') || 'Siswa';
-
-        const userNama = user.nama || localStorage.getItem('userNama') || 'Siswa';
-        const userJenjang = (user.jenjang || localStorage.getItem('userJenjang') || 'SD').toUpperCase();
-        let userKelas = user.kelas || localStorage.getItem('userKelas') || (userJenjang === 'SD' ? 1 : (userJenjang === 'SMP' ? 7 : 10));
-        const userNisn = user.nisn || localStorage.getItem('userNisn') || '7JtTafT1z7';
+        window._authUid = user.uid;
+        window._userName = user.nama;
 
         document.querySelectorAll('.user-display-name').forEach(el => {
-            el.textContent = userNama;
+            el.textContent = user.nama || 'Siswa';
         });
 
-        const jenjangKelas = `${userJenjang} · Kelas ${userKelas}`;
+        const jenjangKelas = `${user.jenjang || 'SMA'} · ${user.kelas || 'Kelas 11'}`;
         document.querySelectorAll('.user-jenjang-kelas').forEach(el => {
             el.textContent = jenjangKelas;
         });
 
-        const archiveEl = document.getElementById('archive-ref-id');
-        if (archiveEl) {
-            archiveEl.textContent = `FCX-UN-2026-${userNisn.substring(0, 6).toUpperCase()}`;
-        }
-
-        const currentYear = new Date().getFullYear();
-        const yearSubEl = document.getElementById('academic-year-sub');
-        if (yearSubEl) {
-            yearSubEl.textContent = `Academic Ledger · A.Y. ${currentYear}/${currentYear+1}`;
-        }
-
-        // Update Avatar initials & photo
-        const initials = userNama.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2).toUpperCase() || 'FC';
-        const fotoUrl = user.fotoUrl || user.avatar || localStorage.getItem('userAvatar') || '';
+        // Update Avatar initials
+        const initials = (user.nama || 'S').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
         const avatarSmall = document.getElementById('user-avatar-small');
         const avatarLarge = document.getElementById('user-avatar-large');
         const avatarMobile = document.getElementById('user-avatar-mobile');
-        [avatarSmall, avatarLarge, avatarMobile].forEach(el => {
-            if (el) {
-                if (fotoUrl) {
-                    el.innerHTML = `<img src="${fotoUrl}" alt="${userNama}" class="w-full h-full object-cover rounded-full" />`;
-                    el.classList.add('overflow-hidden');
-                } else {
-                    el.textContent = initials;
-                }
-            }
-        });
+        if (avatarSmall) avatarSmall.textContent = initials;
+        if (avatarLarge) avatarLarge.textContent = initials;
+        if (avatarMobile) avatarMobile.textContent = initials;
 
         // Load grades from Firestore / DataStore
-        try {
-            if (window.DataStore && window.DataStore.getNilaiAkademikSiswa) {
-                const grades = await window.DataStore.getNilaiAkademikSiswa(window._authUid, Object.assign({}, user, { jenjang: userJenjang, kelas: userKelas, nama: userNama }));
+        if (window.DataStore && window.DataStore.getNilaiAkademikSiswa) {
+            try {
+                const grades = await window.DataStore.getNilaiAkademikSiswa(user.uid);
                 renderUIFromData(grades);
-            } else {
-                // Fallback generator directly in view
-                const defaultGrades = [
-                    { kode: `${userJenjang}-LIT-01`, namaMapel: 'Bahasa Indonesia & Literasi', namaGuru: 'Ibu Nur Aini, S.Pd', skor: 94, nilaiHuruf: 'A', bobotSKS: 4, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' },
-                    { kode: `${userJenjang}-MAT-01`, namaMapel: 'Matematika & Logika Analitik', namaGuru: 'Bpk. Hendro Utomo, S.Pd', skor: 91, nilaiHuruf: 'A', bobotSKS: 4, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' },
-                    { kode: `${userJenjang}-SENI-01`, namaMapel: `Seni Budaya & Minat Peminatan`, namaGuru: 'Ibu Lestari, S.Sn', skor: 96, nilaiHuruf: 'A', bobotSKS: 3, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' },
-                    { kode: `${userJenjang}-PANC-01`, namaMapel: 'Pendidikan Pancasila & Karakter', namaGuru: 'Ibu Siti Rahma, M.Pd', skor: 93, nilaiHuruf: 'A', bobotSKS: 2, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' },
-                    { kode: `${userJenjang}-SAINS-01`, namaMapel: 'Sains & Eksplorasi Lingkungan', namaGuru: 'Bpk. Danang Prasetyo, S.Pd', skor: 92, nilaiHuruf: 'A', bobotSKS: 3, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' },
-                    { kode: `${userJenjang}-P5-01`, namaMapel: 'Proyek Profil Pelajar Pancasila (P5)', namaGuru: 'Tim Fasilitator P5', skor: 95, nilaiHuruf: 'A', bobotSKS: 2, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' }
-                ];
-                renderUIFromData(defaultGrades);
+            } catch (error) {
+                console.error('Error loading grades:', error);
+                document.getElementById('semester-panels-container').innerHTML = '<div class="p-8 text-center text-red-500 font-mono text-sm">Gagal memuat data nilai.</div>';
             }
-        } catch (error) {
-            console.error('Error loading grades:', error);
         }
     }
 
-    function getFallbackUser() {
-        let user = {};
-        try { user = JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch(e) {}
-        if (!user.nama && localStorage.getItem('userNama')) user.nama = localStorage.getItem('userNama');
-        if (!user.jenjang && localStorage.getItem('userJenjang')) user.jenjang = localStorage.getItem('userJenjang');
-        if (!user.kelas && localStorage.getItem('userKelas')) user.kelas = parseInt(localStorage.getItem('userKelas'), 10);
-        if (!user.nisn && localStorage.getItem('userNisn')) user.nisn = localStorage.getItem('userNisn');
-        if (!user.citaCita && localStorage.getItem('selectedCareer')) user.citaCita = localStorage.getItem('selectedCareer');
+        window.addEventListener('auth-ready', function(e) {
+            if (e.detail) loadRiwayatUser(e.detail);
+        });
 
-        // Sensible defaults
-        if (!user.nama) user.nama = 'Ahmad Ibnu MUthohhari';
-        if (!user.jenjang) user.jenjang = 'SD';
-        if (!user.kelas) user.kelas = 1;
-        if (!user.nisn) user.nisn = '7JtTafT1z7';
-        if (!user.citaCita) user.citaCita = 'Aktor';
-        return user;
-    }
+        // Instant Hydration on DOM load
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                const cachedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                if (cachedUser && (cachedUser.nama || cachedUser.email)) {
+                    loadRiwayatUser(cachedUser);
+                }
+            } catch(e) {}
+        });
 
-    function triggerLoad() {
-        const u = window.currentFirebaseUser || getFallbackUser();
-        loadRiwayatUser(u);
-    }
-
-    window.addEventListener('auth-ready', function(e) {
-        if (e.detail) loadRiwayatUser(e.detail);
-    });
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', triggerLoad);
-    } else {
-        triggerLoad();
-    }
-
-    // Safety timeout
-    setTimeout(triggerLoad, 100);
-    setTimeout(triggerLoad, 400);
+        // Auto-init if user already loaded
+        setTimeout(() => {
+            if (window.currentFirebaseUser) {
+                loadRiwayatUser(window.currentFirebaseUser);
+            }
+        }, 300);
     </script>
 
     <script>

@@ -157,8 +157,8 @@
         <div class="flex items-center gap-4">
             <a href="/?page=17_notifikasi" class="material-symbols-outlined text-primary hover:text-secondary transition-colors" title="Notifikasi">notifications</a>
             <a href="/?page=01_login_bantuan" class="material-symbols-outlined text-primary hover:text-secondary transition-colors" title="Pusat Bantuan">help</a>
-            <a href="/?page=18_profil_profil-siswa" id="top-user-avatar" class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center border border-outline-variant/20 overflow-hidden font-mono text-xs font-bold" title="Profil Siswa">
-                <span class="material-symbols-outlined text-sm text-white">person</span>
+            <a href="/?page=18_profil_profil-siswa" class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center border border-outline-variant/20 overflow-hidden" title="Profil Siswa">
+                <span class="material-symbols-outlined text-sm text-primary">person</span>
             </a>
             <!-- Logout -->
             <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" class="ml-1 flex items-center justify-center p-2 text-error hover:bg-error/10 rounded-full transition-colors group relative" title="Keluar">

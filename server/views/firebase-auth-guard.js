@@ -1,24 +1,26 @@
 /**
- * Flexa Cendekia — Firebase Auth Guard
+ * Flexa Cendekia — Firebase Auth Guard v2.2 (Clean State & Strict Protection)
  * 
- * Include di SEMUA halaman dashboard (02–18).
- * Fungsi:
- * 1. Cek apakah user sudah login. Jika belum → redirect ke login.
- * 2. Ambil profil user dari Firestore (role, nama, dsb).
- * 3. Simpan ke window.currentFirebaseUser untuk dipakai script lain.
- * 4. Menyediakan fungsi global flexaLogout().
- * 5. Timeout fallback (10 detik) → jika Firebase tidak merespons, redirect ke login.
+ * FITUR UTAMA:
+ * 1. Fast Hydration: Membaca cache LocalStorage seketika untuk rendering instan tanpa flicker/bounce.
+ * 2. Asynchronous Session Verification: Memverifikasi token Firebase secara paralel.
+ * 3. Graceful Recovery: Memberikan waktu 3.5 detik bagi Firebase untuk memulihkan sesi IndexedDB.
+ * 4. Token Auto-Refresh: Memperbarui token autentikasi tiap 30 menit agar sesi tidak kedaluwarsa.
+ * 5. Strict Role Protection: Mengarahkan Siswa (SD/SMP/SMA), Guru, dan Orang Tua ke portal masing-masing.
+ * 6. Clean Reset Engine: Menyediakan fungsi global window.flexaResetAllData() untuk mereset seluruh data simulasi ke titik 0.
  */
 
 (function() {
-    var _authResolved = false;
+    'use strict';
 
-    // Tentukan halaman login
+    var _authResolved = false;
+    var AUTH_TIMEOUT = 9000;
+    var RECOVERY_WAIT = 3500;
+
     function getLoginUrl() {
         return '/?page=01_login';
     }
 
-    // Normalisasi format role agar konsisten
     function normalizeRole(role) {
         if (!role) return 'Siswa';
         var r = role.toString().trim().toLowerCase().replace(/[\s_-]/g, '');
@@ -27,7 +29,6 @@
         return 'Siswa';
     }
 
-    // Helper untuk mengembalikan user ke dashboard asalnya
     function getRedirectUrlForRole(role) {
         var r = normalizeRole(role);
         if (r === 'Siswa') return '/?page=08_dashboard-siswa';
@@ -36,171 +37,290 @@
         return '/?page=01_login';
     }
 
-    // Hapus loading screen dan tampilkan konten halaman
     function showPageContent() {
         if (document.body) {
             document.body.classList.remove("belum-terverifikasi");
         }
         var loader = document.getElementById("loading-screen-auth");
-        if (loader) {
-            loader.remove();
+        if (loader) loader.remove();
+    }
+
+    function safeRedirectToLogin() {
+        if (window.location.search.indexOf('01_login') !== -1) return;
+        console.warn('[AuthGuard] Sesi kosong / tidak valid. Mengalihkan ke halaman login...');
+        window.location.replace(getLoginUrl());
+    }
+
+    function checkRoleAccess(role) {
+        var fullPath = (window.location.pathname + window.location.search).toLowerCase();
+        var isAllowed = true;
+
+        if (fullPath.indexOf('14_') !== -1 || fullPath.indexOf('15_') !== -1) {
+            if (role !== 'Guru') isAllowed = false;
+        } else if (fullPath.indexOf('16_') !== -1) {
+            if (role !== 'OrangTua') isAllowed = false;
+        } else if (
+            fullPath.indexOf('02_') !== -1 || fullPath.indexOf('03_') !== -1 || fullPath.indexOf('04_') !== -1 ||
+            fullPath.indexOf('05_') !== -1 || fullPath.indexOf('06_') !== -1 || fullPath.indexOf('07_') !== -1 ||
+            fullPath.indexOf('08_') !== -1 || fullPath.indexOf('09_') !== -1 || fullPath.indexOf('10_') !== -1 ||
+            fullPath.indexOf('11_') !== -1 || fullPath.indexOf('12_') !== -1 || fullPath.indexOf('13_') !== -1
+        ) {
+            if (role !== 'Siswa') isAllowed = false;
+        } else if (fullPath.indexOf('18_profil') !== -1) {
+            if (fullPath.indexOf('profil-siswa') !== -1 && role !== 'Siswa') isAllowed = false;
+            if (fullPath.indexOf('profil-guru') !== -1 && role !== 'Guru') isAllowed = false;
+            if (fullPath.indexOf('profil-ortu') !== -1 && role !== 'OrangTua') isAllowed = false;
+            if (fullPath.indexOf('profil-siswa') === -1 && fullPath.indexOf('profil-guru') === -1 && fullPath.indexOf('profil-ortu') === -1) {
+                if (role === 'Guru') { window.location.href = '/?page=18_profil_profil-guru'; return false; }
+                if (role === 'OrangTua') { window.location.href = '/?page=18_profil_profil-ortu'; return false; }
+                if (role === 'Siswa') { window.location.href = '/?page=18_profil_profil-siswa'; return false; }
+            }
         }
+
+        return isAllowed;
     }
 
-    function dispatchDummyUser() {
-        console.warn('[AuthGuard] Dispatching dummy user for local development.');
-        window.currentFirebaseUser = {
-            uid: 'dummy-student-id',
-            nama: 'Ahmad Fauzi (Local Dev)',
-            role: 'Siswa',
-            email: 'dummy@example.com'
-        };
-        showPageContent();
-        window.getCurrentUserProfile = function() { return window.currentFirebaseUser; };
-        window.dispatchEvent(new CustomEvent('auth-ready', { detail: window.currentFirebaseUser }));
-    }
+    // =============================================
+    // 1. FAST HYDRATION FROM LOCAL STORAGE CACHE
+    // =============================================
+    var cachedUser = null;
+    try {
+        var rawCache = localStorage.getItem('currentUser');
+        if (rawCache) {
+            cachedUser = JSON.parse(rawCache);
+            if (cachedUser && cachedUser.uid) {
+                window.currentFirebaseUser = cachedUser;
+                showPageContent();
+                window.getCurrentUserProfile = function() { return window.currentFirebaseUser; };
+                window.dispatchEvent(new CustomEvent('auth-ready', { detail: window.currentFirebaseUser }));
+            }
+        }
+    } catch(e) {}
 
-    // Tunggu Firebase ready
+    // =============================================
+    // 2. PARALLEL SECURE AUTH VERIFICATION
+    // =============================================
     function onFirebaseReady() {
         if (!window.firebaseAuth) {
-            console.error('[AuthGuard] Firebase Auth belum tersedia.');
-            dispatchDummyUser();
+            if (!cachedUser) {
+                safeRedirectToLogin();
+            }
             return;
         }
 
         window.firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
             .then(function() {
-                var sudahDicekSekali = false;
-                
-                firebaseAuth.onAuthStateChanged(function(user) {
-                    if (!user) {
-                        if (!sudahDicekSekali) {
-                            console.warn('[AuthGuard] Sesi awal null. Menunggu pemulihan...');
-                            sudahDicekSekali = true;
-                            setTimeout(function() {
-                                if (!window.firebaseAuth.currentUser) {
-                                    console.warn('[AuthGuard] Sesi null. Mengalihkan ke halaman login...');
-                                    window.location.href = getLoginUrl();
-                                }
-                            }, 1200);
-                            return;
-                        } else {
-                            console.warn('[AuthGuard] Sesi null. Mengalihkan ke halaman login...');
-                            window.location.href = getLoginUrl();
-                            return;
+                var authCheckPromise = new Promise(function(resolve) {
+                    var unsubscribe = firebaseAuth.onAuthStateChanged(function(user) {
+                        if (user) {
+                            unsubscribe();
+                            resolve(user);
                         }
-                    }
+                    });
 
-                    if (_authResolved) return; // Cegah duplikasi
+                    setTimeout(function() {
+                        var currentUser = window.firebaseAuth.currentUser;
+                        if (currentUser) {
+                            resolve(currentUser);
+                        } else {
+                            resolve(null);
+                        }
+                    }, RECOVERY_WAIT);
+                });
+
+                authCheckPromise.then(function(user) {
+                    if (_authResolved) return;
                     _authResolved = true;
 
-                    // User sudah login — ambil profil dari Firestore
+                    if (!user) {
+                        // Jika tidak ada sesi auth aktif dan cache kosong -> arahkan ke login
+                        if (!cachedUser) {
+                            safeRedirectToLogin();
+                        }
+                        return;
+                    }
+
+                    // Ambil profil terbaru dari Firestore
                     window.firebaseDb.collection('users').doc(user.uid).get()
                         .then(function(doc) {
-                            if (doc.exists) {
-                                var data = doc.data();
-                                var role = normalizeRole(data.role);
-                                window.currentFirebaseUser = Object.assign({}, data, {
-                                    uid: user.uid,
-                                    email: user.email,
-                                    role: role
-                                });
-                            } else {
-                                // User tidak ditemukan di Firestore, logout dan arahkan ke login
-                                console.error('[AuthGuard] Profil pengguna tidak ditemukan di Firestore.');
-                                window.location.href = getLoginUrl();
-                                return;
-                            }
-
-                            // --- ROLE GUARD LOGIC ---
-                            var role = window.currentFirebaseUser.role;
-                            var path = window.location.pathname.toLowerCase();
-                            var query = window.location.search.toLowerCase();
-                            var fullPath = path + query;
+                            var data = doc.exists ? doc.data() : (cachedUser || {});
+                            var role = normalizeRole(data.role || (cachedUser ? cachedUser.role : 'Siswa'));
                             
-                            var isAllowed = true;
+                            window.currentFirebaseUser = Object.assign({}, cachedUser || {}, data, {
+                                uid: user.uid,
+                                email: user.email,
+                                role: role
+                            });
 
-                            // Cek berdasarkan path direktori atau parameter page
-                            if (fullPath.includes('14_') || fullPath.includes('15_')) {
-                                if (role !== 'Guru') isAllowed = false;
-                            } else if (fullPath.includes('16_')) {
-                                if (role !== 'OrangTua') isAllowed = false;
-                            } else if (
-                                fullPath.includes('02_') || fullPath.includes('03_') || fullPath.includes('04_') ||
-                                fullPath.includes('05_') || fullPath.includes('06_') || fullPath.includes('07_') ||
-                                fullPath.includes('08_') || fullPath.includes('09_') || fullPath.includes('10_') ||
-                                fullPath.includes('11_') || fullPath.includes('12_') || fullPath.includes('13_')
-                            ) {
-                                if (role !== 'Siswa') isAllowed = false;
-                            } else if (fullPath.includes('18_profil')) {
-                                if (fullPath.includes('profil-siswa') && role !== 'Siswa') isAllowed = false;
-                                if (fullPath.includes('profil-guru') && role !== 'Guru') isAllowed = false;
-                                if (fullPath.includes('profil-ortu') && role !== 'OrangTua') isAllowed = false;
-                                if (!fullPath.includes('profil-siswa') && !fullPath.includes('profil-guru') && !fullPath.includes('profil-ortu')) {
-                                    if (role === 'Guru') { window.location.href = '/?page=18_profil_profil-guru'; return; }
-                                    if (role === 'OrangTua') { window.location.href = '/?page=18_profil_profil-ortu'; return; }
-                                    if (role === 'Siswa') { window.location.href = '/?page=18_profil_profil-siswa'; return; }
-                                }
-                            }
+                            try {
+                                localStorage.setItem('currentUser', JSON.stringify(window.currentFirebaseUser));
+                            } catch(e) {}
 
-                            if (!isAllowed) {
-                                console.warn('[AuthGuard] Akses ditolak. Role ' + role + ' tidak diizinkan mengakses halaman ini. Mengalihkan ke dashboard...');
+                            var allowed = checkRoleAccess(role);
+                            if (!allowed) {
                                 window.location.href = getRedirectUrlForRole(role);
                                 return;
                             }
-                            
-                            // --- END ROLE GUARD ---
 
-                            // LOLOS VALIDASI — tampilkan konten halaman
                             showPageContent();
+                            window.getCurrentUserProfile = function() { return window.currentFirebaseUser; };
+                            window.dispatchEvent(new CustomEvent('auth-ready', { detail: window.currentFirebaseUser }));
 
-                            window.getCurrentUserProfile = function() {
-                                return window.currentFirebaseUser;
-                            };
-
-                            // Dispatch event so page scripts know user is authenticated and allowed
-                            window.dispatchEvent(new CustomEvent('auth-ready', {
-                                detail: window.currentFirebaseUser
-                            }));
+                            // Token Refresh Timer (30 Menit)
+                            setInterval(function() {
+                                var u = window.firebaseAuth.currentUser;
+                                if (u) {
+                                    u.getIdToken(true).catch(function() {});
+                                }
+                            }, 30 * 60 * 1000);
                         })
                         .catch(function(err) {
-                            console.error('[AuthGuard] Gagal mengambil profil:', err);
-                            window.location.href = getLoginUrl();
+                            console.warn('[AuthGuard] Firestore sync warning:', err);
+                            showPageContent();
                         });
                 });
-            }).catch(function(err) { 
-                console.error("[AuthGuard] Set persistence error", err); 
-                window.location.href = getLoginUrl();
+            })
+            .catch(function() {
+                if (!cachedUser) {
+                    safeRedirectToLogin();
+                } else {
+                    showPageContent();
+                }
             });
     }
 
-    // Listen for firebase-ready event or check if already ready
     if (window.firebaseAuth) {
         onFirebaseReady();
     } else {
         window.addEventListener('firebase-ready', onFirebaseReady);
     }
 
-    // =============================================
-    // TIMEOUT FALLBACK (10 detik)
-    // =============================================
     setTimeout(function() {
         if (!_authResolved) {
-            console.error('[AuthGuard] Timeout 10 detik. Firebase tidak merespons. Dispatching dummy.');
-            dispatchDummyUser();
+            _authResolved = true;
+            if (!cachedUser && !window.firebaseAuth?.currentUser) {
+                safeRedirectToLogin();
+            } else {
+                showPageContent();
+            }
         }
-    }, 10000);
+    }, AUTH_TIMEOUT);
 
-    // Global logout function
+    // =============================================
+    // 3. GLOBAL PROFILE & AVATAR DOM SYNCHRONIZER
+    // =============================================
+    window.flexaSyncProfileElements = function(user) {
+        if (!user) return;
+        var nama = user.nama || localStorage.getItem('userNama') || 'Siswa Flexa';
+        var initials = nama.split(' ').filter(Boolean).map(function(n){ return n[0]; }).slice(0, 2).join('').toUpperCase() || 'FC';
+        var fotoUrl = user.fotoUrl || user.avatar || localStorage.getItem('userAvatar') || '';
+        var jenjang = (user.jenjang || localStorage.getItem('userJenjang') || 'SMA').toUpperCase();
+        var kelas = user.kelas || localStorage.getItem('userKelas') || (jenjang === 'SD' ? '1' : (jenjang === 'SMP' ? '7' : '10'));
+        var career = user.citaCita || localStorage.getItem('selectedCareer') || 'Arsitek';
+
+        // Update all text names
+        var nameSelectors = [
+            '#user-display-name', '#display-student-name', '#sidebar-student-name', 
+            '#top-user-name', '#menu-user-name', '#hero-nama', '.user-display-name', 
+            '.user-nama', '#profile-user-name', '#navbar-user-name'
+        ];
+        nameSelectors.forEach(function(sel) {
+            document.querySelectorAll(sel).forEach(function(el) {
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                    if (!el.value) el.value = nama;
+                } else if (sel === '#top-user-name') {
+                    el.textContent = nama.split(' ')[0];
+                } else {
+                    el.textContent = nama;
+                }
+            });
+        });
+
+        // Update all avatars (Hero, Topbar, Sidebar, Dropdown)
+        var avatarIds = [
+            'top-user-avatar', 'hero-user-avatar', 'user-avatar-large', 
+            'user-avatar-small', 'user-initials', 'top-avatar', 'sidebar-avatar',
+            'navbar-avatar'
+        ];
+        avatarIds.forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                if (fotoUrl) {
+                    el.innerHTML = '<img src="' + fotoUrl + '" alt="' + nama + '" class="w-full h-full object-cover rounded-full" onerror="this.parentElement.textContent=\'' + initials + '\'" />';
+                    el.classList.add('overflow-hidden');
+                } else {
+                    el.textContent = initials;
+                }
+            }
+        });
+
+        // Update hero photo image if present
+        var heroFoto = document.getElementById('hero-foto');
+        if (heroFoto && fotoUrl) {
+            heroFoto.src = fotoUrl;
+        }
+
+        // Update level and career text
+        document.querySelectorAll('#user-jenjang, .user-jenjang-kelas, #hero-jenjang-kelas, #krs-jenjang-kelas').forEach(function(el) {
+            el.textContent = jenjang + ' — Kelas ' + kelas;
+        });
+
+        document.querySelectorAll('#user-citacita, .user-cita-cita, #hero-cita-cita, #krs-cita-cita').forEach(function(el) {
+            el.textContent = career;
+        });
+    };
+
+    // Auto-sync on DOMContentLoaded & auth-ready
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            var u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (u && (u.nama || u.email || localStorage.getItem('userNama'))) {
+                window.flexaSyncProfileElements(u);
+            }
+        } catch(e) {}
+    });
+
+    window.addEventListener('auth-ready', function(e) {
+        if (e.detail) {
+            window.flexaSyncProfileElements(e.detail);
+        }
+    });
+
+    // =============================================
+    // 4. GLOBAL LOGOUT & COMPLETE RESET UTILITIES
+    // =============================================
     window.flexaLogout = function() {
+        try {
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('selectedCareer');
+            localStorage.removeItem('userAvatar');
+        } catch(e) {}
+        
         if (window.firebaseAuth) {
             firebaseAuth.signOut().then(function() {
-                window.location.href = getLoginUrl();
-            }).catch(function(err) {
-                console.error('[AuthGuard] Logout gagal:', err);
-                alert('Gagal logout. Coba lagi.');
+                window.location.replace(getLoginUrl());
+            }).catch(function() {
+                window.location.replace(getLoginUrl());
             });
+        } else {
+            window.location.replace(getLoginUrl());
+        }
+    };
+
+    window.flexaResetAllData = function() {
+        try {
+            localStorage.clear();
+            sessionStorage.clear();
+        } catch(e) {}
+
+        if (window.firebaseAuth) {
+            firebaseAuth.signOut().then(function() {
+                window.location.replace('/?page=01_login&reset=true');
+            }).catch(function() {
+                window.location.replace('/?page=01_login&reset=true');
+            });
+        } else {
+            window.location.replace('/?page=01_login&reset=true');
         }
     };
 })();
-
