@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html class="light" lang="id">
+
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Profil Tutor | Homeschooling Flexa Cendekia</title>
-    <!-- Tailwind CSS -->
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Profil Tutor &amp; Pembimbing | Homeschooling Flexa Cendekia</title>
+    <!-- Tailwind CSS with form plugins & container queries -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <!-- Fonts & Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet"/>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-    <!-- SSO Sync -->
-    <script src="/sso-sync.js"></script>
+    <!-- Google Fonts & Material Symbols -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;family=Libre+Franklin:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap"
+        rel="stylesheet" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+        rel="stylesheet" />
 
     <script id="tailwind-config">
         tailwind.config = {
@@ -23,6 +26,7 @@
                         "secondary": "#805600",
                         "secondary-container": "#fdc265",
                         "on-secondary-container": "#754e00",
+                        "role-teacher": "#805600",
                         "tertiary": "#000f0c",
                         "surface": "#fbf8fb",
                         "surface-container-lowest": "#ffffff",
@@ -51,19 +55,43 @@
     </script>
     <style>
         body {
-            background-color: #fbf8fb;
+            background-color: #EAEDE2;
             font-family: 'Libre Franklin', sans-serif;
-            color: #1b1b1d;
+            color: #17223B;
+            -webkit-font-smoothing: antialiased;
         }
-        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
         .ledger-card {
-            background-color: #ffffff;
-            border: 1px solid rgba(2, 11, 36, 0.12);
-            box-shadow: 0 4px 12px -2px rgba(2, 11, 36, 0.04);
-            border-radius: 8px;
+            background-color: #FBFAF5;
+            border: 1px solid rgba(23, 34, 59, 0.18);
+            box-shadow: 0 2px 8px -2px rgba(2, 11, 36, 0.04);
+            border-radius: 6px;
         }
+
+        .paper-stack-effect {
+            position: relative;
+        }
+
+        .paper-stack-effect::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            right: -4px;
+            width: 100%;
+            height: 100%;
+            border: 1px solid rgba(23, 34, 59, 0.18);
+            background-color: #FBFAF5;
+            z-index: -1;
+            border-radius: 6px;
+        }
+
         .sidebar-active {
-            background-color: rgba(128, 86, 0, 0.1);
+            background-color: rgba(128, 86, 0, 0.12);
             color: #805600;
             font-weight: 700;
             border-right: 4px solid #805600;
@@ -76,417 +104,660 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="/firebase-config.js"></script>
     <script src="/firebase-auth-guard.js"></script>
+    <script src="/public/siswa_master_data.js" onerror="this.onerror=null; this.src='/siswa_master_data.js';"></script>
     <script src="/firebase-data-store.js"></script>
     <script src="/notification-sync.js"></script>
-    <script src="/career-roadmap-data.js"></script>
+    <script src="/sso-sync.js"></script>
 </head>
-<body class="bg-surface font-body-md text-on-surface min-h-screen flex flex-col">
 
-    <!-- TopNavBar -->
-    <header class="bg-surface-container-lowest text-primary flex justify-between items-center w-full px-6 md:px-8 h-16 border-b border-outline-variant/20 sticky top-0 z-50">
-        <div class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-bold text-sm shadow-sm">FC</div>
-            <div>
-                <a href="/?page=14_dashboard-guru" class="font-display-lg text-base md:text-xl font-bold text-primary hover:opacity-90">
-                    Homeschooling Flexa Cendekia
-                </a>
-                <span class="hidden sm:inline-block ml-2 text-[10px] font-mono px-2 py-0.5 bg-role-teacher/10 text-role-teacher border border-role-teacher/20 rounded font-bold uppercase tracking-wider">
-                    Portal Tutor • Powered by UNIPDU
-                </span>
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-[#FBFAF5] border-b border-primary/20 sticky top-0 z-50">
+        <div class="flex justify-between items-center max-w-[1400px] mx-auto px-4 md:px-8 h-16">
+            <!-- Brand & Portal Name -->
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-bold text-sm shadow-sm">
+                    FC
+                </div>
+                <div>
+                    <a href="/?page=14_dashboard-guru" class="font-headline-md text-lg md:text-xl font-bold text-primary hover:opacity-90 transition-opacity">
+                        Homeschooling Flexa Cendekia
+                    </a>
+                    <span class="hidden sm:inline-block ml-2 text-[10px] font-mono px-2 py-0.5 bg-role-teacher/10 text-role-teacher border border-role-teacher/20 rounded font-bold uppercase tracking-wider">
+                        Portal Tutor • Powered by UNIPDU
+                    </span>
+                </div>
             </div>
-        </div>
 
-        <div class="flex items-center gap-4">
-            <a href="/?page=17_notifikasi" class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-2xl" title="Notifikasi">notifications</a>
-            <button onclick="openHelpModal()" class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-2xl" title="Pusat Bantuan">help</button>
+            <!-- Top Right Icons & Actions -->
+            <div class="flex items-center gap-3">
+                <span id="live-clock" class="hidden lg:inline-block font-stats-sm text-xs text-on-surface-variant bg-primary/5 px-3 py-1.5 border border-primary/10 rounded">
+                    00:00:00 WIB
+                </span>
 
-            <!-- User Menu -->
-            <div class="relative">
-                <button onclick="toggleProfil()" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                    <div id="navbar-avatar" class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs uppercase shadow-sm">
-                        G
+                <a href="/?page=17_notifikasi" class="p-2 text-on-surface-variant hover:text-primary rounded-full transition-colors relative" title="Notifikasi">
+                    <span class="material-symbols-outlined">notifications</span>
+                </a>
+
+                <a href="/?page=01_login_bantuan" class="p-2 text-on-surface-variant hover:text-primary rounded-full transition-colors" title="Pusat Bantuan">
+                    <span class="material-symbols-outlined">help</span>
+                </a>
+
+                <!-- Profile Dropdown -->
+                <div class="relative">
+                    <button onclick="toggleProfilMenu()" class="flex items-center gap-2 p-1 border border-primary/20 rounded-full bg-white hover:bg-primary/5 transition-all">
+                        <div id="top-avatar" class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-stats-sm text-xs font-bold uppercase">
+                            SR
+                        </div>
+                        <span id="top-user-name" class="hidden md:inline-block text-xs font-bold text-primary pr-2 max-w-[140px] truncate user-display-name">
+                            Guru Pembimbing
+                        </span>
+                        <span class="material-symbols-outlined text-sm text-on-surface-variant">expand_more</span>
+                    </button>
+
+                    <div id="dropdownProfil" class="hidden absolute right-0 top-12 w-60 bg-white border border-primary/20 shadow-xl rounded-md p-3 z-50">
+                        <div class="pb-2 mb-2 border-b border-primary/10">
+                            <p class="font-bold text-primary text-xs truncate user-display-name">Ibu Sari Rahayu, M.Pd.</p>
+                            <p id="dropdown-email" class="text-[11px] text-on-surface-variant font-mono truncate">sari.rahayu@flexacendekia.sch.id</p>
+                        </div>
+                        <a href="/?page=14_dashboard-guru" class="flex items-center gap-2 py-2 px-2 text-xs text-primary hover:bg-primary/5 rounded transition-colors">
+                            <span class="material-symbols-outlined text-sm">dashboard</span> Dashboard Guru
+                        </a>
+                        <a href="/?page=15_tinjauan-guru" class="flex items-center gap-2 py-2 px-2 text-xs text-primary hover:bg-primary/5 rounded transition-colors">
+                            <span class="material-symbols-outlined text-sm">fact_check</span> Tinjauan KRS Siswa
+                        </a>
+                        <a href="/?page=18_profil_profil-guru" class="flex items-center gap-2 py-2 px-2 text-xs text-secondary font-bold bg-secondary/10 rounded transition-colors">
+                            <span class="material-symbols-outlined text-sm">manage_accounts</span> Pengaturan Profil
+                        </a>
+                        <a href="/?page=17_notifikasi" class="flex items-center gap-2 py-2 px-2 text-xs text-primary hover:bg-primary/5 rounded transition-colors">
+                            <span class="material-symbols-outlined text-sm">notifications</span> Notifikasi
+                        </a>
+                        <hr class="my-2 border-primary/10" />
+                        <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" class="w-full flex items-center gap-2 py-2 px-2 text-xs text-red-600 hover:bg-red-50 rounded transition-colors text-left font-semibold">
+                            <span class="material-symbols-outlined text-sm">logout</span> Keluar dari Sistem
+                        </button>
                     </div>
-                </button>
-                <div id="dropdownProfil" class="hidden absolute right-0 top-12 w-56 bg-white shadow-xl rounded-lg p-4 border border-outline-variant/20 z-50">
-                    <p class="font-bold text-sm text-primary user-display-name">Guru Pembimbing</p>
-                    <p class="text-xs text-on-surface-variant font-mono" id="dropdown-user-email">guru@flexacendekia.sch.id</p>
-                    <hr class="my-3 border-outline-variant/20">
-                    <a href="/?page=14_dashboard-guru" class="block py-1.5 text-xs text-primary hover:text-secondary">Dashboard Guru</a>
-                    <a href="/?page=15_tinjauan-guru" class="block py-1.5 text-xs text-primary hover:text-secondary">Tinjauan Siswa</a>
-                    <a href="/?page=17_notifikasi" class="block py-1.5 text-xs text-primary hover:text-secondary">Notifikasi</a>
-                    <hr class="my-2 border-outline-variant/20">
-                    <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" class="w-full text-left py-1 text-xs text-error font-bold hover:underline">Keluar</button>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="flex flex-1">
-        <!-- Sidebar Guru -->
-        <aside class="hidden md:flex flex-col w-64 bg-surface-container-low border-r border-outline-variant/20 py-6 sticky top-16 h-[calc(100vh-64px)]">
-            <div class="px-6 mb-6">
-                <div class="flex items-center gap-2.5 mb-1">
-                    <span class="material-symbols-outlined text-secondary text-2xl">co_present</span>
-                    <h2 class="font-headline-md text-base font-bold text-primary">Portal Pendidik</h2>
+    <!-- Main Content Workspace -->
+    <div class="flex-1 flex max-w-[1400px] w-full mx-auto px-4 md:px-8 py-6 gap-6">
+
+        <!-- Sidebar Navigation -->
+        <aside class="hidden md:flex flex-col w-64 flex-shrink-0">
+            <div class="ledger-card p-4 sticky top-24 space-y-4">
+                <!-- Academic Year Badge -->
+                <div class="p-3 bg-secondary/5 border border-secondary/20 rounded">
+                    <span class="text-[10px] font-mono text-secondary font-bold uppercase tracking-wider block">PORTAL PENDIDIK</span>
+                    <span class="font-bold text-primary text-sm" id="sidebar-academic-year">Tahun Ajaran 2026/2027</span>
+                    <span class="text-[11px] text-on-surface-variant block mt-0.5">Tutor &amp; Konselor UNIPDU</span>
                 </div>
-                <p class="font-mono text-[10px] text-on-surface-variant tracking-wider uppercase" id="academic-year-sidebar">Tahun Ajaran 2025/2026</p>
-            </div>
 
-            <!-- Role-specific navigation for Guru -->
-            <nav class="flex-1 space-y-1">
-                <a class="flex items-center px-6 py-3 font-label-caps text-xs text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=14_dashboard-guru">
-                    <span class="material-symbols-outlined mr-3 text-lg">dashboard</span>
-                    <span>Dashboard Guru</span>
-                </a>
-                <a class="flex items-center px-6 py-3 font-label-caps text-xs text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=15_tinjauan-guru">
-                    <span class="material-symbols-outlined mr-3 text-lg">fact_check</span>
-                    <span>Persetujuan &amp; KRS Siswa</span>
-                </a>
-                <a class="flex items-center px-6 py-3 font-label-caps text-xs text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=17_notifikasi">
-                    <span class="material-symbols-outlined mr-3 text-lg">notifications</span>
-                    <span>Notifikasi</span>
-                </a>
-                <a class="flex items-center px-6 py-3 font-label-caps text-xs sidebar-active translate-x-1 duration-200" href="/?page=18_profil_profil-guru">
-                    <span class="material-symbols-outlined mr-3 text-lg" style="font-variation-settings: 'FILL' 1;">settings</span>
-                    <span>Pengaturan Akun</span>
-                </a>
-            </nav>
+                <!-- Navigation Links -->
+                <nav class="space-y-1">
+                    <a href="/?page=14_dashboard-guru" class="flex items-center gap-3 px-3 py-2.5 text-xs text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded transition-colors">
+                        <span class="material-symbols-outlined text-lg">dashboard</span>
+                        <span>Dashboard Guru</span>
+                    </a>
+                    <a href="/?page=15_tinjauan-guru" class="flex items-center gap-3 px-3 py-2.5 text-xs text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded transition-colors">
+                        <span class="material-symbols-outlined text-lg">fact_check</span>
+                        <span>Persetujuan &amp; KRS Siswa</span>
+                    </a>
+                    <a href="/?page=17_notifikasi" class="flex items-center gap-3 px-3 py-2.5 text-xs text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded transition-colors">
+                        <span class="material-symbols-outlined text-lg">notifications</span>
+                        <span>Notifikasi</span>
+                    </a>
+                    <a href="/?page=18_profil_profil-guru" class="sidebar-active flex items-center gap-3 px-3 py-2.5 text-xs rounded transition-colors">
+                        <span class="material-symbols-outlined text-lg">manage_accounts</span>
+                        <span>Profil &amp; Akun Guru</span>
+                    </a>
+                </nav>
 
-            <div class="px-6 mt-auto pt-4 border-t border-outline-variant/20 space-y-2">
-                <a href="/?page=15_tinjauan-guru" class="w-full py-2.5 px-4 bg-primary text-on-primary font-label-caps text-xs text-center block rounded hover:opacity-90 transition-opacity font-bold">
-                    Tinjau Pengajuan Siswa
-                </a>
-                <button onclick="openHelpModal()" class="w-full flex items-center py-1.5 font-label-caps text-[11px] text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
-                    <span class="material-symbols-outlined mr-2 text-base">contact_support</span> Pusat Bantuan Guru
-                </button>
+                <!-- Action Button -->
+                <div class="pt-4 border-t border-primary/10 space-y-2">
+                    <a href="/?page=15_tinjauan-guru" class="w-full py-2.5 px-3 bg-primary text-white font-label-caps text-xs font-bold rounded hover:opacity-90 transition-opacity flex items-center justify-center gap-1.5 shadow-sm">
+                        <span class="material-symbols-outlined text-sm">assignment_turned_in</span>
+                        <span>Tinjau KRS Siswa</span>
+                    </a>
+                    <button onclick="openTautkanSiswaModal()" class="w-full py-2 px-3 border border-secondary/30 text-secondary font-label-caps text-xs font-bold rounded hover:bg-secondary/10 transition-colors flex items-center justify-center gap-1.5">
+                        <span class="material-symbols-outlined text-sm">person_add</span>
+                        <span>+ Tautkan Siswa Bimbingan</span>
+                    </button>
+                </div>
             </div>
         </aside>
 
-        <!-- Main Content -->
-        <main class="flex-1 p-6 md:p-8 overflow-y-auto">
-            <div class="max-w-5xl mx-auto">
-                <header class="mb-8">
-                    <h1 class="font-display-lg text-2xl md:text-3xl font-bold text-primary mb-1.5">Profil &amp; Pengaturan Guru</h1>
-                    <p class="font-body-sm text-xs text-on-surface-variant">Kelola data identitas pendidik, sasaran pengembangan profesi, dan keamanan akun Flexa Cendekia Anda.</p>
-                </header>
+        <!-- Main Content Area -->
+        <main class="flex-1 space-y-6">
 
-                <!-- Bento Grid Layout -->
-                <div class="grid grid-cols-12 gap-6">
-                    <!-- Left: Profile Summary Card -->
-                    <section class="col-span-12 lg:col-span-4 ledger-card p-6 flex flex-col items-center text-center">
-                        <div class="relative group mb-4">
-                            <div id="avatar-container" class="w-28 h-28 rounded-full border-4 border-surface-container flex items-center justify-center bg-primary text-white font-serif text-3xl font-bold uppercase shadow-inner">
-                                <span id="avatar-initial">G</span>
+            <!-- 1. Hero Identity Banner -->
+            <section class="ledger-card paper-stack-effect p-6 md:p-8">
+                <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                    
+                    <div class="flex items-center gap-5">
+                        <div class="w-20 h-20 md:w-24 md:h-24 rounded-full border-2 border-secondary/30 p-1 bg-white overflow-hidden shadow-sm flex items-center justify-center flex-shrink-0">
+                            <div id="hero-avatar" class="w-full h-full rounded-full bg-primary text-white flex items-center justify-center font-stats-lg text-2xl font-bold uppercase shadow-inner">
+                                SR
                             </div>
                         </div>
 
-                        <h3 id="profileName" class="font-headline-md text-lg font-bold text-primary mb-0.5">Memuat Nama...</h3>
-                        <p class="text-xs text-on-surface-variant font-mono mb-4">Guru Pembimbing Akademik</p>
-
-                        <div class="w-full border-t border-outline-variant/20 pt-4 space-y-3">
-                            <div class="flex justify-between items-center text-xs">
-                                <span class="font-label-caps text-on-surface-variant">Status Pendidik</span>
-                                <span class="font-mono text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">AKTIF MENGAJAR</span>
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <h1 id="hero-nama" class="font-headline-md text-xl md:text-2xl font-bold text-primary user-display-name">
+                                    Memuat Profil...
+                                </h1>
+                                <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-mono font-bold rounded border border-emerald-200">
+                                    TUTOR AKTIF
+                                </span>
                             </div>
-                            <div class="flex justify-between items-center text-xs">
-                                <span class="font-label-caps text-on-surface-variant">Siswa Binaan</span>
-                                <span class="font-mono text-xs font-bold text-primary" id="metric-binaan">5 Siswa</span>
-                            </div>
-                            <div class="flex justify-between items-center text-xs">
-                                <span class="font-label-caps text-on-surface-variant">Mata Pelajaran</span>
-                                <span class="font-mono text-xs font-bold text-primary" id="metric-mapel">Fisika &amp; MIPA</span>
-                            </div>
-                        </div>
-                    </section>
+                            
+                            <p class="text-xs text-on-surface-variant flex flex-wrap items-center gap-x-3 gap-y-1">
+                                <span class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs text-secondary">badge</span>
+                                    NIP: <strong id="hero-nip" class="font-mono text-primary">198704122015042001</strong>
+                                </span>
+                                <span>•</span>
+                                <span class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs text-secondary">school</span>
+                                    <span id="hero-bidang">Tutor &amp; Dosen Pembimbing UNIPDU</span>
+                                </span>
+                                <span>•</span>
+                                <span class="flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-xs text-secondary">domain</span>
+                                    <span id="hero-institusi">Flexa Cendekia x UNIPDU</span>
+                                </span>
+                            </p>
 
-                    <!-- Right: Personal Info Form -->
-                    <section class="col-span-12 lg:col-span-8 ledger-card p-6 md:p-8">
-                        <div class="flex items-center gap-2.5 mb-6">
-                            <span class="material-symbols-outlined text-primary text-2xl">badge</span>
-                            <h3 class="font-headline-md text-lg font-bold text-primary">Data Pribadi Pendidik</h3>
-                        </div>
-
-                        <form id="formProfilGuru" class="space-y-4">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="space-y-1.5">
-                                    <label class="font-label-caps text-xs text-on-surface-variant block font-bold">Nama Lengkap &amp; Gelar</label>
-                                    <input id="fullName" class="w-full bg-white border border-outline-variant/50 rounded px-3.5 py-2 text-xs font-body-md text-primary focus:border-secondary focus:ring-0" type="text" placeholder="Nama Guru..."/>
-                                </div>
-                                <div class="space-y-1.5">
-                                    <label class="font-label-caps text-xs text-on-surface-variant block font-bold">NIP (Nomor Induk Pegawai)</label>
-                                    <input id="nip" class="w-full bg-surface-container-low border border-outline-variant/40 rounded px-3.5 py-2 text-xs font-mono text-on-surface-variant cursor-not-allowed" readonly type="text" value="198503152010012004"/>
-                                </div>
-                                <div class="space-y-1.5">
-                                    <label class="font-label-caps text-xs text-on-surface-variant block font-bold">Institusi / Sekolah</label>
-                                    <input id="institution" class="w-full bg-surface-container-low border border-outline-variant/40 rounded px-3.5 py-2 text-xs font-body-md text-on-surface-variant cursor-not-allowed" readonly type="text" value="Flexa Cendekia x UNIPDU"/>
-                                </div>
-                                <div class="space-y-1.5">
-                                    <label class="font-label-caps text-xs text-on-surface-variant block font-bold">Alamat Email</label>
-                                    <input id="email" class="w-full bg-white border border-outline-variant/50 rounded px-3.5 py-2 text-xs font-body-md text-primary focus:border-secondary focus:ring-0" type="email" placeholder="email@flexa.test"/>
-                                </div>
-                            </div>
-
-                            <div class="pt-4 flex items-center justify-between border-t border-outline-variant/20 mt-6">
-                                <span id="save-status-msg" class="text-xs font-mono text-emerald-700 hidden">✓ Perubahan tersimpan</span>
-                                <button type="button" id="btnUpdate" onclick="simpanDataPribadi()" class="ml-auto px-6 py-2.5 bg-primary text-white font-label-caps text-xs font-bold rounded hover:bg-primary-container transition-all flex items-center gap-2">
-                                    <span>Simpan Perubahan</span>
-                                    <span class="material-symbols-outlined text-sm">check</span>
+                            <div class="mt-3 flex flex-wrap items-center gap-2">
+                                <span class="text-[11px] font-bold text-primary flex items-center gap-1 bg-secondary/10 px-2.5 py-1 rounded border border-secondary/20">
+                                    <span class="material-symbols-outlined text-xs text-secondary">groups</span>
+                                    <span id="hero-bimbingan-summary">9 Siswa Binaan</span>
+                                </span>
+                                <button onclick="openTautkanSiswaModal()" class="text-[11px] text-secondary hover:underline font-bold flex items-center gap-0.5">
+                                    + Tautkan Siswa Baru <span class="material-symbols-outlined text-xs">arrow_forward</span>
                                 </button>
                             </div>
-                        </form>
-                    </section>
-
-                    <!-- Section: Daftar Siswa Bimbingan -->
-                    <section class="col-span-12 ledger-card p-6 md:p-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="flex items-center gap-2.5">
-                                <span class="material-symbols-outlined text-primary text-2xl">school</span>
-                                <div>
-                                    <h3 class="font-headline-md text-lg font-bold text-primary">Daftar Siswa Bimbingan</h3>
-                                    <p class="text-xs text-on-surface-variant">Siswa binaan akademik yang Anda bimbing dan verifikasi KRS-nya</p>
-                                </div>
-                            </div>
-                            <button onclick="openTautkanSiswaModal()" class="px-4 py-2 bg-role-teacher text-white text-xs font-bold font-label-caps rounded hover:opacity-90 transition-all flex items-center gap-1.5 shadow-sm">
-                                <span class="material-symbols-outlined text-sm">person_add</span> + Tautkan Siswa Bimbingan
-                            </button>
-                        </div>
-
-                        <div id="daftar-siswa-bimbingan" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <div class="p-6 border border-dashed border-outline-variant/40 rounded text-center text-on-surface-variant col-span-full">
-                                <span class="material-symbols-outlined text-3xl opacity-40 mb-1">hourglass_empty</span>
-                                <p class="text-xs font-mono">Memuat siswa bimbingan...</p>
-                            </div>
-                        </div>
-                    </section>
-
-                    <!-- Modal Tautkan Siswa Bimbingan -->
-                    <div id="modal-tautkan-siswa" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
-                        <div class="ledger-card bg-white w-full max-w-md p-6 border-2 border-primary/20 shadow-2xl relative">
-                            <button onclick="closeTautkanSiswaModal()" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors">
-                                <span class="material-symbols-outlined">close</span>
-                            </button>
-                            <div class="flex items-center gap-3 mb-4">
-                                <div class="w-10 h-10 rounded-full bg-role-teacher/15 text-role-teacher flex items-center justify-center">
-                                    <span class="material-symbols-outlined text-xl">school</span>
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-lg text-primary">Tautkan Siswa Bimbingan</h3>
-                                    <p class="text-xs text-on-surface-variant">Gunakan NISN atau Kode Tautan unik dari siswa</p>
-                                </div>
-                            </div>
-
-                            <div id="tautkan-siswa-alert" class="hidden mb-4 p-3 rounded text-xs font-mono"></div>
-
-                            <form id="form-tautkan-siswa" onsubmit="submitTautkanSiswa(event)" class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-primary mb-1 uppercase tracking-wider font-label-caps">NISN atau Kode Tautan Siswa</label>
-                                    <div class="relative">
-                                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-base">badge</span>
-                                        <input id="input-siswa-bimbingan-id" type="text" required placeholder="Contoh: 0082918273 atau FLX-FAIZ-8821" 
-                                            class="w-full pl-9 pr-3 py-2 text-xs border border-primary/20 rounded font-mono text-primary focus:outline-none focus:border-role-teacher">
-                                    </div>
-                                    <p class="text-[10px] text-on-surface-variant mt-1">Siswa akan otomatis masuk ke daftar bimbingan &amp; antrean KRS Anda.</p>
-                                </div>
-
-                                <div class="pt-2 flex gap-2 justify-end">
-                                    <button type="button" onclick="closeTautkanSiswaModal()" class="px-4 py-2 border border-primary/20 text-xs font-bold text-primary rounded hover:bg-surface-container transition-colors">
-                                        Batal
-                                    </button>
-                                    <button id="btn-submit-taut-siswa" type="submit" class="px-5 py-2 bg-role-teacher text-white text-xs font-bold rounded hover:opacity-90 transition-all flex items-center gap-1.5 shadow-sm">
-                                        <span class="material-symbols-outlined text-sm">link</span> Tautkan Siswa
-                                    </button>
-                                </div>
-                            </form>
                         </div>
                     </div>
 
-                    <!-- Section: Sasaran & Pengembangan Profesi Guru -->
-                    <section class="col-span-12 lg:col-span-7 ledger-card p-6 md:p-8">
-                        <div class="flex items-center gap-2.5 mb-6">
-                            <span class="material-symbols-outlined text-primary text-2xl">psychology</span>
+                    <!-- Right Stats Summary -->
+                    <div class="flex md:flex-col gap-3 w-full md:w-auto justify-between border-t md:border-t-0 md:border-l border-primary/10 pt-4 md:pt-0 md:pl-6">
+                        <div>
+                            <span class="text-[10px] font-mono text-on-surface-variant uppercase block">Penugasan Pembimbing</span>
+                            <span class="text-xs font-bold text-primary mt-0.5">Kurikulum Merdeka + Matrikulasi S1</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-mono text-on-surface-variant uppercase block">Status Validasi KRS</span>
+                            <span class="text-xs font-bold text-emerald-700 flex items-center gap-1 mt-0.5">
+                                <span class="material-symbols-outlined text-xs">check_circle</span> Otoritas Dosen Pembimbing
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- 2. Bento Grid Details -->
+            <div class="grid grid-cols-12 gap-6">
+
+                <!-- Left Column: Data Pribadi Pendidik Form -->
+                <section class="col-span-12 lg:col-span-8 ledger-card p-6 md:p-8 space-y-6">
+                    <div class="flex items-center justify-between pb-4 border-b border-primary/10">
+                        <div>
+                            <h2 class="font-headline-md text-lg font-bold text-primary">Data Identitas Pendidik</h2>
+                            <p class="text-xs text-on-surface-variant">Kelola data resmi, NIP, institusi, dan kontak pengajaran.</p>
+                        </div>
+                        <span class="text-[10px] font-mono text-secondary bg-secondary/10 px-2.5 py-1 rounded font-bold">
+                            DATA GURU
+                        </span>
+                    </div>
+
+                    <!-- Alert message -->
+                    <div id="profil-guru-alert" class="hidden p-3 text-xs font-semibold rounded border"></div>
+
+                    <form id="form-profil-guru" class="space-y-4" onsubmit="event.preventDefault(); simpanDataPribadiGuru();">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Nama Lengkap & Gelar -->
                             <div>
-                                <h3 class="font-headline-md text-lg font-bold text-primary">Sasaran &amp; Pengembangan Profesi</h3>
-                                <p class="text-xs text-on-surface-variant">Target bimbingan akademik dan kompetensi pembelajaran guru.</p>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">
+                                    Nama Lengkap &amp; Gelar *
+                                </label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-base">person</span>
+                                    <input type="text" id="fullName" required
+                                        class="w-full pl-9 pr-3 py-2.5 border border-primary/20 bg-surface-container-lowest text-xs text-primary font-medium focus:ring-1 focus:ring-primary focus:outline-none rounded"
+                                        placeholder="Contoh: Ibu Sari Rahayu, M.Pd." />
+                                </div>
+                            </div>
+
+                            <!-- NIP -->
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">
+                                    NIP (Nomor Induk Pegawai)
+                                </label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-base">pin</span>
+                                    <input type="text" id="nip"
+                                        class="w-full pl-9 pr-3 py-2.5 border border-primary/20 bg-surface-container-lowest text-xs text-primary font-mono focus:ring-1 focus:ring-primary focus:outline-none rounded"
+                                        placeholder="Contoh: 198704122015042001" />
+                                </div>
+                            </div>
+
+                            <!-- Alamat Email -->
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">
+                                    Alamat Email
+                                </label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-base">mail</span>
+                                    <input type="email" id="email" readonly
+                                        class="w-full pl-9 pr-3 py-2.5 border border-primary/10 bg-primary/5 text-xs text-on-surface-variant font-mono rounded cursor-not-allowed" />
+                                </div>
+                                <span class="text-[10px] text-on-surface-variant/70 mt-1 block">Email akun terhubung dengan autentikasi Google/Firebase.</span>
+                            </div>
+
+                            <!-- Nomor WhatsApp / Kontak -->
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">
+                                    Nomor WhatsApp / Kontak
+                                </label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-base">call</span>
+                                    <input type="tel" id="noHp"
+                                        class="w-full pl-9 pr-3 py-2.5 border border-primary/20 bg-surface-container-lowest text-xs text-primary font-mono focus:ring-1 focus:ring-primary focus:outline-none rounded"
+                                        placeholder="Contoh: 0812-9876-5432" />
+                                </div>
+                            </div>
+
+                            <!-- Institusi / Lembaga -->
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">
+                                    Institusi / Lembaga Mitra
+                                </label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-base">account_balance</span>
+                                    <input type="text" id="institution"
+                                        class="w-full pl-9 pr-3 py-2.5 border border-primary/20 bg-surface-container-lowest text-xs text-primary focus:ring-1 focus:ring-primary focus:outline-none rounded"
+                                        placeholder="Contoh: Homeschooling Flexa Cendekia x UNIPDU" />
+                                </div>
+                            </div>
+
+                            <!-- Bidang Keahlian -->
+                            <div>
+                                <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">
+                                    Bidang Keahlian / Pembimbingan
+                                </label>
+                                <div class="relative">
+                                    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-base">psychology</span>
+                                    <input type="text" id="bidang"
+                                        class="w-full pl-9 pr-3 py-2.5 border border-primary/20 bg-surface-container-lowest text-xs text-primary focus:ring-1 focus:ring-primary focus:outline-none rounded"
+                                        placeholder="Contoh: Tutor & Dosen Pembimbing UNIPDU" />
+                                </div>
                             </div>
                         </div>
 
-                        <div class="space-y-4">
-                            <div class="p-4 border-l-4 border-secondary bg-secondary/5 rounded-r">
-                                <div class="flex justify-between items-start mb-1.5">
-                                    <span class="font-label-caps text-[11px] font-bold text-secondary uppercase tracking-wider">Fokus Semester Ini</span>
-                                    <span id="periodeTampil" class="font-mono text-xs text-primary font-bold">Agu - Des 2026</span>
+                        <!-- Action Buttons -->
+                        <div class="pt-4 flex justify-end gap-3 border-t border-primary/10">
+                            <button type="button" onclick="muatUlangDataGuru()" class="px-4 py-2 border border-primary/20 text-xs font-bold text-primary hover:bg-primary/5 rounded transition-colors">
+                                Reset Form
+                            </button>
+                            <button type="submit" id="btnUpdate" class="px-6 py-2 bg-primary text-white text-xs font-bold uppercase tracking-wider rounded hover:opacity-90 transition-opacity flex items-center gap-2 shadow-sm">
+                                <span class="material-symbols-outlined text-sm">save</span>
+                                Simpan Perubahan Guru
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Right Column: Sasaran Profesi & Keamanan -->
+                <div class="col-span-12 lg:col-span-4 space-y-6">
+
+                    <!-- Sasaran Pengembangan Profesi -->
+                    <section class="ledger-card p-6 space-y-4">
+                        <div class="flex items-center justify-between pb-3 border-b border-primary/10">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-secondary text-xl">workspace_premium</span>
+                                <h3 class="font-headline-md text-base font-bold text-primary">Sasaran Profesi</h3>
+                            </div>
+                            <button onclick="toggleFormSasaran()" class="text-xs text-secondary font-bold hover:underline">
+                                Ubah
+                            </button>
+                        </div>
+
+                        <div class="p-4 bg-secondary/5 border border-secondary/20 rounded space-y-2.5">
+                            <span class="text-[10px] font-mono text-secondary font-bold uppercase tracking-wider block" id="sasaran-periode-tampil">Semester Ganjil 2026/2027</span>
+                            <h4 id="sasaran-nama-tampil" class="font-headline-md text-sm font-bold text-primary">
+                                Sertifikasi Pembimbing Karir &amp; Matrikulasi S1
+                            </h4>
+                            
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span class="text-on-surface-variant">Ketercapaian:</span>
+                                    <strong id="sasaran-progress-text" class="font-mono text-secondary font-bold">100%</strong>
                                 </div>
-
-                                <p id="namaTujuanTampil" class="font-headline-md text-sm font-bold text-primary mb-3">
-                                    Sertifikasi Pembimbing Akademik &amp; Pendampingan Kurikulum Merdeka
-                                </p>
-
-                                <div class="flex items-center gap-3 mb-3">
-                                    <div class="flex-1 bg-outline-variant/30 h-2 rounded-full overflow-hidden">
-                                        <div id="progressBar" class="bg-secondary h-full rounded-full" style="width: 80%;"></div>
-                                    </div>
-                                    <span id="progressText" class="font-mono text-xs font-bold text-primary">80%</span>
-                                </div>
-
-                                <div class="flex flex-col sm:flex-row justify-between gap-1 text-[11px] font-mono text-on-surface-variant">
-                                    <span id="targetTampil">Target: Portofolio Bimbingan 5 Siswa</span>
-                                    <span id="batasWaktuTampil" class="text-secondary font-semibold">Tenggat: 31 Des 2026</span>
+                                <div class="w-full bg-primary/10 h-2 rounded-full overflow-hidden">
+                                    <div id="sasaran-progress-bar" class="bg-secondary h-full" style="width: 100%;"></div>
                                 </div>
                             </div>
 
-                            <button onclick="toggleFormTujuan()" class="w-full py-2.5 border border-outline-variant/50 text-primary font-label-caps text-xs font-bold rounded hover:bg-surface-container transition-colors">
-                                + Perbarui Sasaran Profesi
+                            <p id="sasaran-target-tampil" class="text-[11px] text-on-surface-variant pt-1 border-t border-secondary/15">
+                                Target: Evaluasi portofolio &amp; validasi KRS seluruh siswa binaan.
+                            </p>
+                        </div>
+
+                        <!-- Form Sasaran Profesi (Hidden by default) -->
+                        <div id="form-sasaran-profesi" class="hidden p-3 border border-primary/20 rounded bg-white space-y-3">
+                            <h5 class="text-xs font-bold text-primary">Edit Sasaran Profesi</h5>
+                            <input type="text" id="sasaran-nama-input" class="w-full p-2 text-xs border rounded" placeholder="Nama sasaran...">
+                            <input type="text" id="sasaran-periode-input" class="w-full p-2 text-xs border rounded" placeholder="Periode...">
+                            <input type="text" id="sasaran-target-input" class="w-full p-2 text-xs border rounded" placeholder="Target capaian...">
+                            <div class="flex justify-end gap-2">
+                                <button type="button" onclick="toggleFormSasaran()" class="px-3 py-1 text-xs border rounded">Batal</button>
+                                <button type="button" onclick="simpanSasaranProfesi()" class="px-3 py-1 bg-primary text-white text-xs font-bold rounded">Simpan</button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Keamanan Akun -->
+                    <section class="ledger-card p-6 space-y-4">
+                        <div class="flex items-center gap-2 pb-3 border-b border-primary/10">
+                            <span class="material-symbols-outlined text-primary text-xl">lock</span>
+                            <h3 class="font-headline-md text-base font-bold text-primary">Keamanan Akun</h3>
+                        </div>
+
+                        <div class="space-y-3 text-xs">
+                            <div class="flex items-center justify-between py-2 border-b border-primary/10">
+                                <div>
+                                    <p class="font-bold text-primary">Autentikasi Pendidik</p>
+                                    <p class="text-[10px] text-on-surface-variant font-mono">Terverifikasi UNIPDU Jombang</p>
+                                </div>
+                                <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-mono rounded font-bold">AKTIF</span>
+                            </div>
+
+                            <button type="button" onclick="kirimResetPasswordGuru()" class="w-full py-2.5 px-3 border border-primary/20 text-primary font-bold rounded hover:bg-primary/5 transition-colors flex items-center justify-between">
+                                <span>Kirim Tautan Reset Sandi</span>
+                                <span class="material-symbols-outlined text-sm">send</span>
                             </button>
 
-                            <div id="formTujuan" class="hidden p-4 border border-outline-variant/30 rounded bg-surface-container-low space-y-3">
-                                <h4 class="font-bold text-xs text-primary">Formulir Sasaran Profesi Guru</h4>
-                                <input id="namaTujuan" type="text" placeholder="Nama Sasaran / Pelatihan" class="w-full p-2 text-xs border rounded"/>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <input id="periode" type="text" placeholder="Periode (contoh: Agu - Des 2026)" class="w-full p-2 text-xs border rounded"/>
-                                    <input id="progress" type="number" min="0" max="100" placeholder="Progres (%)" class="w-full p-2 text-xs border rounded"/>
-                                </div>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <input id="target" type="text" placeholder="Target Capaian" class="w-full p-2 text-xs border rounded"/>
-                                    <input id="deadline" type="text" placeholder="Batas Waktu" class="w-full p-2 text-xs border rounded"/>
-                                </div>
-                                <div class="flex justify-end gap-2 pt-1">
-                                    <button onclick="toggleFormTujuan()" type="button" class="px-4 py-1.5 text-xs text-on-surface-variant">Batal</button>
-                                    <button onclick="simpanTujuan()" type="button" class="px-4 py-1.5 bg-primary text-white text-xs font-bold rounded">Simpan Sasaran</button>
-                                </div>
-                            </div>
+                            <button type="button" onclick="konfirmasiNonaktifkanGuru()" class="w-full py-2 text-left text-error hover:underline text-xs font-semibold flex items-center justify-between">
+                                <span>Permohonan Penonaktifan Akun</span>
+                                <span class="material-symbols-outlined text-sm">info</span>
+                            </button>
                         </div>
                     </section>
 
-                    <!-- Section: Keamanan Akun -->
-                    <section class="col-span-12 lg:col-span-5 ledger-card p-6 md:p-8">
-                        <div class="flex items-center gap-2.5 mb-6">
-                            <span class="material-symbols-outlined text-primary text-2xl">lock</span>
-                            <h3 class="font-headline-md text-lg font-bold text-primary">Keamanan Akun</h3>
-                        </div>
-
-                        <div class="space-y-4">
-                            <div class="flex items-center justify-between py-2.5 border-b border-outline-variant/15">
-                                <div>
-                                    <p class="font-label-caps text-xs font-bold text-primary">Verifikasi Dua Langkah</p>
-                                    <p class="text-[10px] text-on-surface-variant font-mono">Keamanan tambahan saat login</p>
-                                </div>
-                                <span class="px-2 py-0.5 bg-surface-container text-on-surface-variant text-[10px] font-mono rounded font-semibold">Segera Hadir</span>
-                            </div>
-
-                            <div class="flex items-center justify-between py-2.5 border-b border-outline-variant/15">
-                                <div>
-                                    <p class="font-label-caps text-xs font-bold text-primary">Notifikasi Login Baru</p>
-                                    <p class="text-[10px] text-on-surface-variant font-mono">Peringatan email untuk login perangkat baru</p>
-                                </div>
-                                <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-mono rounded font-semibold">Aktif</span>
-                            </div>
-
-                            <div class="pt-2 space-y-2">
-                                <button onclick="bukaPasswordModal()" class="w-full text-left font-label-caps text-xs text-primary hover:text-secondary transition-colors py-2 flex items-center justify-between border-b border-outline-variant/10">
-                                    <span class="font-bold">Ubah Kata Sandi Akun</span>
-                                    <span class="material-symbols-outlined text-sm">chevron_right</span>
-                                </button>
-                                <button onclick="konfirmasiNonaktifkan()" class="w-full text-left font-label-caps text-xs text-error hover:opacity-80 transition-colors py-2 flex items-center justify-between">
-                                    <span class="font-bold">Penonaktifan Akun</span>
-                                    <span class="material-symbols-outlined text-sm">info</span>
-                                </button>
-                            </div>
-                        </div>
-                    </section>
                 </div>
+
+                <!-- Full Width Section: Daftar Siswa Bimbingan -->
+                <section class="col-span-12 ledger-card p-6 md:p-8 space-y-6">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-primary/10">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-secondary/10 text-secondary flex items-center justify-center">
+                                <span class="material-symbols-outlined text-xl">school</span>
+                            </div>
+                            <div>
+                                <h2 class="font-headline-md text-lg font-bold text-primary">Daftar Siswa Bimbingan Akademik</h2>
+                                <p class="text-xs text-on-surface-variant">Kelola siswa binaan, tinjau progres checkpoint Jumat, dan setujui kartu rencana studi (KRS).</p>
+                            </div>
+                        </div>
+
+                        <button onclick="openTautkanSiswaModal()" class="px-4 py-2 bg-primary text-white text-xs font-bold font-label-caps rounded hover:opacity-90 transition-opacity flex items-center gap-1.5 self-start sm:self-auto shadow-sm">
+                            <span class="material-symbols-outlined text-sm">person_add</span> + Tautkan Siswa Bimbingan
+                        </button>
+                    </div>
+
+                    <!-- Container for Students Cards -->
+                    <div id="daftar-siswa-bimbingan" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="p-8 border border-dashed border-outline-variant/40 rounded text-center text-on-surface-variant col-span-full">
+                            <span class="material-symbols-outlined text-3xl opacity-40 mb-1 animate-spin">sync</span>
+                            <p class="text-xs font-mono">Memuat siswa bimbingan...</p>
+                        </div>
+                    </div>
+                </section>
+
             </div>
+
         </main>
     </div>
 
-    <!-- Global Footer -->
+    <!-- Modal: Tautkan Siswa Bimbingan -->
+    <div id="modal-tautkan-siswa" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="ledger-card bg-white w-full max-w-md p-6 border-2 border-primary/20 shadow-2xl relative">
+            <button onclick="closeTautkanSiswaModal()" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+            
+            <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-secondary/15 text-secondary flex items-center justify-center">
+                    <span class="material-symbols-outlined text-xl">person_add</span>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg text-primary">Tautkan Siswa Bimbingan</h3>
+                    <p class="text-xs text-on-surface-variant">Tambahkan siswa binaan menggunakan NISN atau Kode Tautan</p>
+                </div>
+            </div>
+
+            <div id="tautkan-siswa-alert" class="hidden mb-4 p-3 rounded text-xs font-mono"></div>
+
+            <form id="form-tautkan-siswa" onsubmit="submitTautkanSiswa(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-primary mb-1 uppercase tracking-wider font-label-caps">NISN atau Kode Tautan Siswa *</label>
+                    <div class="relative">
+                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-base">badge</span>
+                        <input id="input-siswa-bimbingan-id" type="text" required placeholder="Contoh: 260008 atau FLX-CAESAR-8821" 
+                            class="w-full pl-9 pr-3 py-2.5 text-xs border border-primary/20 rounded font-mono text-primary focus:outline-none focus:border-secondary">
+                    </div>
+                    <p class="text-[10px] text-on-surface-variant mt-1">Siswa akan otomatis masuk ke daftar pembimbingan Anda.</p>
+                </div>
+
+                <div class="pt-2 flex gap-2 justify-end">
+                    <button type="button" onclick="closeTautkanSiswaModal()" class="px-4 py-2 border border-primary/20 text-xs font-bold text-primary rounded hover:bg-surface-container transition-colors">
+                        Batal
+                    </button>
+                    <button id="btn-submit-taut-siswa" type="submit" class="px-5 py-2 bg-primary text-white text-xs font-bold rounded hover:opacity-90 transition-all flex items-center gap-1.5 shadow-sm">
+                        <span class="material-symbols-outlined text-sm">link</span> Tautkan Siswa
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
     <footer class="bg-surface-container-lowest flex flex-col md:flex-row justify-between items-center w-full px-6 md:px-8 py-4 border-t border-outline-variant/20 text-xs text-on-surface-variant mt-auto">
-        <span class="font-mono">&copy; 2026 Flexa Cendekia x UNIPDU. Hak Cipta Dilindungi.</span>
+        <span class="font-mono">&copy; 2026 Homeschooling Flexa Cendekia &amp; UNIPDU. Hak Cipta Dilindungi.</span>
         <div class="flex gap-6 mt-2 md:mt-0">
-            <a class="hover:text-primary hover:underline" href="/?page=01_login_panduan">Panduan Akademik</a>
+            <a class="hover:text-primary hover:underline" href="/?page=01_login_panduan">Panduan Tutor</a>
             <a class="hover:text-primary hover:underline" href="/?page=01_login_bantuan">Pusat Bantuan</a>
             <a class="hover:text-primary hover:underline" href="/?page=01_login_kontak">Kontak Admin</a>
         </div>
     </footer>
 
-    <!-- Toast Notification -->
-    <div id="toast" class="fixed bottom-6 right-6 z-50 hidden max-w-sm rounded-lg bg-primary px-5 py-3 text-white shadow-2xl transition-all">
-        <div class="flex items-center gap-2">
-            <span class="material-symbols-outlined text-secondary" id="toast-icon">check_circle</span>
-            <p class="text-xs font-medium" id="toast-msg">Pesan toast</p>
-        </div>
-    </div>
-
-    <!-- Help Modal -->
-    <div id="help-modal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-lg p-6 max-w-md w-full shadow-2xl border border-outline-variant/20">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="font-headline-md font-bold text-primary text-base">Bantuan Akun Pendidik</h3>
-                <button onclick="closeHelpModal()" class="text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined">close</span></button>
-            </div>
-            <p class="text-xs text-on-surface-variant leading-relaxed mb-4">
-                Untuk perubahan NIP, penugasan mata pelajaran, atau kendala akses bimbingan siswa, hubungi Tim Administrasi Akademik.
-            </p>
-            <div class="p-3 bg-surface-container rounded text-xs space-y-1 font-mono text-on-surface-variant">
-                <p><strong>Email:</strong> admin@flexacendekia.sch.id</p>
-                <p><strong>Hotline:</strong> (031) 8765-4321</p>
-            </div>
-            <button onclick="closeHelpModal()" class="mt-4 w-full py-2 bg-primary text-white text-xs font-bold rounded">Tutup</button>
-        </div>
-    </div>
-
+    <!-- Core Script Engine for 100% Dynamic Profile -->
     <script>
         let currentGuruUser = null;
 
-        // Dynamic Year in Sidebar
-        const currentYear = new Date().getFullYear();
-        const yearEl = document.getElementById('academic-year-sidebar');
-        if (yearEl) yearEl.textContent = `Tahun Ajaran ${currentYear}/${currentYear + 1}`;
+        // Realtime Clock
+        function updateClock() {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' +
+                now.getMinutes().toString().padStart(2, '0') + ':' +
+                now.getSeconds().toString().padStart(2, '0') + ' WIB';
+            const clockEl = document.getElementById('live-clock');
+            if (clockEl) clockEl.textContent = timeStr;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
 
-        window.addEventListener('auth-ready', function(e) {
+        // Reactive Auth listener
+        window.addEventListener('auth-ready', async function(e) {
             currentGuruUser = e.detail;
             if (!currentGuruUser) return;
 
-            populateUserData(currentGuruUser);
-            loadSiswaBimbingan(currentGuruUser);
+            populateGuruData(currentGuruUser);
+            await loadSiswaBimbingan(currentGuruUser);
         });
 
-        async function loadSiswaBimbingan(guruUser) {
-            const container = document.getElementById('daftar-siswa-bimbingan');
-            if (!container) return;
+        function populateGuruData(user) {
+            const u = user || {};
+            const nama = u.nama || localStorage.getItem('guruNama') || 'Ibu Sari Rahayu, M.Pd.';
+            const email = u.email || localStorage.getItem('guruEmail') || (auth.currentUser ? auth.currentUser.email : 'sari.rahayu@flexacendekia.sch.id');
+            const nip = u.nip || localStorage.getItem('guruNip') || '198704122015042001';
+            const institusi = u.institusi || localStorage.getItem('guruInstitusi') || 'Homeschooling Flexa Cendekia x UNIPDU';
+            const noHp = u.noHp || u.telepon || u.kontak || localStorage.getItem('guruNoHp') || '0812-9876-5432';
+            const bidang = u.bidang || localStorage.getItem('guruBidang') || 'Tutor & Dosen Pembimbing UNIPDU';
 
-            const guruUid = guruUser ? (guruUser.uid || guruUser.id) : null;
-            if (!guruUid || !window.firebaseDb) return;
+            // Topbar & Hero Header
+            document.querySelectorAll('.user-display-name').forEach(el => el.textContent = nama);
+            const dropEmail = document.getElementById('dropdown-email');
+            if (dropEmail) dropEmail.textContent = email;
+            const heroNip = document.getElementById('hero-nip');
+            if (heroNip) heroNip.textContent = nip;
+            const heroBidang = document.getElementById('hero-bidang');
+            if (heroBidang) heroBidang.textContent = bidang;
+            const heroInstitusi = document.getElementById('hero-institusi');
+            if (heroInstitusi) heroInstitusi.textContent = institusi;
+
+            // Avatar Initials
+            const initial = (nama.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2) || 'SR').toUpperCase();
+            const topAvatar = document.getElementById('top-avatar');
+            if (topAvatar) topAvatar.textContent = initial;
+            const heroAvatar = document.getElementById('hero-avatar');
+            if (heroAvatar) heroAvatar.textContent = initial;
+
+            // Form Inputs
+            const fnInput = document.getElementById('fullName');
+            if (fnInput) fnInput.value = nama;
+            const emInput = document.getElementById('email');
+            if (emInput) emInput.value = email;
+            const nipInput = document.getElementById('nip');
+            if (nipInput) nipInput.value = nip;
+            const noHpInput = document.getElementById('noHp');
+            if (noHpInput) noHpInput.value = noHp;
+            const instInput = document.getElementById('institution');
+            if (instInput) instInput.value = institusi;
+            const bidangInput = document.getElementById('bidang');
+            if (bidangInput) bidangInput.value = bidang;
+
+            // Sasaran Profesi
+            if (u.targetProfesi) {
+                const tp = u.targetProfesi;
+                if (tp.nama && document.getElementById('sasaran-nama-tampil')) document.getElementById('sasaran-nama-tampil').textContent = tp.nama;
+                if (tp.periode && document.getElementById('sasaran-periode-tampil')) document.getElementById('sasaran-periode-tampil').textContent = tp.periode;
+                if (tp.target && document.getElementById('sasaran-target-tampil')) document.getElementById('sasaran-target-tampil').textContent = 'Target: ' + tp.target;
+            }
+        }
+
+        function muatUlangDataGuru() {
+            if (currentGuruUser) populateGuruData(currentGuruUser);
+        }
+
+        async function simpanDataPribadiGuru() {
+            const nama = document.getElementById('fullName')?.value.trim();
+            const nip = document.getElementById('nip')?.value.trim();
+            const noHp = document.getElementById('noHp')?.value.trim();
+            const institusi = document.getElementById('institution')?.value.trim();
+            const bidang = document.getElementById('bidang')?.value.trim();
+            const email = document.getElementById('email')?.value.trim();
+            const alertEl = document.getElementById('profil-guru-alert');
+            const btn = document.getElementById('btnUpdate');
+
+            if (!nama) {
+                tampilkanAlertGuru('Nama lengkap wajib diisi.', 'error');
+                return;
+            }
+
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">sync</span> Menyimpan...';
+            }
 
             try {
-                let students = [];
-                // 1. Query by guruWaliId
-                const snap = await firebaseDb.collection('users')
-                    .where('role', '==', 'Siswa')
-                    .where('guruWaliId', '==', guruUid)
-                    .get();
-                if (!snap.empty) {
-                    students = snap.docs.map(d => Object.assign({ id: d.id, uid: d.id }, d.data()));
+                // Save locally
+                localStorage.setItem('guruNama', nama);
+                if (nip) localStorage.setItem('guruNip', nip);
+                if (noHp) localStorage.setItem('guruNoHp', noHp);
+                if (institusi) localStorage.setItem('guruInstitusi', institusi);
+                if (bidang) localStorage.setItem('guruBidang', bidang);
+
+                let currUser = {};
+                try { currUser = JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch(e) {}
+                if (currUser && (currUser.role === 'Guru' || currUser.role === 'Tutor')) {
+                    currUser.nama = nama;
+                    currUser.nip = nip;
+                    currUser.noHp = noHp;
+                    currUser.institusi = institusi;
+                    currUser.bidang = bidang;
+                    localStorage.setItem('currentUser', JSON.stringify(currUser));
                 }
 
-                // 2. Query by siswaBimbinganIds
-                if (guruUser.siswaBimbinganIds && Array.isArray(guruUser.siswaBimbinganIds)) {
-                    for (const sId of guruUser.siswaBimbinganIds) {
-                        if (!students.some(s => s.id === sId || s.uid === sId)) {
-                            const sDoc = await firebaseDb.collection('users').doc(sId).get();
-                            if (sDoc.exists) {
-                                students.push(Object.assign({ id: sDoc.id, uid: sDoc.id }, sDoc.data()));
-                            }
-                        }
+                // Save to Firestore
+                if (window.firebaseDb && currentGuruUser) {
+                    const uid = currentGuruUser.uid || currentGuruUser.id;
+                    if (uid) {
+                        await firebaseDb.collection('users').doc(uid).set({
+                            nama: nama,
+                            nip: nip,
+                            noHp: noHp,
+                            telepon: noHp,
+                            institusi: institusi,
+                            bidang: bidang,
+                            email: email,
+                            role: 'Guru',
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        }, { merge: true });
                     }
                 }
 
-                if (students.length === 0) {
+                if (!currentGuruUser) currentGuruUser = {};
+                currentGuruUser.nama = nama;
+                currentGuruUser.nip = nip;
+                currentGuruUser.noHp = noHp;
+                currentGuruUser.institusi = institusi;
+                currentGuruUser.bidang = bidang;
+                populateGuruData(currentGuruUser);
+
+                tampilkanAlertGuru('✓ Data profil pendidik berhasil diperbarui!', 'success');
+            } catch (err) {
+                console.error('Error simpan profil guru:', err);
+                tampilkanAlertGuru('✓ Data tersimpan di sesi lokal perangkat Anda.', 'success');
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span class="material-symbols-outlined text-sm">save</span> Simpan Perubahan Guru';
+                }
+            }
+        }
+
+        async function loadSiswaBimbingan(guruUser) {
+            const container = document.getElementById('daftar-siswa-bimbingan');
+            const summaryEl = document.getElementById('hero-bimbingan-summary');
+            if (!container) return;
+
+            let students = [];
+
+            try {
+                // Fetch from master data / data store
+                if (window.FLEXA_STUDENTS_DATA && window.FLEXA_STUDENTS_DATA.length > 0) {
+                    students = window.FLEXA_STUDENTS_DATA;
+                } else if (window.DataStore && window.DataStore.getAllStudents) {
+                    students = await window.DataStore.getAllStudents();
+                }
+
+                if (summaryEl) {
+                    summaryEl.textContent = `${students.length} Siswa Binaan`;
+                }
+
+                if (!students || students.length === 0) {
                     container.innerHTML = `
-                        <div class="p-6 border border-dashed border-outline-variant/40 rounded text-center text-on-surface-variant col-span-full">
-                            <span class="material-symbols-outlined text-3xl opacity-40 mb-1">person_off</span>
-                            <p class="text-xs font-mono mb-2">Belum ada siswa bimbingan yang terhubung.</p>
-                            <button onclick="openTautkanSiswaModal()" class="px-4 py-1.5 bg-role-teacher text-white text-xs font-bold font-label-caps rounded hover:opacity-90 transition-all">
-                                + Tautkan Siswa Bimbingan Sekarang
+                        <div class="p-8 border border-dashed border-primary/20 rounded text-center text-on-surface-variant col-span-full">
+                            <span class="material-symbols-outlined text-4xl text-secondary/40 mb-2">person_off</span>
+                            <p class="text-xs font-mono font-bold text-primary mb-1">Belum Ada Siswa Bimbingan yang Terhubung</p>
+                            <p class="text-xs text-on-surface-variant max-w-sm mx-auto mb-4">Gunakan NISN atau kode tautan siswa untuk menambahkan binaan akademik baru.</p>
+                            <button onclick="openTautkanSiswaModal()" class="px-5 py-2 bg-primary text-white text-xs font-bold font-label-caps rounded hover:opacity-90 transition-all shadow-sm">
+                                + Tautkan Siswa Sekarang
                             </button>
                         </div>
                     `;
@@ -496,29 +767,38 @@
                 container.innerHTML = students.map(s => {
                     const jenjang = (s.jenjang || 'SMA').toUpperCase();
                     const kelas = s.kelas || (jenjang === 'SD' ? 1 : (jenjang === 'SMP' ? 7 : 10));
-                    const citaCita = s.citaCita || 'Belum Memilih';
-                    const nisn = s.nisn || '-';
+                    const citaCita = s.citaCita || 'Belum Memilih Cita-Cita';
+                    const nisn = s.nisn || s.nis || '-';
+                    const initials = (s.nama || 'S').split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase();
+
                     return `
-                        <div class="p-4 bg-surface-container-low border border-outline-variant/30 rounded flex items-center justify-between shadow-sm">
-                            <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-full bg-role-teacher/15 text-role-teacher font-bold flex items-center justify-center text-xs">
-                                    ${(s.nama || 'S').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+                        <div class="p-5 bg-white border border-primary/15 rounded-lg flex flex-col justify-between shadow-sm hover:border-secondary/50 transition-all">
+                            <div class="flex items-start gap-3 mb-4">
+                                <div class="w-12 h-12 rounded-full bg-secondary/10 text-secondary font-bold flex items-center justify-center text-sm font-mono flex-shrink-0 border border-secondary/20">
+                                    ${initials}
                                 </div>
-                                <div>
-                                    <h4 class="font-bold text-xs text-primary">${s.nama || 'Nama Siswa'}</h4>
-                                    <p class="text-[10px] text-on-surface-variant font-mono">${jenjang} Kelas ${kelas} · NISN: ${nisn}</p>
-                                    <p class="text-[10px] text-secondary font-semibold mt-0.5">${citaCita}</p>
+                                <div class="overflow-hidden">
+                                    <h4 class="font-bold text-sm text-primary truncate" title="${s.nama}">${s.nama || 'Nama Siswa'}</h4>
+                                    <p class="text-xs text-on-surface-variant font-mono mt-0.5">${jenjang} Kelas ${kelas} • NISN: ${nisn}</p>
+                                    <span class="inline-block text-[10px] font-bold text-secondary bg-secondary/10 px-2 py-0.5 rounded mt-2 truncate max-w-full">
+                                        🎯 ${citaCita}
+                                    </span>
                                 </div>
                             </div>
-                            <a href="/?page=15_tinjauan-guru" class="px-2.5 py-1 bg-white hover:bg-surface-container text-primary border border-outline-variant/40 text-[10px] font-bold rounded flex items-center gap-1 transition-all">
-                                <span>KRS</span>
-                                <span class="material-symbols-outlined text-xs">arrow_forward</span>
-                            </a>
+
+                            <div class="pt-3 border-t border-primary/10 flex items-center justify-between text-xs">
+                                <span class="text-on-surface-variant font-mono text-[11px]">KRS: <strong class="${s.statusKRS === 'Menunggu Validasi' ? 'text-amber-600' : 'text-primary'}">${s.statusKRS || 'Belum Mengisi'}</strong></span>
+                                <a href="/?page=15_tinjauan-guru&siswaId=${s.id || s.uid || s.nis}" class="px-3 py-1.5 bg-primary text-white font-bold rounded flex items-center gap-1 hover:opacity-90 transition-opacity">
+                                    <span>Tinjau</span>
+                                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
+                                </a>
+                            </div>
                         </div>
                     `;
                 }).join('');
-            } catch(e) {
-                console.warn('[Profil Guru] Error loading students:', e);
+
+            } catch (err) {
+                console.warn('[Profil Guru] Gagal load siswa:', err);
             }
         }
 
@@ -561,19 +841,12 @@
                 const res = await window.DataStore.tautkanSiswaBimbingan(guruUid, identifier);
                 if (res.success) {
                     if (alertEl) {
-                        alertEl.className = 'mb-4 p-3 rounded text-xs font-mono bg-green-100 text-green-800 border border-green-300';
+                        alertEl.className = 'mb-4 p-3 rounded text-xs font-mono bg-emerald-100 text-emerald-800 border border-emerald-300';
                         alertEl.textContent = '✓ ' + res.message;
                     }
                     setTimeout(async () => {
                         closeTautkanSiswaModal();
-                        if (currentGuruUser) {
-                            if (!currentGuruUser.siswaBimbinganIds) currentGuruUser.siswaBimbinganIds = [];
-                            if (res.siswa && !currentGuruUser.siswaBimbinganIds.includes(res.siswa.id)) {
-                                currentGuruUser.siswaBimbinganIds.push(res.siswa.id);
-                            }
-                        }
                         await loadSiswaBimbingan(currentGuruUser);
-                        showToast('Siswa berhasil ditautkan sebagai bimbingan!');
                     }, 1200);
                 } else {
                     if (alertEl) {
@@ -584,7 +857,7 @@
             } catch(err) {
                 if (alertEl) {
                     alertEl.className = 'mb-4 p-3 rounded text-xs font-mono bg-red-100 text-red-800 border border-red-300';
-                    alertEl.textContent = '✗ Terjadi kesalahan: ' + err.message;
+                    alertEl.textContent = '✗ Terjadi kendala: ' + err.message;
                 }
             } finally {
                 if (btn) {
@@ -594,201 +867,74 @@
             }
         }
 
-        function populateUserData(user) {
-            const u = user || {};
-            const nama = u.nama || localStorage.getItem('guruNama') || 'Ibu Sari Rahayu, M.Pd.';
-            const email = u.email || localStorage.getItem('guruEmail') || 'sari.rahayu@flexacendekia.sch.id';
-            const nip = u.nip || localStorage.getItem('guruNip') || '198704122015042001';
-            const institusi = u.institusi || localStorage.getItem('guruInstitusi') || 'Homeschooling Flexa Cendekia x UNIPDU';
-
-            // Topbar & Header
-            document.querySelectorAll('.user-display-name').forEach(el => el.textContent = nama);
-            const profNameEl = document.getElementById('profileName');
-            if (profNameEl) profNameEl.textContent = nama;
-            const dropEmailEl = document.getElementById('dropdown-user-email');
-            if (dropEmailEl) dropEmailEl.textContent = email;
-
-            // Avatar Fallback Initial
-            const initial = (nama.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2) || 'SR').toUpperCase();
-            const navAvatar = document.getElementById('navbar-avatar');
-            const initialEl = document.getElementById('avatar-initial');
-            if (navAvatar) navAvatar.textContent = initial;
-            if (initialEl) initialEl.textContent = initial;
-
-            // Form Inputs
-            const nameInput = document.getElementById('fullName');
-            const nipInput = document.getElementById('nip');
-            const instInput = document.getElementById('institution');
-            const emailInput = document.getElementById('email');
-
-            if (nameInput) nameInput.value = nama;
-            if (nipInput) nipInput.value = nip;
-            if (instInput) instInput.value = institusi;
-            if (emailInput) emailInput.value = email;
-        }
-
-        async function simpanDataPribadi() {
-            const fullName = document.getElementById('fullName').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const nip = document.getElementById('nip') ? document.getElementById('nip').value.trim() : '';
-            const institution = document.getElementById('institution') ? document.getElementById('institution').value.trim() : '';
-
-            if (!fullName) {
-                showToast('Nama lengkap tidak boleh kosong.', 'error');
-                return;
-            }
-
-            if (!email || !email.includes('@')) {
-                showToast('Format email tidak valid.', 'error');
-                return;
-            }
-
-            const btn = document.getElementById('btnUpdate');
-            if (btn) {
-                btn.disabled = true;
-                btn.innerHTML = '<span>Menyimpan...</span>';
-            }
-
-            try {
-                // Save to localStorage for instant cross-tab sync
-                localStorage.setItem('guruNama', fullName);
-                localStorage.setItem('guruEmail', email);
-                if (nip) localStorage.setItem('guruNip', nip);
-                if (institution) localStorage.setItem('guruInstitusi', institution);
-
-                let currUser = {};
-                try { currUser = JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch(e) {}
-                if (currUser && (currUser.role === 'Guru' || currUser.role === 'Tutor')) {
-                    currUser.nama = fullName;
-                    currUser.email = email;
-                    currUser.nip = nip;
-                    currUser.institusi = institution;
-                    localStorage.setItem('currentUser', JSON.stringify(currUser));
-                }
-
-                if (currentGuruUser && window.firebaseDb) {
-                    const uid = currentGuruUser.uid || currentGuruUser.id;
-                    if (uid) {
-                        await firebaseDb.collection('users').doc(uid).update({
-                            nama: fullName,
-                            email: email,
-                            nip: nip,
-                            institusi: institution
-                        });
-                    }
-                }
-
-                // Update SSO Sync
-                if (window.SSOSync) {
-                    const guru = SSOSync.getGuru() || {};
-                    guru.nama = fullName;
-                    guru.email = email;
-                    guru.nip = nip;
-                    guru.institusi = institution;
-                    SSOSync.set('guru', guru);
-                }
-
-                if (!currentGuruUser) currentGuruUser = {};
-                currentGuruUser.nama = fullName;
-                currentGuruUser.email = email;
-                currentGuruUser.nip = nip;
-                currentGuruUser.institusi = institution;
-                populateUserData(currentGuruUser);
-
-                showToast('Data profil pendidik berhasil diperbarui!');
-            } catch (err) {
-                console.error('Error saving profile:', err);
-                showToast('Data tersimpan di penyimpanan lokal.', 'info');
-            } finally {
-                if (btn) {
-                    btn.disabled = false;
-                    btn.innerHTML = '<span>Simpan Perubahan</span><span class="material-symbols-outlined text-sm">check</span>';
-                }
-            }
-        }
-
-        function toggleFormTujuan() {
-            const form = document.getElementById('formTujuan');
+        function toggleFormSasaran() {
+            const form = document.getElementById('form-sasaran-profesi');
             if (form) form.classList.toggle('hidden');
         }
 
-        function simpanTujuan() {
-            const nama = document.getElementById('namaTujuan').value.trim();
-            const periode = document.getElementById('periode').value.trim();
-            const progress = document.getElementById('progress').value.trim();
-            const target = document.getElementById('target').value.trim();
-            const deadline = document.getElementById('deadline').value.trim();
+        async function simpanSasaranProfesi() {
+            const nama = document.getElementById('sasaran-nama-input')?.value.trim();
+            const periode = document.getElementById('sasaran-periode-input')?.value.trim();
+            const target = document.getElementById('sasaran-target-input')?.value.trim();
 
-            if (nama) document.getElementById('namaTujuanTampil').textContent = nama;
-            if (periode) document.getElementById('periodeTampil').textContent = periode;
-            if (progress) {
-                document.getElementById('progressText').textContent = progress + '%';
-                document.getElementById('progressBar').style.width = Math.min(100, Math.max(0, progress)) + '%';
+            if (nama && document.getElementById('sasaran-nama-tampil')) document.getElementById('sasaran-nama-tampil').textContent = nama;
+            if (periode && document.getElementById('sasaran-periode-tampil')) document.getElementById('sasaran-periode-tampil').textContent = periode;
+            if (target && document.getElementById('sasaran-target-tampil')) document.getElementById('sasaran-target-tampil').textContent = 'Target: ' + target;
+
+            if (window.firebaseDb && currentGuruUser) {
+                const uid = currentGuruUser.uid || currentGuruUser.id;
+                if (uid) {
+                    await firebaseDb.collection('users').doc(uid).set({
+                        targetProfesi: {
+                            nama: nama || 'Sertifikasi Pembimbing Karir & Matrikulasi S1',
+                            periode: periode || 'Semester Ganjil 2026/2027',
+                            target: target || 'Evaluasi portofolio & validasi KRS seluruh siswa binaan.'
+                        }
+                    }, { merge: true }).catch(console.error);
+                }
             }
-            if (target) document.getElementById('targetTampil').textContent = 'Target: ' + target;
-            if (deadline) document.getElementById('batasWaktuTampil').textContent = 'Tenggat: ' + deadline;
 
-            toggleFormTujuan();
-            showToast('Sasaran profesi berhasil diperbarui!');
+            toggleFormSasaran();
+            tampilkanAlertGuru('✓ Sasaran profesi berhasil disimpan!', 'success');
         }
 
-        function bukaPasswordModal() {
-            const email = (currentGuruUser && currentGuruUser.email) || document.getElementById('email').value;
+        function kirimResetPasswordGuru() {
+            const email = (currentGuruUser && currentGuruUser.email) || document.getElementById('email')?.value;
             if (window.firebaseAuth && email) {
                 firebaseAuth.sendPasswordResetEmail(email)
                     .then(() => {
-                        showToast(`Tautan ubah kata sandi telah dikirimkan ke email: ${email}`);
+                        alert(`✓ Tautan pengaturan ulang kata sandi telah dikirim ke email: ${email}`);
                     })
-                    .catch((err) => {
-                        console.warn('Reset password email:', err);
-                        showToast(`Tautan verifikasi pengaturan kata sandi dikirim ke ${email}`);
+                    .catch(err => {
+                        alert(`Tautan pengaturan sandi telah dikirimkan ke email terdaftar.`);
                     });
             } else {
-                showToast(`Instruksi pengaturan kata sandi dikirim ke ${email}`);
+                alert(`Instruksi reset kata sandi telah dikirimkan ke email.`);
             }
         }
 
-        function konfirmasiNonaktifkan() {
-            alert('Untuk permohonan penonaktifan akun resmi pendidik, silakan hubungi Administrator Sekolah di admin@flexacendekia.sch.id demi integritas data dan riwayat evaluasi siswa.');
+        function konfirmasiNonaktifkanGuru() {
+            alert('Untuk permohonan penonaktifan akun resmi pendidik, silakan hubungi Administrator Sekolah di admin@flexacendekia.sch.id demi integritas data siswa binaan.');
         }
 
-        function toggleProfil() {
+        function toggleProfilMenu() {
             const menu = document.getElementById('dropdownProfil');
             if (menu) menu.classList.toggle('hidden');
         }
 
-        function openHelpModal() {
-            const modal = document.getElementById('help-modal');
-            if (modal) modal.classList.remove('hidden');
-        }
-
-        function closeHelpModal() {
-            const modal = document.getElementById('help-modal');
-            if (modal) modal.classList.add('hidden');
-        }
-
-        function showToast(msg, type = 'success') {
-            const toast = document.getElementById('toast');
-            const msgEl = document.getElementById('toast-msg');
-            const iconEl = document.getElementById('toast-icon');
-            if (!toast || !msgEl) return;
-
-            msgEl.textContent = msg;
+        function tampilkanAlertGuru(msg, type) {
+            const alertEl = document.getElementById('profil-guru-alert');
+            if (!alertEl) return;
+            alertEl.textContent = msg;
             if (type === 'error') {
-                toast.className = 'fixed bottom-6 right-6 z-50 max-w-sm rounded-lg bg-error px-5 py-3 text-white shadow-2xl transition-all';
-                if (iconEl) iconEl.textContent = 'error';
+                alertEl.className = 'p-3 text-xs font-semibold rounded border bg-error-container text-on-error-container border-error/30 block mb-4';
             } else {
-                toast.className = 'fixed bottom-6 right-6 z-50 max-w-sm rounded-lg bg-primary px-5 py-3 text-white shadow-2xl transition-all';
-                if (iconEl) iconEl.textContent = 'check_circle';
+                alertEl.className = 'p-3 text-xs font-semibold rounded border bg-emerald-50 text-emerald-800 border-emerald-300 block mb-4';
             }
-
-            toast.classList.remove('hidden');
             setTimeout(() => {
-                toast.classList.add('hidden');
-            }, 3500);
+                alertEl.className = 'hidden';
+            }, 4000);
         }
     </script>
-
-    <!-- Firebase SDK & Auth Guard -->
-    </body>
+</body>
 </html>
