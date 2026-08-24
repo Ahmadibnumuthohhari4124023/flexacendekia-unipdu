@@ -333,7 +333,7 @@
                     </div>
                     <div class="p-2 space-y-1">
                         <a class="flex items-center gap-3 px-3 py-2 text-body-sm text-primary hover:bg-surface-container rounded"
-                            href="/?page=18_profil">
+                            href="/?page=18_profil_profil-siswa">
                             <span class="material-symbols-outlined text-[18px]">person</span> Profil Saya
                         </a>
                         <a class="flex items-center gap-3 px-3 py-2 text-body-sm text-primary hover:bg-surface-container rounded"
@@ -354,63 +354,66 @@
 
     <div class="flex min-h-[calc(100vh-64px)]">
         <!-- SideNavBar (Hidden on Mobile) -->
-        <aside
-            class="hidden md:flex flex-col h-[calc(100vh-64px)] sticky top-16 w-64 bg-surface-container-low border-r border-primary/10">
-            <div class="p-6">
-                <div class="flex items-center gap-3 mb-8">
-                    <div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
-                        <span class="material-symbols-outlined text-on-secondary-container"
-                            data-icon="person">person</span>
+        <!-- SideNavBar -->
+        <aside class="hidden md:flex flex-col h-[calc(100vh-64px)] sticky top-16 w-64 bg-surface-container-low border-r border-primary/10 flex-shrink-0">
+            <div class="p-6 border-b border-primary/10">
+                <div class="flex items-center gap-3">
+                    <div id="sidebar-user-avatar" class="w-10 h-10 rounded-full border border-primary/20 bg-primary text-white flex items-center justify-center font-stats-sm text-sm font-bold uppercase shadow-sm flex-shrink-0">
+                        SW
                     </div>
-                    <div>
-                        <h4 class="font-label-caps text-label-caps text-primary">Akademik Siswa</h4>
-                        <p class="font-body-sm text-body-sm text-on-surface-variant opacity-70">Flexa Cendekia</p>
+                    <div class="min-w-0 flex-1">
+                        <p id="sidebar-user-jenjang" class="font-label-caps text-[10px] text-primary opacity-60 uppercase tracking-widest truncate user-jenjang-display">
+                            Akademik Siswa
+                        </p>
+                        <p id="sidebar-user-name" class="font-body-md text-body-md font-bold text-primary truncate user-display-name">
+                            Siswa
+                        </p>
                     </div>
-                </div>
-                <nav class="space-y-1">
-                    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-150 rounded"
-                        href="/?page=08_dashboard-siswa">
-                        <span class="material-symbols-outlined" data-icon="home">home</span>
-                        <span class="font-label-caps text-label-caps">Beranda</span>
-                    </a>
-                    <a class="flex items-center gap-3 px-4 py-3 bg-secondary/10 text-secondary border-r-4 border-secondary translate-x-1"
-                        href="/?page=02_intro-diagnosis">
-                        <span class="material-symbols-outlined" data-icon="quiz"
-                            style="font-variation-settings: 'FILL' 1;">quiz</span>
-                        <span class="font-label-caps text-label-caps">Tes Diagnostik</span>
-                    </a>
-                    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-150 rounded"
-                        href="/?page=10_detail-roadmap">
-                        <span class="material-symbols-outlined" data-icon="timeline">timeline</span>
-                        <span class="font-label-caps text-label-caps">Roadmap</span>
-                    </a>
-                    <a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-150 rounded"
-                        href="/?page=18_profil">
-                        <span class="material-symbols-outlined" data-icon="person">person</span>
-                        <span class="font-label-caps text-label-caps">Profil</span>
-                    </a>
-                </nav>
-                <div class="mt-12">
-                    <button
-                        class="w-full py-3 bg-primary text-on-primary font-label-caps text-label-caps tracking-widest rounded hover:bg-primary-container transition-colors"
-                        onclick="window.location.href='/?page=02_intro-diagnosis'">
-                        Mulai Tes Baru
-                    </button>
                 </div>
             </div>
-            <div class="mt-auto p-6 border-t border-primary/5">
-                <nav class="space-y-1">
-                    <a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container transition-all duration-150"
-                        href="/?page=01_login_bantuan">
-                        <span class="material-symbols-outlined" data-icon="help">help</span>
-                        <span class="font-label-caps text-label-caps">Bantuan</span>
-                    </a>
-                    <a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container transition-all duration-150"
-                        href="/?page=01_login">
-                        <span class="material-symbols-outlined" data-icon="logout">logout</span>
-                        <span class="font-label-caps text-label-caps">Keluar</span>
-                    </a>
-                </nav>
+            <nav class="flex-1 py-4">
+                <ul class="space-y-1 px-2">
+                    <li>
+                        <a class="flex items-center gap-4 px-4 py-3 rounded-sm text-on-surface-variant hover:bg-primary/5 transition-all duration-150 font-label-caps text-label-caps"
+                            href="/?page=08_dashboard-siswa" style="text-decoration:none;">
+                            <span class="material-symbols-outlined" data-icon="home">home</span>
+                            <span>Beranda</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center gap-4 px-4 py-3 rounded-sm bg-secondary/10 text-secondary border-r-4 border-secondary translate-x-1 font-bold font-label-caps text-label-caps"
+                            href="/?page=02_intro-diagnosis" style="text-decoration:none;">
+                            <span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+                            <span>Tes Diagnostik</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center gap-4 px-4 py-3 rounded-sm text-on-surface-variant hover:bg-primary/5 transition-all duration-150 font-label-caps text-label-caps"
+                            href="/?page=10_detail-roadmap" style="text-decoration:none;">
+                            <span class="material-symbols-outlined" data-icon="timeline">timeline</span>
+                            <span>Roadmap 6 Tahun</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center gap-4 px-4 py-3 rounded-sm text-on-surface-variant hover:bg-primary/5 transition-all duration-150 font-label-caps text-label-caps"
+                            href="/?page=18_profil_profil-siswa" style="text-decoration:none;">
+                            <span class="material-symbols-outlined" data-icon="person">person</span>
+                            <span>Profil &amp; Akun</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="p-4 border-t border-primary/10 space-y-1">
+                <a class="flex items-center gap-4 px-4 py-2 text-on-surface-variant hover:bg-primary/5 transition-all duration-150 font-label-caps text-[11px]"
+                    href="/?page=01_login_bantuan">
+                    <span class="material-symbols-outlined text-[18px]" data-icon="help">help</span>
+                    <span>Bantuan</span>
+                </a>
+                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" 
+                    class="w-full flex items-center gap-4 px-4 py-2 text-red-600 hover:bg-red-50 transition-all duration-150 font-label-caps text-[11px] text-left">
+                    <span class="material-symbols-outlined text-[18px]" data-icon="logout">logout</span>
+                    <span>Keluar</span>
+                </button>
             </div>
         </aside>
 
@@ -690,7 +693,61 @@
                             setTimeout(function() { window.print(); }, 500);
                         };
                     <` + `/script>
-                </body>
+                
+<!-- Dynamic Student Data Hydration Script -->
+<script>
+(function() {
+    function hydrateStudentData(user) {
+        if (!user) return;
+        const nama = user.nama || localStorage.getItem('userNama') || 'Siswa Flexa';
+        const jenjang = (user.jenjang || localStorage.getItem('userJenjang') || 'SD').toUpperCase();
+        const kelas = user.kelas || localStorage.getItem('userKelas') || (jenjang === 'SD' ? '1' : (jenjang === 'SMP' ? '7' : '10'));
+        const fotoUrl = user.fotoUrl || user.avatar || localStorage.getItem('userAvatar') || '';
+
+        // Update all display names
+        document.querySelectorAll('.user-display-name, #user-name-display, #sidebar-user-name, #top-user-name').forEach(el => {
+            if (el) el.textContent = nama;
+        });
+
+        // Update jenjang & kelas displays
+        document.querySelectorAll('.user-jenjang-display, #sidebar-user-jenjang').forEach(el => {
+            if (el) el.textContent = `Jenjang ${jenjang} • Kelas ${kelas}`;
+        });
+
+        // Update Avatars
+        const initials = nama.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'SW';
+        ['sidebar-user-avatar', 'top-user-avatar', 'user-avatar-badge', 'hero-user-avatar'].forEach(id => {
+            const av = document.getElementById(id);
+            if (av) {
+                if (fotoUrl) {
+                    av.innerHTML = `<img src="${fotoUrl}" class="w-full h-full object-cover rounded-full" />`;
+                } else {
+                    av.textContent = initials;
+                }
+            }
+        });
+    }
+
+    // Auto-run on DOM ready from localStorage
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            const cached = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (cached && (cached.nama || cached.email)) {
+                hydrateStudentData(cached);
+            }
+        } catch(e) {}
+    });
+
+    // Listen to Firebase Auth Ready
+    window.addEventListener('auth-ready', function(e) {
+        if (e && e.detail) {
+            hydrateStudentData(e.detail);
+        }
+    });
+})();
+</script>
+
+</body>
                 </html>
             `);
             win.document.close();

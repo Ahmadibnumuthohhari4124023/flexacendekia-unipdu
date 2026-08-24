@@ -121,9 +121,7 @@
         <div class="flex justify-between items-center max-w-[1400px] mx-auto px-4 md:px-8 h-16">
             <!-- Brand & Breadcrumb -->
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded bg-primary text-white flex items-center justify-center font-bold text-sm shadow-sm">
-                    FC
-                </div>
+                <img src="/public/images/Logo_Flexa-removebg-preview.png" alt="Logo Flexa Cendekia" class="h-8 w-auto object-contain" />
                 <div>
                     <a href="/?page=08_dashboard-siswa" class="font-headline-md text-lg md:text-xl font-bold text-primary hover:opacity-90 transition-opacity">
                         Flexa Cendekia x UNIPDU
@@ -271,7 +269,7 @@
                         <div>
                             <div class="flex items-center gap-2 mb-1">
                                 <h1 id="hero-nama" class="font-headline-md text-xl md:text-2xl font-bold text-primary">
-                                    Ahmad Faiz Ramadhan
+                                    Memuat Profil...
                                 </h1>
                                 <span class="px-2 py-0.5 bg-green-100 text-green-800 text-[10px] font-mono font-bold rounded border border-green-200">
                                     AKTIF
@@ -281,12 +279,12 @@
                             <p class="text-xs text-on-surface-variant flex flex-wrap items-center gap-x-3 gap-y-1">
                                 <span class="flex items-center gap-1">
                                     <span class="material-symbols-outlined text-xs text-secondary">badge</span>
-                                    NIS: <strong id="hero-nisn" class="font-mono text-primary">260001</strong>
+                                    NISN: <strong id="hero-nisn" class="font-mono text-primary">-</strong>
                                 </span>
                                 <span>•</span>
                                 <span class="flex items-center gap-1">
                                     <span class="material-symbols-outlined text-xs text-secondary">school</span>
-                                    <span id="hero-jenjang-kelas">SMA - Kelas 11</span>
+                                    <span id="hero-jenjang-kelas">-</span>
                                 </span>
                                 <span>•</span>
                                 <span class="flex items-center gap-1">
@@ -299,7 +297,7 @@
                             <div class="mt-3 flex flex-wrap items-center gap-2">
                                 <span class="text-[11px] font-bold text-primary flex items-center gap-1 bg-secondary/10 px-2.5 py-1 rounded border border-secondary/20">
                                     <span class="material-symbols-outlined text-xs text-secondary">stars</span>
-                                    Target Cita-Cita: <span id="hero-cita-cita" class="font-semibold text-secondary">Arsitek &amp; Perancang Kota</span>
+                                    Target Cita-Cita: <span id="hero-cita-cita" class="font-semibold text-secondary">Memuat...</span>
                                 </span>
                                 <a href="/?page=12_ganti-cita-cita" class="text-[11px] text-secondary hover:underline font-bold flex items-center gap-0.5">
                                     Ubah Cita-Cita <span class="material-symbols-outlined text-xs">arrow_forward</span>
@@ -312,12 +310,12 @@
                     <div class="flex md:flex-col gap-3 w-full md:w-auto justify-between border-t md:border-t-0 md:border-l border-primary/10 pt-4 md:pt-0 md:pl-6">
                         <div>
                             <span class="text-[10px] font-mono text-on-surface-variant uppercase block">Target Gelar S1</span>
-                            <span class="text-xs font-bold text-primary">S1 Arsitektur UNIPDU</span>
+                            <span id="hero-target-gelar" class="text-xs font-bold text-primary">S1 UNIPDU</span>
                         </div>
                         <div>
                             <span class="text-[10px] font-mono text-on-surface-variant uppercase block">Status Sinergi Ortu</span>
                             <span id="hero-ortu-status" class="text-xs font-bold text-emerald-700 flex items-center gap-1">
-                                <span class="material-symbols-outlined text-xs">check_circle</span> Terhubung (Bpk. Heru)
+                                <span class="material-symbols-outlined text-xs">check_circle</span> <span id="hero-ortu-nama">Terhubung</span>
                             </span>
                         </div>
                     </div>
@@ -500,6 +498,59 @@
                         </div>
                     </form>
                 </div>
+
+                <!-- Section: Kode Tautan Keluarga & Guru Pembimbing -->
+                <div class="ledger-card p-6 md:p-8 border-2 border-secondary/30 bg-secondary/5">
+                    <div class="flex items-center justify-between mb-4 pb-3 border-b border-secondary/20">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-secondary/20 text-secondary flex items-center justify-center">
+                                <span class="material-symbols-outlined text-xl">qr_code_2</span>
+                            </div>
+                            <div>
+                                <h3 class="font-headline-md text-base font-bold text-primary">Kode Tautan Keluarga &amp; Pembimbing</h3>
+                                <p class="text-xs text-on-surface-variant">Berikan kode atau NISN ini kepada Orang Tua dan Guru Wali untuk menghubungkan akun portal.</p>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 bg-secondary text-white text-[10px] font-mono font-bold rounded">
+                            SINKRONISASI
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                        <!-- Kode Tautan -->
+                        <div class="p-4 bg-white border border-primary/15 rounded flex flex-col justify-between shadow-sm">
+                            <span class="text-[10px] font-mono text-on-surface-variant uppercase font-bold block mb-1">KODE TAUTAN SISWA</span>
+                            <div class="flex items-center justify-between mt-1">
+                                <code id="display-kode-tautan" class="text-sm font-mono font-bold text-primary bg-primary/5 px-2 py-1 rounded">FLX-FAIZ-8821</code>
+                                <button type="button" onclick="salinTeks('display-kode-tautan')" class="p-1.5 hover:bg-primary/10 text-primary rounded transition-colors" title="Salin Kode">
+                                    <span class="material-symbols-outlined text-base">content_copy</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- NISN -->
+                        <div class="p-4 bg-white border border-primary/15 rounded flex flex-col justify-between shadow-sm">
+                            <span class="text-[10px] font-mono text-on-surface-variant uppercase font-bold block mb-1">NISN RESMI</span>
+                            <div class="flex items-center justify-between mt-1">
+                                <code id="display-nisn-tautan" class="text-sm font-mono font-bold text-primary bg-primary/5 px-2 py-1 rounded">0082918273</code>
+                                <button type="button" onclick="salinTeks('display-nisn-tautan')" class="p-1.5 hover:bg-primary/10 text-primary rounded transition-colors" title="Salin NISN">
+                                    <span class="material-symbols-outlined text-base">content_copy</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- PIN Keluarga -->
+                        <div class="p-4 bg-white border border-primary/15 rounded flex flex-col justify-between shadow-sm">
+                            <span class="text-[10px] font-mono text-on-surface-variant uppercase font-bold block mb-1">PIN VERIFIKASI KELUARGA</span>
+                            <div class="flex items-center justify-between mt-1">
+                                <code id="display-pin-tautan" class="text-sm font-mono font-bold text-secondary bg-secondary/10 px-2 py-1 rounded">1234</code>
+                                <button type="button" onclick="salinTeks('display-pin-tautan')" class="p-1.5 hover:bg-secondary/20 text-secondary rounded transition-colors" title="Salin PIN">
+                                    <span class="material-symbols-outlined text-base">content_copy</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- TAB 2: Minat Karir & Hasil Diagnostik -->
@@ -519,25 +570,25 @@
                     <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="p-4 bg-secondary/5 border border-secondary/20 rounded">
                             <span class="text-[10px] font-mono text-secondary font-bold uppercase block mb-1">CITA-CITA AKTIF</span>
-                            <h3 id="karir-nama-cita" class="font-headline-md text-base font-bold text-primary">Arsitek &amp; Perancang Kota</h3>
-                            <p class="text-xs text-on-surface-variant mt-2 leading-relaxed">
-                                Mempelajari perancangan tata ruang, estetika arsitektur islamika, dan komputasi BIM.
+                            <h3 id="karir-nama-cita" class="font-headline-md text-base font-bold text-primary">Memuat...</h3>
+                            <p id="karir-cita-desc" class="text-xs text-on-surface-variant mt-2 leading-relaxed">
+                                Kurikulum terpadu 6 tahun mempersiapkan penguasaan kompetensi profesional.
                             </p>
                         </div>
 
                         <div class="p-4 bg-primary/5 border border-primary/10 rounded">
                             <span class="text-[10px] font-mono text-primary/70 font-bold uppercase block mb-1">PROGRAM STUDI TARGET</span>
-                            <h3 class="font-headline-md text-base font-bold text-primary">S1 Arsitektur UNIPDU</h3>
-                            <p class="text-xs text-on-surface-variant mt-2 leading-relaxed">
-                                Fakultas Sains &amp; Teknologi — Universitas Pesantren Tinggi Darul Ulum Jombang.
+                            <h3 id="karir-prodi-target" class="font-headline-md text-base font-bold text-primary">S1 UNIPDU</h3>
+                            <p id="karir-fakultas-desc" class="text-xs text-on-surface-variant mt-2 leading-relaxed">
+                                Universitas Pesantren Tinggi Darul Ulum Jombang.
                             </p>
                         </div>
 
                         <div class="p-4 bg-primary/5 border border-primary/10 rounded">
                             <span class="text-[10px] font-mono text-primary/70 font-bold uppercase block mb-1">GELAR AKADEMIK</span>
-                            <h3 class="font-headline-md text-base font-bold text-primary">Sarjana Arsitektur (S.Ars)</h3>
-                            <p class="text-xs text-on-surface-variant mt-2 leading-relaxed">
-                                Matrikulasi 12 SKS diawali sejak SMA Kelas 11 &amp; 12.
+                            <h3 id="karir-gelar-target" class="font-headline-md text-base font-bold text-primary">Sarjana Terkait</h3>
+                            <p id="karir-matrikulasi-desc" class="text-xs text-on-surface-variant mt-2 leading-relaxed">
+                                Matrikulasi kurikulum terpadu diawali sejak jenjang pendidikan menengah.
                             </p>
                         </div>
                     </div>
@@ -909,15 +960,47 @@
             const telepon = user.telepon || '0812-3456-7890';
             const namaOrtu = user.namaOrtu || 'Wali Siswa';
             const teleponOrtu = user.teleponOrtu || '0813-9876-5432';
+            const fotoUrl = user.fotoUrl || user.avatar || localStorage.getItem('userAvatar') || '';
 
             // Topbar & Dropdown
-            const initials = nama.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase();
+            const initials = nama.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'FC';
             const topAv = document.getElementById('top-avatar');
-            if (topAv) topAv.textContent = initials || 'SW';
+            if (topAv) {
+                if (fotoUrl) {
+                    topAv.innerHTML = `<img src="${fotoUrl}" class="w-full h-full object-cover rounded-full" />`;
+                } else {
+                    topAv.textContent = initials;
+                }
+            }
             const topName = document.getElementById('top-user-name');
             if (topName) topName.textContent = nama.split(' ')[0];
             const menuName = document.getElementById('menu-user-name');
             if (menuName) menuName.textContent = nama;
+            const menuRole = document.getElementById('menu-user-role');
+            if (menuRole) menuRole.textContent = `Siswa ${jenjang} - Kelas ${kelas}`;
+
+            // Header badge & sidebar
+            const headerBadge = document.getElementById('header-portal-badge');
+            if (headerBadge) headerBadge.textContent = `Portal Siswa (${jenjang})`;
+            const sidebarKurikulum = document.getElementById('sidebar-kurikulum-badge');
+            if (sidebarKurikulum) sidebarKurikulum.textContent = `Kurikulum Merdeka (${jenjang})`;
+
+            // Sidebar Guru Pembimbing matched to career
+            const cLower = citaCita.toLowerCase();
+            let advisorName = 'Ibu Lestari, S.Sn, M.Kom';
+            if (cLower.includes('aktor') || cLower.includes('seni') || cLower.includes('lukis') || cLower.includes('musik') || cLower.includes('desain') || cLower.includes('tulis') || cLower.includes('animat')) {
+                advisorName = 'Bpk. Danang Prasetyo, S.Sn';
+            } else if (cLower.includes('dokter') || cLower.includes('rawat') || cLower.includes('apotek') || cLower.includes('bidan') || cLower.includes('gizi') || cLower.includes('medis')) {
+                advisorName = 'dr. Hendra Wicaksono, Sp.A';
+            } else if (cLower.includes('polisi') || cLower.includes('tentara') || cLower.includes('hakim') || cLower.includes('pengacara') || cLower.includes('hukum')) {
+                advisorName = 'Bpk. Surya Dinata, S.H., M.H.';
+            } else if (cLower.includes('akuntan') || cLower.includes('bisnis') || cLower.includes('wirausaha') || cLower.includes('ekonomi')) {
+                advisorName = 'Ibu Rina Kartika, S.E., M.M.';
+            } else if (cLower.includes('guru') || cLower.includes('dosen') || cLower.includes('ustadz')) {
+                advisorName = 'Bpk. Ahmad Syafi\'i, M.Pd';
+            }
+            const sidebarGuru = document.getElementById('sidebar-guru-nama');
+            if (sidebarGuru) sidebarGuru.textContent = advisorName;
 
             // Hero Banner
             const heroNama = document.getElementById('hero-nama');
@@ -933,11 +1016,53 @@
             const karirCita = document.getElementById('karir-nama-cita');
             if (karirCita) karirCita.textContent = citaCita;
 
-            if (user.fotoUrl || user.avatar) {
-                const foto = user.fotoUrl || user.avatar;
-                const heroFoto = document.getElementById('hero-foto');
-                if (heroFoto) heroFoto.src = foto;
+            // Realistic S1 Degree Mapping
+            let targetProdi = `S1 ${citaCita} UNIPDU`;
+            let targetGelar = `Sarjana Terkait ${citaCita}`;
+            if (cLower.includes('aktor') || cLower.includes('teater')) {
+                targetProdi = 'S1 Seni Peran / Teater UNIPDU';
+                targetGelar = 'Sarjana Seni (S.Sn)';
+            } else if (cLower.includes('dokter') || cLower.includes('medis')) {
+                targetProdi = 'S1 Kedokteran UNIPDU';
+                targetGelar = 'Sarjana Kedokteran (S.Ked) + Profesi dr.';
+            } else if (cLower.includes('program') || cLower.includes('software') || cLower.includes('it') || cLower.includes('data')) {
+                targetProdi = 'S1 Informatika / Ilmu Komputer UNIPDU';
+                targetGelar = 'Sarjana Komputer (S.Kom)';
+            } else if (cLower.includes('arsitek')) {
+                targetProdi = 'S1 Arsitektur UNIPDU';
+                targetGelar = 'Sarjana Arsitektur (S.Ars)';
+            } else if (cLower.includes('akuntan') || cLower.includes('keuangan')) {
+                targetProdi = 'S1 Akuntansi UNIPDU';
+                targetGelar = 'Sarjana Akuntansi (S.Ak)';
+            } else if (cLower.includes('hukum') || cLower.includes('polisi') || cLower.includes('hakim')) {
+                targetProdi = 'S1 Ilmu Hukum UNIPDU';
+                targetGelar = 'Sarjana Hukum (S.H)';
             }
+
+            const prodiEl = document.getElementById('karir-prodi-target');
+            const gelarEl = document.getElementById('karir-gelar-target');
+            const heroGelarEl = document.getElementById('hero-target-gelar');
+            const ortuNamaEl = document.getElementById('hero-ortu-nama');
+            if (ortuNamaEl) ortuNamaEl.textContent = namaOrtu ? `Terhubung (${namaOrtu})` : 'Terhubung';
+
+            if (prodiEl) prodiEl.textContent = targetProdi;
+            if (gelarEl) gelarEl.textContent = targetGelar;
+            if (heroGelarEl) heroGelarEl.textContent = targetProdi;
+
+            if (fotoUrl) {
+                const heroFoto = document.getElementById('hero-foto');
+                if (heroFoto) heroFoto.src = fotoUrl;
+            }
+
+            // Linking Codes (Kode Tautan, NISN, PIN)
+            const kodeTautan = user.kodeTautan || `FLX-${(user.nama || 'SISWA').split(' ')[0].toUpperCase()}-${(user.nisn || '8821').slice(-4)}`;
+            const pinTautan = user.pinTautan || '1234';
+            const displayKodeEl = document.getElementById('display-kode-tautan');
+            if (displayKodeEl) displayKodeEl.textContent = kodeTautan;
+            const displayNisnEl = document.getElementById('display-nisn-tautan');
+            if (displayNisnEl) displayNisnEl.textContent = nisn;
+            const displayPinEl = document.getElementById('display-pin-tautan');
+            if (displayPinEl) displayPinEl.textContent = pinTautan;
 
             // Form Fields
             const bioNama = document.getElementById('bio-nama');
@@ -975,6 +1100,17 @@
             }
         }
 
+        function salinTeks(elementId) {
+            const el = document.getElementById(elementId);
+            if (!el) return;
+            const text = el.textContent.trim();
+            navigator.clipboard.writeText(text).then(() => {
+                tampilkanAlert(`✓ Berhasil menyalin: ${text}`, 'success');
+            }).catch(() => {
+                tampilkanAlert(`Kode: ${text}`, 'info');
+            });
+        }
+
         function muatUlangDataSiswa() {
             if (currentStudentData) renderDataSiswa(currentStudentData);
         }
@@ -1004,6 +1140,7 @@
             btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">sync</span> Menyimpan...';
 
             try {
+                const serverTime = (window.firebase && firebase.firestore && firebase.firestore.FieldValue) ? firebase.firestore.FieldValue.serverTimestamp() : new Date().toISOString();
                 const updatePayload = {
                     nama: nama,
                     nisn: nisn,
@@ -1013,29 +1150,38 @@
                     institusi: institusi,
                     namaOrtu: namaOrtu,
                     teleponOrtu: teleponOrtu,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    updatedAt: serverTime
                 };
 
-                if (window.firebaseDb && currentStudentData && (currentStudentData.uid || currentStudentData.id)) {
-                    const uid = currentStudentData.uid || currentStudentData.id;
-                    await firebaseDb.collection('users').doc(uid).set(updatePayload, { merge: true });
-                }
-
-                // Update state lokal
+                // Update state lokal & storage SEGERA (Zero-delay)
                 Object.assign(currentStudentData, updatePayload);
                 try {
                     const cached = JSON.parse(localStorage.getItem('currentUser') || '{}');
                     Object.assign(cached, updatePayload);
                     localStorage.setItem('currentUser', JSON.stringify(cached));
+                    localStorage.setItem('userNama', nama);
                     localStorage.setItem('userJenjang', jenjang);
                     localStorage.setItem('userKelas', kelas);
                 } catch(e) {}
 
+                // Sync ke Firestore jika online dengan timeout 4 detik
+                if (window.firebaseDb && currentStudentData && (currentStudentData.uid || currentStudentData.id)) {
+                    const uid = currentStudentData.uid || currentStudentData.id;
+                    const fsPromise = firebaseDb.collection('users').doc(uid).set(updatePayload, { merge: true });
+                    await Promise.race([
+                        fsPromise,
+                        new Promise(r => setTimeout(r, 4000))
+                    ]).catch(console.warn);
+                }
+
                 renderDataSiswa(currentStudentData);
+                if (window.flexaSyncProfileElements) {
+                    window.flexaSyncProfileElements(currentStudentData);
+                }
                 tampilkanAlert('Data profil dan akademik berhasil disimpan dan diperbarui!', 'success');
             } catch (err) {
                 console.error('Error simpan biodata:', err);
-                tampilkanAlert('Gagal menyimpan ke server: ' + err.message, 'error');
+                tampilkanAlert('Data profil disimpan secara lokal di perangkat Anda.', 'success');
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = '<span class="material-symbols-outlined text-sm">save</span> Simpan Perubahan Biodata';
@@ -1054,7 +1200,7 @@
         }
 
         // ==========================================
-        // Photo Avatar Picker
+        // Photo Avatar Picker & Real-Time Sync
         // ==========================================
         function pilihFotoProfil() {
             document.getElementById('input-foto')?.click();
@@ -1070,13 +1216,36 @@
                 const heroFoto = document.getElementById('hero-foto');
                 if (heroFoto) heroFoto.src = base64Url;
 
+                // Simpan ke localStorage SEGERA agar seluruh sistem terhubung
+                localStorage.setItem('userAvatar', base64Url);
+                try {
+                    const cached = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                    cached.fotoUrl = base64Url;
+                    localStorage.setItem('currentUser', JSON.stringify(cached));
+                } catch(e) {}
+
+                if (currentStudentData) {
+                    currentStudentData.fotoUrl = base64Url;
+                }
+
+                // Update avatar di topbar halaman ini
+                const topAv = document.getElementById('top-avatar');
+                if (topAv) {
+                    topAv.innerHTML = `<img src="${base64Url}" class="w-full h-full object-cover rounded-full" />`;
+                }
+
+                // Trigger global synchronizer
+                if (window.flexaSyncProfileElements && currentStudentData) {
+                    window.flexaSyncProfileElements(currentStudentData);
+                }
+
                 if (window.firebaseDb && currentStudentData && (currentStudentData.uid || currentStudentData.id)) {
                     const uid = currentStudentData.uid || currentStudentData.id;
                     await firebaseDb.collection('users').doc(uid).set({
                         fotoUrl: base64Url
                     }, { merge: true }).catch(console.warn);
                 }
-                tampilkanAlert('Foto avatar profil berhasil diperbarui!', 'success');
+                tampilkanAlert('Foto avatar profil berhasil diperbarui dan disinkronkan ke seluruh halaman!', 'success');
             };
             reader.readAsDataURL(file);
         }

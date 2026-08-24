@@ -81,7 +81,7 @@
         </div>
         <div class="flex items-center gap-4">
             <a href="/?page=17_notifikasi" class="material-symbols-outlined text-primary hover:text-secondary text-2xl" title="Notifikasi">notifications</a>
-            <a href="/?page=18_profil" id="top-user-avatar" class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-mono text-xs font-bold uppercase overflow-hidden hover:ring-2 hover:ring-secondary/50 transition-all" title="Profil Siswa">SW</a>
+            <a href="/?page=18_profil_profil-siswa" id="top-user-avatar" class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-mono text-xs font-bold uppercase overflow-hidden hover:ring-2 hover:ring-secondary/50 transition-all" title="Profil Siswa">SW</a>
         </div>
     </header>
 
@@ -186,8 +186,12 @@
                     </div>
                 </div>
 
-                <div class="h-28 border border-primary/10 overflow-hidden rounded relative">
-                    <img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" alt="Flexa Cendekia Academic Focus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt6LRIP_8uAC2NjXYZUb-bNT2OofVH8-LNMV2rRNJED-CvBiw8sPKrNuCriXhFLdaz4-MjJ8_1uPe44huj2S6iSIuN3zebp74tj8gYmlX0ESqYOHW8g_L1WnsBbWic9vNbjH5YMUHBezq_pL00DU8_RT7oAWyPlGASOgscMGZJYfUJEHXexcmO5PMIsFWiUwU5h0DZ7S5OWgu5xX4fdpsYWaiNc_5YXett_PoObBWQZ6WwQypHgKWuJ76JzZOPLBSVEJZHQJ2Pg48"/>
+                <div class="h-28 border border-primary/10 overflow-hidden rounded relative bg-gradient-to-r from-primary/10 via-secondary/10 to-primary/5 flex items-center justify-between px-6">
+                    <div>
+                        <p class="font-bold text-sm text-primary">Eksplorasi Karir &amp; Matrikulasi</p>
+                        <p class="text-xs text-on-surface-variant">Penyesuaian roadmap 6 tahun terintegrasi UNIPDU</p>
+                    </div>
+                    <img src="/public/images/Logo_Flexa-removebg-preview.png" alt="Flexa Cendekia" class="h-10 w-auto object-contain opacity-80" />
                 </div>
             </div>
         </div>
@@ -344,4 +348,58 @@
             }
         });
     </script>
+
+<!-- Dynamic Student Data Hydration Script -->
+<script>
+(function() {
+    function hydrateStudentData(user) {
+        if (!user) return;
+        const nama = user.nama || localStorage.getItem('userNama') || 'Siswa Flexa';
+        const jenjang = (user.jenjang || localStorage.getItem('userJenjang') || 'SD').toUpperCase();
+        const kelas = user.kelas || localStorage.getItem('userKelas') || (jenjang === 'SD' ? '1' : (jenjang === 'SMP' ? '7' : '10'));
+        const fotoUrl = user.fotoUrl || user.avatar || localStorage.getItem('userAvatar') || '';
+
+        // Update all display names
+        document.querySelectorAll('.user-display-name, #user-name-display, #sidebar-user-name, #top-user-name').forEach(el => {
+            if (el) el.textContent = nama;
+        });
+
+        // Update jenjang & kelas displays
+        document.querySelectorAll('.user-jenjang-display, #sidebar-user-jenjang').forEach(el => {
+            if (el) el.textContent = `Jenjang ${jenjang} • Kelas ${kelas}`;
+        });
+
+        // Update Avatars
+        const initials = nama.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'SW';
+        ['sidebar-user-avatar', 'top-user-avatar', 'user-avatar-badge', 'hero-user-avatar'].forEach(id => {
+            const av = document.getElementById(id);
+            if (av) {
+                if (fotoUrl) {
+                    av.innerHTML = `<img src="${fotoUrl}" class="w-full h-full object-cover rounded-full" />`;
+                } else {
+                    av.textContent = initials;
+                }
+            }
+        });
+    }
+
+    // Auto-run on DOM ready from localStorage
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            const cached = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (cached && (cached.nama || cached.email)) {
+                hydrateStudentData(cached);
+            }
+        } catch(e) {}
+    });
+
+    // Listen to Firebase Auth Ready
+    window.addEventListener('auth-ready', function(e) {
+        if (e && e.detail) {
+            hydrateStudentData(e.detail);
+        }
+    });
+})();
+</script>
+
 </body></html>

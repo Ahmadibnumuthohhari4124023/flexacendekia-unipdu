@@ -178,18 +178,19 @@
     </nav>
     <div class="flex flex-1 overflow-hidden">
         <!-- SideNavBar -->
-        <aside class="hidden md:flex flex-col h-[calc(100vh-64px)] sticky top-16 w-64 bg-surface-container-low border-r border-primary/10">
+        <aside class="hidden md:flex flex-col h-[calc(100vh-64px)] sticky top-16 w-64 bg-surface-container-low border-r border-primary/10 flex-shrink-0">
             <div class="p-6 border-b border-primary/10">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-full border border-primary/20 overflow-hidden bg-academic-ivory">
-                        <img class="w-full h-full object-cover"
-                            data-alt="A formal, academic portrait of a student in a light-filled study environment. The lighting is natural and soft, hitting the subject from the side to create subtle depth. The overall aesthetic is organized and scholarly, with a soft ivory-white and cream background. The portrait style is professional and minimalist, reflecting a focused educational atmosphere."
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwou6C5cPgoatARVZNvhC_fivF4ILLHCSZKMpbn9TGiU2srjPQMVzMYWZDEwTnVw1SBWt_4aC69bPzU6TRzQO4lJdSwccGnJHm6AW7q4aVyErqHwZYWbKjirq3a6WuT8qb7aMkhgVbSGTMK9cQ2rnlWIN5xlskhz0D1YgrnAUzENkFqL-adUxx0V4rNT-N8tP9gU2rmvUlMq-NC_HQHByZerzNO8TXrfR98xD1J3vY6xBtKuLjv_5LmHq9zFD7n7-JW7GMVPHPfTM" />
+                    <div id="sidebar-user-avatar" class="w-10 h-10 rounded-full border border-primary/20 bg-primary text-white flex items-center justify-center font-stats-sm text-sm font-bold uppercase shadow-sm flex-shrink-0">
+                        SW
                     </div>
-                    <div>
-                        <p class="font-label-caps text-[10px] text-primary opacity-60 uppercase tracking-widest">
-                            Akademik Siswa</p>
-                        <p class="font-body-md text-body-md font-bold text-primary user-display-name">Siswa</p>
+                    <div class="min-w-0 flex-1">
+                        <p id="sidebar-user-jenjang" class="font-label-caps text-[10px] text-primary opacity-60 uppercase tracking-widest truncate user-jenjang-display">
+                            Akademik Siswa
+                        </p>
+                        <p id="sidebar-user-name" class="font-body-md text-body-md font-bold text-primary truncate user-display-name">
+                            Siswa
+                        </p>
                     </div>
                 </div>
             </div>
@@ -203,24 +204,24 @@
                         </a>
                     </li>
                     <li>
-                        <a class="flex items-center gap-4 px-4 py-3 rounded-sm bg-secondary/10 text-secondary border-r-4 border-secondary translate-x-1 font-label-caps text-label-caps"
-                            href="#">
+                        <a class="flex items-center gap-4 px-4 py-3 rounded-sm bg-secondary/10 text-secondary border-r-4 border-secondary translate-x-1 font-bold font-label-caps text-label-caps"
+                            href="/?page=02_intro-diagnosis" style="text-decoration:none;">
                             <span class="material-symbols-outlined" data-icon="quiz">quiz</span>
                             <span>Tes Diagnostik</span>
                         </a>
                     </li>
                     <li>
                         <a class="flex items-center gap-4 px-4 py-3 rounded-sm text-on-surface-variant hover:bg-primary/5 transition-all duration-150 font-label-caps text-label-caps"
-                            href="#">
+                            href="/?page=10_detail-roadmap" style="text-decoration:none;">
                             <span class="material-symbols-outlined" data-icon="timeline">timeline</span>
-                            <span>Roadmap</span>
+                            <span>Roadmap 6 Tahun</span>
                         </a>
                     </li>
                     <li>
                         <a class="flex items-center gap-4 px-4 py-3 rounded-sm text-on-surface-variant hover:bg-primary/5 transition-all duration-150 font-label-caps text-label-caps"
                             href="/?page=18_profil_profil-siswa" style="text-decoration:none;">
                             <span class="material-symbols-outlined" data-icon="person">person</span>
-                            <span>Profil</span>
+                            <span>Profil &amp; Akun</span>
                         </a>
                     </li>
                 </ul>
@@ -231,11 +232,11 @@
                     <span class="material-symbols-outlined text-[18px]" data-icon="help">help</span>
                     <span>Bantuan</span>
                 </a>
-                <a class="flex items-center gap-4 px-4 py-2 text-on-surface-variant hover:bg-primary/5 transition-all duration-150 font-label-caps text-[11px]"
-                    href="#">
+                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" 
+                    class="w-full flex items-center gap-4 px-4 py-2 text-red-600 hover:bg-red-50 transition-all duration-150 font-label-caps text-[11px] text-left">
                     <span class="material-symbols-outlined text-[18px]" data-icon="logout">logout</span>
                     <span>Keluar</span>
-                </a>
+                </button>
             </div>
         </aside>
         <!-- Main Content (The Ledger Page) -->
@@ -360,24 +361,9 @@
 
                             <div class="flex items-center gap-2">
                                 <div class="flex -space-x-2">
-                                    <div
-                                        class="w-8 h-8 rounded-full border-2 border-academic-ivory bg-surface-container overflow-hidden">
-                                        <img class="w-full h-full object-cover"
-                                            data-alt="A portrait of a cheerful, diverse group of students collaborating in a modern school library. The background is filled with blurred bookshelves and warm, golden lighting. The photo is styled like a candid scholarship brochure with professional lighting and high clarity. Colors are grounded in deep blues and academic creams."
-                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSFD5pMK5CnFc8nxeGtNXQoWEqySEZCaqtBmaoP4qoXa7SopgHZqx3evsDXklbvQhBiyV9RBMvEbqG5yLIbcNZ3VJCgwFBd4cMzcVBNwWUcZp5ObuZpPxPknLs5q0Scoq5QhEULGA1XUTdg3ESEgLOAGJ8o0QEKDSyRO3SiHjy0hj_skCDJfJjz7c0xR4DUmWDLXvLTXqfZo-VlUPhm5ovn-Lh9p4ZAHvKnCXroineGug-TETOwurFqzwSNdlG3RrPYJRpJUxDQRs" />
-                                    </div>
-                                    <div
-                                        class="w-8 h-8 rounded-full border-2 border-academic-ivory bg-surface-container overflow-hidden">
-                                        <img class="w-full h-full object-cover"
-                                            data-alt="Close up of a student's hands taking organized notes in a classic paper ledger with a premium fountain pen. The setting is clean and minimalist, focused on academic excellence. High-quality professional photography with soft depth of field. Soft natural light illuminates the textured paper."
-                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYbNIvROk4WIzZM2d2VMt4SwcXaocJbn230nGCI-ypXr2wMVXEf6ZEQNvtFCMvw6QcfMCJ4bD6S-yddvS6tOSEsYlO7yZaKf9eSdIK5bV-GNER8FH4wqEE_Mc1iV9Vpml2NCkSzbO0HyZG8vGHhB5FB_v-tcuYM0v7aiKrnoWp2fcv7Z0y5k3k0w6f27EQTBhH4-d0m4PMO7YTI2CDLUCSN_TmVE-ABGmE66e9Hf0kN47xeSa25kIARUiHwxiK9SscHRCvtmz5in4" />
-                                    </div>
-                                    <div
-                                        class="w-8 h-8 rounded-full border-2 border-academic-ivory bg-surface-container overflow-hidden">
-                                        <img class="w-full h-full object-cover"
-                                            data-alt="A minimalist overhead shot of an organized desk with a textbook, a notebook, and a pair of reading glasses. The wood of the desk is light and warm, and the lighting is soft morning sun. The style is studious and serene, mirroring the academic ledger design system's aesthetic of ordered calm."
-                                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH2EPs3AOFjajier_ZoRNKkNS42jDA8o2TswtdCPs1qMFTWDFRmavzxbPDRZZGUJp2jRQvpCf8kp_23_9VLtTCJzSa0xnbAO22boEL9R5OdT5Ojcm5o1nl1i32NdvVkSQBoPqHdpzR2djszwEvR1Uk8Dj4VuOzj91ZRJpizHlyWGQaMZqeclR6w__oUKBQ8gJaZyf4bNP9ERVWMlacw0vakGAuh4w475-ji77z078_bmeP4Qn2Uw3HETPTrIVH9mQvM-52hLM8HMg" />
-                                    </div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-academic-ivory bg-primary text-white font-bold text-xs flex items-center justify-center shadow-sm">AF</div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-academic-ivory bg-secondary text-white font-bold text-xs flex items-center justify-center shadow-sm">SR</div>
+                                    <div class="w-8 h-8 rounded-full border-2 border-academic-ivory bg-emerald-700 text-white font-bold text-xs flex items-center justify-center shadow-sm">MD</div>
                                 </div>
                                 <span id="student-count"
                                     class="font-stats-sm text-stats-sm text-on-surface-variant opacity-75">+1.2k Siswa
@@ -882,6 +868,60 @@
       // We rely on the modal logic defined within code.html itself
     })();
     </script>
+
+<!-- Dynamic Student Data Hydration Script -->
+<script>
+(function() {
+    function hydrateStudentData(user) {
+        if (!user) return;
+        const nama = user.nama || localStorage.getItem('userNama') || 'Siswa Flexa';
+        const jenjang = (user.jenjang || localStorage.getItem('userJenjang') || 'SD').toUpperCase();
+        const kelas = user.kelas || localStorage.getItem('userKelas') || (jenjang === 'SD' ? '1' : (jenjang === 'SMP' ? '7' : '10'));
+        const fotoUrl = user.fotoUrl || user.avatar || localStorage.getItem('userAvatar') || '';
+
+        // Update all display names
+        document.querySelectorAll('.user-display-name, #user-name-display, #sidebar-user-name, #top-user-name').forEach(el => {
+            if (el) el.textContent = nama;
+        });
+
+        // Update jenjang & kelas displays
+        document.querySelectorAll('.user-jenjang-display, #sidebar-user-jenjang').forEach(el => {
+            if (el) el.textContent = `Jenjang ${jenjang} • Kelas ${kelas}`;
+        });
+
+        // Update Avatars
+        const initials = nama.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'SW';
+        ['sidebar-user-avatar', 'top-user-avatar', 'user-avatar-badge', 'hero-user-avatar'].forEach(id => {
+            const av = document.getElementById(id);
+            if (av) {
+                if (fotoUrl) {
+                    av.innerHTML = `<img src="${fotoUrl}" class="w-full h-full object-cover rounded-full" />`;
+                } else {
+                    av.textContent = initials;
+                }
+            }
+        });
+    }
+
+    // Auto-run on DOM ready from localStorage
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            const cached = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (cached && (cached.nama || cached.email)) {
+                hydrateStudentData(cached);
+            }
+        } catch(e) {}
+    });
+
+    // Listen to Firebase Auth Ready
+    window.addEventListener('auth-ready', function(e) {
+        if (e && e.detail) {
+            hydrateStudentData(e.detail);
+        }
+    });
+})();
+</script>
+
 </body>
 
 </html>

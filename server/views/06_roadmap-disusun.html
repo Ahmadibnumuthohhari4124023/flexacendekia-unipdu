@@ -96,7 +96,7 @@
         </div>
         <div class="flex items-center space-x-4">
             <a href="/?page=17_notifikasi" class="material-symbols-outlined text-primary p-2 rounded-full hover:bg-on-surface/5" title="Notifikasi">notifications</a>
-            <a href="/?page=18_profil" class="material-symbols-outlined text-primary p-2 rounded-full hover:bg-on-surface/5" title="Profil">account_circle</a>
+            <a href="/?page=18_profil_profil-siswa" class="material-symbols-outlined text-primary p-2 rounded-full hover:bg-on-surface/5" title="Profil">account_circle</a>
             <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" class="p-2 text-error hover:bg-error/10 rounded-full transition-colors" title="Keluar">
                 <span class="material-symbols-outlined">logout</span>
             </button>
@@ -249,5 +249,59 @@
             generateRoadmapAndProceed();
         });
     </script>
+
+<!-- Dynamic Student Data Hydration Script -->
+<script>
+(function() {
+    function hydrateStudentData(user) {
+        if (!user) return;
+        const nama = user.nama || localStorage.getItem('userNama') || 'Siswa Flexa';
+        const jenjang = (user.jenjang || localStorage.getItem('userJenjang') || 'SD').toUpperCase();
+        const kelas = user.kelas || localStorage.getItem('userKelas') || (jenjang === 'SD' ? '1' : (jenjang === 'SMP' ? '7' : '10'));
+        const fotoUrl = user.fotoUrl || user.avatar || localStorage.getItem('userAvatar') || '';
+
+        // Update all display names
+        document.querySelectorAll('.user-display-name, #user-name-display, #sidebar-user-name, #top-user-name').forEach(el => {
+            if (el) el.textContent = nama;
+        });
+
+        // Update jenjang & kelas displays
+        document.querySelectorAll('.user-jenjang-display, #sidebar-user-jenjang').forEach(el => {
+            if (el) el.textContent = `Jenjang ${jenjang} • Kelas ${kelas}`;
+        });
+
+        // Update Avatars
+        const initials = nama.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'SW';
+        ['sidebar-user-avatar', 'top-user-avatar', 'user-avatar-badge', 'hero-user-avatar'].forEach(id => {
+            const av = document.getElementById(id);
+            if (av) {
+                if (fotoUrl) {
+                    av.innerHTML = `<img src="${fotoUrl}" class="w-full h-full object-cover rounded-full" />`;
+                } else {
+                    av.textContent = initials;
+                }
+            }
+        });
+    }
+
+    // Auto-run on DOM ready from localStorage
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            const cached = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (cached && (cached.nama || cached.email)) {
+                hydrateStudentData(cached);
+            }
+        } catch(e) {}
+    });
+
+    // Listen to Firebase Auth Ready
+    window.addEventListener('auth-ready', function(e) {
+        if (e && e.detail) {
+            hydrateStudentData(e.detail);
+        }
+    });
+})();
+</script>
+
 </body>
 </html>

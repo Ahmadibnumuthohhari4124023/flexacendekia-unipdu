@@ -145,45 +145,67 @@
 </header>
 <div class="max-w-[1280px] mx-auto flex flex-col md:flex-row">
 <!-- SideNavBar -->
-<aside class="hidden md:flex flex-col h-[calc(100vh-64px)] w-64 sticky top-16 border-r border-primary/10 bg-surface-container-low py-6 px-4">
-<div class="flex items-center gap-3 mb-8 px-2">
-<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center border border-primary/10 overflow-hidden">
-<img class="w-full h-full object-cover" data-alt="A portrait of a focused high school student in a neat uniform, looking directly at the camera with a confident expression. The lighting is soft and academic, set against a backdrop of a blurred library with wooden bookshelves and warm tones, maintaining the academic ledger aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAA5GEUhRNZmbd9I2Y5uexlmtFaWQNh1M_2BXKVbxect_R5qH8Nph755oOB6ojuOh3badOp6NMZv-F6KwBtJ8Ewb3y02A3amohn5_I0YGitgKhuTvnziqdr72juzYNKIUt6AFcw-HYM8kzS3EQf5MpQtMgrUvf5zfnjpssYDjFM84nVrZjo1hGql5vdtp6T2PZ6tWEtblN8eExVl-Q1UALOFLZbEWCbitMsnf1a6tSDwSM0aeFhBPT6zvJ5APfW6p4tHPqUpoZG80"/>
-</div>
-<div>
-<h3 class="font-label-caps text-[10px] text-primary uppercase tracking-wider">Akademik Siswa</h3>
-<p class="font-body-sm text-[12px] text-on-surface-variant">Flexa Cendekia</p>
-</div>
-</div>
-<nav class="space-y-1">
-<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container transition-all duration-150" href="#">
-<span class="material-symbols-outlined">home</span>
-<span class="font-label-caps text-label-caps">Beranda</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded bg-secondary/10 text-secondary border-r-4 border-secondary translate-x-1 transition-all duration-150" href="#">
-<span class="material-symbols-outlined">quiz</span>
-<span class="font-label-caps text-label-caps">Tes Diagnostik</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container transition-all duration-150" href="#">
-<span class="material-symbols-outlined">timeline</span>
-<span class="font-label-caps text-label-caps">Roadmap</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container transition-all duration-150" href="#">
-<span class="material-symbols-outlined">person</span>
-<span class="font-label-caps text-label-caps">Profil</span>
-</a>
-</nav>
-<div class="mt-auto pt-6 border-t border-primary/5 space-y-1">
-<a class="flex items-center gap-3 px-3 py-2 rounded text-on-surface-variant hover:bg-surface-container transition-all" href="/?page=01_login_bantuan">
-<span class="material-symbols-outlined">help</span>
-<span class="font-label-caps text-label-caps">Bantuan</span>
-</a>
-<a class="flex items-center gap-3 px-3 py-2 rounded text-error hover:bg-error-container/20 transition-all" href="#">
-<span class="material-symbols-outlined">logout</span>
-<span class="font-label-caps text-label-caps">Keluar</span>
-</a>
-</div>
-</aside>
+        <aside class="hidden md:flex flex-col h-[calc(100vh-64px)] sticky top-16 w-64 bg-surface-container-low border-r border-primary/10 flex-shrink-0">
+            <div class="p-6 border-b border-primary/10">
+                <div class="flex items-center gap-3">
+                    <div id="sidebar-user-avatar" class="w-10 h-10 rounded-full border border-primary/20 bg-primary text-white flex items-center justify-center font-stats-sm text-sm font-bold uppercase shadow-sm flex-shrink-0">
+                        SW
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <p id="sidebar-user-jenjang" class="font-label-caps text-[10px] text-primary opacity-60 uppercase tracking-widest truncate user-jenjang-display">
+                            Akademik Siswa
+                        </p>
+                        <p id="sidebar-user-name" class="font-body-md text-body-md font-bold text-primary truncate user-display-name">
+                            Siswa
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <nav class="flex-1 py-4">
+                <ul class="space-y-1 px-2">
+                    <li>
+                        <a class="flex items-center gap-4 px-4 py-3 rounded-sm text-on-surface-variant hover:bg-primary/5 transition-all duration-150 font-label-caps text-label-caps"
+                            href="/?page=08_dashboard-siswa" style="text-decoration:none;">
+                            <span class="material-symbols-outlined" data-icon="home">home</span>
+                            <span>Beranda</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center gap-4 px-4 py-3 rounded-sm bg-secondary/10 text-secondary border-r-4 border-secondary translate-x-1 font-bold font-label-caps text-label-caps"
+                            href="/?page=02_intro-diagnosis" style="text-decoration:none;">
+                            <span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+                            <span>Tes Diagnostik</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center gap-4 px-4 py-3 rounded-sm text-on-surface-variant hover:bg-primary/5 transition-all duration-150 font-label-caps text-label-caps"
+                            href="/?page=10_detail-roadmap" style="text-decoration:none;">
+                            <span class="material-symbols-outlined" data-icon="timeline">timeline</span>
+                            <span>Roadmap 6 Tahun</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="flex items-center gap-4 px-4 py-3 rounded-sm text-on-surface-variant hover:bg-primary/5 transition-all duration-150 font-label-caps text-label-caps"
+                            href="/?page=18_profil_profil-siswa" style="text-decoration:none;">
+                            <span class="material-symbols-outlined" data-icon="person">person</span>
+                            <span>Profil &amp; Akun</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="p-4 border-t border-primary/10 space-y-1">
+                <a class="flex items-center gap-4 px-4 py-2 text-on-surface-variant hover:bg-primary/5 transition-all duration-150 font-label-caps text-[11px]"
+                    href="/?page=01_login_bantuan">
+                    <span class="material-symbols-outlined text-[18px]" data-icon="help">help</span>
+                    <span>Bantuan</span>
+                </a>
+                <button onclick="if(window.flexaLogout) flexaLogout(); else if(window.firebase) firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" 
+                    class="w-full flex items-center gap-4 px-4 py-2 text-red-600 hover:bg-red-50 transition-all duration-150 font-label-caps text-[11px] text-left">
+                    <span class="material-symbols-outlined text-[18px]" data-icon="logout">logout</span>
+                    <span>Keluar</span>
+                </button>
+            </div>
+        </aside>
 
 
 <!-- Main Content Canvas -->
@@ -523,6 +545,60 @@
   });
   
   document.querySelectorAll('header div.rounded-full.bg-primary').forEach(function(el){ el.style.cursor = 'pointer'; });
+})();
+</script>
+
+
+<!-- Dynamic Student Data Hydration Script -->
+<script>
+(function() {
+    function hydrateStudentData(user) {
+        if (!user) return;
+        const nama = user.nama || localStorage.getItem('userNama') || 'Siswa Flexa';
+        const jenjang = (user.jenjang || localStorage.getItem('userJenjang') || 'SD').toUpperCase();
+        const kelas = user.kelas || localStorage.getItem('userKelas') || (jenjang === 'SD' ? '1' : (jenjang === 'SMP' ? '7' : '10'));
+        const fotoUrl = user.fotoUrl || user.avatar || localStorage.getItem('userAvatar') || '';
+
+        // Update all display names
+        document.querySelectorAll('.user-display-name, #user-name-display, #sidebar-user-name, #top-user-name').forEach(el => {
+            if (el) el.textContent = nama;
+        });
+
+        // Update jenjang & kelas displays
+        document.querySelectorAll('.user-jenjang-display, #sidebar-user-jenjang').forEach(el => {
+            if (el) el.textContent = `Jenjang ${jenjang} • Kelas ${kelas}`;
+        });
+
+        // Update Avatars
+        const initials = nama.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'SW';
+        ['sidebar-user-avatar', 'top-user-avatar', 'user-avatar-badge', 'hero-user-avatar'].forEach(id => {
+            const av = document.getElementById(id);
+            if (av) {
+                if (fotoUrl) {
+                    av.innerHTML = `<img src="${fotoUrl}" class="w-full h-full object-cover rounded-full" />`;
+                } else {
+                    av.textContent = initials;
+                }
+            }
+        });
+    }
+
+    // Auto-run on DOM ready from localStorage
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            const cached = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            if (cached && (cached.nama || cached.email)) {
+                hydrateStudentData(cached);
+            }
+        } catch(e) {}
+    });
+
+    // Listen to Firebase Auth Ready
+    window.addEventListener('auth-ready', function(e) {
+        if (e && e.detail) {
+            hydrateStudentData(e.detail);
+        }
+    });
 })();
 </script>
 
