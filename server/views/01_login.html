@@ -630,13 +630,14 @@
                     userData = doc.data();
                     actualRole = normalizeRole(userData.role);
                     if (actualRole === 'Guru' && (!userData.nama || userData.nama === 'Guru' || userData.nama === 'Guru Pembimbing')) {
-                        userData.nama = 'Ibu Sari Rahayu, M.Pd.';
+                        userData.nama = auth.currentUser?.displayName || 'Tutor & Pendidik';
                     } else if (actualRole === 'OrangTua' && (!userData.nama || userData.nama === 'Orang Tua' || userData.nama === 'OrangTua')) {
-                        userData.nama = 'Bpk. Hendra Pratama';
+                        userData.nama = auth.currentUser?.displayName || 'Wali Siswa';
                     }
                 } else {
                     actualRole = rawSelectedRole ? normalizeRole(rawSelectedRole) : 'Siswa';
-                    const defaultName = (actualRole === 'Guru') ? 'Ibu Sari Rahayu, M.Pd.' : (actualRole === 'OrangTua' ? 'Bpk. Hendra Pratama' : 'Ahmad Faiz');
+                    const emailPrefix = (auth.currentUser?.email || '').split('@')[0] || 'User';
+        const defaultName = auth.currentUser?.displayName || emailPrefix.replace(/[._-]/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
                     userData = {
                         email: auth.currentUser?.email || '',
                         nama: auth.currentUser?.displayName || defaultName,
@@ -687,7 +688,8 @@
                 sessionStorage.removeItem('selectedLoginRole');
                 
                 try {
-                    const fallbackDefaultName = (fallbackRole === 'Guru') ? 'Ibu Sari Rahayu, M.Pd.' : (fallbackRole === 'OrangTua' ? 'Bpk. Hendra Pratama' : 'Ahmad Faiz');
+                    const emailPrefix2 = (auth.currentUser?.email || '').split('@')[0] || 'User';
+        const fallbackDefaultName = auth.currentUser?.displayName || emailPrefix2.replace(/[._-]/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
                     const userCache = {
                         uid: uid,
                         email: auth.currentUser?.email || '',
@@ -818,14 +820,14 @@
                                         let defaultName = 'Ahmad Faiz';
                                         let extraFields = {};
                                         if (normRole === 'Guru') {
-                                            defaultName = 'Ibu Sari Rahayu, M.Pd.';
+                                            defaultName = (auth.currentUser?.displayName || 'Tutor');
                                             extraFields = {
                                                 nip: '198704122015042001',
                                                 institusi: 'Homeschooling Flexa Cendekia x UNIPDU',
                                                 bidang: 'Tutor & Dosen Pembimbing UNIPDU'
                                             };
                                         } else if (normRole === 'OrangTua') {
-                                            defaultName = 'Bpk. Hendra Pratama';
+                                            defaultName = (auth.currentUser?.displayName || 'Wali Siswa');
                                             extraFields = {
                                                 telepon: '0813-9876-5432',
                                                 alamat: 'Jombang, Jawa Timur',

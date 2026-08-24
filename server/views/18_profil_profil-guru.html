@@ -156,7 +156,7 @@
 
                     <div id="dropdownProfil" class="hidden absolute right-0 top-12 w-60 bg-white border border-primary/20 shadow-xl rounded-md p-3 z-50">
                         <div class="pb-2 mb-2 border-b border-primary/10">
-                            <p class="font-bold text-primary text-xs truncate user-display-name">Ibu Sari Rahayu, M.Pd.</p>
+                            <p class="font-bold text-primary text-xs truncate user-display-name">Tutor &amp; Pendidik</p>
                             <p id="dropdown-email" class="text-[11px] text-on-surface-variant font-mono truncate">sari.rahayu@flexacendekia.sch.id</p>
                         </div>
                         <a href="/?page=14_dashboard-guru" class="flex items-center gap-2 py-2 px-2 text-xs text-primary hover:bg-primary/5 rounded transition-colors">
@@ -327,7 +327,7 @@
                                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-base">person</span>
                                     <input type="text" id="fullName" required
                                         class="w-full pl-9 pr-3 py-2.5 border border-primary/20 bg-surface-container-lowest text-xs text-primary font-medium focus:ring-1 focus:ring-primary focus:outline-none rounded"
-                                        placeholder="Contoh: Ibu Sari Rahayu, M.Pd." />
+                                        placeholder="Contoh: Dr. H. Ahmad Dahlan, M.Pd." />
                                 </div>
                             </div>
 
@@ -600,11 +600,11 @@
 
         function populateGuruData(user) {
             const u = user || {};
-            const nama = u.nama || localStorage.getItem('guruNama') || 'Ibu Sari Rahayu, M.Pd.';
-            const email = u.email || localStorage.getItem('guruEmail') || (auth.currentUser ? auth.currentUser.email : 'sari.rahayu@flexacendekia.sch.id');
-            const nip = u.nip || localStorage.getItem('guruNip') || '198704122015042001';
+            const nama = u.nama || localStorage.getItem('guruNama') || (auth.currentUser?.displayName || cleanName || 'Tutor & Pendidik');
+            const email = u.email || localStorage.getItem('guruEmail') || (auth.currentUser ? auth.currentUser.email : '');
+            const nip = u.nip || localStorage.getItem('guruNip') || '-';
             const institusi = u.institusi || localStorage.getItem('guruInstitusi') || 'Homeschooling Flexa Cendekia x UNIPDU';
-            const noHp = u.noHp || u.telepon || u.kontak || localStorage.getItem('guruNoHp') || '0812-9876-5432';
+            const noHp = u.noHp || u.telepon || u.kontak || localStorage.getItem('guruNoHp') || '';
             const bidang = u.bidang || localStorage.getItem('guruBidang') || 'Tutor & Dosen Pembimbing UNIPDU';
 
             // Topbar & Hero Header

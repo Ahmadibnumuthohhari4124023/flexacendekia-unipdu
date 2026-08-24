@@ -637,7 +637,7 @@
             const user = e.detail;
             if (user) {
                 currentGuru = user;
-                const teacherName = user.nama || localStorage.getItem('guruNama') || 'Ibu Sari Rahayu, M.Pd.';
+                const teacherName = user.nama || localStorage.getItem('guruNama') || (user.displayName || 'Tutor & Pendidik');
                 const nameEl = document.getElementById('teacher-name-top');
                 if (nameEl) nameEl.textContent = teacherName;
                 const avatarEl = document.getElementById('teacher-avatar');

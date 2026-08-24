@@ -142,14 +142,14 @@
             <div>
                 <div class="flex items-center gap-3 mb-1">
                     <h1 class="font-headline-md text-2xl font-bold text-primary">
-                        Selamat Datang, <span id="guru-name">Ibu Sari Rahayu, M.Pd.</span>
+                        Selamat Datang, <span id="guru-name">Tutor &amp; Pendidik</span>
                     </h1>
                     <span class="px-2.5 py-0.5 bg-role-teacher/10 text-role-teacher text-[10px] font-mono font-bold rounded border border-role-teacher/20 uppercase">
                         Tutor &amp; Dosen Pembimbing UNIPDU
                     </span>
                 </div>
                 <p class="text-xs text-on-surface-variant">
-                    NIP: <strong id="guru-nip" class="font-mono text-primary">198704122015042001</strong> • Membimbing siswa aktif jenjang <strong class="text-secondary">SD (1-6)</strong>, <strong class="text-secondary">SMP (7-9)</strong>, dan <strong class="text-secondary">SMA (10-12 / S1 Akselerasi)</strong>.
+                    NIP: <strong id="guru-nip" class="font-mono text-primary">-</strong> • Membimbing siswa aktif jenjang <strong class="text-secondary">SD (1-6)</strong>, <strong class="text-secondary">SMP (7-9)</strong>, dan <strong class="text-secondary">SMA (10-12 / S1 Akselerasi)</strong>.
                 </p>
             </div>
             <a href="/?page=15_tinjauan-guru"
@@ -353,11 +353,11 @@
         async function muatDataDashboardGuru(guruUser) {
             try {
                 // Update Teacher Profile Info dynamically
-                let teacherName = (guruUser && (guruUser.nama || guruUser.displayName)) || localStorage.getItem('guruNama') || localStorage.getItem('userNama') || 'Ibu Sari Rahayu, M.Pd.';
+                let teacherName = (guruUser && (guruUser.nama || guruUser.displayName)) || localStorage.getItem('guruNama') || localStorage.getItem('userNama') || 'Tutor & Pendidik';
                 if (!teacherName || teacherName === 'Guru' || teacherName === 'Guru Pembimbing' || teacherName === 'Tutor' || teacherName.trim() === '') {
-                    teacherName = 'Ibu Sari Rahayu, M.Pd.';
+                    teacherName = 'Tutor & Pendidik';
                 }
-                const teacherNip = (guruUser && guruUser.nip) || localStorage.getItem('guruNip') || '198704122015042001';
+                const teacherNip = (guruUser && guruUser.nip) || localStorage.getItem('guruNip') || '-';
                 const nameEl = document.getElementById('guru-name');
                 if (nameEl) nameEl.textContent = teacherName;
                 const nipEl = document.getElementById('guru-nip');

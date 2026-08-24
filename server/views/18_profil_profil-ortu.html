@@ -320,7 +320,7 @@
                                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-base">person</span>
                                     <input type="text" id="fullName" required
                                         class="w-full pl-9 pr-3 py-2.5 border border-primary/20 bg-surface-container-lowest text-xs text-primary font-medium focus:ring-1 focus:ring-role-parent focus:outline-none rounded"
-                                        placeholder="Contoh: Bpk. Hendra Pratama" />
+                                        placeholder="Contoh: Bpk. Bambang Sutrisno" />
                                 </div>
                             </div>
 
@@ -589,9 +589,11 @@
 
         function populateOrtuData(user) {
             const u = user || {};
-            const nama = u.nama || localStorage.getItem('ortuNama') || 'Bpk. Hendra Pratama';
-            const email = u.email || localStorage.getItem('ortuEmail') || (auth.currentUser ? auth.currentUser.email : 'hendra.pratama@flexacendekia.sch.id');
-            const noHp = u.noHp || u.telepon || u.kontak || localStorage.getItem('ortuNoHp') || '0813-9876-5432';
+            const emailPrefix = (u.email || (auth.currentUser ? auth.currentUser.email : '')).split('@')[0] || 'Orang Tua / Wali';
+            const cleanName = emailPrefix.replace(/[._-]/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            const nama = u.nama || localStorage.getItem('ortuNama') || cleanName;
+            const email = u.email || localStorage.getItem('ortuEmail') || (auth.currentUser ? auth.currentUser.email : '');
+            const noHp = u.noHp || u.telepon || u.kontak || localStorage.getItem('ortuNoHp') || '';
             const institusi = u.institusi || u.pekerjaan || localStorage.getItem('ortuPekerjaan') || 'Wiraswasta / Profesional';
             const domisili = u.domisili || u.alamat || localStorage.getItem('ortuDomisili') || 'Jombang, Jawa Timur';
 

@@ -150,7 +150,7 @@
 <!-- Header & Profile Info -->
 <header class="col-span-12 paper-card hairline-border p-8 mb-4 flex flex-col md:flex-row justify-between items-start md:items-center">
 <div>
-<h1 class="font-headline-md text-headline-md text-primary mb-2">Selamat Datang, <span id="header-ortu-name">Bpk. Hendra Pratama</span></h1>
+<h1 class="font-headline-md text-headline-md text-primary mb-2">Selamat Datang, <span id="header-ortu-name">Wali Siswa</span></h1>
 <div class="flex items-center space-x-4">
 <span class="bg-[#A65C4B1A] text-role-parent font-label-caps text-label-caps px-3 py-1 rounded-full hairline-border border-role-parent/20">Akses Lihat Saja</span>
 <p class="font-body-sm text-body-sm text-on-surface-variant italic">
@@ -552,9 +552,9 @@ Data disinkronkan via SSO Flexa Cendekia
                 try { return JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch(e) { return {}; }
             })();
 
-            let ortuName = (currentUser && (currentUser.nama || currentUser.displayName)) || localStorage.getItem('ortuNama') || localStorage.getItem('userNama') || 'Bpk. Hendra Pratama';
+            let ortuName = (currentUser && (currentUser.nama || currentUser.displayName)) || localStorage.getItem('ortuNama') || localStorage.getItem('userNama') || 'Wali Siswa';
             if (!ortuName || ortuName === 'Orang Tua' || ortuName === 'OrangTua' || ortuName === 'Wali' || ortuName === 'Wali Siswa' || ortuName.trim() === '') {
-                ortuName = 'Bpk. Hendra Pratama';
+                ortuName = 'Wali Siswa';
             }
             const headerNameEl = document.getElementById('header-ortu-name');
             const navbarNameEl = document.getElementById('navbar-ortu-name');

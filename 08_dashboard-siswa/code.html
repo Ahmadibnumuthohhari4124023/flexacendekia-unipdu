@@ -233,7 +233,7 @@
                             LS
                         </div>
                         <div>
-                            <h3 id="advisor-name" class="font-serif text-base font-bold text-primary leading-snug">Ibu Lestari, S.Sn</h3>
+                            <h3 id="advisor-name" class="font-serif text-base font-bold text-primary leading-snug">Tutor Pembimbing Akademik</h3>
                             <p id="advisor-spec" class="text-xs text-on-surface-variant">Pembimbing Kurikulum & Desain</p>
                         </div>
                     </div>
@@ -384,7 +384,7 @@
                         LS
                     </div>
                     <div>
-                        <h3 class="font-serif text-base font-bold leading-tight" id="modal-teacher-name">Konsultasi dengan Ibu Lestari, S.Sn</h3>
+                        <h3 class="font-serif text-base font-bold leading-tight" id="modal-teacher-name">Konsultasi dengan Tutor Pembimbing Akademik</h3>
                         <p class="font-sans text-xs text-white/80">Pembimbing Akademik & Desain Portofolio</p>
                     </div>
                 </div>
@@ -649,7 +649,7 @@
             const advisorSpecEl = document.getElementById('advisor-spec');
             const advisorAvatarEl = document.getElementById('advisor-avatar');
 
-            let advisorName = 'Ibu Lestari, S.Sn, M.Kom';
+            let advisorName = 'Tutor Pembimbing Akademik, M.Kom';
             let advisorSpec = 'Pembimbing Sains & Desain Rekayasa';
             let advisorInitials = 'LS';
 
@@ -822,7 +822,7 @@
             
             const siswaId = currentStudent ? (currentStudent.uid || currentStudent.id) : null;
             if (siswaId && window.DataStore && window.DataStore.getPesanKonsultasi) {
-                const messages = await window.DataStore.getPesanKonsultasi(siswaId, 'guru_lestari_01');
+                const messages = await window.DataStore.getPesanKonsultasi(siswaId, 'tutor_akademik_unipdu');
                 renderConsultationMessages(messages);
             }
         }
@@ -875,8 +875,8 @@
             const siswaNama = currentStudent ? currentStudent.nama : 'Siswa';
 
             if (siswaId && window.DataStore && window.DataStore.kirimPesanKonsultasi) {
-                await window.DataStore.kirimPesanKonsultasi(siswaId, 'guru_lestari_01', 'Siswa', siswaNama, text, selectedConsultationTopic);
-                const updated = await window.DataStore.getPesanKonsultasi(siswaId, 'guru_lestari_01');
+                await window.DataStore.kirimPesanKonsultasi(siswaId, 'tutor_akademik_unipdu', 'Siswa', siswaNama, text, selectedConsultationTopic);
+                const updated = await window.DataStore.getPesanKonsultasi(siswaId, 'tutor_akademik_unipdu');
                 renderConsultationMessages(updated);
             }
             input.value = '';

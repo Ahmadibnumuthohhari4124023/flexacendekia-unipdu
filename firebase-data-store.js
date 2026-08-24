@@ -625,11 +625,10 @@ const DataStore = {
 
             // Fallback default teacher mentor
             return {
-                id: 'guru_lestari_01',
-                uid: 'guru_lestari_01',
-                nama: 'Ibu Lestari, S.Sn',
-                spesialisasi: 'Pembimbing Akademik & Desain Portofolio',
-                email: 'lestari@flexacendekia.sch.id',
+                id: 'tutor_akademik',
+                uid: 'tutor_akademik',
+                nama: 'Tutor Pembimbing Akademik',
+                email: 'akademik@flexacendekia.id',
                 statusOnline: true,
                 jamKonsultasi: 'Senin - Jumat (08:00 - 15:00 WIB)'
             };
@@ -765,7 +764,7 @@ const DataStore = {
             grades.push(
                 { kode: 'SD-LIT-01', namaMapel: 'Bahasa Indonesia & Literasi Cerita', namaGuru: 'Ibu Nur Aini, S.Pd', skor: 94, nilaiHuruf: 'A', bobotSKS: 4, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
                 { kode: 'SD-MAT-01', namaMapel: 'Matematika & Logika Konkret', namaGuru: 'Bpk. Hendro Utomo, S.Pd', skor: 91, nilaiHuruf: 'A', bobotSKS: 4, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
-                { kode: 'SD-SENI-01', namaMapel: `Seni Budaya & Minat Ekspresi (${citaCita})`, namaGuru: 'Ibu Lestari, S.Sn', skor: 96, nilaiHuruf: 'A', bobotSKS: 3, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
+                { kode: 'SD-SENI-01', namaMapel: `Seni Budaya & Minat Ekspresi (${citaCita})`, namaGuru: 'Dosen Pengampu UNIPDU', skor: 96, nilaiHuruf: 'A', bobotSKS: 3, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
                 { kode: 'SD-PANC-01', namaMapel: 'Pendidikan Pancasila & Budi Pekerti', namaGuru: 'Ibu Siti Rahma, M.Pd', skor: 93, nilaiHuruf: 'A', bobotSKS: 2, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
                 { kode: 'SD-IPAS-01', namaMapel: 'IPAS (Eksplorasi Lingkungan Hidup)', namaGuru: 'Bpk. Danang Prasetyo, S.Pd', skor: 92, nilaiHuruf: 'A', bobotSKS: 3, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
                 { kode: 'SD-PJOK-01', namaMapel: 'PJOK & Aktivitas Motorik Sehat', namaGuru: 'Bpk. Rahmat Hidayat, S.Pd', skor: 95, nilaiHuruf: 'A', bobotSKS: 2, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
@@ -777,7 +776,7 @@ const DataStore = {
                 grades.push(
                     { kode: 'SD-LIT-00', namaMapel: 'Pengenalan Huruf & Kosakata Dasar', namaGuru: 'Ibu Nur Aini, S.Pd', skor: 92, nilaiHuruf: 'A', bobotSKS: 4, semester: 'Semester Awal (Fondasi A)', status: 'Lulus' },
                     { kode: 'SD-MAT-00', namaMapel: 'Pengenalan Angka & Pola Spasial', namaGuru: 'Bpk. Hendro Utomo, S.Pd', skor: 89, nilaiHuruf: 'A-', bobotSKS: 4, semester: 'Semester Awal (Fondasi A)', status: 'Lulus' },
-                    { kode: 'SD-SENI-00', namaMapel: `Kreativitas Warna & Olah Rasa (${citaCita})`, namaGuru: 'Ibu Lestari, S.Sn', skor: 95, nilaiHuruf: 'A', bobotSKS: 3, semester: 'Semester Awal (Fondasi A)', status: 'Lulus' },
+                    { kode: 'SD-SENI-00', namaMapel: `Kreativitas Warna & Olah Rasa (${citaCita})`, namaGuru: 'Dosen Pengampu UNIPDU', skor: 95, nilaiHuruf: 'A', bobotSKS: 3, semester: 'Semester Awal (Fondasi A)', status: 'Lulus' },
                     { kode: 'SD-PANC-00', namaMapel: 'Karakter Sopan Santun & Gotong Royong', namaGuru: 'Ibu Siti Rahma, M.Pd', skor: 90, nilaiHuruf: 'A', bobotSKS: 2, semester: 'Semester Awal (Fondasi A)', status: 'Lulus' }
                 );
             }
@@ -810,7 +809,7 @@ const DataStore = {
                 { kode: 'SMA-MINAT-01', namaMapel: `Keahlian Inti & Studi Kasus (${citaCita})`, namaGuru: 'Dosen Pembimbing UNIPDU', skor: 95, nilaiHuruf: 'A', bobotSKS: 4, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
                 { kode: 'SMA-SAINS-01', namaMapel: 'Sains Terapan & Metodologi Riset', namaGuru: 'Ibu Dr. Sri Rejeki', skor: 88, nilaiHuruf: 'A-', bobotSKS: 4, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
                 { kode: 'SMA-ENG-01', namaMapel: 'Academic English & International Prep', namaGuru: 'Ms. Sarah Johnson, M.Ed', skor: 93, nilaiHuruf: 'A', bobotSKS: 3, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
-                { kode: 'SMA-PORTO-01', namaMapel: 'Studio Portofolio & Proyek Mandiri', namaGuru: 'Ibu Lestari, S.Sn', skor: 96, nilaiHuruf: 'A', bobotSKS: 3, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
+                { kode: 'SMA-PORTO-01', namaMapel: 'Studio Portofolio & Proyek Mandiri', namaGuru: 'Dosen Pengampu UNIPDU', skor: 96, nilaiHuruf: 'A', bobotSKS: 3, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
                 { kode: 'SMA-KRS-01', namaMapel: 'Matrikulasi S1 & Karir UNIPDU', namaGuru: 'Konselor Akademik UNIPDU', skor: 92, nilaiHuruf: 'A', bobotSKS: 3, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
                 { kode: 'SMA-P5-01', namaMapel: 'Karya Ilmiah Remaja & P5 Unggulan', namaGuru: 'Tim Fasilitator SMA', skor: 94, nilaiHuruf: 'A', bobotSKS: 2, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' }
             );
