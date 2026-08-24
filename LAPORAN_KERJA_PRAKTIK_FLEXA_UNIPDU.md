@@ -219,7 +219,7 @@ Kolaborasi antara Flexa Cendekia dan UNIPDU melahirkan model pendidikan teraksel
 
 ---
 
-# BAB III: LANDASAN TEORI
+# BAB III: LANDASAN TEORI DAN SPESIFIKASI TEKNOLOGI
 
 ### 3.1 Teori Pemilihan Karir John Holland (Model RIASEC)
 Model RIASEC yang dikembangkan oleh John L. Holland membagi kepribadian dan lingkungan kerja manusia ke dalam 6 tipe:
@@ -230,11 +230,41 @@ Model RIASEC yang dikembangkan oleh John L. Holland membagi kepribadian dan ling
 5. **Enterprising (E)**: Minat pada kepemimpinan, persuasi bisnis, negosiasi, dan kewirausahaan.
 6. **Conventional (C)**: Minat pada keteraturan data, manajemen administrasi, keuangan, dan prosedur sistematis.
 
-### 3.2 Cloud Firestore NoSQL Architecture
-Cloud Firestore adalah basis data dokumen NoSQL berbasis cloud yang menyediakan performa query tinggi, sinkronisasi data *real-time*, dan skalabilitas otomatis. Data disimpan dalam bentuk *Documents* yang dikelompokkan ke dalam *Collections*.
+### 3.2 Arsitektur Frontend (Sisi Klien)
+Pengembangan antarmuka pengguna (*Frontend*) difokuskan pada kecepatan rendering, responsivitas multi-perangkat (*mobile-first & desktop*), dan estetika modern berstandar institusi akademik.
+1. **HTML5 Semantic Markup**: Menggunakan elemen semantik (`<header>`, `<nav>`, `<aside>`, `<main>`, `<section>`, `<footer>`) untuk memastikan struktur dokumen rapi, terstandar, dan aksesibel.
+2. **Tailwind CSS Utility Framework**: 
+   * Mengadopsi prinsip *Utility-First CSS* untuk mengontrol tipografi, spasi, grid layout, dan warna secara modular tanpa *bloatware*.
+   * Mengintegrasikan plugin `@tailwindcss/forms` untuk kontrol formulir yang elegan dan `@tailwindcss/container-queries` untuk fleksibilitas komponen bento-grid.
+   * Menerapkan palet warna *Academic Ledger Theme*: `academic-cream` (`#EAEDE2`), `academic-ivory` (`#FBFAF5`), `brand-gold` (`#B9862F`), `primary-dark` (`#020B24`), dan `role-teacher` (`#005046`).
+3. **Tipografi & Ikonografi**:
+   * Menggabungkan font serif berwibawa (*Source Serif 4*) untuk judul akademis, sans-serif modern (*Libre Franklin*) untuk konten bacaan, dan monospace (*JetBrains Mono*) untuk data NIS/NIM/KRS.
+   * Ikonografi berbasis *Google Material Symbols Outlined*.
+4. **JavaScript ES6+ & Client State Engine**:
+   * Menggunakan Vanilla JavaScript ES6+ asinkron (`async/await`, `Promise`, `CustomEvent`).
+   * Mengimplementasikan teknik **Fast Hydration** membaca cache *LocalStorage* seketika untuk mencegah *flickering* saat halaman pertama kali dibuka sebelum *network handshake* selesai.
+   * Modul sinkronisasi dinamis: `firebase-auth-guard.js`, `firebase-data-store.js`, dan `sso-sync.js`.
 
-### 3.3 Node.js dan Express.js Framework
-Node.js menyediakan runtime JavaScript asinkron non-blocking berbasis engine V8. Express.js digunakan sebagai framework routing backend yang ringan dan efisien untuk melayani endpoint REST API serta routing antarmuka pengguna secara cepat.
+### 3.3 Arsitektur Backend (Sisi Server)
+Arsitektur sisi server (*Backend*) dibangun di atas lingkungan runtime berkinerja tinggi untuk melayani rendering halaman dan komunikasi data:
+1. **Runtime Environment (Node.js)**:
+   * Menggunakan engine JavaScript V8 dengan arsitektur *event-driven* dan *non-blocking I/O model* yang efisien dalam menangani *concurrent requests*.
+2. **Server Routing & API Controller (Express.js)**:
+   * Mengorganisasi routing secara terstruktur melalui `routes/pages.js` untuk antarmuka web dan `routes/api.js` untuk endpoint JSON RESTful API.
+   * Middleware terintegrasi: `cors()` untuk pengamanan lintas domain, `express.json()` dan `express.urlencoded()` untuk *body parsing*, serta `express.static()` untuk penyajian file statis publik (*images*, *fonts*, *client scripts*).
+3. **Role-Based Access Control (RBAC)**:
+   * Memvalidasi setiap rute halaman secara ketat sehingga pengguna hanya dapat mengakses portal yang berhak (Siswa pada halaman `08_` s.d. `13_`, Guru pada `14_` dan `15_`, Orang Tua pada `16_`).
+
+### 3.4 Framework dan Platform Layanan yang Digunakan
+
+| Kategori | Nama Teknologi / Framework | Versi / Tipe | Fungsi & Peranan dalam Sistem |
+| :--- | :--- | :--- | :--- |
+| **Backend Framework** | **Express.js** | v4.x (Node.js) | Routing server, manajemen middleware, dan penyedia endpoint REST API. |
+| **CSS Framework** | **Tailwind CSS** | v3.x (JIT Engine) | Desain UI responsif, tema visual *Academic Ledger*, dan komponen interaktif. |
+| **BaaS (Authentication)** | **Firebase Auth** | v10.x SDK Compat | Manajemen sesi, enkripsi kata sandi, token auto-refresh, dan verifikasi login multi-role. |
+| **BaaS (Database)** | **Google Cloud Firestore** | NoSQL Document DB | Penyimpanan dokumen pengguna, data asesmen RIASEC, KRS, nilai, dan notifikasi real-time. |
+| **RDBMS (Relasional)** | **MySQL / MariaDB** | MySQL 8.x (`mysql2`) | Skema data relasional pelengkap untuk arsip transaksional lokal dan kompatibilitas server kampus. |
+| **Hosting & Cloud CI/CD** | **Vercel & GitHub** | Serverless Edge | Deployment otomatis setiap pembaruan branch git (`main`) dan distribusi CDN global. |
 
 ---
 
