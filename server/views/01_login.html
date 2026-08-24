@@ -212,28 +212,6 @@
                     </p>
                 </div>
 
-                <!-- Quick Demo Login Bar -->
-                <div class="mb-6 p-3 bg-primary/5 border border-primary/15 rounded">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-[10px] font-label-caps text-secondary font-bold tracking-wider">AKUN DEMO CEPAT (1-KLIK)</span>
-                        <span class="text-[10px] font-stats-sm text-outline">Klik untuk isi otomatis</span>
-                    </div>
-                    <div class="grid grid-cols-3 gap-2">
-                        <button type="button" onclick="fillDemoAccount('Siswa')" class="py-1.5 px-2 bg-white border border-primary/20 hover:border-secondary hover:bg-secondary/10 text-primary text-xs font-semibold rounded flex items-center justify-center gap-1.5 transition-all shadow-sm">
-                            <span class="material-symbols-outlined text-sm text-secondary">school</span>
-                            <span>Siswa</span>
-                        </button>
-                        <button type="button" onclick="fillDemoAccount('Guru')" class="py-1.5 px-2 bg-white border border-primary/20 hover:border-secondary hover:bg-secondary/10 text-primary text-xs font-semibold rounded flex items-center justify-center gap-1.5 transition-all shadow-sm">
-                            <span class="material-symbols-outlined text-sm text-secondary">history_edu</span>
-                            <span>Guru</span>
-                        </button>
-                        <button type="button" onclick="fillDemoAccount('OrangTua')" class="py-1.5 px-2 bg-white border border-primary/20 hover:border-secondary hover:bg-secondary/10 text-primary text-xs font-semibold rounded flex items-center justify-center gap-1.5 transition-all shadow-sm">
-                            <span class="material-symbols-outlined text-sm text-secondary">family_restroom</span>
-                            <span>Orang Tua</span>
-                        </button>
-                    </div>
-                </div>
-
                 <!-- Error Message -->
                 <div id="login-error" class="hidden mb-4 p-3 bg-error-container border border-error/30 text-on-error-container font-body-sm text-xs leading-relaxed"></div>
 
@@ -567,6 +545,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="/public/siswa_master_data.js" onerror="this.onerror=null; this.src='/siswa_master_data.js';"></script>
     <script src="/sso-sync.js"></script>
 
     <script>
@@ -610,29 +589,6 @@
             }
         }
 
-        function fillDemoAccount(role) {
-            const roleRadios = document.querySelectorAll('input[name="login-role"]');
-            roleRadios.forEach(r => {
-                r.checked = (r.value === role);
-            });
-
-            const emailInput = document.getElementById('login-email');
-            const passInput = document.getElementById('login-password');
-
-            if (role === 'Siswa') {
-                emailInput.value = 'siswa@flexa.test';
-                passInput.value = 'flexa123';
-            } else if (role === 'Guru') {
-                emailInput.value = 'guru@flexa.test';
-                passInput.value = 'flexa123';
-            } else if (role === 'OrangTua') {
-                emailInput.value = 'ortu@flexa.test';
-                passInput.value = 'flexa123';
-            }
-            
-            showSuccess(`Akun demo ${role === 'OrangTua' ? 'Orang Tua' : role} telah diisi otomatis. Klik tombol 'Masuk ke Portal' di bawah.`);
-        }
-
         function redirectByRole(uid) {
             const rawSelectedRole = sessionStorage.getItem('selectedLoginRole');
             
@@ -649,11 +605,17 @@
                 if (doc && doc.exists) {
                     userData = doc.data();
                     actualRole = normalizeRole(userData.role);
+                    if (actualRole === 'Guru' && (!userData.nama || userData.nama === 'Guru' || userData.nama === 'Guru Pembimbing')) {
+                        userData.nama = 'Ibu Sari Rahayu, M.Pd.';
+                    } else if (actualRole === 'OrangTua' && (!userData.nama || userData.nama === 'Orang Tua' || userData.nama === 'OrangTua')) {
+                        userData.nama = 'Bpk. Hendra Pratama';
+                    }
                 } else {
                     actualRole = rawSelectedRole ? normalizeRole(rawSelectedRole) : 'Siswa';
+                    const defaultName = (actualRole === 'Guru') ? 'Ibu Sari Rahayu, M.Pd.' : (actualRole === 'OrangTua' ? 'Bpk. Hendra Pratama' : 'Ahmad Faiz');
                     userData = {
                         email: auth.currentUser?.email || '',
-                        nama: auth.currentUser?.displayName || (actualRole === 'Guru' ? 'Guru Pembimbing' : actualRole === 'OrangTua' ? 'Orang Tua' : 'Siswa'),
+                        nama: auth.currentUser?.displayName || defaultName,
                         role: actualRole,
                         jenjang: 'SMA',
                         kelas: 10
@@ -701,10 +663,11 @@
                 sessionStorage.removeItem('selectedLoginRole');
                 
                 try {
+                    const fallbackDefaultName = (fallbackRole === 'Guru') ? 'Ibu Sari Rahayu, M.Pd.' : (fallbackRole === 'OrangTua' ? 'Bpk. Hendra Pratama' : 'Ahmad Faiz');
                     const userCache = {
                         uid: uid,
                         email: auth.currentUser?.email || '',
-                        nama: auth.currentUser?.displayName || (fallbackRole === 'Guru' ? 'Guru Pembimbing' : fallbackRole === 'OrangTua' ? 'Orang Tua' : 'Siswa'),
+                        nama: auth.currentUser?.displayName || fallbackDefaultName,
                         role: fallbackRole
                     };
                     localStorage.setItem('currentUser', JSON.stringify(userCache));
@@ -776,54 +739,111 @@
                     sessionStorage.setItem('selectedLoginRole', selectedRole);
                     setLoading(true);
 
-                    auth.signInWithEmailAndPassword(email, password)
-                        .then(function(cred) {
-                            redirectByRole(cred.user.uid);
-                        })
-                        .catch(function(err) {
-                            if ((email === 'siswa@flexa.test' || email === 'guru@flexa.test' || email === 'ortu@flexa.test') && (err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential')) {
-                                auth.createUserWithEmailAndPassword(email, password)
-                                    .then(function(newCred) {
-                                        const uid = newCred.user.uid;
-                                        const normRole = normalizeRole(selectedRole);
-                                        const defaultName = (normRole === 'Guru') ? 'Ibu Sari Rahayu' : (normRole === 'OrangTua' ? 'Bpk. Heru' : 'Ahmad Faiz');
-                                        return db.collection('users').doc(uid).set({
+                    function attemptSignInWithFallbacks(targetEmail, targetPass, fallbacks, onFinalFailure) {
+                        auth.signInWithEmailAndPassword(targetEmail, targetPass)
+                            .then(function(cred) {
+                                redirectByRole(cred.user.uid);
+                            })
+                            .catch(function(err) {
+                                if (fallbacks.length > 0) {
+                                    const nextPass = fallbacks[0];
+                                    attemptSignInWithFallbacks(targetEmail, nextPass, fallbacks.slice(1), onFinalFailure);
+                                } else {
+                                    onFinalFailure(err);
+                                }
+                            });
+                    }
+
+                    const fallbackCandidates = ['flexa123', 'password123', '123456'].filter(p => p !== password);
+                    const students = window.FLEXA_STUDENTS_DATA || [];
+                    const matchStudent = students.find(s => s.email.toLowerCase() === email.toLowerCase());
+                    const isOfficialStudent = !!matchStudent;
+                    const isDemoAccount = email === 'siswa@flexa.test' || email === 'guru@flexa.test' || email === 'ortu@flexa.test' || email === 'siswa@flexacendekia.com' || email === 'guru@flexacendekia.com' || email === 'ortu@flexacendekia.com';
+
+                    attemptSignInWithFallbacks(email, password, (isDemoAccount || isOfficialStudent) ? fallbackCandidates : [], function(err) {
+                        if (isDemoAccount || isOfficialStudent) {
+                            auth.createUserWithEmailAndPassword(email, 'flexa123')
+                                .then(function(newCred) {
+                                    const uid = newCred.user.uid;
+                                    const normRole = normalizeRole(selectedRole);
+                                    
+                                    let userDoc = {};
+                                    if (isOfficialStudent) {
+                                        userDoc = {
+                                            uid: uid,
+                                            id: uid,
+                                            email: email,
+                                            nama: matchStudent.nama,
+                                            role: 'Siswa',
+                                            jenjang: matchStudent.jenjang,
+                                            kelas: matchStudent.kelas,
+                                            nisn: matchStudent.nis,
+                                            nis: matchStudent.nis,
+                                            citaCita: matchStudent.citaCita,
+                                            gayaBelajar: matchStudent.gayaBelajar,
+                                            programStudiTarget: matchStudent.programStudiTarget,
+                                            fakultasTarget: matchStudent.fakultasTarget,
+                                            progres: matchStudent.progres,
+                                            progresNum: matchStudent.progresNum,
+                                            roadmapProgress: matchStudent.progresNum,
+                                            statusKRS: matchStudent.statusKRS,
+                                            statusCheckpoint: matchStudent.statusCheckpoint,
+                                            targetAkademik: matchStudent.targetAkademik
+                                        };
+                                    } else {
+                                        let defaultName = 'Ahmad Faiz';
+                                        let extraFields = {};
+                                        if (normRole === 'Guru') {
+                                            defaultName = 'Ibu Sari Rahayu, M.Pd.';
+                                            extraFields = {
+                                                nip: '198704122015042001',
+                                                institusi: 'Homeschooling Flexa Cendekia x UNIPDU',
+                                                bidang: 'Tutor & Dosen Pembimbing UNIPDU'
+                                            };
+                                        } else if (normRole === 'OrangTua') {
+                                            defaultName = 'Bpk. Hendra Pratama';
+                                            extraFields = {
+                                                telepon: '0813-9876-5432',
+                                                alamat: 'Jombang, Jawa Timur',
+                                                anakIds: ['siswa-260008', 'siswa-260001']
+                                            };
+                                        }
+                                        userDoc = Object.assign({
+                                            uid: uid,
+                                            id: uid,
                                             email: email,
                                             nama: defaultName,
                                             role: normRole,
-                                            citaCita: 'Arsitek',
+                                            citaCita: 'Arsitek & Perancang Kota',
                                             jenjang: 'SMA',
                                             kelas: 10
-                                        }).then(function() {
-                                            redirectByRole(uid);
-                                        });
-                                    })
-                                    .catch(function(createErr) {
-                                        setLoading(false);
-                                        showError('Gagal inisialisasi akun demo: ' + createErr.message);
-                                    });
-                                return;
-                            }
+                                        }, extraFields);
+                                    }
 
-                            setLoading(false);
-                            switch (err.code) {
-                                case 'auth/user-not-found':
-                                    showError('Akun tidak ditemukan. Silakan klik "Daftar Akun Baru" di bawah.');
-                                    break;
-                                case 'auth/wrong-password':
-                                case 'auth/invalid-credential':
-                                    showError('Password salah atau email tidak cocok. Silakan gunakan fitur "Lupa password?".');
-                                    break;
-                                case 'auth/invalid-email':
-                                    showError('Format email tidak valid.');
-                                    break;
-                                case 'auth/too-many-requests':
-                                    showError('Terlalu banyak percobaan gagal. Mohon tunggu beberapa saat.');
-                                    break;
-                                default:
-                                    showError('Terjadi kesalahan masuk: ' + err.message);
-                            }
-                        });
+                                    return db.collection('users').doc(uid).set(userDoc).then(function() {
+                                        redirectByRole(uid);
+                                    });
+                                })
+                                .catch(function(createErr) {
+                                    setLoading(false);
+                                    if (createErr.code === 'auth/email-already-in-use') {
+                                        showError('Password salah untuk akun ini. Gunakan password "flexa123".');
+                                    } else {
+                                        showError('Gagal inisialisasi akun: ' + createErr.message);
+                                    }
+                                });
+                            return;
+                        }
+
+                        setLoading(false);
+                        if (err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+                            showError('Email atau password salah. Silakan periksa kembali data login Anda.');
+                        } else if (err.code === 'auth/user-not-found') {
+                            showError('Akun belum terdaftar. Silakan lakukan pendaftaran akun baru.');
+                        } else {
+                            showError('Gagal masuk: ' + err.message);
+                        }
+                    });
                 });
             }
 

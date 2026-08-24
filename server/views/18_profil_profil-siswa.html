@@ -953,7 +953,7 @@
 
         function renderDataSiswa(user) {
             const nama = user.nama || localStorage.getItem('userNama') || 'Siswa Flexa';
-            const nisn = user.nisn || (user.uid ? user.uid.substring(0, 10) : '0084920194');
+            const nisn = user.nis || user.nisn || (user.uid ? user.uid.substring(0, 6) : '260001');
             const email = user.email || 'siswa@flexa.cendekia.id';
             const jenjang = (user.jenjang || localStorage.getItem('userJenjang') || 'SMA').toUpperCase();
             const kelas = user.kelas || localStorage.getItem('userKelas') || (jenjang === 'SD' ? '1' : (jenjang === 'SMP' ? '7' : '10'));

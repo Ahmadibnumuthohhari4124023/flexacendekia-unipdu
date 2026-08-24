@@ -345,8 +345,8 @@ class="w-full text-left font-label-caps text-label-caps text-error hover:opacity
             currentOrtuUser = e.detail;
             if (!currentOrtuUser) return;
 
-            const nama = currentOrtuUser.nama || 'Bpk. Heru Santoso';
-            const email = currentOrtuUser.email || 'ortu@flexa.test';
+            const nama = currentOrtuUser.nama || localStorage.getItem('ortuNama') || 'Bpk. Hendra Pratama';
+            const email = currentOrtuUser.email || localStorage.getItem('ortuEmail') || 'hendra.pratama@flexacendekia.sch.id';
             const noHp = currentOrtuUser.noHp || currentOrtuUser.telepon || currentOrtuUser.kontak || '';
             const institusi = currentOrtuUser.institusi || currentOrtuUser.pekerjaan || 'Wali Murid Flexa Cendekia';
 

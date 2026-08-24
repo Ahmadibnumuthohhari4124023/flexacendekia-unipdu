@@ -94,6 +94,7 @@
     <script src="/firebase-data-store.js"></script>
     <script src="/notification-sync.js"></script>
     <script src="/career-roadmap-data.js"></script>
+    <script src="/public/siswa_master_data.js" onerror="this.onerror=null; this.src='/siswa_master_data.js';"></script>
 </head>
 
 <body class="min-h-screen flex flex-col justify-between">
@@ -351,11 +352,13 @@
         let currentSiswaList = [];
         let filteredSiswaList = [];
 
-        function getCohortStudents() {
         async function muatDataDashboardGuru(guruUser) {
             try {
-                // Update Teacher Profile Info
-                const teacherName = (guruUser && guruUser.nama) || localStorage.getItem('guruNama') || 'Ibu Sari Rahayu, M.Pd.';
+                // Update Teacher Profile Info dynamically
+                let teacherName = (guruUser && (guruUser.nama || guruUser.displayName)) || localStorage.getItem('guruNama') || localStorage.getItem('userNama') || 'Ibu Sari Rahayu, M.Pd.';
+                if (!teacherName || teacherName === 'Guru' || teacherName === 'Guru Pembimbing' || teacherName === 'Tutor' || teacherName.trim() === '') {
+                    teacherName = 'Ibu Sari Rahayu, M.Pd.';
+                }
                 const teacherNip = (guruUser && guruUser.nip) || localStorage.getItem('guruNip') || '198704122015042001';
                 const nameEl = document.getElementById('guru-name');
                 if (nameEl) nameEl.textContent = teacherName;
@@ -368,37 +371,36 @@
 
                 if (window.firebaseDb && guruUid) {
                     try {
-                        // Query siswa dengan guruWaliId == guruUid
+                        // Query siswa dengan role == Siswa
                         const snap = await window.firebaseDb.collection('users')
                             .where('role', '==', 'Siswa')
-                            .where('guruWaliId', '==', guruUid)
                             .get();
                         if (!snap.empty) {
                             students = snap.docs.map(d => Object.assign({ id: d.id, uid: d.id }, d.data()));
-                        }
-
-                        // Cek juga array siswaBimbinganIds pada profil guru
-                        if (guruUser.siswaBimbinganIds && Array.isArray(guruUser.siswaBimbinganIds)) {
-                            for (const sId of guruUser.siswaBimbinganIds) {
-                                if (!students.some(s => s.id === sId || s.uid === sId)) {
-                                    const sDoc = await window.firebaseDb.collection('users').doc(sId).get();
-                                    if (sDoc.exists) {
-                                        students.push(Object.assign({ id: sDoc.id, uid: sDoc.id }, sDoc.data()));
-                                    }
-                                }
-                            }
                         }
                     } catch(e) {
                         console.warn('[DashboardGuru] Firestore read users warning:', e);
                     }
                 }
 
+                // 2. Gabungkan / lengkapi dengan 9 Master Siswa Resmi jika belum lengkap di Firestore
+                const masterList = window.FLEXA_STUDENTS_DATA || [];
+                masterList.forEach(m => {
+                    const exists = students.find(s => (s.nis && s.nis === m.nis) || (s.email && s.email.toLowerCase() === m.email.toLowerCase()));
+                    if (!exists) {
+                        students.push(Object.assign({ id: `siswa-${m.nis}`, uid: `siswa-${m.nis}` }, m));
+                    }
+                });
+
                 // Format fields on student list
                 currentSiswaList = students.map(s => {
                     const jenjang = (s.jenjang || 'SMA').toUpperCase();
-                    const kelas = s.kelas || (jenjang === 'SD' ? 1 : (jenjang === 'SMP' ? 7 : 10));
+                    const kelas = s.kelas || (jenjang === 'SD' ? 2 : (jenjang === 'SMP' ? 7 : 10));
                     const citaCita = s.citaCita || 'Belum Memilih';
+                    const nis = s.nis || s.nisn || '260001';
                     return Object.assign({}, s, {
+                        nis: nis,
+                        nisn: nis,
                         jenjang: jenjang,
                         kelas: kelas,
                         citaCita: citaCita,
@@ -409,6 +411,9 @@
                         progresNum: s.progresNum || s.roadmapProgress || 88
                     });
                 });
+
+                // Sort by NIS (260001 to 260009)
+                currentSiswaList.sort((a, b) => (a.nis || '').localeCompare(b.nis || ''));
 
                 // 2. Compute 100% Dynamic Metrics
                 updateMetricCards();
@@ -440,28 +445,34 @@
             const krsPendingList = list.filter(s => s.statusKRS === 'Menunggu Validasi');
             const krsApprovedList = list.filter(s => s.statusKRS === 'Disetujui' || s.statusKRS === 'Aktif');
 
-            // Breakdown by Checkpoint
-            const chkPendingList = list.filter(s => s.statusCheckpoint !== 'Selesai');
+            // Breakdown by Checkpoint (only those actually pending review)
+            const chkPendingList = list.filter(s => s.statusCheckpoint === 'Menunggu Review' || s.statusCheckpoint === 'Perlu Diperiksa');
 
-            // S1 Akselerasi UNIPDU
-            const akselerasiList = list.filter(s => (s.jenjang || '').toUpperCase() === 'SMA' || (s.programStudiTarget && s.programStudiTarget.includes('S1')));
+            // S1 Akselerasi UNIPDU (only if active/approved)
+            const akselerasiList = list.filter(s => s.programStudiTarget && s.programStudiTarget.includes('S1') && (s.statusKRS === 'Disetujui' || s.statusKRS === 'Aktif'));
 
             // 1. APPROVAL KRS
             const statKrs = document.getElementById('stat-krs');
             const statKrsSub = document.getElementById('stat-krs-sub');
             if (statKrs) statKrs.textContent = krsPendingList.length;
             if (statKrsSub) {
-                const sdP = krsPendingList.filter(s => (s.jenjang || '').toUpperCase() === 'SD').length;
-                const smpP = krsPendingList.filter(s => (s.jenjang || '').toUpperCase() === 'SMP').length;
-                const smaP = krsPendingList.filter(s => (s.jenjang || '').toUpperCase() === 'SMA').length;
-                statKrsSub.textContent = `${sdP} SD • ${smpP} SMP • ${smaP} SMA Perlu Review`;
+                if (krsPendingList.length === 0) {
+                    statKrsSub.textContent = 'Tidak Ada Antrean KRS';
+                } else {
+                    const sdP = krsPendingList.filter(s => (s.jenjang || '').toUpperCase() === 'SD').length;
+                    const smpP = krsPendingList.filter(s => (s.jenjang || '').toUpperCase() === 'SMP').length;
+                    const smaP = krsPendingList.filter(s => (s.jenjang || '').toUpperCase() === 'SMA').length;
+                    statKrsSub.textContent = `${sdP} SD • ${smpP} SMP • ${smaP} SMA Perlu Review`;
+                }
             }
 
             // 2. CHECKPOINT JUMAT
             const statChk = document.getElementById('stat-checkpoint');
             const statChkSub = document.getElementById('stat-checkpoint-sub');
             if (statChk) statChk.textContent = chkPendingList.length;
-            if (statChkSub) statChkSub.textContent = `${chkPendingList.length} Refleksi Pekan Ini`;
+            if (statChkSub) {
+                statChkSub.textContent = chkPendingList.length === 0 ? 'Belum Ada Refleksi Masuk' : `${chkPendingList.length} Refleksi Pekan Ini`;
+            }
 
             // 3. TOTAL SISWA BINAAN
             const statSiswa = document.getElementById('stat-siswa');
@@ -473,15 +484,17 @@
             const statAkselerasi = document.getElementById('stat-akselerasi');
             const statAkselerasiSub = document.getElementById('stat-akselerasi-sub');
             if (statAkselerasi) statAkselerasi.textContent = akselerasiList.length;
-            if (statAkselerasiSub) statAkselerasiSub.textContent = `${akselerasiList.length} Siswa Terdaftar S1`;
+            if (statAkselerasiSub) {
+                statAkselerasiSub.textContent = akselerasiList.length === 0 ? '0 Siswa Terdaftar S1' : `${akselerasiList.length} Siswa Terdaftar S1`;
+            }
 
-            // 5. Average Progress Calculation
+            // 5. Average Progress Calculation (Strict Clean State)
             let totalProgres = 0;
             list.forEach(s => {
-                const num = s.progresNum || parseInt(s.progres, 10) || 85;
-                totalProgres += num;
+                const num = s.progresNum !== undefined ? s.progresNum : (s.progres ? parseInt(s.progres, 10) : 0);
+                totalProgres += (isNaN(num) ? 0 : num);
             });
-            const avgProgres = totalSiswa > 0 ? Math.round(totalProgres / totalSiswa) : 89;
+            const avgProgres = totalSiswa > 0 ? Math.round(totalProgres / totalSiswa) : 0;
 
             const circleEl = document.getElementById('ringkasan-progres-circle');
             const textEl = document.getElementById('ringkasan-progres-text');
@@ -523,14 +536,17 @@
                 if (statusFilter === 'AKTIF' && s.statusKRS !== 'Disetujui' && s.statusKRS !== 'Aktif') {
                     return false;
                 }
+                if (statusFilter === 'BELUM' && s.statusKRS && s.statusKRS !== 'Belum Mengisi') {
+                    return false;
+                }
 
                 // 3. Search Query
                 if (searchQuery) {
                     const matchName = (s.nama || '').toLowerCase().includes(searchQuery);
-                    const matchNisn = (s.nisn || '').toLowerCase().includes(searchQuery);
+                    const matchNis = (s.nis || s.nisn || '').toLowerCase().includes(searchQuery);
                     const matchCita = (s.citaCita || '').toLowerCase().includes(searchQuery);
                     const matchProdi = (s.programStudiTarget || '').toLowerCase().includes(searchQuery);
-                    if (!matchName && !matchNisn && !matchCita && !matchProdi) {
+                    if (!matchName && !matchNis && !matchCita && !matchProdi) {
                         return false;
                     }
                 }
@@ -565,17 +581,24 @@
 
             tbody.innerHTML = siswaList.map(s => {
                 const jenjang = (s.jenjang || 'SMA').toUpperCase();
-                const kelas = s.kelas || (jenjang === 'SD' ? 1 : (jenjang === 'SMP' ? 7 : 10));
+                const kelas = s.kelas || (jenjang === 'SD' ? 2 : (jenjang === 'SMP' ? 7 : 10));
                 let jenjangColor = 'bg-purple-100 text-purple-800';
                 if (jenjang === 'SD') jenjangColor = 'bg-emerald-100 text-emerald-800';
                 else if (jenjang === 'SMP') jenjangColor = 'bg-blue-100 text-blue-800';
 
-                const citaCita = s.citaCita || 'Aktor';
-                const nisn = s.nisn || '7JtTafT1z7';
-                const isPending = s.statusKRS === 'Menunggu Validasi';
-                const statusBadge = isPending
-                    ? `<span class="px-2 py-0.5 bg-amber-100 text-amber-800 rounded text-[10px] font-bold border border-amber-300 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[12px]">pending</span> Validasi KRS</span>`
-                    : `<span class="px-2 py-0.5 bg-green-100 text-green-800 rounded text-[10px] font-bold border border-green-200 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[12px]">check_circle</span> Aktif</span>`;
+                const citaCita = s.citaCita && s.citaCita.trim() !== '' ? s.citaCita : '<span class="text-on-surface-variant italic font-normal">Belum Memilih Cita-Cita</span>';
+                const prodiTarget = s.programStudiTarget && s.programStudiTarget.trim() !== '' ? s.programStudiTarget : '<span class="text-on-surface-variant/70 italic">Belum Mengikuti Tes Diagnostik</span>';
+                const nis = s.nis || s.nisn || '260001';
+                const progresText = (s.progresNum !== undefined ? s.progresNum : (s.progres ? parseInt(s.progres, 10) : 0)) + '%';
+                
+                let statusBadge = '';
+                if (s.statusKRS === 'Menunggu Validasi') {
+                    statusBadge = `<span class="px-2 py-0.5 bg-amber-100 text-amber-800 rounded text-[10px] font-bold border border-amber-300 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[12px]">pending</span> Validasi KRS</span>`;
+                } else if (s.statusKRS === 'Disetujui' || s.statusKRS === 'Aktif') {
+                    statusBadge = `<span class="px-2 py-0.5 bg-green-100 text-green-800 rounded text-[10px] font-bold border border-green-200 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[12px]">check_circle</span> Aktif</span>`;
+                } else {
+                    statusBadge = `<span class="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px] font-medium border border-gray-200 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[12px]">edit_note</span> Belum Mengisi</span>`;
+                }
 
                 const highlightClass = s.isSelf ? 'bg-role-teacher/5 font-medium border-l-4 border-l-role-teacher' : '';
 
@@ -586,14 +609,14 @@
                                 ${s.nama || 'Siswa Flexa'}
                                 ${s.isSelf ? '<span class="text-[9px] px-1.5 py-0.2 bg-role-teacher text-white rounded font-mono font-normal">Akun Aktif</span>' : ''}
                             </div>
-                            <div class="text-[10px] text-on-surface-variant font-mono">NISN: ${nisn} · Progres Belajar: <strong class="text-primary">${s.progres || '85%'}</strong></div>
+                            <div class="text-[10px] text-on-surface-variant font-mono">NIS: <strong class="text-primary">${nis}</strong> · Progres: <strong class="text-primary">${progresText}</strong></div>
                         </td>
                         <td class="py-3 px-4">
                             <span class="px-2 py-0.5 ${jenjangColor} rounded font-semibold text-[10px]">${jenjang} Kelas ${kelas}</span>
                         </td>
                         <td class="py-3 px-4">
                             <span class="font-semibold text-secondary">${citaCita}</span>
-                            <span class="block text-[10px] text-on-surface-variant">${s.programStudiTarget || 'S1 Mitra UNIPDU'}</span>
+                            <span class="block text-[10px]">${prodiTarget}</span>
                         </td>
                         <td class="py-3 px-4 text-center">
                             ${statusBadge}
@@ -612,50 +635,30 @@
             const container = document.getElementById('konsultasi-list-container');
             if (!container) return;
 
-            const activeName = (localStorage.getItem('userNama') || 'Ahmad Ibnu MUthohhari').split(' ')[0];
-            const activeJenjang = (localStorage.getItem('userJenjang') || 'SD').toUpperCase();
-            const activeCita = localStorage.getItem('selectedCareer') || 'Aktor';
-            const guruNama = (localStorage.getItem('guruNama') || 'Ibu Sari').split(' ').slice(0, 2).join(' ');
+            // Check if any student has submitted a consultation or is in clean state
+            const hasActiveConsultation = currentSiswaList && currentSiswaList.some(s => s.statusKRS === 'Menunggu Validasi' || (s.progresNum && s.progresNum > 0));
 
-            // Build konsultasi from cohort students dynamically
-            const konsultasiItems = [
-                {
-                    nama: activeName,
-                    jenjang: activeJenjang,
-                    citaCita: activeCita,
-                    waktu: 'Baru (15m lalu)',
-                    waktuClass: 'text-role-teacher bg-role-teacher/10',
-                    pesan: `"${guruNama}, saya sudah menyelesaikan modul ${activeCita.toLowerCase()} dan portofolio berekspresi. Mohon review checkpoint minggu ini."`
-                }
-            ];
-
-            // Add other cohort students if available
-            if (currentSiswaList && currentSiswaList.length > 1) {
-                const others = currentSiswaList.filter(s => !s.isSelf).slice(0, 2);
-                others.forEach((s, idx) => {
-                    const firstName = (s.nama || 'Siswa').split(' ').slice(0, 2).join(' ');
-                    const jenjang = (s.jenjang || 'SMA').toUpperCase();
-                    const cita = (s.citaCita || 'Siswa').split(' ')[0];
-                    konsultasiItems.push({
-                        nama: firstName,
-                        jenjang: jenjang,
-                        citaCita: cita,
-                        waktu: idx === 0 ? '1 jam lalu' : 'Kemarin',
-                        waktuClass: idx === 0 ? 'text-secondary bg-secondary/10' : 'text-on-surface-variant',
-                        pesan: idx === 0
-                            ? `"Selamat siang ${guruNama}, draft KRS matrikulasi S1 ${cita} sudah saya ajukan untuk semester ganjil."`
-                            : `"Laporan pengamatan dan portofolio ${cita.toLowerCase()} sudah selesai diunggah."`
-                    });
-                });
+            if (!hasActiveConsultation) {
+                container.innerHTML = `
+                    <div class="p-4 bg-primary/5 border border-primary/10 rounded text-center text-on-surface-variant text-xs space-y-1.5">
+                        <span class="material-symbols-outlined text-2xl text-on-surface-variant/40 block mb-1">forum</span>
+                        <p class="font-bold text-primary">Belum Ada Konsultasi Aktif</p>
+                        <p class="text-[11px]">Pesan bimbingan dari siswa yang telah menyelesaikan tes diagnostik & pengajuan modul akan tampil di sini.</p>
+                    </div>
+                `;
+                return;
             }
 
-            container.innerHTML = konsultasiItems.map(item => `
+            const activeStudents = currentSiswaList.filter(s => s.statusKRS === 'Menunggu Validasi' || (s.progresNum && s.progresNum > 0)).slice(0, 3);
+            const guruNama = (localStorage.getItem('guruNama') || 'Ibu Sari').split(' ').slice(0, 2).join(' ');
+
+            container.innerHTML = activeStudents.map((item, idx) => `
                 <div class="p-3 bg-white border border-primary/15 rounded text-xs space-y-1 hover:border-role-teacher transition-colors">
                     <div class="flex justify-between font-bold text-primary">
-                        <span>${item.nama} (${item.jenjang} · ${item.citaCita})</span>
-                        <span class="text-[10px] ${item.waktuClass} font-mono px-1.5 py-0.5 rounded">${item.waktu}</span>
+                        <span>${item.nama} (${item.jenjang || 'SD'} · ${item.citaCita || 'Siswa'})</span>
+                        <span class="text-[10px] text-role-teacher bg-role-teacher/10 font-mono px-1.5 py-0.5 rounded">${idx === 0 ? 'Baru' : 'Kemarin'}</span>
                     </div>
-                    <p class="text-on-surface-variant text-[11px]">${item.pesan}</p>
+                    <p class="text-on-surface-variant text-[11px]">"Selamat siang ${guruNama}, mohon bantuan review draft perencanaan studi saya."</p>
                 </div>
             `).join('');
         }

@@ -632,13 +632,13 @@
 
     <!-- Core Script Engine -->
     <script>
-        let currentActiveCareer = localStorage.getItem('selectedCareer') || 'Aktor';
+        let currentActiveCareer = localStorage.getItem('selectedCareer') || '';
         
         let currentStudent = {
             nama: 'Siswa Flexa',
-            nisn: '7JtTafT1z7',
-            jenjang: 'SD',
-            kelas: 1,
+            nisn: '-',
+            jenjang: 'SMA',
+            kelas: 10,
             jurusan: 'Kurikulum Merdeka'
         };
 
@@ -1835,7 +1835,7 @@
             const nameEl = document.getElementById('sidebar-student-name');
             if (nameEl) nameEl.textContent = currentStudent.nama || 'Siswa Flexa';
             const metaEl = document.getElementById('sidebar-student-meta');
-            if (metaEl) metaEl.textContent = `NISN: ${currentStudent.nisn || '7JtTafT1z7'} • ${currentStudent.jenjang} Kelas ${currentStudent.kelas}`;
+            if (metaEl) metaEl.textContent = `NISN: ${currentStudent.nisn || '-'} • ${currentStudent.jenjang} Kelas ${currentStudent.kelas}`;
 
             const initialsEl = document.getElementById('user-initials');
             const fotoUrl = localStorage.getItem('userAvatar') || '';
@@ -1855,7 +1855,7 @@
                 verifiedEl.textContent = `Terakhir diverifikasi oleh Konselor Akademik UNIPDU pada ${d}`;
             }
 
-            const savedCareer = localStorage.getItem('selectedCareer') || 'Aktor';
+            const savedCareer = localStorage.getItem('selectedCareer') || '';
             applyDetailRoadmapUI(savedCareer, currentStudent.jenjang, currentStudent.kelas);
         });
 
@@ -1871,7 +1871,7 @@
                 const nameEl = document.getElementById('sidebar-student-name');
                 if (nameEl) nameEl.textContent = currentStudent.nama;
                 const metaEl = document.getElementById('sidebar-student-meta');
-                if (metaEl) metaEl.textContent = `NISN: ${currentStudent.nisn} • ${currentStudent.jenjang} Kelas ${currentStudent.kelas}`;
+                if (metaEl) metaEl.textContent = `NISN: ${currentStudent.nisn || '-'} • ${currentStudent.jenjang} Kelas ${currentStudent.kelas}`;
 
                 const fotoUrl = (user && user.fotoUrl) || localStorage.getItem('userAvatar') || '';
                 const initialsEl = document.getElementById('user-initials');
@@ -1885,8 +1885,8 @@
                     }
                 }
 
-                const career = (user && user.citaCita) || localStorage.getItem('selectedCareer') || 'Aktor';
-                localStorage.setItem('selectedCareer', career);
+                const career = (user && user.citaCita) || localStorage.getItem('selectedCareer') || '';
+                if (career) localStorage.setItem('selectedCareer', career);
                 applyDetailRoadmapUI(career, currentStudent.jenjang, currentStudent.kelas);
             }
         });

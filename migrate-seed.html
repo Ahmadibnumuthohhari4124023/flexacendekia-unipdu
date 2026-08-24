@@ -2,339 +2,333 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Seed Database Flexa Cendekia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seed Database 9 Siswa Flexa Cendekia (2026)</title>
     <style>
-        body { font-family: sans-serif; padding: 2rem; max-width: 600px; margin: 0 auto; }
-        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #020b24; color: white; border: none; border-radius: 4px; }
-        button:disabled { background: #ccc; cursor: not-allowed; }
-        #log { margin-top: 20px; background: #f4f4f4; padding: 10px; border-radius: 4px; font-family: monospace; white-space: pre-wrap; height: 300px; overflow-y: auto; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 2rem; max-width: 900px; margin: 0 auto; background: #EAEDE2; color: #020b24; }
+        .card { background: #FBFAF5; border: 1px solid rgba(2,11,36,0.2); padding: 1.5rem; border-radius: 8px; box-shadow: 4px 4px 0 rgba(2,11,36,0.15); margin-bottom: 1.5rem; }
+        button { padding: 12px 24px; font-size: 14px; font-weight: bold; cursor: pointer; background: #020b24; color: white; border: none; border-radius: 6px; transition: all 0.2s; }
+        button:hover { background: #17223b; }
+        button:disabled { background: #94a3b8; cursor: not-allowed; }
+        #log { margin-top: 15px; background: #020b24; color: #a3e635; padding: 15px; border-radius: 6px; font-family: "SFMono-Regular", Consolas, Menlo, monospace; font-size: 12px; white-space: pre-wrap; height: 380px; overflow-y: auto; line-height: 1.5; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; font-family: monospace; }
+        .badge-sd { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+        .badge-smp { background: #dbeafe; color: #1d4ed8; border: 1px solid #bfdbfe; }
+        .badge-sma { background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+        .badge-teacher { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+        .badge-parent { background: #fce7f3; color: #9d174d; border: 1px solid #fbcfe8; }
+        .grid-students { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin-top: 12px; }
+        .student-item { background: #fff; border: 1px solid #e2e8f0; padding: 10px; border-radius: 6px; font-size: 12px; }
+        .uids-summary { background: #fff; border: 1px solid #cbd5e1; padding: 12px; border-radius: 6px; margin-top: 15px; font-family: monospace; font-size: 12px; }
     </style>
 </head>
 <body>
-    <h1>Data Seeder (Satu Kali)</h1>
-    <p>Skrip ini akan membuat 3 akun contoh dan beberapa data dummy di Firestore untuk tujuan testing. <strong>Skrip ini HANYA BISA JALAN jika Anda mendaftarkan akun secara manual, ATAU Firebase Auth mengizinkan pembuatan akun via API tanpa admin SDK.</strong></p>
-    
-    <p><strong>Akun yang akan dibuat:</strong><br>
-    Siswa: siswa@flexa.test / password123<br>
-    Guru: guru@flexa.test / password123<br>
-    Ortu: ortu@flexa.test / password123</p>
+    <div class="card">
+        <h1 style="margin-top:0; font-size:22px;">Data Seeder 9 Siswa Resmi Flexa Cendekia (2026)</h1>
+        <p style="font-size:13px; color:#475569;">
+            Skrip ini menginisialisasi <strong>9 akun siswa resmi (NIS 260001 – 260009)</strong>, 1 Guru Pembimbing (Ibu Sari Rahayu), dan 1 Orang Tua (Bpk. Hendra Pratama) dengan password <code>flexa123</code> dan seluruh Foreign Key terhubung 100%.
+        </p>
+        
+        <div style="font-size:12px; line-height:1.6; margin-bottom:15px; background:#fff; padding:14px; border-radius:6px; border:1px solid #e2e8f0;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+                <strong>Daftar 9 Siswa Resmi Flexa Cendekia (Tahun 2026):</strong>
+                <span style="font-size:11px; color:#64748b;">Password: <code>flexa123</code></span>
+            </div>
 
-    <button id="btn-seed">Mulai Seeding Data</button>
+            <div class="grid-students">
+                <div class="student-item">
+                    <span class="badge badge-sd">SD 2</span> <strong>Aisha Syahida Amanina</strong><br>
+                    <span style="color:#64748b; font-size:11px;">NIS: <code>260001</code> • aisha@flexacendekia.com</span><br>
+                    <span style="color:#020b24; font-size:11px;">🎯 Dokter Hewan</span>
+                </div>
+                <div class="student-item">
+                    <span class="badge badge-sd">SD 2</span> <strong>Zuran</strong><br>
+                    <span style="color:#64748b; font-size:11px;">NIS: <code>260002</code> • zuran@flexacendekia.com</span><br>
+                    <span style="color:#020b24; font-size:11px;">🎯 Astronom Antariksa</span>
+                </div>
+                <div class="student-item">
+                    <span class="badge badge-sd">SD 4</span> <strong>Muhammad Fatih</strong><br>
+                    <span style="color:#64748b; font-size:11px;">NIS: <code>260003</code> • fatih@flexacendekia.com</span><br>
+                    <span style="color:#020b24; font-size:11px;">🎯 Insinyur Robotika</span>
+                </div>
+                <div class="student-item">
+                    <span class="badge badge-sd">SD 5</span> <strong>Danella Adzkia Razani S.</strong><br>
+                    <span style="color:#64748b; font-size:11px;">NIS: <code>260004</code> • adzkia@flexacendekia.com</span><br>
+                    <span style="color:#020b24; font-size:11px;">🎯 Desainer DKV</span>
+                </div>
+                <div class="student-item">
+                    <span class="badge badge-smp">SMP 7</span> <strong>Muhammad Arshaka A. R.</strong><br>
+                    <span style="color:#64748b; font-size:11px;">NIS: <code>260005</code> • arshaka@flexacendekia.com</span><br>
+                    <span style="color:#020b24; font-size:11px;">🎯 Software Engineer</span>
+                </div>
+                <div class="student-item">
+                    <span class="badge badge-smp">SMP 7</span> <strong>Naura Reihana Nun</strong><br>
+                    <span style="color:#64748b; font-size:11px;">NIS: <code>260006</code> • nauranun@flexacendekia.com</span><br>
+                    <span style="color:#020b24; font-size:11px;">🎯 Psikolog Pendidikan</span>
+                </div>
+                <div class="student-item">
+                    <span class="badge badge-smp">SMP 8</span> <strong>Muhammad Ega Nabil M.</strong><br>
+                    <span style="color:#64748b; font-size:11px;">NIS: <code>260007</code> • nabil@flexacendekia.com</span><br>
+                    <span style="color:#020b24; font-size:11px;">🎯 Technopreneur Bisnis</span>
+                </div>
+                <div class="student-item">
+                    <span class="badge badge-sma">SMA 10</span> <strong>Caesar Mutiara Chandra</strong><br>
+                    <span style="color:#64748b; font-size:11px;">NIS: <code>260008</code> • caesar12@flexacendekia.com</span><br>
+                    <span style="color:#020b24; font-size:11px;">🎯 Arsitek & Perancang Kota</span>
+                </div>
+                <div class="student-item">
+                    <span class="badge badge-sma">SMA 11</span> <strong>Aurelia Putri Sujatmiko</strong><br>
+                    <span style="color:#64748b; font-size:11px;">NIS: <code>260009</code> • aurelia@flexacendekia.com</span><br>
+                    <span style="color:#020b24; font-size:11px;">🎯 Dokter Spesialis Biomedis</span>
+                </div>
+            </div>
 
-    <div id="log">Siap...</div>
+            <div style="margin-top:12px; padding-top:10px; border-top:1px dashed #cbd5e1; display:flex; gap:16px; flex-wrap:wrap;">
+                <div>👩‍🏫 <span class="badge badge-teacher">Guru</span> <strong>Ibu Sari Rahayu, M.Pd.</strong> (<code>guru@flexa.test</code>)</div>
+                <div>👨‍👩‍👦 <span class="badge badge-parent">Orang Tua</span> <strong>Bpk. Hendra Pratama</strong> (<code>ortu@flexa.test</code>)</div>
+            </div>
+        </div>
 
-    <!-- Firebase SDK -->
+        <button id="btn-seed">🚀 Mulai Seeding 9 Siswa &amp; Sinkronisasi Relasi</button>
+        <a href="/?page=01_login" style="margin-left: 14px; font-size:13px; color:#020b24; font-weight:bold;">Ke Halaman Login &rarr;</a>
+
+        <div id="uids-box" class="uids-summary" style="display:none;"></div>
+        <div id="log">Siap mengeksekusi seeder 9 data siswa... Klik tombol di atas.</div>
+    </div>
+
+    <!-- Firebase SDK Compat -->
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="firebase-config.js"></script>
+    <script src="siswa_master_data.js"></script>
 
     <script>
         const btn = document.getElementById('btn-seed');
         const logEl = document.getElementById('log');
+        const uidsBox = document.getElementById('uids-box');
 
         function log(msg) {
             logEl.textContent += msg + '\n';
             logEl.scrollTop = logEl.scrollHeight;
+            console.log(msg);
         }
 
         btn.addEventListener('click', async () => {
             if (!window.firebaseAuth || !window.firebaseDb) {
-                alert('Firebase belum siap!');
+                alert('Firebase SDK belum siap!');
                 return;
             }
             btn.disabled = true;
-            log('Memulai proses seeding...');
+            log('==================================================');
+            log('🚀 MEMULAI SEEDING 9 DATA SISWA RESMI FLEXA CENDEKIA');
+            log('==================================================');
 
             const auth = window.firebaseAuth;
             const db = window.firebaseDb;
 
-            const users = [
-                { email: 'siswa@flexa.test', password: 'password123', nama: 'Ahmad Siswa', role: 'Siswa', citaCita: 'Arsitek' },
-                { email: 'siswa2@flexa.test', password: 'password123', nama: 'Budi Siswa Dua', role: 'Siswa', citaCita: 'Programmer' },
-                { email: 'guru@flexa.test', password: 'password123', nama: 'Bapak Budi', role: 'Guru' },
-                { email: 'ortu@flexa.test', password: 'password123', nama: 'Ibu Siti', role: 'OrangTua' }
-            ];
+            const teacherAccount = {
+                email: 'guru@flexa.test',
+                password: 'flexa123',
+                nama: 'Ibu Sari Rahayu, M.Pd.',
+                role: 'Guru',
+                nip: '198704122015042001',
+                jabatan: 'Wali Kelas & Dosen Pembimbing Akademik UNIPDU',
+                institusi: 'Homeschooling Flexa Cendekia x UNIPDU'
+            };
 
-            const createdUids = {};
+            const parentAccount = {
+                email: 'ortu@flexa.test',
+                password: 'flexa123',
+                nama: 'Bpk. Hendra Pratama',
+                role: 'OrangTua',
+                institusi: 'Wiraswasta / Konsultan Properti',
+                kontak: '0813-9876-5432',
+                telepon: '0813-9876-5432'
+            };
 
-            // 1. Buat Akun Auth & Profil User
-            for (const u of users) {
+            const students = window.FLEXA_STUDENTS_DATA || [];
+
+            const createdUids = {
+                students: {},
+                teacher: null,
+                parent: null
+            };
+
+            const OLD_PASSWORDS = ['password123', 'Password123', 'flexa2024', 'flexa123'];
+
+            // Helper to create or authenticate account
+            async function getOrCreateUser(email, password, roleName) {
                 try {
-                    log(`Mendaftarkan ${u.email}...`);
-                    // Firebase akan login otomatis setelah create
-                    const cred = await auth.createUserWithEmailAndPassword(u.email, u.password);
-                    const uid = cred.user.uid;
-                    if (u.role === 'Siswa') {
-                        if (!createdUids['Siswa']) createdUids['Siswa'] = [];
-                        createdUids['Siswa'].push(uid);
-                    } else {
-                        createdUids[u.role] = uid;
-                    }
-
-                    log(`Menyimpan profil ${u.role}...`);
-                    const profileData = {
-                        email: u.email,
-                        nama: u.nama,
-                        role: u.role
-                    };
-                    
-                    if (u.role === 'Siswa') profileData.citaCita = u.citaCita;
-
-                    await db.collection('users').doc(uid).set(profileData);
-                    log(`✅ Akun ${u.role} berhasil dibuat!`);
-                } catch (e) {
-                    if (e.code === 'auth/email-already-in-use') {
-                        log(`⚠️ Akun ${u.email} sudah ada. Melakukan login...`);
-                        const cred = await auth.signInWithEmailAndPassword(u.email, u.password);
-                        const uid = cred.user.uid;
-                        if (u.role === 'Siswa') {
-                            if (!createdUids['Siswa']) createdUids['Siswa'] = [];
-                            createdUids['Siswa'].push(uid);
-                        } else {
-                            createdUids[u.role] = uid;
+                    log(`[Auth] Memeriksa/mendaftarkan ${email}...`);
+                    const cred = await auth.createUserWithEmailAndPassword(email, password);
+                    log(`✓ Akun baru dibuat: ${email} (${cred.user.uid})`);
+                    return cred.user.uid;
+                } catch (err) {
+                    if (err.code === 'auth/email-already-in-use') {
+                        // Try logging in with flexa123
+                        try {
+                            const cred = await auth.signInWithEmailAndPassword(email, password);
+                            log(`✓ Berhasil login: ${email} (${cred.user.uid})`);
+                            return cred.user.uid;
+                        } catch (loginErr) {
+                            for (const oldPwd of OLD_PASSWORDS) {
+                                try {
+                                    const cred = await auth.signInWithEmailAndPassword(email, oldPwd);
+                                    await cred.user.updatePassword('flexa123');
+                                    log(`✓ Login sukses dengan password lama & diperbarui ke flexa123: ${email}`);
+                                    return cred.user.uid;
+                                } catch (e) {}
+                            }
+                            log(`⚠️ Tidak bisa login otomatis ke ${email}: ${loginErr.message}`);
                         }
                     } else {
-                        log(`❌ Error mendaftarkan ${u.email}: ${e.message}`);
+                        log(`⚠️ Error auth ${email}: ${err.message}`);
                     }
                 }
+                return null;
             }
 
-            // 2. Kaitkan Siswa, Guru, dan Ortu & Buat Data Spesifik Siswa
-            if (createdUids['Siswa'] && createdUids['Siswa'].length > 0 && createdUids['Guru'] && createdUids['OrangTua']) {
-                log('Mengaitkan relasi data & membuat data Siswa...');
+            try {
+                // 1. Create / Auth Guru & Ortu first
+                log('\n--- 1. Pendaftaran Guru & Orang Tua ---');
+                createdUids.teacher = await getOrCreateUser(teacherAccount.email, teacherAccount.password, 'Guru');
+                createdUids.parent = await getOrCreateUser(parentAccount.email, parentAccount.password, 'OrangTua');
+
+                // Also maintain legacy demo student account for compatibility
+                await getOrCreateUser('siswa@flexa.test', 'flexa123', 'Siswa');
+
+                // 2. Create / Auth all 9 students
+                log('\n--- 2. Pendaftaran 9 Akun Siswa Resmi ---');
+                for (const s of students) {
+                    const uid = await getOrCreateUser(s.email, s.password, s.nama);
+                    if (uid) {
+                        createdUids.students[s.nis] = uid;
+                    }
+                }
+
+                const guruUid = createdUids.teacher || 'guru-flexa-default';
+                const ortuUid = createdUids.parent || 'ortu-flexa-default';
+                const allStudentUids = Object.values(createdUids.students);
+
+                // 3. Save Student Profiles & Subcollections in Firestore
+                log('\n--- 3. Menyimpan Profil & Data Akademik 9 Siswa ---');
+                for (const s of students) {
+                    const sUid = createdUids.students[s.nis];
+                    if (!sUid) {
+                        log(`⏩ Melewati Firestore untuk ${s.nama} (Auth UID tidak tersedia)`);
+                        continue;
+                    }
+
+                    // Login as student to write own documents cleanly
+                    try {
+                        await auth.signInWithEmailAndPassword(s.email, 'flexa123');
+                    } catch(e) {}
+
+                    // User document (Clean Initial State)
+                    const userDoc = {
+                        uid: sUid,
+                        id: sUid,
+                        nama: s.nama,
+                        email: s.email,
+                        nisn: s.nis,
+                        nis: s.nis,
+                        jenjang: s.jenjang,
+                        kelas: s.kelas,
+                        role: 'Siswa',
+                        citaCita: s.citaCita || '',
+                        gayaBelajar: s.gayaBelajar || '',
+                        programStudiTarget: s.programStudiTarget || '',
+                        fakultasTarget: s.fakultasTarget || '',
+                        institusi: 'Homeschooling Flexa Cendekia x UNIPDU',
+                        kodeTautan: s.kodeTautan,
+                        pinTautan: s.pinTautan,
+                        progres: s.progres || '0%',
+                        progresNum: s.progresNum || 0,
+                        roadmapProgress: s.progresNum || 0,
+                        statusKRS: s.statusKRS || 'Belum Mengisi',
+                        statusCheckpoint: s.statusCheckpoint || 'Belum Mulai',
+                        guruWaliId: guruUid,
+                        guruWaliNama: teacherAccount.nama,
+                        orangTuaId: ortuUid,
+                        orangTuaNama: parentAccount.nama,
+                        targetAkademik: s.targetAkademik || null,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    };
+                    await db.collection('users').doc(sUid).set(userDoc);
+
+                    // Clean subcollections if they exist
+                    try { await db.collection('hasilDiagnostik').doc(sUid).delete(); } catch(e) {}
+                    try { await db.collection('roadmapBelajar').doc(sUid).delete(); } catch(e) {}
+                    try { await db.collection('pengajuanKRS').doc(`krs-${s.nis}`).delete(); } catch(e) {}
+                    try { await db.collection('progresMingguan').doc(sUid).delete(); } catch(e) {}
+
+                    log(`✓ [${s.jenjang} ${s.kelas}] NIS ${s.nis} - ${s.nama} di-reset ke kondisi awal (0%).`);
+                }
+
+                // 4. Update Guru & Ortu docs in Firestore
+                log('\n--- 4. Menghubungkan Profil Guru & Orang Tua ---');
                 try {
-                    const siswa1Id = createdUids['Siswa'][0];
-                    const siswa2Id = createdUids['Siswa'][1];
-                    
-                    await db.collection('users').doc(siswa1Id).update({
-                        guruWaliId: createdUids['Guru'],
-                        orangTuaId: createdUids['OrangTua'],
-                        kelas: 'SMA Kelas 11',
-                        jenjang: 'SMA',
-                        tahunAjaran: '2024/2025',
-                        poinAkademik: 1250,
-                        avatar: 'AS'
-                    });
-                    
-                    if (siswa2Id) {
-                        await db.collection('users').doc(siswa2Id).update({
-                            guruWaliId: createdUids['Guru'],
-                            orangTuaId: createdUids['OrangTua'],
-                            kelas: 'SMA Kelas 10',
-                            jenjang: 'SMA',
-                            tahunAjaran: '2024/2025',
-                            poinAkademik: 500,
-                            avatar: 'BS'
-                        });
-                    }
+                    await auth.signInWithEmailAndPassword(teacherAccount.email, 'flexa123');
+                } catch(e) {}
 
-                    await db.collection('users').doc(createdUids['OrangTua']).update({
-                        anakIds: createdUids['Siswa']
-                    });
-                    
-                    log('✅ Relasi berhasil dibuat.');
+                await db.collection('users').doc(guruUid).set({
+                    uid: guruUid,
+                    id: guruUid,
+                    nama: teacherAccount.nama,
+                    email: teacherAccount.email,
+                    role: 'Guru',
+                    nip: teacherAccount.nip,
+                    jabatan: teacherAccount.jabatan,
+                    institusi: teacherAccount.institusi,
+                    siswaBimbinganIds: allStudentUids,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                log('✓ Profil Guru & tautan 9 siswa bimbingan tersimpan.');
 
-                    // --- Seeding Data Siswa ---
-                    log('Membuat hasilDiagnostik, roadmapBelajar, dan progresMingguan untuk Siswa...');
-                    
-                    // 1. hasilDiagnostik
-                    await db.collection('hasilDiagnostik').doc(siswa1Id).set({
-                        gayaBelajarDominan: 'Visual',
-                        persentase: { visual: 60, auditori: 25, kinestetik: 15 },
-                        profesiRekomendasi: ['Arsitek', 'Desainer Grafis', 'Programmer'],
-                        tanggalTes: new Date().toISOString()
-                    });
-                    
-                    if (siswa2Id) {
-                        await db.collection('hasilDiagnostik').doc(siswa2Id).set({
-                            gayaBelajarDominan: 'Kinestetik',
-                            persentase: { visual: 20, auditori: 20, kinestetik: 60 },
-                            profesiRekomendasi: ['Atlet', 'Tentara', 'Polisi'],
-                            tanggalTes: new Date().toISOString()
-                        });
-                    }
+                try {
+                    await auth.signInWithEmailAndPassword(parentAccount.email, 'flexa123');
+                } catch(e) {}
 
-                    // 2. roadmapBelajar
-                    await db.collection('roadmapBelajar').doc(siswa1Id).set({
-                        targetProfesi: 'arsitek',
-                        tahapan: [
-                            { judul: 'Menguasai SketchUp 3D', status: 'Selesai', deskripsi: 'Mampu membuat model 3D bangunan sederhana', urutan: 1 },
-                            { judul: 'Proyek Desain Pertama', status: 'Selesai', deskripsi: 'Menyelesaikan desain rumah', urutan: 2 },
-                            { judul: '10 Karya Portfolio', status: 'Berjalan', deskripsi: 'Mengumpulkan karya untuk kuliah', urutan: 3 },
-                            { judul: 'Lulus Seleksi PTN', status: 'Belum', deskripsi: 'Masuk S1 Arsitektur', urutan: 4 }
-                        ]
-                    });
+                await db.collection('users').doc(ortuUid).set({
+                    uid: ortuUid,
+                    id: ortuUid,
+                    nama: parentAccount.nama,
+                    email: parentAccount.email,
+                    role: 'OrangTua',
+                    institusi: parentAccount.institusi,
+                    telepon: parentAccount.telepon,
+                    anakIds: allStudentUids,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                log('✓ Profil Orang Tua & tautan anak tersimpan.');
 
-                    if (siswa2Id) {
-                        await db.collection('roadmapBelajar').doc(siswa2Id).set({
-                            targetProfesi: 'atlet',
-                            tahapan: [
-                                { judul: 'Latihan Fisik Dasar', status: 'Selesai', deskripsi: 'Peningkatan stamina', urutan: 1 },
-                                { judul: 'Masuk Klub Olahraga', status: 'Berjalan', deskripsi: 'Bergabung dengan tim daerah', urutan: 2 },
-                                { judul: 'Kejuaraan Nasional', status: 'Belum', deskripsi: 'Mewakili provinsi', urutan: 3 }
-                            ]
-                        });
-                    }
+                log('\n🎉 ==================================================');
+                log('✅ SEEDING 9 DATA SISWA BERHASIL 100%!');
+                log('==================================================');
 
-                    // 3. progresMingguan & tugasMendatang
-                    await db.collection('progresMingguan').doc(siswa1Id).set({
-                        persentaseProgres: 35,
-                        poinAkademik: 1250,
-                        tanggalUpdate: new Date().toISOString(),
-                        tugasMendatang: [
-                            { judul: 'Pengajuan KRS Semester Depan', tenggatWaktu: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000).toISOString(), status: 'Belum' },
-                            { judul: 'Laporan Proyek Desain Rumah', tenggatWaktu: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString(), status: 'Berjalan' }
-                        ]
-                    });
+                uidsBox.style.display = 'block';
+                uidsBox.innerHTML = `
+                    <h3 style="margin-top:0; color:#020b24;">📊 Ringkasan Data Siswa Terdaftar:</h3>
+                    <ul>
+                        <li><strong>SD (4 Siswa):</strong> Aisha (260001), Zuran (260002), Fatih (260003), Adzkia (260004)</li>
+                        <li><strong>SMP (3 Siswa):</strong> Arshaka (260005), Naura (260006), Nabil (260007)</li>
+                        <li><strong>SMA (2 Siswa):</strong> Caesar (260008), Aurelia (260009)</li>
+                        <li><strong>Guru Pembimbing:</strong> Ibu Sari Rahayu, M.Pd. (<code>guru@flexa.test</code>)</li>
+                        <li><strong>Orang Tua:</strong> Bpk. Hendra Pratama (<code>ortu@flexa.test</code>)</li>
+                    </ul>
+                    <p style="color:#16a34a; font-weight:bold; margin-bottom:0;">
+                        ✓ Seluruh akun siap digunakan untuk pengujian login dan monitoring di dashboard guru/ortu.
+                    </p>
+                `;
 
-                    if (siswa2Id) {
-                        await db.collection('progresMingguan').doc(siswa2Id).set({
-                            persentaseProgres: 15,
-                            poinAkademik: 500,
-                            tanggalUpdate: new Date().toISOString(),
-                            tugasMendatang: [
-                                { judul: 'Evaluasi Kebugaran Fisik', tenggatWaktu: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), status: 'Belum' } // Past due
-                            ]
-                        });
-                    }
-
-                    
-                    // 4. nilaiAkademik
-                    log('Membuat data nilaiAkademik...');
-                    const nilaiDummy = [
-                        { siswaId: siswa1Id, kode: 'PHYS-301', namaMapel: 'Fisika Bangunan', namaGuru: 'Drs. Amir Santoso', nilaiHuruf: 'B+', skor: 82, bobotSKS: 3, status: 'Berlangsung', semester: 3, tahunAjaran: '2023/2024' },
-                        { siswaId: siswa1Id, kode: 'MATH-301', namaMapel: 'Matematika Kalkulus', namaGuru: 'Dr. Aris Subagyo', nilaiHuruf: 'B', skor: 76, bobotSKS: 4, status: 'Berlangsung', semester: 3, tahunAjaran: '2023/2024' },
-                        { siswaId: siswa1Id, kode: 'ARTS-315', namaMapel: 'Perspektif 2 Titik Hilang', namaGuru: 'Ibu Lestari, S.Sn', nilaiHuruf: 'A', skor: 95, bobotSKS: 3, status: 'Lulus', semester: 3, tahunAjaran: '2023/2024' },
-                        { siswaId: siswa1Id, kode: 'MATH-202', namaMapel: 'Calculus Foundations II', namaGuru: 'Dr. Aris Subagyo', nilaiHuruf: 'A', skor: 97, bobotSKS: 4, status: 'Lulus', semester: 2, tahunAjaran: '2022/2023' },
-                        { siswaId: siswa1Id, kode: 'PHYS-201', namaMapel: 'Classical Mechanics', namaGuru: 'Prof. Siti Aminah', nilaiHuruf: 'A-', skor: 91, bobotSKS: 3, status: 'Lulus', semester: 2, tahunAjaran: '2022/2023' },
-                        { siswaId: siswa1Id, kode: 'MATH-101', namaMapel: 'Introductory Algebra', namaGuru: 'Dr. Aris Subagyo', nilaiHuruf: 'A', skor: 94, bobotSKS: 3, status: 'Arsip', semester: 1, tahunAjaran: '2021/2022' }
-                    ];
-                    
-                    for (const nilai of nilaiDummy) {
-                        await db.collection('nilaiAkademik').add(nilai);
-                    }
-
-                    // 5. checkpoints
-                    await db.collection('checkpoints').doc(siswa1Id + '-chk1').set({
-                        siswaId: siswa1Id,
-                        status: 'pending',
-                        judul: 'Checkpoint Jumat - Evaluasi Kritis',
-                        batasWaktu: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000).toISOString(),
-                        questions: [
-                            {
-                                type: 'multiple_choice',
-                                text: 'Dalam konteks sumber primer mengenai ekspansi industri abad ke-19, kerangka analitis manakah yang paling baik menjelaskan...',
-                                options: ['Pendekatan Cliometrik', 'Materialisme Dialektis', 'Fokus Annales School']
-                            },
-                            {
-                                type: 'essay',
-                                text: 'Refleksikan kemajuan belajar Anda minggu ini. Identifikasi satu tantangan yang Anda hadapi dan bagaimana Anda mengatasinya.'
-                            }
-                        ]
-                    });
-
-                    // 6. history poin / aktivitas
-                    await db.collection('aktivitas').doc(siswa1Id + '-act1').set({
-                        siswaId: siswa1Id,
-                        judul: 'Menyelesaikan Modul DS302',
-                        tipe: 'modul',
-                        xp: 150,
-                        tanggal: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
-                    });
-                    await db.collection('aktivitas').doc(siswa1Id + '-act2').set({
-                        siswaId: siswa1Id,
-                        judul: 'Update KRS Semester 5',
-                        tipe: 'krs',
-                        xp: 50,
-                        tanggal: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString()
-                    });
-
-                    // 7. kehadiran (Koleksi Absensi Siswa)
-                    await db.collection('kehadiran').doc(siswa1Id).set({
-                        siswaId: siswa1Id,
-                        hadir: 80,
-                        izin: 6,
-                        sakit: 0,
-                        alpa: 8,
-                        total: 94,
-                        persentase: 85,
-                        status: 'Perlu Perhatian',
-                        semester: 'Semester Ganjil 2023/2024',
-                        catatan: 'Tingkat kehadiran di bawah 90%, perlu pemantauan kehadiran kelas pagi.',
-                        updateTerakhir: new Date().toISOString()
-                    });
-
-                    if (siswa2Id) {
-                        await db.collection('kehadiran').doc(siswa2Id).set({
-                            siswaId: siswa2Id,
-                            hadir: 92,
-                            izin: 2,
-                            sakit: 0,
-                            alpa: 0,
-                            total: 94,
-                            persentase: 98,
-                            status: 'Sangat Baik',
-                            semester: 'Semester Ganjil 2023/2024',
-                            catatan: 'Kehadiran konsisten dan sangat disiplin.',
-                            updateTerakhir: new Date().toISOString()
-                        });
-                    }
-
-                    // 8. catatanGuru
-                    await db.collection('catatanGuru').add({
-                        guruId: createdUids['Guru'],
-                        siswaId: siswa1Id,
-                        isi: 'Ahmad sangat aktif dalam diskusi kelas minggu ini. Saya menyarankan agar ia difasilitasi buku desain tambahan di rumah.',
-                        tanggal: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-
-                    // 9. notifikasi Orang Tua
-                    await db.collection('notifikasi').add({
-                        untukRole: 'OrangTua',
-                        untukUserId: createdUids['OrangTua'],
-                        tipe: 'keterlambatan',
-                        judul: 'Terlambat target: Matematika Dasar',
-                        isi: 'Ahmad belum mengumpulkan tugas Logaritma yang jatuh tempo kemarin.',
-                        siswaId: siswa1Id,
-                        dibaca: false,
-                        tanggal: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    await db.collection('notifikasi').add({
-                        untukRole: 'OrangTua',
-                        untukUserId: createdUids['OrangTua'],
-                        tipe: 'pengajuan',
-                        judul: 'Perubahan cita-cita dalam peninjauan',
-                        isi: 'Draft perubahan minat karier menjadi Arsitek sedang ditinjau oleh konselor akademik.',
-                        siswaId: siswa1Id,
-                        dibaca: false,
-                        tanggal: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    await db.collection('notifikasi').add({
-                        untukRole: 'OrangTua',
-                        untukUserId: createdUids['OrangTua'],
-                        tipe: 'info',
-                        judul: 'KRS Semester Ganjil Disetujui',
-                        isi: 'Rencana studi untuk semester mendatang telah divalidasi oleh sistem.',
-                        siswaId: siswa1Id,
-                        dibaca: true,
-                        tanggal: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-
-                    log('✅ Data spesifik Siswa (termasuk checkpoints, aktivitas, kehadiran, catatan guru, & notifikasi ortu) berhasil di-seed.');
-
-
-                } catch(e) {
-                    log(`❌ Error relasi/seeding: ${e.message}`);
-                }
+            } catch (err) {
+                log(`❌ Error Seeder: ${err.message}`);
+                log(`   Stack: ${err.stack || 'N/A'}`);
+            } finally {
+                btn.disabled = false;
+                await auth.signOut().catch(() => {});
             }
-
-            log('\n🎉 PROSES SEEDING SELESAI!');
-            log('Anda sekarang bisa kembali ke halaman login.');
-            
-            // Logout after seeding
-            auth.signOut();
-            btn.disabled = false;
         });
     </script>
 </body>

@@ -1334,12 +1334,12 @@ document.getElementById('export-btn')?.addEventListener('click', () => {
         if (!user.nisn && localStorage.getItem('userNisn')) user.nisn = localStorage.getItem('userNisn');
         if (!user.citaCita && localStorage.getItem('selectedCareer')) user.citaCita = localStorage.getItem('selectedCareer');
 
-        // Sensible defaults
-        if (!user.nama) user.nama = 'Ahmad Ibnu MUthohhari';
-        if (!user.jenjang) user.jenjang = 'SD';
-        if (!user.kelas) user.kelas = 1;
-        if (!user.nisn) user.nisn = '7JtTafT1z7';
-        if (!user.citaCita) user.citaCita = 'Aktor';
+        // Clean sensible defaults from active session or master data
+        if (!user.nama) user.nama = 'Siswa Flexa';
+        if (!user.jenjang) user.jenjang = 'SMA';
+        if (!user.kelas) user.kelas = 10;
+        if (!user.nisn) user.nisn = user.nis || '-';
+        if (!user.citaCita) user.citaCita = 'Belum Memilih';
         return user;
     }
 

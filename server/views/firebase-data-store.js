@@ -40,14 +40,20 @@ const DataStore = {
 
     async getUserById(id) {
         const db = this._ensureDb();
-        if (!db) return null;
-        try {
-            const doc = await db.collection('users').doc(id).get();
-            if (doc.exists) {
-                return Object.assign({ id: doc.id }, doc.data());
+        if (db) {
+            try {
+                const doc = await db.collection('users').doc(id).get();
+                if (doc.exists) {
+                    return Object.assign({ id: doc.id }, doc.data());
+                }
+            } catch (e) {
+                console.error('[DataStore] getUserById error:', e);
             }
-        } catch (e) {
-            console.error('[DataStore] getUserById error:', e);
+        }
+        if (window.FLEXA_STUDENTS_DATA && id) {
+            const cleanId = id.toString().replace('siswa-', '');
+            const match = window.FLEXA_STUDENTS_DATA.find(s => s.nis === cleanId || s.nis === id || s.email.toLowerCase() === id.toString().toLowerCase());
+            if (match) return Object.assign({ id: `siswa-${match.nis}`, uid: `siswa-${match.nis}` }, match);
         }
         return null;
     },
@@ -384,6 +390,33 @@ const DataStore = {
                         item.kelas = item.kelas || sData.kelas;
                     }
                 }
+            }
+
+            // Fallback to master official students pending validation
+            if (krsList.length === 0 && window.FLEXA_STUDENTS_DATA) {
+                const pendingMaster = window.FLEXA_STUDENTS_DATA.filter(s => s.statusKRS === 'Menunggu Validasi');
+                pendingMaster.forEach(s => {
+                    krsList.push({
+                        id: `krs-${s.nis}`,
+                        siswaId: `siswa-${s.nis}`,
+                        nama: s.nama,
+                        nisn: s.nis,
+                        jenjang: s.jenjang,
+                        kelas: `Kelas ${s.kelas}`,
+                        citaCita: s.citaCita,
+                        programStudiTarget: s.programStudiTarget,
+                        status: 'Menunggu Validasi',
+                        semester: 1,
+                        tanggal: 'Hari ini',
+                        gpa: '3.88',
+                        mataPelajaran: [
+                            { kode: 'FND-101', nama: `Fondasi Utama ${s.citaCita}`, sks: 3, hari: 'Senin', jam: '08:00 - 10:00', ruang: 'Studio 1' },
+                            { kode: 'MAT-102', nama: 'Matematika & Logika Komputasi Terapan', sks: 3, hari: 'Selasa', jam: '09:00 - 11:30', ruang: 'Lab Komputer' },
+                            { kode: 'KOM-103', nama: 'Komunikasi & Portofolio Proyek Terpadu', sks: 3, hari: 'Rabu', jam: '10:00 - 12:00', ruang: 'Ruang Seminar' },
+                            { kode: 'UNP-101', nama: 'Wawasan Kepesantrenan & Karakter UNIPDU', sks: 3, hari: 'Jumat', jam: '13:30 - 15:30', ruang: 'Auditorium' }
+                        ]
+                    });
+                });
             }
 
             return krsList;

@@ -74,13 +74,27 @@ Server akan berjalan di: **`http://localhost:3000`**
 
 ---
 
-## 🔑 Akun Demo / Pengujian
+## 🔑 Daftar Akun Demo & Akun Siswa Resmi (2026)
 
-| Role | Email | Password | Dashboard Akses |
-|---|---|---|---|
-| **Siswa** | `siswa@flexa.test` | `123456` | `http://localhost:3000/?page=08_dashboard-siswa` |
-| **Guru Pembimbing** | `guru@flexa.test` | `123456` | `http://localhost:3000/?page=14_dashboard-guru` |
-| **Orang Tua** | `ortu@flexa.test` | `123456` | `http://localhost:3000/?page=16_dashboard-ortu` |
+### 1. Akun Demo Utama (1-Klik di Halaman Login)
+| Role | Nama Akun | Email | Password | Halaman Tujuan |
+|---|---|---|---|---|
+| **Siswa Demo** | Ahmad Faiz | `siswa@flexa.test` | `flexa123` / `password123` | `http://localhost:3000/?page=08_dashboard-siswa` |
+| **Guru Pembimbing** | Ibu Sari Rahayu, M.Pd. | `guru@flexa.test` | `flexa123` / `password123` | `http://localhost:3000/?page=14_dashboard-guru` |
+| **Orang Tua** | Bpk. Hendra Pratama | `ortu@flexa.test` | `flexa123` / `password123` | `http://localhost:3000/?page=16_dashboard-ortu` |
+
+### 2. Akun Siswa Resmi (9 Siswa - Basis Data 2026)
+| No | NIS | Nama Siswa | Jenjang | Email | Password |
+|---|---|---|---|---|---|
+| 1 | `260001` | Aisha Syahida Amanina | SD 2 | `aisha@flexacendekia.com` | `flexa123` |
+| 2 | `260002` | Zuran | SD 2 | `zuran@flexacendekia.com` | `flexa123` |
+| 3 | `260003` | Muhammad Fatih | SD 4 | `fatih@flexacendekia.com` | `flexa123` |
+| 4 | `260004` | Danella Adzkia Razani Setiawan | SD 5 | `adzkia@flexacendekia.com` | `flexa123` |
+| 5 | `260005` | Muhammad Arshaka Afthar Rahma | SMP 7 | `arshaka@flexacendekia.com` | `flexa123` |
+| 6 | `260006` | Naura Reihana Nun | SMP 7 | `nauranun@flexacendekia.com` | `flexa123` |
+| 7 | `260007` | Muhammad Ega Nabil Manshurin | SMP 8 | `nabil@flexacendekia.com` | `flexa123` |
+| 8 | `260008` | Caesar Mutiara Chandra | SMA 10 | `caesar12@flexacendekia.com` | `flexa123` |
+| 9 | `260009` | Aurelia Putri Sujatmiko | SMA 11 | `aurelia@flexacendekia.com` | `flexa123` |
 
 ---
 

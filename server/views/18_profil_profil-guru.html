@@ -109,7 +109,7 @@
                 </button>
                 <div id="dropdownProfil" class="hidden absolute right-0 top-12 w-56 bg-white shadow-xl rounded-lg p-4 border border-outline-variant/20 z-50">
                     <p class="font-bold text-sm text-primary user-display-name">Guru Pembimbing</p>
-                    <p class="text-xs text-on-surface-variant font-mono">guru@flexa.test</p>
+                    <p class="text-xs text-on-surface-variant font-mono" id="dropdown-user-email">guru@flexacendekia.sch.id</p>
                     <hr class="my-3 border-outline-variant/20">
                     <a href="/?page=14_dashboard-guru" class="block py-1.5 text-xs text-primary hover:text-secondary">Dashboard Guru</a>
                     <a href="/?page=15_tinjauan-guru" class="block py-1.5 text-xs text-primary hover:text-secondary">Tinjauan Siswa</a>
@@ -605,6 +605,8 @@
             document.querySelectorAll('.user-display-name').forEach(el => el.textContent = nama);
             const profNameEl = document.getElementById('profileName');
             if (profNameEl) profNameEl.textContent = nama;
+            const dropEmailEl = document.getElementById('dropdown-user-email');
+            if (dropEmailEl) dropEmailEl.textContent = email;
 
             // Avatar Fallback Initial
             const initial = (nama.split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2) || 'SR').toUpperCase();

@@ -1,5 +1,6 @@
 require('dotenv').config();
 const mysql = require('mysql2/promise');
+const { FLEXA_STUDENTS_DATA } = require('./public/siswa_master_data');
 
 async function run() {
   const connection = await mysql.createConnection({
@@ -23,37 +24,30 @@ async function run() {
       }
     }
 
-    console.log('Generating mock data for pending KRS...');
-    // Create a mock student user
-    await connection.query(`INSERT IGNORE INTO Users (id, email, nama, peran, jenjang, kelas) VALUES ('mock-siswa-1', 'siswa1@flexacendekia.edu', 'Budi Santoso', 'siswa', 'SMA', '11')`);
-    await connection.query(`INSERT IGNORE INTO Users (id, email, nama, peran, jenjang, kelas) VALUES ('mock-siswa-2', 'siswa2@flexacendekia.edu', 'Sinta Permata', 'siswa', 'SMA', '10')`);
-    await connection.query(`INSERT IGNORE INTO Users (id, email, nama, peran, jenjang, kelas) VALUES ('mock-siswa-3', 'siswa3@flexacendekia.edu', 'Rio Pratama', 'siswa', 'SMA', '10')`);
-
-    // Create Cita_Cita
-    await connection.query(`INSERT IGNORE INTO Cita_Cita (id, userId, profesiTarget, status) VALUES ('mock-cita-1', 'mock-siswa-1', 'Data Scientist', 'Aktif')`);
-    await connection.query(`INSERT IGNORE INTO Cita_Cita (id, userId, profesiTarget, status) VALUES ('mock-cita-2', 'mock-siswa-2', 'UI/UX Design', 'Aktif')`);
-    await connection.query(`INSERT IGNORE INTO Cita_Cita (id, userId, profesiTarget, status) VALUES ('mock-cita-3', 'mock-siswa-3', 'Software Engineer', 'Aktif')`);
-
-    // Create Roadmap
-    await connection.query(`INSERT IGNORE INTO Roadmap (id, userId, citaCitaId, tahunMulai, tahunSelesai, status) VALUES ('mock-rm-1', 'mock-siswa-1', 'mock-cita-1', 2024, 2030, 'Aktif')`);
-    await connection.query(`INSERT IGNORE INTO Roadmap (id, userId, citaCitaId, tahunMulai, tahunSelesai, status) VALUES ('mock-rm-2', 'mock-siswa-2', 'mock-cita-2', 2024, 2030, 'Aktif')`);
-    await connection.query(`INSERT IGNORE INTO Roadmap (id, userId, citaCitaId, tahunMulai, tahunSelesai, status) VALUES ('mock-rm-3', 'mock-siswa-3', 'mock-cita-3', 2024, 2030, 'Aktif')`);
-
-    // Create Semester_KRS
-    await connection.query(`INSERT IGNORE INTO Semester_KRS (id, roadmapId, semesterKe, status) VALUES ('mock-krs-1', 'mock-rm-1', 5, 'Menunggu Persetujuan')`);
-    await connection.query(`INSERT IGNORE INTO Semester_KRS (id, roadmapId, semesterKe, status) VALUES ('mock-krs-2', 'mock-rm-2', 3, 'Menunggu Persetujuan')`);
-    await connection.query(`INSERT IGNORE INTO Semester_KRS (id, roadmapId, semesterKe, status) VALUES ('mock-krs-3', 'mock-rm-3', 1, 'Menunggu Persetujuan')`);
+    console.log('Generating 9 official Flexa Cendekia students data...');
     
-    // Default user Ahmad Fauzi (mock-id if used in dashboard)
-    await connection.query(`INSERT IGNORE INTO Users (id, email, nama, peran, jenjang, kelas) VALUES ('mock-id', 'siswa@flexacendekia.edu', 'Ahmad Fauzi', 'siswa', 'SMA', '11')`);
-    await connection.query(`INSERT IGNORE INTO Cita_Cita (id, userId, profesiTarget, status) VALUES ('mock-cita-af', 'mock-id', 'Arsitek', 'Aktif')`);
-    await connection.query(`INSERT IGNORE INTO Roadmap (id, userId, citaCitaId, tahunMulai, tahunSelesai, status) VALUES ('mock-rm-af', 'mock-id', 'mock-cita-af', 2024, 2030, 'Aktif')`);
-    await connection.query(`INSERT IGNORE INTO Semester_KRS (id, roadmapId, semesterKe, status) VALUES ('mock-krs-af', 'mock-rm-af', 1, 'Menunggu Persetujuan')`);
+    // Insert Guru & Ortu
+    await connection.query(`INSERT IGNORE INTO Users (id, email, nama, peran, jenjang, kelas) VALUES ('guru-sari-1', 'guru@flexa.test', 'Ibu Sari Rahayu, M.Pd.', 'guru', 'SMA', '10')`);
+    await connection.query(`INSERT IGNORE INTO Users (id, email, nama, peran, jenjang, kelas) VALUES ('ortu-hendra-1', 'ortu@flexa.test', 'Bpk. Hendra Pratama', 'ortu', 'SMA', '10')`);
 
+    // Insert 9 Students in clean initial state (no diagnosis, no krs yet)
+    for (const s of FLEXA_STUDENTS_DATA) {
+      const uId = `siswa-${s.nis}`;
 
-    console.log('Mock data created successfully!');
+      await connection.query(
+        `INSERT INTO Users (id, email, nama, peran, jenjang, kelas) VALUES (?, ?, ?, 'siswa', ?, ?) ON DUPLICATE KEY UPDATE email=VALUES(email), nama=VALUES(nama), peran=VALUES(peran), jenjang=VALUES(jenjang), kelas=VALUES(kelas)`,
+        [uId, s.email, s.nama, s.jenjang, String(s.kelas)]
+      );
+
+      await connection.query(
+        `INSERT INTO Siswa_Profil (id, userId, gayaBelajar, minatBakat, kompetensiDasar, roadmapAktifId) VALUES (?, ?, ?, ?, ?, NULL) ON DUPLICATE KEY UPDATE gayaBelajar=VALUES(gayaBelajar), minatBakat=VALUES(minatBakat), kompetensiDasar=VALUES(kompetensiDasar)`,
+        [`prof-${s.nis}`, uId, '', '', '']
+      );
+    }
+
+    console.log('✅ 9 official Flexa Cendekia students data reset to clean initial state in MySQL successfully!');
   } catch (err) {
-    console.error('Error:', err);
+    console.error('Error during MySQL mock migration:', err);
   } finally {
     await connection.end();
   }

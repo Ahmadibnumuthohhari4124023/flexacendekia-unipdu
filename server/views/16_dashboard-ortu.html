@@ -108,6 +108,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="/firebase-config.js"></script>
     <script src="/firebase-auth-guard.js"></script>
+    <script src="/public/siswa_master_data.js" onerror="this.onerror=null; this.src='/siswa_master_data.js';"></script>
     <script src="/firebase-data-store.js"></script>
     <script src="/notification-sync.js"></script>
     <script src="/career-roadmap-data.js"></script>
@@ -151,7 +152,7 @@
 <!-- Header & Profile Info -->
 <header class="col-span-12 paper-card hairline-border p-8 mb-4 flex flex-col md:flex-row justify-between items-start md:items-center">
 <div>
-<h1 class="font-headline-md text-headline-md text-primary mb-2">Selamat Datang, <span id="header-ortu-name">Orang Tua</span></h1>
+<h1 class="font-headline-md text-headline-md text-primary mb-2">Selamat Datang, <span id="header-ortu-name">Bpk. Hendra Pratama</span></h1>
 <div class="flex items-center space-x-4">
 <span class="bg-[#A65C4B1A] text-role-parent font-label-caps text-label-caps px-3 py-1 rounded-full hairline-border border-role-parent/20">Akses Lihat Saja</span>
 <p class="font-body-sm text-body-sm text-on-surface-variant italic">
@@ -553,7 +554,10 @@ Data disinkronkan via SSO Flexa Cendekia
                 try { return JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch(e) { return {}; }
             })();
 
-            const ortuName = (currentUser && currentUser.nama) || localStorage.getItem('ortuNama') || 'Bpk. Hendra Pratama';
+            let ortuName = (currentUser && (currentUser.nama || currentUser.displayName)) || localStorage.getItem('ortuNama') || localStorage.getItem('userNama') || 'Bpk. Hendra Pratama';
+            if (!ortuName || ortuName === 'Orang Tua' || ortuName === 'OrangTua' || ortuName === 'Wali' || ortuName === 'Wali Siswa' || ortuName.trim() === '') {
+                ortuName = 'Bpk. Hendra Pratama';
+            }
             const headerNameEl = document.getElementById('header-ortu-name');
             const navbarNameEl = document.getElementById('navbar-ortu-name');
             const navbarAvatarEl = document.getElementById('navbar-ortu-avatar');
@@ -580,9 +584,24 @@ Data disinkronkan via SSO Flexa Cendekia
             await renderNotifikasi();
         }
 
+        function triggerOrtuInit() {
+            const user = window.currentFirebaseUser || (function() {
+                try { return JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch(e) { return {}; }
+            })();
+            initOrtuDashboard(user);
+        }
+
         window.addEventListener('auth-ready', function(e) {
             initOrtuDashboard(e.detail);
         });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', triggerOrtuInit);
+        } else {
+            triggerOrtuInit();
+        }
+        setTimeout(triggerOrtuInit, 100);
+        setTimeout(triggerOrtuInit, 500);
 
         async function loadChildren() {
             const childSelectorContainer = document.getElementById('child-selector');
@@ -608,6 +627,11 @@ Data disinkronkan via SSO Flexa Cendekia
                 }
 
                 childrenList = list || [];
+
+                // Fallback to official master students if list is empty
+                if (childrenList.length === 0 && window.FLEXA_STUDENTS_DATA && window.FLEXA_STUDENTS_DATA.length > 0) {
+                    childrenList = window.FLEXA_STUDENTS_DATA.map(s => Object.assign({ id: `siswa-${s.nis}`, uid: `siswa-${s.nis}` }, s));
+                }
 
                 if (childrenList.length === 0) {
                     childSelectorContainer.innerHTML = `
@@ -717,11 +741,13 @@ Data disinkronkan via SSO Flexa Cendekia
             const progresBarEl = document.getElementById('student-progres-bar');
             try {
                 const progDoc = await DataStore.getProgresMingguan(activeStudentId);
-                let pct = 70;
+                let pct = 0;
                 if (progDoc && progDoc.persentaseProgres !== undefined) {
                     pct = progDoc.persentaseProgres;
-                } else if (student.roadmapProgress !== undefined) {
+                } else if (student && student.roadmapProgress !== undefined) {
                     pct = student.roadmapProgress;
+                } else if (student && student.progresNum !== undefined) {
+                    pct = student.progresNum;
                 }
                 if (progresValEl) progresValEl.textContent = pct;
                 if (progresBarEl) {
@@ -729,8 +755,8 @@ Data disinkronkan via SSO Flexa Cendekia
                 }
             } catch (e) {
                 console.error('Error loading progress:', e);
-                if (progresValEl) progresValEl.textContent = '70';
-                if (progresBarEl) progresBarEl.style.width = '70%';
+                if (progresValEl) progresValEl.textContent = '0';
+                if (progresBarEl) progresBarEl.style.width = '0%';
             }
 
             // 3. Tugas & Checkpoint (Pengganti Poin Akademik)
@@ -780,23 +806,29 @@ Data disinkronkan via SSO Flexa Cendekia
                     }
                 });
 
-                // Default representative averages if no prior history
-                const defaultSem = {
-                    1: 85,
-                    2: 88,
-                    3: 82,
-                    4: 90
-                };
+                // Check if any semester has real data
+                const hasAnyRealData = Object.values(semData).some(s => s.count > 0);
+
+                if (!hasAnyRealData) {
+                    container.innerHTML = `
+                        <div class="flex flex-col items-center justify-center h-full text-center py-4">
+                            <span class="material-symbols-outlined text-2xl text-on-surface-variant/40 mb-1">bar_chart</span>
+                            <p class="font-body-sm text-xs text-on-surface-variant">Belum ada data nilai semester.</p>
+                            <p class="font-body-sm text-[10px] text-on-surface-variant/70">Grafik akan tampil setelah ananda menyelesaikan tes diagnostik dan modul pertama.</p>
+                        </div>
+                    `;
+                    return;
+                }
 
                 let html = '';
                 [1, 2, 3, 4].forEach(sem => {
                     const stat = semData[sem];
                     const hasRealData = stat.count > 0;
-                    const avg = hasRealData ? Math.round(stat.total / stat.count) : (sem === 4 ? 90 : defaultSem[sem]);
+                    const avg = hasRealData ? Math.round(stat.total / stat.count) : 0;
                     const isCurrent = sem === 4 || (sem === 3 && semData[4].count === 0);
 
                     const barColor = isCurrent ? 'bg-role-parent shadow-sm' : 'bg-primary/40 group-hover:bg-primary/60';
-                    const tooltipText = hasRealData ? `Capaian: ${avg}% (${stat.count} mapel)` : `Rata-rata: ${avg}%`;
+                    const tooltipText = hasRealData ? `Capaian: ${avg}% (${stat.count} mapel)` : `Belum ada data`;
 
                     html += `
                         <div class="flex-1 flex flex-col items-center justify-end h-full group relative">
