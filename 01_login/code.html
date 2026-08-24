@@ -154,9 +154,14 @@
     <!-- Top Navigation Anchor -->
     <header class="w-full bg-surface border-b border-primary/20 relative z-20">
         <div
-            class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
-            <div class="font-headline-md text-headline-md font-bold text-primary">
-                Flexa Cendekia x UNIPDU
+            class="flex justify-between items-center px-margin-mobile md:px-margin-desktop py-3.5 max-w-container-max mx-auto">
+            <div class="flex items-center gap-3">
+                <img src="/public/images/Logo_Flexa-removebg-preview.png" alt="Logo Flexa" class="h-8 md:h-9 w-auto object-contain" onerror="this.src='/Logo_Flexa-removebg-preview.png'" />
+                <span class="text-primary/30 font-bold text-sm">✕</span>
+                <img src="/public/images/Logo_UNIPDU-removebg-preview.png" alt="Logo UNIPDU" class="h-8 md:h-9 w-auto object-contain" onerror="this.src='/Logo_UNIPDU-removebg-preview.png'" />
+                <div class="font-headline-md text-base md:text-xl font-bold text-primary ml-1">
+                    Flexa Cendekia x UNIPDU
+                </div>
             </div>
             <div class="hidden md:flex gap-8">
                 <a class="text-on-surface-variant font-body-md text-body-md hover:text-primary transition-colors"
@@ -184,26 +189,41 @@
         </div>
     </header>
 
-    <!-- Main Content Area with Anchored Side Logos -->
+    <!-- Main Content Area with Balanced Side Wings -->
     <main class="flex-grow flex items-center justify-center p-6 relative overflow-hidden">
-        <!-- Logo Flexa (Sisi Kiri - Menempel Presisi di Konten Login) -->
-        <div class="hidden lg:flex absolute left-4 xl:left-12 2xl:left-24 top-1/2 -translate-y-1/2 pointer-events-none select-none z-0 items-center justify-center">
-            <img src="/public/images/Logo_Flexa.png" alt="Logo Flexa Cendekia"
-                class="w-52 xl:w-72 2xl:w-80 max-h-[380px] object-contain opacity-25 drop-shadow-sm transition-all"
-                onerror="this.style.display='none'" />
+        <!-- Logo Flexa Cendekia (Left Institutional Anchor) -->
+        <div class="hidden xl:flex flex-col items-center justify-center absolute left-6 2xl:left-16 top-1/2 -translate-y-1/2 select-none z-0 max-w-[260px] text-center pointer-events-none transition-all">
+            <div class="w-48 h-48 2xl:w-56 2xl:h-56 flex items-center justify-center p-5 rounded-3xl bg-surface-container-lowest/80 backdrop-blur-xs border border-primary/15 shadow-sm mb-3">
+                <img src="/public/images/Logo_Flexa-removebg-preview.png" alt="Logo Homeschooling Flexa Cendekia"
+                    class="w-full h-full object-contain filter drop-shadow-md"
+                    onerror="this.src='/Logo_Flexa-removebg-preview.png'" />
+            </div>
+            <span class="font-headline-md text-sm font-bold text-primary tracking-wide">Homeschooling Flexa Cendekia</span>
+            <span class="font-stats-sm text-[11px] text-on-surface-variant uppercase tracking-wider mt-0.5">Sistem Kurikulum Mandiri</span>
         </div>
 
         <!-- Card Container -->
         <div class="w-full max-w-lg relative z-10">
             <!-- The Academic Ledger Card -->
             <div class="academic-ledger-card paper-stack-effect p-8 md:p-12 relative">
-                <!-- Brand Lockup -->
-                <div class="flex justify-center mb-8">
-                    <div class="h-12 w-12 border-2 border-primary flex items-center justify-center bg-primary text-white">
-                        <span class="material-symbols-outlined text-3xl"
-                            data-icon="menu_book">menu_book</span>
+                <!-- Brand Lockup with High-Precision Transparent Logos -->
+                <div class="flex items-center justify-center gap-4 md:gap-6 mb-6">
+                    <div class="flex items-center justify-center p-2 rounded-xl bg-white border border-primary/10 shadow-xs hover:border-primary/30 transition-all">
+                        <img src="/public/images/Logo_Flexa-removebg-preview.png" alt="Logo Homeschooling Flexa Cendekia"
+                            class="h-12 md:h-14 w-auto object-contain transition-transform hover:scale-105"
+                            onerror="this.src='/Logo_Flexa-removebg-preview.png'" />
+                    </div>
+                    <div class="flex flex-col items-center justify-center">
+                        <span class="text-primary/40 font-bold text-[9px] uppercase tracking-widest">KOLABORASI</span>
+                        <span class="text-primary/30 font-bold text-sm">✕</span>
+                    </div>
+                    <div class="flex items-center justify-center p-2 rounded-xl bg-white border border-primary/10 shadow-xs hover:border-primary/30 transition-all">
+                        <img src="/public/images/Logo_UNIPDU-removebg-preview.png" alt="Logo UNIPDU"
+                            class="h-12 md:h-14 w-auto object-contain transition-transform hover:scale-105"
+                            onerror="this.src='/Logo_UNIPDU-removebg-preview.png'" />
                     </div>
                 </div>
+
                 <!-- Headline -->
                 <div class="text-center mb-6">
                     <h1 class="font-headline-md text-headline-md text-primary mb-2">Selamat Datang Kembali</h1>
@@ -316,11 +336,15 @@
             </div>
         </div>
 
-        <!-- Logo UNIPDU (Sisi Kanan - Menempel Presisi di Konten Login) -->
-        <div class="hidden lg:flex absolute right-4 xl:right-12 2xl:right-24 top-1/2 -translate-y-1/2 pointer-events-none select-none z-0 items-center justify-center">
-            <img src="/public/images/Logo_UNIPDU.png" alt="Logo UNIPDU"
-                class="w-52 xl:w-72 2xl:w-80 max-h-[380px] object-contain opacity-25 drop-shadow-sm transition-all"
-                onerror="this.style.display='none'" />
+        <!-- Logo UNIPDU (Right Institutional Anchor) -->
+        <div class="hidden xl:flex flex-col items-center justify-center absolute right-6 2xl:right-16 top-1/2 -translate-y-1/2 select-none z-0 max-w-[260px] text-center pointer-events-none transition-all">
+            <div class="w-48 h-48 2xl:w-56 2xl:h-56 flex items-center justify-center p-5 rounded-3xl bg-surface-container-lowest/80 backdrop-blur-xs border border-primary/15 shadow-sm mb-3">
+                <img src="/public/images/Logo_UNIPDU-removebg-preview.png" alt="Logo Universitas Pesantren Tinggi Darul Ulum"
+                    class="w-full h-full object-contain filter drop-shadow-md"
+                    onerror="this.src='/Logo_UNIPDU-removebg-preview.png'" />
+            </div>
+            <span class="font-headline-md text-sm font-bold text-primary tracking-wide">UNIPDU Jombang</span>
+            <span class="font-stats-sm text-[11px] text-on-surface-variant uppercase tracking-wider mt-0.5">Mitra Akademik &amp; Matrikulasi S1</span>
         </div>
     </main>
 
