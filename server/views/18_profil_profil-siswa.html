@@ -985,20 +985,8 @@
             const sidebarKurikulum = document.getElementById('sidebar-kurikulum-badge');
             if (sidebarKurikulum) sidebarKurikulum.textContent = `Kurikulum Merdeka (${jenjang})`;
 
-            // Sidebar Guru Pembimbing matched to career
-            const cLower = citaCita.toLowerCase();
-            let advisorName = 'Tutor Pembimbing Akademik';
-            if (cLower.includes('aktor') || cLower.includes('seni') || cLower.includes('lukis') || cLower.includes('musik') || cLower.includes('desain') || cLower.includes('tulis') || cLower.includes('animat')) {
-                advisorName = 'Bpk. Danang Prasetyo, S.Sn';
-            } else if (cLower.includes('dokter') || cLower.includes('rawat') || cLower.includes('apotek') || cLower.includes('bidan') || cLower.includes('gizi') || cLower.includes('medis')) {
-                advisorName = 'dr. Hendra Wicaksono, Sp.A';
-            } else if (cLower.includes('polisi') || cLower.includes('tentara') || cLower.includes('hakim') || cLower.includes('pengacara') || cLower.includes('hukum')) {
-                advisorName = 'Bpk. Surya Dinata, S.H., M.H.';
-            } else if (cLower.includes('akuntan') || cLower.includes('bisnis') || cLower.includes('wirausaha') || cLower.includes('ekonomi')) {
-                advisorName = 'Ibu Rina Kartika, S.E., M.M.';
-            } else if (cLower.includes('guru') || cLower.includes('dosen') || cLower.includes('ustadz')) {
-                advisorName = 'Bpk. Ahmad Syafi\'i, M.Pd';
-            }
+            // Sidebar Guru Pembimbing
+            let advisorName = u.guruWaliNama || localStorage.getItem('guruWaliNama') || 'Belum Ada Pembimbing';
             const sidebarGuru = document.getElementById('sidebar-guru-nama');
             if (sidebarGuru) sidebarGuru.textContent = advisorName;
 

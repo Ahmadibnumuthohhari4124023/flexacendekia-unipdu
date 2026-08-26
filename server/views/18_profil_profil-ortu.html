@@ -724,21 +724,7 @@
                     children = await window.DataStore.getAnakByOrtuId(parentUid);
                 }
 
-                // 2. Fallback to master data official students if newly seeded
-                if ((!children || children.length === 0) && window.FLEXA_STUDENTS_DATA) {
-                    // Default to Caesar and Aisha for demo parent
-                    const targetNis = ['260008', '260001'];
-                    children = window.FLEXA_STUDENTS_DATA.filter(s => targetNis.includes(s.nis)).map(s => ({
-                        id: `siswa-${s.nis}`,
-                        uid: `siswa-${s.nis}`,
-                        nama: s.nama,
-                        jenjang: s.jenjang,
-                        kelas: s.kelas,
-                        nisn: s.nis,
-                        citaCita: s.citaCita || 'Belum Memilih Cita-Cita',
-                        progres: s.progres || '0%'
-                    }));
-                }
+
 
                 if (summaryEl) {
                     summaryEl.textContent = `${children.length} Anak Terhubung`;

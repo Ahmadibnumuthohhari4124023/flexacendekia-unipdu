@@ -27,6 +27,8 @@
                         "secondary-container": "#fdc265",
                         "on-secondary-container": "#754e00",
                         "tertiary": "#000f0c",
+                        "role-teacher": "#0B3B2C",
+                        "brand-gold": "#805600",
                         "surface": "#fbf8fb",
                         "surface-container-lowest": "#FBFAF5",
                         "surface-container-low": "#EAEDE2",
@@ -98,45 +100,58 @@
     <nav class="bg-[#FBFAF5] w-full border-b border-primary/20 top-0 sticky z-50">
         <div class="flex justify-between items-center w-full px-4 md:px-8 max-w-[1400px] mx-auto h-16">
             <div class="flex items-center gap-3">
-                <img src="/public/images/Logo_Flexa-removebg-preview.png" alt="Logo Flexa Cendekia" class="h-8 w-auto object-contain" />
+                <img src="/public/images/Logo_Flexa-removebg-preview.png" alt="Logo Flexa Cendekia"
+                    class="h-8 w-auto object-contain" />
                 <div>
-                    <a href="/?page=08_dashboard-siswa" class="font-headline-md text-base md:text-xl font-bold text-primary hover:opacity-90">
+                    <a href="/?page=08_dashboard-siswa"
+                        class="font-headline-md text-base md:text-xl font-bold text-primary hover:opacity-90">
                         Homeschooling Flexa Cendekia
                     </a>
-                    <span class="hidden sm:inline-block ml-2 text-[10px] font-mono px-2 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded font-bold uppercase tracking-wider">
+                    <span
+                        class="hidden sm:inline-block ml-2 text-[10px] font-mono px-2 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded font-bold uppercase tracking-wider">
                         Powered by UNIPDU
                     </span>
                 </div>
             </div>
 
             <div class="hidden md:flex items-center h-full">
-                <span class="px-4 py-1.5 font-label-caps text-[11px] font-bold text-primary bg-primary/5 rounded-full border border-primary/10 tracking-widest uppercase">
+                <span
+                    class="px-4 py-1.5 font-label-caps text-[11px] font-bold text-primary bg-primary/5 rounded-full border border-primary/10 tracking-widest uppercase">
                     KRS &amp; Rencana Modul Ajar
                 </span>
             </div>
 
             <div class="flex items-center space-x-4">
-                <a href="/?page=17_notifikasi" class="material-symbols-outlined text-primary hover:text-secondary transition-colors" title="Notifikasi">notifications</a>
-                <a href="/?page=18_profil_profil-siswa" id="top-user-avatar" class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-mono text-xs font-bold border border-primary/30 hover:ring-2 hover:ring-secondary/50 transition-all overflow-hidden" title="Profil Siswa">
+                <a href="/?page=17_notifikasi"
+                    class="material-symbols-outlined text-primary hover:text-secondary transition-colors"
+                    title="Notifikasi">notifications</a>
+                <a href="/?page=18_profil_profil-siswa" id="top-user-avatar"
+                    class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-mono text-xs font-bold border border-primary/30 hover:ring-2 hover:ring-secondary/50 transition-all overflow-hidden"
+                    title="Profil Siswa">
                     SW
                 </a>
-                <button onclick="if(window.flexaLogout) flexaLogout(); else firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" class="text-red-600 hover:opacity-80 material-symbols-outlined text-lg" title="Keluar">logout</button>
+                <button
+                    onclick="if(window.flexaLogout) flexaLogout(); else firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');"
+                    class="text-red-600 hover:opacity-80 material-symbols-outlined text-lg"
+                    title="Keluar">logout</button>
             </div>
         </div>
     </nav>
 
     <!-- Main Workspace -->
     <main class="flex-1 max-w-[1400px] w-full mx-auto px-4 md:px-8 py-6 space-y-6">
-        
+
         <!-- Header Title Banner -->
         <header class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2 border-b border-primary/10">
             <div>
-                <h1 class="font-headline-md text-2xl font-bold text-primary mb-1">Kartu Rencana Studi (KRS) &amp; Modul Ajar</h1>
+                <h1 class="font-headline-md text-2xl font-bold text-primary mb-1">Kartu Rencana Studi (KRS) &amp; Modul
+                    Ajar</h1>
                 <p id="semester-info" class="text-xs text-on-surface-variant italic">
                     Semester Ganjil 2025/2026 — Homeschooling Flexa Cendekia (SD • SMP • SMA)
                 </p>
             </div>
-            <div id="krs-status-badge" class="inline-flex items-center px-3.5 py-1.5 bg-secondary/10 border border-secondary text-secondary rounded text-xs font-bold font-mono self-start md:self-auto">
+            <div id="krs-status-badge"
+                class="inline-flex items-center px-3.5 py-1.5 bg-secondary/10 border border-secondary text-secondary rounded text-xs font-bold font-mono self-start md:self-auto">
                 <span class="material-symbols-outlined text-base mr-1.5">verified</span>
                 <span>STATUS: TERVERIFIKASI &amp; AKTIF</span>
             </div>
@@ -149,19 +164,22 @@
                 <section class="ledger-card p-6 relative overflow-hidden">
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
                         <div>
-                            <p class="text-[10px] font-mono text-on-surface-variant uppercase tracking-wider mb-1">NAMA SISWA</p>
+                            <p class="text-[10px] font-mono text-on-surface-variant uppercase tracking-wider mb-1">NAMA
+                                SISWA</p>
                             <p class="font-headline-md text-base font-bold text-primary" id="display-student-name">
                                 Memuat...
                             </p>
                         </div>
                         <div>
-                            <p class="text-[10px] font-mono text-on-surface-variant uppercase tracking-wider mb-1">JENJANG &amp; KELAS</p>
+                            <p class="text-[10px] font-mono text-on-surface-variant uppercase tracking-wider mb-1">
+                                JENJANG &amp; KELAS</p>
                             <p class="font-stats-sm text-xs font-bold text-primary" id="krs-jenjang-kelas">
                                 Memuat...
                             </p>
                         </div>
                         <div>
-                            <p class="text-[10px] font-mono text-on-surface-variant uppercase tracking-wider mb-1">CITA-CITA STRATEGIS</p>
+                            <p class="text-[10px] font-mono text-on-surface-variant uppercase tracking-wider mb-1">
+                                CITA-CITA STRATEGIS</p>
                             <div class="flex items-center text-secondary font-bold text-xs">
                                 <span class="material-symbols-outlined text-sm mr-1">stars</span>
                                 <span id="krs-cita-cita">Memuat...</span>
@@ -169,24 +187,32 @@
                         </div>
                     </div>
 
-                    <div class="pt-3 border-t border-primary/10 flex flex-wrap justify-between items-center gap-2 text-xs text-on-surface-variant">
-                        <span>Pembimbing Akademik: <strong class="text-primary" id="krs-pembimbing">Memuat...</strong></span>
-                        <span id="krs-total-beban-wrapper">Total Beban Studi: <strong class="text-secondary font-mono font-bold" id="krs-total-beban">14 Jam / Minggu</strong></span>
+                    <div
+                        class="pt-3 border-t border-primary/10 flex flex-wrap justify-between items-center gap-2 text-xs text-on-surface-variant">
+                        <span>Pembimbing Akademik: <strong class="text-primary"
+                                id="krs-pembimbing">Memuat...</strong></span>
+                        <span id="krs-total-beban-wrapper">Total Beban Studi: <strong
+                                class="text-secondary font-mono font-bold" id="krs-total-beban">14 Jam /
+                                Minggu</strong></span>
                     </div>
                 </section>
 
                 <!-- Daftar Modul & Mata Pelajaran Table -->
                 <section class="ledger-card overflow-hidden">
                     <div class="p-4 border-b border-primary/10 bg-primary/5 flex justify-between items-center">
-                        <h2 class="font-headline-md text-base font-bold text-primary">Daftar Modul Belajar &amp; Mata Kuliah Semester Ini</h2>
-                        <span class="text-[10px] font-mono text-secondary font-bold bg-white px-2 py-0.5 border border-secondary/20 rounded" id="krs-curriculum-badge">
+                        <h2 class="font-headline-md text-base font-bold text-primary">Daftar Modul Belajar &amp; Mata
+                            Kuliah Semester Ini</h2>
+                        <span
+                            class="text-[10px] font-mono text-secondary font-bold bg-white px-2 py-0.5 border border-secondary/20 rounded"
+                            id="krs-curriculum-badge">
                             KURIKULUM MERDEKA + UNIPDU
                         </span>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-xs">
                             <thead>
-                                <tr class="border-b border-primary/20 bg-[#FBFAF5] text-[10px] font-mono uppercase text-on-surface-variant tracking-wider">
+                                <tr
+                                    class="border-b border-primary/20 bg-[#FBFAF5] text-[10px] font-mono uppercase text-on-surface-variant tracking-wider">
                                     <th class="py-3 px-4">Kode</th>
                                     <th class="py-3 px-4">Mata Pelajaran / Modul Ajar</th>
                                     <th class="py-3 px-4">Tipe / Kategori</th>
@@ -196,7 +222,8 @@
                             </thead>
                             <tbody class="divide-y divide-primary/10" id="krs-table-body">
                                 <tr>
-                                    <td colspan="5" class="py-8 text-center text-on-surface-variant font-mono text-xs animate-pulse">
+                                    <td colspan="5"
+                                        class="py-8 text-center text-on-surface-variant font-mono text-xs animate-pulse">
                                         Menyusun modul belajar semester aktif...
                                     </td>
                                 </tr>
@@ -207,18 +234,28 @@
             </div>
 
             <!-- Right Column: Quick Action & Summary -->
+            <!-- Right Column: Quick Action & Summary -->
             <div class="lg:col-span-4 space-y-6">
                 <!-- Action Card -->
                 <div class="ledger-card p-6 space-y-4">
                     <h3 class="font-headline-md text-base font-bold text-primary">Aksi &amp; Layanan KRS</h3>
-                    <div class="space-y-2">
-                        <button onclick="window.print()" class="w-full py-2.5 px-4 bg-primary text-white text-xs font-bold rounded flex items-center justify-center gap-2 hover:opacity-90 transition-opacity cursor-pointer shadow-sm">
+                    <div id="krs-action-buttons" class="space-y-2">
+                        <button id="btn-ajukan-krs" onclick="handleAjukanKRS()"
+                            class="w-full py-3.5 px-4 bg-[#805600] hover:bg-[#664500] text-white font-mono text-xs font-bold rounded flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer mb-2 transform active:scale-95"
+                            style="background-color: #805600 !important; color: #FFFFFF !important;">
+                            <span class="material-symbols-outlined text-base">send</span>
+                            <span>AJUKAN KRS KE GURU PEMBIMBING</span>
+                        </button>
+                        <button onclick="window.print()"
+                            class="w-full py-2.5 px-4 bg-primary text-white text-xs font-bold rounded flex items-center justify-center gap-2 hover:opacity-90 transition-opacity cursor-pointer shadow-sm">
                             <span class="material-symbols-outlined text-sm">print</span> Cetak Lembar Rencana Studi
                         </button>
-                        <a href="/?page=11_checkpoint-jumat" class="w-full py-2.5 px-4 border border-secondary text-secondary text-xs font-bold rounded flex items-center justify-center gap-2 hover:bg-secondary/10 transition-colors">
+                        <a href="/?page=11_checkpoint-jumat"
+                            class="w-full py-2.5 px-4 border border-secondary text-secondary text-xs font-bold rounded flex items-center justify-center gap-2 hover:bg-secondary/10 transition-colors">
                             <span class="material-symbols-outlined text-sm">event_available</span> Buka Checkpoint Jumat
                         </a>
-                        <a href="/?page=10_detail-roadmap" class="w-full py-2.5 px-4 border border-primary/20 text-primary text-xs font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/5 transition-colors">
+                        <a href="/?page=10_detail-roadmap"
+                            class="w-full py-2.5 px-4 border border-primary/20 text-primary text-xs font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/5 transition-colors">
                             <span class="material-symbols-outlined text-sm">alt_route</span> Cek Roadmap 6 Tahun
                         </a>
                     </div>
@@ -228,10 +265,11 @@
                 <div class="ledger-card p-6 bg-secondary/5 border-secondary/20 text-xs space-y-2">
                     <div class="flex items-center gap-1.5 text-secondary font-bold">
                         <span class="material-symbols-outlined text-base">info</span>
-                        <span>Catatan Kurikulum Homeschooling</span>
+                        <span>Alur Pengambilan KRS</span>
                     </div>
-                    <p class="text-on-surface-variant leading-relaxed">
-                        Siswa Homeschooling Flexa Cendekia dapat menyelesaikan modul secara fleksibel dengan pendampingan tutor mingguan dan evaluasi di Checkpoint Jumat.
+                    <p id="krs-guidance-text" class="text-on-surface-variant leading-relaxed">
+                        Siswa menyusun dan mengajukan rencana modul semester. Guru Pembimbing akan meninjau dan
+                        memvalidasi KRS sebelum semester aktif dimulai.
                     </p>
                 </div>
             </div>
@@ -241,7 +279,8 @@
 
     <!-- Footer -->
     <footer class="bg-[#FBFAF5] border-t border-primary/20 py-6 mt-12">
-        <div class="max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-on-surface-variant">
+        <div
+            class="max-w-[1400px] mx-auto px-4 md:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-on-surface-variant">
             <div class="flex items-center gap-2">
                 <span class="font-bold text-primary">Homeschooling Flexa Cendekia</span>
                 <span>•</span>
@@ -257,73 +296,81 @@
 
     <!-- Dynamic KRS Engine Script -->
     <script>
-        function generateKRSModules(jenjang, kelas, careerTitle) {
+        function generateKRSModules(jenjang, kelas, careerTitle, krsStatus) {
             const j = (jenjang || 'SMA').toUpperCase();
-            const k = parseInt(kelas, 10) || (j === 'SD' ? 1 : (j === 'SMP' ? 7 : 10));
-            const c = careerTitle || 'Arsitek';
+            const k = kelas || (j === 'SD' ? 1 : (j === 'SMP' ? 7 : 10));
+            const c = careerTitle || 'Atlet';
             const careerCode = c.substring(0, 3).toUpperCase();
+
+            let statusText = 'Draft Belum Diajukan';
+            let statusIcon = 'edit_note';
+            let statusClass = 'text-amber-700 font-bold';
+
+            if (krsStatus === 'Disetujui' || krsStatus === 'Aktif') {
+                statusText = 'Disetujui';
+                statusIcon = 'check_circle';
+                statusClass = 'text-emerald-700 font-bold';
+            } else if (krsStatus === 'Menunggu Validasi' || krsStatus === 'Menunggu Persetujuan') {
+                statusText = 'Menunggu Validasi';
+                statusIcon = 'hourglass_top';
+                statusClass = 'text-blue-700 font-bold';
+            } else if (krsStatus === 'Ditolak') {
+                statusText = 'Perlu Revisi';
+                statusIcon = 'cancel';
+                statusClass = 'text-red-700 font-bold';
+            }
 
             let modules = [];
 
             if (j === 'SD') {
                 modules = [
                     {
-                        code: `IND-SD0${k}`,
-                        nama: 'Bahasa Indonesia & Literasi Cerita',
-                        desc: `Kompetensi Dasar Membaca & Menulis Kreatif (Kelas ${k} SD)`,
-                        kategori: 'Wajib Utama',
-                        badgeClass: 'bg-blue-100 text-blue-800',
+                        code: `MOD-${careerCode}-SD`,
+                        nama: `Eksplorasi Minat & Pengenalan Bakat: ${c}`,
+                        desc: `Aktivitas tematik dan observasi dasar pengenalan profesi ${c}`,
+                        kategori: `Minat & Bakat ${c}`,
+                        badgeClass: 'bg-primary/10 text-primary',
                         beban: '4 Jam',
-                        status: 'Disetujui'
+                        status: statusText,
+                        statusIcon: statusIcon,
+                        statusClass: statusClass
                     },
                     {
-                        code: `KAR-${careerCode}-0${k}`,
-                        nama: `Eksplorasi Bakat & Minat Profesi: ${c}`,
-                        desc: `Pengenalan dunia ${c} melalui aktivitas terarah dan proyek visual`,
-                        kategori: `Peminatan ${c}`,
-                        badgeClass: 'bg-secondary/15 text-secondary',
-                        beban: '3 Jam',
-                        status: 'Disetujui'
+                        code: `LIT-SD0${k}`,
+                        nama: 'Literasi Bahasa & Cerita Tematik',
+                        desc: 'Pengembangan kemampuan membaca, menulis, dan apresiasi karya',
+                        kategori: 'Fondasi Literasi',
+                        badgeClass: 'bg-emerald-100 text-emerald-800',
+                        beban: '4 Jam',
+                        status: statusText,
+                        statusIcon: statusIcon,
+                        statusClass: statusClass
                     },
                     {
-                        code: `MAT-SD0${k}`,
-                        nama: 'Matematika Dasar & Logika Berhitung',
-                        desc: `Penerapan konsep angka dan pemecahan masalah sederhana`,
-                        kategori: 'Wajib Utama',
+                        code: `NUM-SD0${k}`,
+                        nama: 'Numerasi Konkret & Pola Logika',
+                        desc: 'Pengenalan konsep angka kontekstual dan logika spasial sederhana',
+                        kategori: 'Fondasi Numerasi',
                         badgeClass: 'bg-blue-100 text-blue-800',
                         beban: '3 Jam',
-                        status: 'Disetujui'
+                        status: statusText,
+                        statusIcon: statusIcon,
+                        statusClass: statusClass
                     },
                     {
-                        code: `PAI-SD0${k}`,
-                        nama: 'Pendidikan Agama & Akhlak Mulia',
-                        desc: 'Penguatan karakter dan pembiasaan adab mulia',
-                        kategori: 'Karakter Luhur',
-                        badgeClass: 'bg-emerald-100 text-emerald-800',
-                        beban: '2 Jam',
-                        status: 'Disetujui'
-                    },
-                    {
-                        code: `KRE-SD0${k}`,
-                        nama: 'Proyek Kreativitas & Bermain Peran',
-                        desc: 'Pengembangan rasa percaya diri, ekspresi diri, dan kerja mandiri',
-                        kategori: 'Portofolio Mandiri',
-                        badgeClass: 'bg-purple-100 text-purple-800',
-                        beban: '2 Jam',
-                        status: 'Disetujui'
+                        code: `KAR-SD0${k}`,
+                        nama: 'Pendidikan Karakter & Budi Pekerti Pesantren',
+                        desc: 'Pembiasaan akhlak mulia, kemandirian, dan adab keseharian',
+                        kategori: 'Karakter & Spiritual',
+                        badgeClass: 'bg-amber-100 text-amber-800',
+                        beban: '3 Jam',
+                        status: statusText,
+                        statusIcon: statusIcon,
+                        statusClass: statusClass
                     }
                 ];
             } else if (j === 'SMP') {
                 modules = [
-                    {
-                        code: `IND-SMP0${k}`,
-                        nama: 'Bahasa Indonesia & Komunikasi Efektif',
-                        desc: `Keterampilan Berbicara, Menulis Esai, & Berpikir Kritis (Fase D Kelas ${k})`,
-                        kategori: 'Wajib Utama',
-                        badgeClass: 'bg-blue-100 text-blue-800',
-                        beban: '4 Jam',
-                        status: 'Disetujui'
-                    },
                     {
                         code: `KAR-${careerCode}-SMP`,
                         nama: `Fondasi & Eksplorasi Keilmuan: ${c}`,
@@ -331,7 +378,9 @@
                         kategori: `Peminatan ${c}`,
                         badgeClass: 'bg-secondary/15 text-secondary',
                         beban: '4 Jam',
-                        status: 'Disetujui'
+                        status: statusText,
+                        statusIcon: statusIcon,
+                        statusClass: statusClass
                     },
                     {
                         code: `MAT-SMP0${k}`,
@@ -340,7 +389,9 @@
                         kategori: 'Wajib Utama',
                         badgeClass: 'bg-blue-100 text-blue-800',
                         beban: '4 Jam',
-                        status: 'Disetujui'
+                        status: statusText,
+                        statusIcon: statusIcon,
+                        statusClass: statusClass
                     },
                     {
                         code: `ENG-SMP0${k}`,
@@ -349,7 +400,9 @@
                         kategori: 'Bahasa Global',
                         badgeClass: 'bg-amber-100 text-amber-800',
                         beban: '3 Jam',
-                        status: 'Disetujui'
+                        status: statusText,
+                        statusIcon: statusIcon,
+                        statusClass: statusClass
                     },
                     {
                         code: `PAI-SMP0${k}`,
@@ -358,7 +411,9 @@
                         kategori: 'Karakter Islami',
                         badgeClass: 'bg-emerald-100 text-emerald-800',
                         beban: '3 Jam',
-                        status: 'Disetujui'
+                        status: statusText,
+                        statusIcon: statusIcon,
+                        statusClass: statusClass
                     }
                 ];
             } else {
@@ -371,7 +426,9 @@
                         kategori: 'Wajib Utama',
                         badgeClass: 'bg-blue-100 text-blue-800',
                         beban: '4 Jam',
-                        status: 'Disetujui'
+                        status: statusText,
+                        statusIcon: statusIcon,
+                        statusClass: statusClass
                     },
                     {
                         code: `UNIPDU-${careerCode}-101`,
@@ -380,7 +437,9 @@
                         kategori: 'Matrikulasi S1 UNIPDU',
                         badgeClass: 'bg-secondary/15 text-secondary',
                         beban: '3 SKS',
-                        status: 'Disetujui'
+                        status: statusText,
+                        statusIcon: statusIcon,
+                        statusClass: statusClass
                     },
                     {
                         code: `MOD-${careerCode}-SMA`,
@@ -389,7 +448,9 @@
                         kategori: `Peminatan ${c}`,
                         badgeClass: 'bg-purple-100 text-purple-800',
                         beban: '4 Jam',
-                        status: 'Disetujui'
+                        status: statusText,
+                        statusIcon: statusIcon,
+                        statusClass: statusClass
                     },
                     {
                         code: `PEN-SMA${k}`,
@@ -398,7 +459,9 @@
                         kategori: 'Keterampilan Digital',
                         badgeClass: 'bg-cyan-100 text-cyan-800',
                         beban: '3 Jam',
-                        status: 'Disetujui'
+                        status: statusText,
+                        statusIcon: statusIcon,
+                        statusClass: statusClass
                     },
                     {
                         code: `PAI-SMA${k}`,
@@ -407,7 +470,9 @@
                         kategori: 'Karakter Islami',
                         badgeClass: 'bg-emerald-100 text-emerald-800',
                         beban: '2 Jam',
-                        status: 'Disetujui'
+                        status: statusText,
+                        statusIcon: statusIcon,
+                        statusClass: statusClass
                     }
                 ];
             }
@@ -415,15 +480,193 @@
             return modules;
         }
 
+        async function handleAjukanKRS() {
+            const btn = document.getElementById('btn-ajukan-krs');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">refresh</span> Mengajukan...';
+            }
+
+            // 1. Ambil data profil dari local storage
+            let u = {};
+            try {
+                u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            } catch (e) { }
+
+            const uid = (window.firebaseAuth && window.firebaseAuth.currentUser)
+                ? window.firebaseAuth.currentUser.uid
+                : (u.uid || u.id || localStorage.getItem('userUid') || 'siswa_aktif');
+            const jenjang = (u.jenjang || localStorage.getItem('userJenjang') || 'SMA').toUpperCase();
+            const kelas = parseInt(u.kelas || localStorage.getItem('userKelas'), 10) || (jenjang === 'SD' ? 1 : (jenjang === 'SMP' ? 7 : 10));
+            const careerTitle = u.citaCita || localStorage.getItem('selectedCareer') || 'Atlet';
+            const modules = generateKRSModules(jenjang, kelas, careerTitle, 'Menunggu Validasi');
+
+            // 2. Pembaruan Status Instan (Optimistic UI)
+            u.statusKRS = 'Menunggu Validasi';
+            localStorage.setItem('currentUser', JSON.stringify(u));
+            localStorage.setItem('statusKRS', 'Menunggu Validasi');
+
+            const newKrs = {
+                id: `krs_${uid}`,
+                siswaId: uid,
+                nama: u.nama || localStorage.getItem('userNama') || 'Siswa Flexa',
+                nisn: u.nisn || localStorage.getItem('userNisn') || '260010',
+                jenjang: jenjang,
+                kelas: `Kelas ${kelas}`,
+                citaCita: careerTitle,
+                programStudiTarget: `S1 Terpadu UNIPDU (${careerTitle})`,
+                guruId: u.guruWaliId || null,
+                semester: 1,
+                status: 'Menunggu Validasi',
+                statusKRS: 'Menunggu Validasi',
+                mataPelajaran: modules.map(m => ({
+                    kode: m.code,
+                    nama: m.nama,
+                    sks: m.beban.includes('SKS') ? parseInt(m.beban) : 3,
+                    kategori: m.kategori,
+                    beban: m.beban
+                })),
+                tanggal: 'Hari ini, ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'
+            };
+
+            // Simpan ke SSOSync multi-user registry
+            if (window.SSOSync) {
+                window.SSOSync.saveKRS(newKrs);
+                window.SSOSync.saveUser({
+                    uid: uid,
+                    id: uid,
+                    nama: u.nama || localStorage.getItem('userNama') || 'Siswa Flexa',
+                    role: 'Siswa',
+                    jenjang: jenjang,
+                    kelas: kelas,
+                    citaCita: careerTitle,
+                    statusKRS: 'Menunggu Validasi'
+                });
+            }
+
+            // Tampilkan UI Menunggu Validasi seketika
+            hydrateKRS(u);
+            showToast('KRS Berhasil Diajukan!', 'Rencana studi Anda telah terkirim ke antrean verifikasi Guru Pembimbing.');
+
+            // 3. Simpan ke Firestore di latar belakang (non-blocking)
+            try {
+                if (window.firebaseDb && uid) {
+                    window.firebaseDb.collection('pengajuanKRS').doc(`krs_${uid}`).set(newKrs, { merge: true }).catch(e => {
+                        console.warn('[Firestore] Simpan pengajuanKRS:', e);
+                    });
+                    window.firebaseDb.collection('users').doc(uid).set({
+                        statusKRS: 'Menunggu Validasi',
+                        role: 'Siswa',
+                        nama: u.nama || localStorage.getItem('userNama') || 'Siswa',
+                        jenjang: jenjang,
+                        kelas: kelas,
+                        citaCita: careerTitle
+                    }, { merge: true }).catch(e => {
+                        console.warn('[Firestore] Update status user:', e);
+                    });
+                }
+            } catch (err) {
+                console.warn('[KRS] Background sync warning:', err);
+            }
+        }
+
+        function showToast(title, msg) {
+            let toast = document.getElementById('krs-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'krs-toast';
+                toast.className = 'fixed bottom-6 right-6 z-50 bg-primary text-white p-4 rounded-lg shadow-xl border border-primary/20 flex items-start gap-3 max-w-sm transition-all transform duration-300';
+                document.body.appendChild(toast);
+            }
+            toast.innerHTML = `
+                <span class="material-symbols-outlined text-secondary text-2xl">check_circle</span>
+                <div>
+                    <h4 class="font-bold text-sm text-white">${title}</h4>
+                    <p class="text-xs text-white/80 mt-0.5">${msg}</p>
+                </div>
+            `;
+            toast.style.display = 'flex';
+            setTimeout(() => {
+                if (toast) toast.style.display = 'none';
+            }, 4000);
+        }
+
         function hydrateKRS(user) {
             if (!user) return;
 
-            const nama = user.nama || 'Siswa Homeschooling';
+            const nama = user.nama || localStorage.getItem('userNama') || 'Siswa Homeschooling';
             const jenjang = (user.jenjang || localStorage.getItem('userJenjang') || 'SMA').toUpperCase();
             const kelas = parseInt(user.kelas || localStorage.getItem('userKelas'), 10) || (jenjang === 'SD' ? 1 : (jenjang === 'SMP' ? 7 : 10));
             const careerTitle = user.citaCita || localStorage.getItem('selectedCareer') || 'Arsitek';
 
-            // 1. Identitas
+            // Ambil status KRS terkini (prioritas: SSOSync > memori user aktif > localStorage)
+            let statusKRS = user.statusKRS || localStorage.getItem('statusKRS') || 'Belum Mengisi';
+            const uid = (window.firebaseAuth && window.firebaseAuth.currentUser) ? window.firebaseAuth.currentUser.uid : (user.uid || user.id);
+
+            if (window.SSOSync) {
+                const localKrs = window.SSOSync.getAllKRS().find(k => k.id === `krs_${uid}` || k.siswaId === uid);
+                if (localKrs && localKrs.status) {
+                    statusKRS = localKrs.status;
+                }
+            }
+
+            // Auto-sync ke SSOSync registry
+            if (window.SSOSync) {
+                window.SSOSync.saveUser({
+                    uid: uid,
+                    id: uid,
+                    nama: nama,
+                    role: 'Siswa',
+                    jenjang: jenjang,
+                    kelas: kelas,
+                    citaCita: careerTitle,
+                    statusKRS: statusKRS
+                });
+
+                if (statusKRS === 'Menunggu Validasi' || statusKRS === 'Menunggu Persetujuan') {
+                    const modules = generateKRSModules(jenjang, kelas, careerTitle, statusKRS);
+                    window.SSOSync.saveKRS({
+                        id: `krs_${uid}`,
+                        siswaId: uid,
+                        nama: nama,
+                        nisn: user.nisn || localStorage.getItem('userNisn') || '260010',
+                        jenjang: jenjang,
+                        kelas: `Kelas ${kelas}`,
+                        citaCita: careerTitle,
+                        programStudiTarget: `S1 Terpadu UNIPDU (${careerTitle})`,
+                        status: 'Menunggu Validasi',
+                        statusKRS: 'Menunggu Validasi',
+                        mataPelajaran: modules.map(m => ({
+                            kode: m.code,
+                            nama: m.nama,
+                            sks: m.beban.includes('SKS') ? parseInt(m.beban) : 3,
+                            kategori: m.kategori,
+                            beban: m.beban
+                        })),
+                        tanggal: 'Hari ini, ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'
+                    });
+                }
+            }
+
+            // Auto-sync ke dedicated cross-account key
+            if (statusKRS === 'Menunggu Validasi' || statusKRS === 'Menunggu Persetujuan') {
+                try {
+                    const siswaRecord = {
+                        id: uid, uid: uid,
+                        nama: nama, nisn: user.nisn || localStorage.getItem('userNisn') || '260010',
+                        role: 'Siswa', jenjang: jenjang, kelas: kelas,
+                        citaCita: careerTitle,
+                        programStudiTarget: `S1 Terpadu UNIPDU (${careerTitle})`,
+                        statusKRS: 'Menunggu Validasi',
+                        krsId: `krs_${uid}`,
+                        tanggalAjukan: new Date().toISOString()
+                    };
+                    const existingPending = JSON.parse(localStorage.getItem('flexa_siswa_krs_pending') || '[]');
+                    const idx = existingPending.findIndex(s => s.id === uid || s.uid === uid);
+                    if (idx !== -1) { existingPending[idx] = siswaRecord; } else { existingPending.push(siswaRecord); }
+                    localStorage.setItem('flexa_siswa_krs_pending', JSON.stringify(existingPending));
+                } catch(e) {}
+            }
             const nameEl = document.getElementById('display-student-name');
             if (nameEl) nameEl.textContent = nama;
 
@@ -434,22 +677,116 @@
             if (citaEl) citaEl.textContent = careerTitle;
 
             // 2. Advisor Selection
-            let advisorName = 'Dosen Pembimbing Akademik UNIPDU';
-            const c = careerTitle.toLowerCase();
-            if (c.includes('aktor') || c.includes('seni') || c.includes('musik') || c.includes('desain') || c.includes('tulis')) {
-                advisorName = 'Bpk. Danang Prasetyo, S.Sn (UNIPDU)';
-            } else if (c.includes('dokter') || c.includes('rawat') || c.includes('apotek') || c.includes('medis') || c.includes('biologi')) {
-                advisorName = 'dr. Hendra Wicaksono, Sp.A (UNIPDU)';
-            } else if (c.includes('polisi') || c.includes('hukum') || c.includes('pengacara') || c.includes('tentara')) {
-                advisorName = 'Bpk. Surya Dinata, S.H., M.H. (UNIPDU)';
-            } else if (c.includes('bisnis') || c.includes('akuntan') || c.includes('wirausaha')) {
-                advisorName = 'Ibu Rina Kartika, S.E., M.M. (UNIPDU)';
+            let advisorName = 'Belum Ada Pembimbing (Menunggu Penugasan)';
+            if (window.SSOSync) {
+                const localKrs = window.SSOSync.getAllKRS().find(k => k.id === `krs_${uid}` || k.siswaId === uid);
+                if (localKrs && localKrs.guruNama && localKrs.status === 'Disetujui') {
+                    advisorName = localKrs.guruNama + ' (Guru Pembimbing)';
+                }
             }
+            try {
+                if (window.firebaseDb && uid) {
+                    window.firebaseDb.collection('users').doc(uid).get().then(doc => {
+                        if (doc.exists && doc.data().guruWaliId) {
+                            window.firebaseDb.collection('users').doc(doc.data().guruWaliId).get().then(gDoc => {
+                                if (gDoc.exists && gDoc.data().nama) {
+                                    const pEl = document.getElementById('krs-pembimbing');
+                                    if (pEl) pEl.textContent = gDoc.data().nama + ' (Guru Pembimbing)';
+                                }
+                            });
+                        }
+                    });
+                }
+            } catch (err) { }
             const pembimbingEl = document.getElementById('krs-pembimbing');
             if (pembimbingEl) pembimbingEl.textContent = advisorName;
 
-            // 3. Render Modules & Compute Total Study Load
-            const modules = generateKRSModules(jenjang, kelas, careerTitle);
+            // 3. Status Badge Banner
+            const badgeEl = document.getElementById('krs-status-badge');
+            if (badgeEl) {
+                if (statusKRS === 'Disetujui' || statusKRS === 'Aktif') {
+                    badgeEl.className = 'inline-flex items-center px-3.5 py-1.5 bg-emerald-50 border border-emerald-300 text-emerald-800 rounded text-xs font-bold font-mono self-start md:self-auto';
+                    badgeEl.innerHTML = '<span class="material-symbols-outlined text-base mr-1.5">verified</span><span>STATUS: TERVERIFIKASI &amp; AKTIF</span>';
+                } else if (statusKRS === 'Menunggu Validasi' || statusKRS === 'Menunggu Persetujuan') {
+                    badgeEl.className = 'inline-flex items-center px-3.5 py-1.5 bg-blue-50 border border-blue-300 text-blue-800 rounded text-xs font-bold font-mono self-start md:self-auto';
+                    badgeEl.innerHTML = '<span class="material-symbols-outlined text-base mr-1.5 animate-pulse">hourglass_top</span><span>STATUS: MENUNGGU VALIDASI GURU</span>';
+                } else if (statusKRS === 'Ditolak') {
+                    badgeEl.className = 'inline-flex items-center px-3.5 py-1.5 bg-red-50 border border-red-300 text-red-800 rounded text-xs font-bold font-mono self-start md:self-auto';
+                    badgeEl.innerHTML = '<span class="material-symbols-outlined text-base mr-1.5">cancel</span><span>STATUS: PERLU REVISI (DITOLAK GURU)</span>';
+                } else {
+                    badgeEl.className = 'inline-flex items-center px-3.5 py-1.5 bg-amber-50 border border-amber-300 text-amber-800 rounded text-xs font-bold font-mono self-start md:self-auto';
+                    badgeEl.innerHTML = '<span class="material-symbols-outlined text-base mr-1.5">edit_note</span><span>STATUS: DRAFT (BELUM DIAJUKAN)</span>';
+                }
+            }
+
+            // 4. Action Buttons Container
+            const actionContainer = document.getElementById('krs-action-buttons');
+            if (actionContainer) {
+                let actionBtnHtml = '';
+                const rejectionReason = user.catatanKRS || user.catatanGuru || localStorage.getItem('catatanKRS') || '';
+
+                if (statusKRS === 'Disetujui' || statusKRS === 'Aktif') {
+                    actionBtnHtml = `
+                        <div class="w-full py-2.5 px-4 bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-bold font-mono rounded flex items-center justify-center gap-2 mb-2">
+                            <span class="material-symbols-outlined text-base">verified</span>
+                            <span>KRS TELAH DISETUJUI GURU</span>
+                        </div>
+                    `;
+                } else if (statusKRS === 'Menunggu Validasi' || statusKRS === 'Menunggu Persetujuan') {
+                    actionBtnHtml = `
+                        <div class="w-full py-3 px-4 bg-blue-50 border border-blue-300 text-blue-800 text-xs font-bold font-mono rounded flex items-center justify-center gap-2 mb-2">
+                            <span class="material-symbols-outlined text-base animate-pulse">hourglass_top</span>
+                            <span>MENUNGGU VALIDASI GURU</span>
+                        </div>
+                        <div class="flex gap-2 mb-2">
+                            <button id="btn-ajukan-krs" onclick="handleAjukanKRS()" class="flex-1 py-2 px-2 bg-[#805600] text-white text-[11px] font-bold rounded flex items-center justify-center gap-1 hover:opacity-90 transition-all cursor-pointer shadow-sm">
+                                <span class="material-symbols-outlined text-sm">send</span> Kirim Ulang
+                            </button>
+                            <button onclick="handleResetDraftKRS()" class="py-2 px-3 border border-amber-400 text-amber-800 text-[11px] font-bold rounded flex items-center justify-center gap-1 hover:bg-amber-50 transition-all cursor-pointer">
+                                <span class="material-symbols-outlined text-sm">edit_note</span> Edit Draf
+                            </button>
+                        </div>
+                    `;
+                } else if (statusKRS === 'Ditolak') {
+                    actionBtnHtml = `
+                        <div class="w-full p-3 bg-red-50 border border-red-200 text-red-900 text-xs rounded mb-2 space-y-1.5">
+                            <div class="flex items-center gap-1.5 font-bold text-red-800 font-mono text-[11px]">
+                                <span class="material-symbols-outlined text-sm text-red-600">report</span>
+                                <span>KRS PERLU DIREVISI</span>
+                            </div>
+                            <p class="text-[11px] text-red-700 leading-relaxed italic bg-white/60 p-2 rounded border border-red-100">
+                                "${rejectionReason || 'Guru meminta penyesuaian rencana studi. Silakan periksa beban belajar Anda dan ajukan ulang.'}"
+                            </p>
+                        </div>
+                        <button id="btn-ajukan-krs" onclick="handleAjukanKRS()" class="w-full py-3.5 px-4 bg-[#805600] hover:bg-[#664500] text-white font-mono text-xs font-bold rounded flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer mb-2 transform active:scale-95" style="background-color: #805600 !important; color: #FFFFFF !important;">
+                            <span class="material-symbols-outlined text-base">send</span>
+                            <span>AJUKAN ULANG KRS KE GURU</span>
+                        </button>
+                    `;
+                } else {
+                    actionBtnHtml = `
+                        <button id="btn-ajukan-krs" onclick="handleAjukanKRS()" class="w-full py-3.5 px-4 bg-[#805600] hover:bg-[#664500] text-white font-mono text-xs font-bold rounded flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer mb-2 transform active:scale-95" style="background-color: #805600 !important; color: #FFFFFF !important;">
+                            <span class="material-symbols-outlined text-base">send</span>
+                            <span>AJUKAN KRS KE GURU PEMBIMBING</span>
+                        </button>
+                    `;
+                }
+
+                actionContainer.innerHTML = actionBtnHtml + `
+                    <button onclick="window.print()" class="w-full py-2.5 px-4 bg-primary text-white text-xs font-bold rounded flex items-center justify-center gap-2 hover:opacity-90 transition-opacity cursor-pointer shadow-sm">
+                        <span class="material-symbols-outlined text-sm">print</span> Cetak Lembar Rencana Studi
+                    </button>
+                    <a href="/?page=11_checkpoint-jumat" class="w-full py-2.5 px-4 border border-secondary text-secondary text-xs font-bold rounded flex items-center justify-center gap-2 hover:bg-secondary/10 transition-colors">
+                        <span class="material-symbols-outlined text-sm">event_available</span> Buka Checkpoint Jumat
+                    </a>
+                    <a href="/?page=10_detail-roadmap" class="w-full py-2.5 px-4 border border-primary/20 text-primary text-xs font-bold rounded flex items-center justify-center gap-2 hover:bg-primary/5 transition-colors">
+                        <span class="material-symbols-outlined text-sm">alt_route</span> Cek Roadmap 6 Tahun
+                    </a>
+                `;
+            }
+
+            // 5. Render Modules Table with dynamic status
+            const modules = generateKRSModules(jenjang, kelas, careerTitle, statusKRS);
             const tbody = document.getElementById('krs-table-body');
             if (tbody) {
                 tbody.innerHTML = modules.map(m => `
@@ -463,8 +800,8 @@
                             <span class="px-2.5 py-1 rounded font-semibold text-[10px] ${m.badgeClass}">${m.kategori}</span>
                         </td>
                         <td class="py-3.5 px-4 text-center font-mono font-bold text-primary">${m.beban}</td>
-                        <td class="py-3.5 px-4 text-center text-emerald-700 font-bold flex items-center justify-center gap-1">
-                            <span class="material-symbols-outlined text-[15px]">check_circle</span>
+                        <td class="py-3.5 px-4 text-center ${m.statusClass} flex items-center justify-center gap-1">
+                            <span class="material-symbols-outlined text-[15px]">${m.statusIcon}</span>
                             <span>${m.status}</span>
                         </td>
                     </tr>
@@ -495,21 +832,78 @@
             }
         }
 
+        // Realtime Firestore Listener for KRS Approval & Rejection
+        function setupKRSListener(uid) {
+            if (!window.firebaseDb || !uid) return;
+            try {
+                // 1. Listen users doc
+                window.firebaseDb.collection('users').doc(uid).onSnapshot(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.statusKRS) {
+                            const cached = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                            cached.statusKRS = data.statusKRS;
+                            if (data.catatanKRS) cached.catatanKRS = data.catatanKRS;
+                            if (data.guruWaliNama) cached.guruWaliNama = data.guruWaliNama;
+                            if (data.guruWaliId) cached.guruWaliId = data.guruWaliId;
+                            localStorage.setItem('currentUser', JSON.stringify(cached));
+                            localStorage.setItem('statusKRS', data.statusKRS);
+                            if (data.catatanKRS) localStorage.setItem('catatanKRS', data.catatanKRS);
+                            hydrateKRS(cached);
+                        }
+                    }
+                }, err => console.warn('Users listener warning:', err));
+
+                // 2. Listen pengajuanKRS doc
+                window.firebaseDb.collection('pengajuanKRS').doc(`krs_${uid}`).onSnapshot(doc => {
+                    if (doc.exists) {
+                        const krs = doc.data();
+                        if (krs.status) {
+                            const cached = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                            cached.statusKRS = krs.status;
+                            if (krs.catatanGuru) cached.catatanKRS = krs.catatanGuru;
+                            if (krs.verifiedByNama) cached.guruWaliNama = krs.verifiedByNama;
+                            localStorage.setItem('currentUser', JSON.stringify(cached));
+                            localStorage.setItem('statusKRS', krs.status);
+                            if (krs.catatanGuru) localStorage.setItem('catatanKRS', krs.catatanGuru);
+                            hydrateKRS(cached);
+                        }
+                    }
+                }, err => console.warn('PengajuanKRS listener warning:', err));
+            } catch (e) { }
+        }
+
         // DOM Loaded — Instant Load from local cache
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             try {
                 const cachedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
                 hydrateKRS(cachedUser);
-            } catch(e) {}
+                const uid = (window.firebaseAuth && window.firebaseAuth.currentUser) ? window.firebaseAuth.currentUser.uid : (cachedUser.uid || cachedUser.id);
+                if (uid) setupKRSListener(uid);
+            } catch (e) { }
+        });
+
+        // Multi-tab storage sync
+        window.addEventListener('storage', function (e) {
+            if (e.key === 'flexa_all_krs_submissions' || e.key === 'flexa_all_registered_users' || e.key === 'statusKRS') {
+                const cachedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                hydrateKRS(cachedUser);
+            }
+        });
+        window.addEventListener('flexa-krs-updated', function () {
+            const cachedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            hydrateKRS(cachedUser);
         });
 
         // Reactive Auth
-        window.addEventListener('auth-ready', function(e) {
+        window.addEventListener('auth-ready', function (e) {
             const user = e.detail;
             if (user) {
                 hydrateKRS(user);
+                setupKRSListener(user.uid || user.id);
             }
         });
     </script>
 </body>
+
 </html>

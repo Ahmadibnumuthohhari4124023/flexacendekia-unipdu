@@ -626,10 +626,7 @@ Data disinkronkan via SSO Flexa Cendekia
 
                 childrenList = list || [];
 
-                // Fallback to official master students if list is empty
-                if (childrenList.length === 0 && window.FLEXA_STUDENTS_DATA && window.FLEXA_STUDENTS_DATA.length > 0) {
-                    childrenList = window.FLEXA_STUDENTS_DATA.map(s => Object.assign({ id: `siswa-${s.nis}`, uid: `siswa-${s.nis}` }, s));
-                }
+
 
                 if (childrenList.length === 0) {
                     childSelectorContainer.innerHTML = `
@@ -731,7 +728,10 @@ Data disinkronkan via SSO Flexa Cendekia
                 jenjangEl.textContent = `${jenjang} ${kelas.replace('Kelas', '').trim()}`;
             }
             if (thnAjaranEl) {
-                thnAjaranEl.textContent = `Tahun Ajaran ${student.tahunAjaran || '2023/2024'}`;
+                const nowY = new Date().getFullYear();
+                const nowM = new Date().getMonth();
+                const ayStart = nowM >= 6 ? nowY : nowY - 1;
+                thnAjaranEl.textContent = `Tahun Ajaran ${student.tahunAjaran || `${ayStart}/${ayStart + 1}`}`;
             }
 
             // 2. Progres Minggu Ini
@@ -1176,7 +1176,7 @@ Data disinkronkan via SSO Flexa Cendekia
 
                 // Render top 3 recent notifications
                 list.innerHTML = allNotifs.slice(0, 3).map(n => {
-                    let borderClass = 'border-l-on-tertiary-container bg-tertiary-container/5';
+                    let borderClass = 'border-l-primary bg-primary/5';
                     let badgeEl = '';
                     
                     if (n.tipe === 'keterlambatan') {
@@ -1185,6 +1185,12 @@ Data disinkronkan via SSO Flexa Cendekia
                     } else if (n.tipe === 'pengajuan') {
                         borderClass = 'border-l-secondary bg-secondary-container/5';
                         badgeEl = '<span class="bg-secondary-container text-on-secondary-container font-label-caps text-[10px] px-2 py-0.5 rounded mb-2 inline-block uppercase tracking-wider">Alert Pengajuan</span>';
+                    } else if (n.tipe === 'krs_anak_disetujui' || n.tipe === 'krs_disetujui') {
+                        borderClass = 'border-l-emerald-600 bg-emerald-50';
+                        badgeEl = '<span class="bg-emerald-600 text-white font-label-caps text-[10px] px-2 py-0.5 rounded mb-2 inline-block uppercase tracking-wider font-bold">KRS Disetujui</span>';
+                    } else if (n.tipe === 'krs_anak_ditolak' || n.tipe === 'krs_ditolak') {
+                        borderClass = 'border-l-red-600 bg-red-50';
+                        badgeEl = '<span class="bg-red-600 text-white font-label-caps text-[10px] px-2 py-0.5 rounded mb-2 inline-block uppercase tracking-wider font-bold">KRS Perlu Revisi</span>';
                     }
 
                     return `

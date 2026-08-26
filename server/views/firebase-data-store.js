@@ -349,37 +349,65 @@ const DataStore = {
             
             let krsList = [];
 
-            // A. Query pengajuan KRS by siswaId
-            if (studentIds.length > 0) {
-                const chunks = [];
-                for (let i = 0; i < studentIds.length; i += 10) {
-                    chunks.push(studentIds.slice(i, i + 10));
-                }
-                for (const chunk of chunks) {
-                    const snap = await db.collection('pengajuanKRS')
-                        .where('siswaId', 'in', chunk)
-                        .where('status', '==', 'Menunggu Persetujuan')
-                        .get();
-                    snap.docs.forEach(d => {
-                        krsList.push(Object.assign({ id: d.id }, d.data()));
-                    });
-                }
-            }
-
-            // B. Cek juga pengajuan KRS yang secara langsung memiliki field guruId == guruId
+            // 1. Ambil semua dokumen pengajuanKRS yang berstatus Menunggu Validasi atau Menunggu Persetujuan
             try {
-                const directSnap = await db.collection('pengajuanKRS')
-                    .where('guruId', '==', guruId)
+                const snap1 = await db.collection('pengajuanKRS')
+                    .where('status', '==', 'Menunggu Validasi')
+                    .get();
+                snap1.docs.forEach(d => {
+                    krsList.push(Object.assign({ id: d.id }, d.data()));
+                });
+
+                const snap2 = await db.collection('pengajuanKRS')
                     .where('status', '==', 'Menunggu Persetujuan')
                     .get();
-                directSnap.docs.forEach(d => {
-                    if (!krsList.some(item => item.id === d.id)) {
+                snap2.docs.forEach(d => {
+                    if (!krsList.some(k => k.id === d.id)) {
                         krsList.push(Object.assign({ id: d.id }, d.data()));
                     }
                 });
-            } catch(e) {}
+            } catch (err) {
+                console.warn('[DataStore] pengajuanKRS query warning:', err);
+            }
 
-            // C. Perkaya data krs dengan profil siswa jika field nama/citaCita belum lengkap
+            // 2. Cek juga dari koleksi users jika ada siswa berstatus Menunggu Validasi yang belum masuk pengajuanKRS
+            try {
+                const studentPendingSnap = await db.collection('users')
+                    .where('role', '==', 'Siswa')
+                    .where('statusKRS', '==', 'Menunggu Validasi')
+                    .get();
+                
+                studentPendingSnap.docs.forEach(d => {
+                    const s = d.data();
+                    const existing = krsList.find(k => k.siswaId === d.id || k.id === `krs_${d.id}`);
+                    if (!existing) {
+                        krsList.push({
+                            id: `krs_${d.id}`,
+                            siswaId: d.id,
+                            nama: s.nama || 'Siswa',
+                            nisn: s.nisn || s.nis || 'NIS-',
+                            jenjang: s.jenjang || 'SMA',
+                            kelas: `Kelas ${s.kelas || 10}`,
+                            citaCita: s.citaCita || 'Atlet',
+                            programStudiTarget: s.programStudiTarget || `S1 Terpadu (${s.citaCita || 'Atlet'})`,
+                            status: 'Menunggu Validasi',
+                            semester: 1,
+                            tanggal: 'Hari ini',
+                            gpa: s.ipk || '3.85',
+                            mataPelajaran: [
+                                { kode: 'FND-101', nama: `Fondasi Utama ${s.citaCita || 'Profesi'}`, sks: 3, hari: 'Senin', jam: '08:00 - 10:00', ruang: 'Studio Terpadu' },
+                                { kode: 'MAT-102', nama: 'Matematika & Logika Analitik', sks: 3, hari: 'Selasa', jam: '09:00 - 11:30', ruang: 'Ruang Ajar' },
+                                { kode: 'MOD-103', nama: `Proyek Portofolio Mandiri (${s.citaCita || 'Peminatan'})`, sks: 4, hari: 'Rabu', jam: '10:00 - 12:00', ruang: 'Lab Portofolio' },
+                                { kode: 'UNP-101', nama: 'Wawasan Kepesantrenan & Karakter UNIPDU', sks: 3, hari: 'Jumat', jam: '13:30 - 15:30', ruang: 'Auditorium' }
+                            ]
+                        });
+                    }
+                });
+            } catch (err) {
+                console.warn('[DataStore] users statusKRS query warning:', err);
+            }
+
+            // 3. Perkaya data krs dengan profil siswa jika field nama/citaCita belum lengkap
             for (let item of krsList) {
                 if (item.siswaId && (!item.nama || !item.citaCita || !item.jenjang)) {
                     const sData = await this.getUserById(item.siswaId);
@@ -390,33 +418,6 @@ const DataStore = {
                         item.kelas = item.kelas || sData.kelas;
                     }
                 }
-            }
-
-            // Fallback to master official students pending validation
-            if (krsList.length === 0 && window.FLEXA_STUDENTS_DATA) {
-                const pendingMaster = window.FLEXA_STUDENTS_DATA.filter(s => s.statusKRS === 'Menunggu Validasi');
-                pendingMaster.forEach(s => {
-                    krsList.push({
-                        id: `krs-${s.nis}`,
-                        siswaId: `siswa-${s.nis}`,
-                        nama: s.nama,
-                        nisn: s.nis,
-                        jenjang: s.jenjang,
-                        kelas: `Kelas ${s.kelas}`,
-                        citaCita: s.citaCita,
-                        programStudiTarget: s.programStudiTarget,
-                        status: 'Menunggu Validasi',
-                        semester: 1,
-                        tanggal: 'Hari ini',
-                        gpa: '3.88',
-                        mataPelajaran: [
-                            { kode: 'FND-101', nama: `Fondasi Utama ${s.citaCita}`, sks: 3, hari: 'Senin', jam: '08:00 - 10:00', ruang: 'Studio 1' },
-                            { kode: 'MAT-102', nama: 'Matematika & Logika Komputasi Terapan', sks: 3, hari: 'Selasa', jam: '09:00 - 11:30', ruang: 'Lab Komputer' },
-                            { kode: 'KOM-103', nama: 'Komunikasi & Portofolio Proyek Terpadu', sks: 3, hari: 'Rabu', jam: '10:00 - 12:00', ruang: 'Ruang Seminar' },
-                            { kode: 'UNP-101', nama: 'Wawasan Kepesantrenan & Karakter UNIPDU', sks: 3, hari: 'Jumat', jam: '13:30 - 15:30', ruang: 'Auditorium' }
-                        ]
-                    });
-                });
             }
 
             return krsList;
@@ -442,11 +443,12 @@ const DataStore = {
                 guruId: siswa.guruWaliId || null,
                 semester: semester || 1,
                 mataPelajaran: mataPelajaran,
-                status: 'Menunggu Persetujuan',
+                status: 'Menunggu Validasi',
                 tanggal: 'Hari ini, ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB',
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
             const docRef = await db.collection('pengajuanKRS').add(newKrs);
+            await db.collection('users').doc(siswaId).update({ statusKRS: 'Menunggu Validasi' });
 
             // Notifikasi ke Guru
             if (siswa.guruWaliId) {
@@ -467,29 +469,48 @@ const DataStore = {
         }
     },
 
-    async updateKRSStatus(krsId, status) {
+    async updateKRSStatus(krsId, status, guruId) {
         const db = this._ensureDb();
         if (!db) return;
         try {
-            await db.collection('pengajuanKRS').doc(krsId).update({ status: status });
+            // Update document pengajuanKRS
+            await db.collection('pengajuanKRS').doc(krsId).set({ 
+                status: status,
+                verifiedBy: guruId || null,
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
 
-            // Get KRS to find siswa
+            // Ambil data KRS untuk identitas siswa
             const krsDoc = await db.collection('pengajuanKRS').doc(krsId).get();
-            if (!krsDoc.exists) return;
-            const krs = krsDoc.data();
+            let siswaId = null;
+            let semesterNum = 1;
+            let studentName = 'Siswa';
 
-            const siswa = await this.getUserById(krs.siswaId);
-            if (!siswa) return;
+            if (krsDoc.exists) {
+                const kData = krsDoc.data();
+                siswaId = kData.siswaId;
+                semesterNum = kData.semester || 1;
+                studentName = kData.nama || 'Siswa';
+            } else if (krsId.startsWith('krs_')) {
+                siswaId = krsId.replace('krs_', '');
+            }
 
-            // Notif to Siswa
-            await this.buatNotifikasi({
-                untukRole: 'Siswa',
-                untukUserId: siswa.uid || krs.siswaId,
-                tipe: 'KRS',
-                judul: 'KRS ' + status,
-                isi: 'Pengajuan KRS semester ' + krs.semester + ' Anda telah ' + status.toLowerCase() + ' oleh Guru Pembimbing.',
-                terkaitId: krsId
-            });
+            // Update statusKRS di profil siswa users
+            if (siswaId) {
+                const updatePayload = { statusKRS: status };
+                if (guruId) updatePayload.guruWaliId = guruId;
+                await db.collection('users').doc(siswaId).set(updatePayload, { merge: true });
+
+                // Notif to Siswa
+                await this.buatNotifikasi({
+                    untukRole: 'Siswa',
+                    untukUserId: siswaId,
+                    tipe: 'KRS',
+                    judul: 'KRS ' + status,
+                    isi: 'Pengajuan KRS semester ' + semesterNum + ' Anda telah ' + status.toLowerCase() + ' oleh Guru Pembimbing.',
+                    terkaitId: krsId
+                });
+            }
 
             // Notif to Ortu
             if (siswa.orangTuaId) {
@@ -940,7 +961,7 @@ const DataStore = {
                 { kode: 'SD-MAT-01', namaMapel: 'Matematika & Logika Konkret', namaGuru: 'Bpk. Hendro Utomo, S.Pd', skor: 91, nilaiHuruf: 'A', bobotSKS: 4, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
                 { kode: 'SD-SENI-01', namaMapel: `Seni Budaya & Minat Ekspresi (${citaCita})`, namaGuru: 'Dosen Pengampu UNIPDU', skor: 96, nilaiHuruf: 'A', bobotSKS: 3, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
                 { kode: 'SD-PANC-01', namaMapel: 'Pendidikan Pancasila & Budi Pekerti', namaGuru: 'Ibu Siti Rahma, M.Pd', skor: 93, nilaiHuruf: 'A', bobotSKS: 2, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
-                { kode: 'SD-IPAS-01', namaMapel: 'IPAS (Eksplorasi Lingkungan Hidup)', namaGuru: 'Bpk. Danang Prasetyo, S.Pd', skor: 92, nilaiHuruf: 'A', bobotSKS: 3, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
+                { kode: 'SD-IPAS-01', namaMapel: 'IPAS (Eksplorasi Lingkungan Hidup)', namaGuru: 'Guru Pengampu IPAS', skor: 92, nilaiHuruf: 'A', bobotSKS: 3, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
                 { kode: 'SD-PJOK-01', namaMapel: 'PJOK & Aktivitas Motorik Sehat', namaGuru: 'Bpk. Rahmat Hidayat, S.Pd', skor: 95, nilaiHuruf: 'A', bobotSKS: 2, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' },
                 { kode: 'SD-P5-01', namaMapel: 'Proyek Profil Pelajar Pancasila (P5)', namaGuru: 'Tim Fasilitator P5 SD', skor: 94, nilaiHuruf: 'A', bobotSKS: 2, semester: 'Semester 1 (Ganjil 2025/2026)', status: 'Lulus' }
             );

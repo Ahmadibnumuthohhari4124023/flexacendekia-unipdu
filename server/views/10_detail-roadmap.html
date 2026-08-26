@@ -1095,26 +1095,13 @@
 
         // Counselor Advisor Finder
         function getAdvisorInfo(careerTitle) {
-            const c = (careerTitle || '').toLowerCase();
-            if (c.includes('aktor') || c.includes('seni') || c.includes('musik') || c.includes('desain') || c.includes('tari') || c.includes('foto') || c.includes('animas')) {
-                return { name: 'Bpk. Danang Prasetyo, S.Sn (UNIPDU)', role: 'Dosen Pembimbing Seni & Industri Kreatif' };
-            }
-            if (c.includes('dokter') || c.includes('rawat') || c.includes('apotek') || c.includes('bidan') || c.includes('gizi') || c.includes('medis')) {
-                return { name: 'dr. Hendra Wicaksono, Sp.A (UNIPDU)', role: 'Dosen Pembimbing Medis & Biomedika' };
-            }
-            if (c.includes('polisi') || c.includes('tentara') || c.includes('hukum') || c.includes('hakim') || c.includes('pengacara') || c.includes('diplomat')) {
-                return { name: 'Bpk. Surya Dinata, S.H., M.H. (UNIPDU)', role: 'Konselor Hukum & Kebijakan Publik' };
-            }
-            if (c.includes('program') || c.includes('data') || c.includes('komputer') || c.includes('sistem') || c.includes('teknolog')) {
-                return { name: 'Dosen Pembimbing Program Studi UNIPDU', role: 'Dosen Pembimbing Informatika & Sains Data' };
-            }
-            if (c.includes('bisnis') || c.includes('akuntan') || c.includes('marketing') || c.includes('wirausaha') || c.includes('keuangan')) {
-                return { name: 'Ibu Rina Kartika, S.E., M.M. (UNIPDU)', role: 'Konselor Bisnis & Manajemen Finansial' };
-            }
-            if (c.includes('guru') || c.includes('dosen') || c.includes('didik') || c.includes('sekolah')) {
-                return { name: 'Bpk. Drs. H. Mulyadi, M.Pd (UNIPDU)', role: 'Konselor Pedagogi & Manajemen Pendidikan' };
-            }
-            return { name: 'Konselor Akademik & Portofolio UNIPDU', role: 'Konselor Akademik & Portofolio' };
+            try {
+                const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                if (u.guruWaliNama) {
+                    return { name: u.guruWaliNama, role: 'Guru Pembimbing Terdaftar' };
+                }
+            } catch(e) {}
+            return { name: 'Menunggu Penugasan Guru', role: 'Konselor & Pembimbing Akademik' };
         }
 
         // Higher Ed Degree Naming

@@ -223,22 +223,22 @@
                 <div>
                     <div class="flex justify-between items-center mb-3">
                         <span class="font-mono text-xs font-bold tracking-widest text-role-teacher uppercase flex items-center gap-1.5">
-                            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-                            PEMBIMBING AKADEMIK
+                            <span id="advisor-status-dot" class="w-2 h-2 rounded-full bg-amber-500"></span>
+                            <span id="advisor-status-text">PEMBIMBING AKADEMIK</span>
                         </span>
                         <span class="material-symbols-outlined text-role-teacher text-xl">school</span>
                     </div>
                     <div class="flex items-center gap-3 mb-3">
-                        <div id="advisor-avatar" class="w-12 h-12 rounded-full bg-role-teacher text-white flex items-center justify-center font-bold text-sm shadow">
-                            LS
+                        <div id="advisor-avatar" class="w-12 h-12 rounded-full bg-slate-400 text-white flex items-center justify-center font-bold text-sm shadow">
+                            --
                         </div>
                         <div>
-                            <h3 id="advisor-name" class="font-serif text-base font-bold text-primary leading-snug">Tutor Pembimbing Akademik</h3>
-                            <p id="advisor-spec" class="text-xs text-on-surface-variant">Pembimbing Kurikulum & Desain</p>
+                            <h3 id="advisor-name" class="font-serif text-base font-bold text-primary leading-snug">Belum Ada Pembimbing</h3>
+                            <p id="advisor-spec" class="text-xs text-on-surface-variant">Menunggu Penugasan Akun Guru</p>
                         </div>
                     </div>
-                    <p class="text-xs text-on-surface-variant bg-primary/4 p-2.5 rounded border border-primary/10 mb-4 leading-relaxed">
-                        Konsultasikan pemilihan KRS, persiapan checkpoint mingguan, atau arahan portofolio langsung dengan pembimbing Anda.
+                    <p id="advisor-desc" class="text-xs text-on-surface-variant bg-primary/4 p-2.5 rounded border border-primary/10 mb-4 leading-relaxed">
+                        Belum ada akun guru yang ditugaskan. Anda dapat mendaftarkan akun baru dengan peran Guru atau menghubungkannya di menu Profil Siswa.
                     </p>
                 </div>
                 <div class="flex gap-2">
@@ -644,41 +644,67 @@
         }
 
         // ================= DYNAMIC ADVISOR =================
-        function renderAdvisor(careerTitle, uid) {
+        async function renderAdvisor(careerTitle, uid) {
             const advisorNameEl = document.getElementById('advisor-name');
             const advisorSpecEl = document.getElementById('advisor-spec');
             const advisorAvatarEl = document.getElementById('advisor-avatar');
+            const advisorDotEl = document.getElementById('advisor-status-dot');
+            const advisorStatusText = document.getElementById('advisor-status-text');
+            const advisorDescEl = document.getElementById('advisor-desc');
 
-            let advisorName = 'Tutor Pembimbing Akademik, M.Kom';
-            let advisorSpec = 'Pembimbing Sains & Desain Rekayasa';
-            let advisorInitials = 'LS';
+            // 1. Cek apakah siswa memiliki Akun Guru Asli yang terhubung di Firestore
+            try {
+                if (window.firebaseDb) {
+                    let guruData = null;
 
-            const c = (careerTitle || '').toLowerCase();
-            if (c.includes('aktor') || c.includes('seni') || c.includes('lukis') || c.includes('musik') || c.includes('desain') || c.includes('tulis') || c.includes('animat')) {
-                advisorName = 'Bpk. Danang Prasetyo, S.Sn';
-                advisorSpec = 'Pembimbing Seni Pertunjukan & Industri Kreatif';
-                advisorInitials = 'DP';
-            } else if (c.includes('dokter') || c.includes('rawat') || c.includes('apotek') || c.includes('bidan') || c.includes('gizi') || c.includes('psikolog') || c.includes('biologi')) {
-                advisorName = 'dr. Hendra Wicaksono, Sp.A';
-                advisorSpec = 'Pembimbing Sains Medis, Hayati & Klinis';
-                advisorInitials = 'HW';
-            } else if (c.includes('polisi') || c.includes('tentara') || c.includes('hakim') || c.includes('pengacara') || c.includes('diplomat') || c.includes('sosial')) {
-                advisorName = 'Bpk. Surya Dinata, S.H., M.H.';
-                advisorSpec = 'Pembimbing Hukum, Diplomasi & Kepemimpinan';
-                advisorInitials = 'SD';
-            } else if (c.includes('akuntan') || c.includes('market') || c.includes('wirausaha') || c.includes('keuangan') || c.includes('hrd')) {
-                advisorName = 'Ibu Rina Kartika, S.E., M.M.';
-                advisorSpec = 'Pembimbing Bisnis, Manajemen & Finansial';
-                advisorInitials = 'RK';
-            } else if (c.includes('guru') || c.includes('dosen') || c.includes('ustadz') || c.includes('pustakawan') || c.includes('sekolah')) {
-                advisorName = 'Bpk. Ahmad Syafi\'i, M.Pd';
-                advisorSpec = 'Pembimbing Pendidikan Terpadu & Pedagogi';
-                advisorInitials = 'AS';
+                    // Cek via guruWaliId di dokumen siswa
+                    if (uid) {
+                        const userDoc = await window.firebaseDb.collection('users').doc(uid).get();
+                        if (userDoc.exists && userDoc.data().guruWaliId) {
+                            const guruDoc = await window.firebaseDb.collection('users').doc(userDoc.data().guruWaliId).get();
+                            if (guruDoc.exists) {
+                                guruData = guruDoc.data();
+                            }
+                        }
+                    }
+
+                    // Jika belum tertaut langsung, cek apakah ada akun guru terdaftar di database
+                    if (!guruData) {
+                        const guruSnap = await window.firebaseDb.collection('users').where('role', '==', 'Guru').limit(1).get();
+                        if (!guruSnap.empty) {
+                            guruData = guruSnap.docs[0].data();
+                        }
+                    }
+
+                    // Jika ditemukan akun Guru Asli yang terdaftar
+                    if (guruData) {
+                        if (advisorNameEl) advisorNameEl.textContent = guruData.nama || 'Guru Pembimbing';
+                        if (advisorSpecEl) advisorSpecEl.textContent = guruData.bidang || 'Wali Kelas & Guru Pembimbing';
+                        if (advisorDescEl) advisorDescEl.textContent = 'Konsultasikan pemilihan KRS, persiapan checkpoint mingguan, atau arahan portofolio langsung dengan pembimbing Anda.';
+                        if (advisorAvatarEl) {
+                            const initials = (guruData.nama || 'GP').split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+                            advisorAvatarEl.textContent = initials;
+                            advisorAvatarEl.className = 'w-12 h-12 rounded-full bg-role-teacher text-white flex items-center justify-center font-bold text-sm shadow';
+                        }
+                        if (advisorDotEl) advisorDotEl.className = 'w-2 h-2 rounded-full bg-green-500 animate-pulse';
+                        if (advisorStatusText) advisorStatusText.textContent = 'PEMBIMBING AKADEMIK';
+                        return;
+                    }
+                }
+            } catch (err) {
+                console.warn('[Dashboard] Gagal memuat data guru:', err);
             }
 
-            if (advisorNameEl) advisorNameEl.textContent = advisorName;
-            if (advisorSpecEl) advisorSpecEl.textContent = advisorSpec;
-            if (advisorAvatarEl) advisorAvatarEl.textContent = advisorInitials;
+            // 2. Zero State Murni: Belum ada Akun Guru yang terdaftar/terhubung
+            if (advisorNameEl) advisorNameEl.textContent = 'Belum Ada Pembimbing';
+            if (advisorSpecEl) advisorSpecEl.textContent = 'Menunggu Penugasan Akun Guru';
+            if (advisorDescEl) advisorDescEl.textContent = 'Belum ada akun guru yang ditugaskan. Anda dapat mendaftarkan akun baru dengan peran Guru atau menghubungkannya di menu Profil Siswa.';
+            if (advisorAvatarEl) {
+                advisorAvatarEl.textContent = '--';
+                advisorAvatarEl.className = 'w-12 h-12 rounded-full bg-slate-400 text-white flex items-center justify-center font-bold text-sm shadow';
+            }
+            if (advisorDotEl) advisorDotEl.className = 'w-2 h-2 rounded-full bg-amber-500';
+            if (advisorStatusText) advisorStatusText.textContent = 'STATUS: MENUNGGU GURU';
         }
 
         // ================= DYNAMIC WEEKLY TARGETS (INTERACTIVE) =================
@@ -743,11 +769,29 @@
             if (barEl) barEl.style.width = `${pct}%`;
         }
 
+        function setupStudentNotifListener(uid) {
+            if (!window.firebaseDb || !uid) return;
+            try {
+                window.firebaseDb.collection('notifikasi')
+                    .where('untukUserId', '==', uid)
+                    .where('dibaca', '==', false)
+                    .onSnapshot(snap => {
+                        const count = snap.size;
+                        const dot = document.querySelector('a[href="/?page=17_notifikasi"] span.w-2');
+                        if (dot) {
+                            if (count > 0) dot.classList.remove('hidden');
+                            else dot.classList.add('hidden');
+                        }
+                    }, err => {});
+            } catch(e) {}
+        }
+
         // ================= AUTH LISTENERS & HYDRATION =================
         window.addEventListener('auth-ready', function(e) {
             const user = e.detail;
             if (user) {
                 hydrateStudentDashboard(user);
+                setupStudentNotifListener(user.uid || user.id);
             }
         });
 
@@ -757,6 +801,8 @@
                 const cachedUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
                 if (cachedUser && (cachedUser.nama || cachedUser.email)) {
                     hydrateStudentDashboard(cachedUser);
+                    const uid = (window.firebaseAuth && window.firebaseAuth.currentUser) ? window.firebaseAuth.currentUser.uid : (cachedUser.uid || cachedUser.id);
+                    if (uid) setupStudentNotifListener(uid);
                 }
             } catch(e) {}
         });

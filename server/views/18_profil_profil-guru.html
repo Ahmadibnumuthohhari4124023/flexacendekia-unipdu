@@ -392,7 +392,7 @@
                                     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant/50 text-base">psychology</span>
                                     <input type="text" id="bidang"
                                         class="w-full pl-9 pr-3 py-2.5 border border-primary/20 bg-surface-container-lowest text-xs text-primary focus:ring-1 focus:ring-primary focus:outline-none rounded"
-                                        placeholder="Contoh: Tutor & Dosen Pembimbing UNIPDU" />
+                                        placeholder="Contoh: Pembimbing Akademik Flexa Cendekia" />
                                 </div>
                             </div>
                         </div>
@@ -605,7 +605,7 @@
             const nip = u.nip || localStorage.getItem('guruNip') || '-';
             const institusi = u.institusi || localStorage.getItem('guruInstitusi') || 'Homeschooling Flexa Cendekia x UNIPDU';
             const noHp = u.noHp || u.telepon || u.kontak || localStorage.getItem('guruNoHp') || '';
-            const bidang = u.bidang || localStorage.getItem('guruBidang') || 'Tutor & Dosen Pembimbing UNIPDU';
+            const bidang = u.bidang || localStorage.getItem('guruBidang') || 'Pembimbing Akademik Flexa Cendekia';
 
             // Topbar & Hero Header
             document.querySelectorAll('.user-display-name').forEach(el => el.textContent = nama);
@@ -737,11 +737,13 @@
             let students = [];
 
             try {
-                // Fetch from master data / data store
-                if (window.FLEXA_STUDENTS_DATA && window.FLEXA_STUDENTS_DATA.length > 0) {
-                    students = window.FLEXA_STUDENTS_DATA;
-                } else if (window.DataStore && window.DataStore.getAllStudents) {
+                if (window.DataStore && window.DataStore.getAllStudents) {
                     students = await window.DataStore.getAllStudents();
+                } else if (window.firebaseDb) {
+                    const snap = await window.firebaseDb.collection('users').where('role', '==', 'Siswa').get();
+                    if (!snap.empty) {
+                        students = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+                    }
                 }
 
                 if (summaryEl) {

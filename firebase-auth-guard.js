@@ -226,20 +226,48 @@
         }
     };
 
-    window.flexaResetAllData = function() {
+    window.flexaResetAllData = async function() {
         try {
             localStorage.clear();
             sessionStorage.clear();
         } catch(e) {}
 
-        if (window.firebaseAuth) {
-            firebaseAuth.signOut().then(function() {
-                window.location.replace('/?page=01_login&reset=true');
-            }).catch(function() {
-                window.location.replace('/?page=01_login&reset=true');
-            });
-        } else {
-            window.location.replace('/?page=01_login&reset=true');
+        const user = window.firebaseAuth ? window.firebaseAuth.currentUser : null;
+        const db = window.firebaseDb;
+
+        if (user && db) {
+            const uid = user.uid;
+            try {
+                const collections = [
+                    'users',
+                    'hasilDiagnostik',
+                    'roadmapBelajar',
+                    'progresMingguan',
+                    'kehadiran',
+                    'krs',
+                    'catatan',
+                    'notifikasi',
+                    'targetHarian'
+                ];
+                await Promise.race([
+                    Promise.all(collections.map(col => db.collection(col).doc(uid).delete().catch(() => {}))),
+                    new Promise(resolve => setTimeout(resolve, 2000))
+                ]);
+            } catch(dbErr) {}
+
+            try {
+                await user.delete();
+            } catch(authErr) {
+                try {
+                    await window.firebaseAuth.signOut();
+                } catch(signErr) {}
+            }
+        } else if (window.firebaseAuth) {
+            try {
+                await window.firebaseAuth.signOut();
+            } catch(signErr) {}
         }
+
+        window.location.replace('/?page=01_login&reset=true');
     };
 })();

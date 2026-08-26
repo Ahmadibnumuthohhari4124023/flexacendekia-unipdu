@@ -145,7 +145,7 @@
                         Selamat Datang, <span id="guru-name">Tutor &amp; Pendidik</span>
                     </h1>
                     <span class="px-2.5 py-0.5 bg-role-teacher/10 text-role-teacher text-[10px] font-mono font-bold rounded border border-role-teacher/20 uppercase">
-                        Tutor &amp; Dosen Pembimbing UNIPDU
+                        Pembimbing Akademik Flexa Cendekia
                     </span>
                 </div>
                 <p class="text-xs text-on-surface-variant">
@@ -363,55 +363,153 @@
                 const nipEl = document.getElementById('guru-nip');
                 if (nipEl) nipEl.textContent = teacherNip;
 
-                // 1. Ambil Siswa Bimbingan dari Firestore
+                // 1. Ambil Siswa Bimbingan dari SSOSync Multi-User Registry & Firestore
                 let students = [];
-                const guruUid = guruUser ? (guruUser.uid || guruUser.id) : null;
+                const guruUid = (guruUser && (guruUser.uid || guruUser.id)) || localStorage.getItem('guruUid') || '';
 
-                if (window.firebaseDb && guruUid) {
-                    try {
-                        // Query siswa dengan role == Siswa
-                        const snap = await window.firebaseDb.collection('users')
-                            .where('role', '==', 'Siswa')
-                            .get();
-                        if (!snap.empty) {
-                            students = snap.docs.map(d => Object.assign({ id: d.id, uid: d.id }, d.data()));
+                if (window.SSOSync) {
+                    const localStudents = window.SSOSync.getAllStudents();
+                    localStudents.forEach(s => {
+                        if (s && s.id !== guruUid && s.uid !== guruUid) {
+                            students.push(Object.assign({}, s));
                         }
+                    });
+
+                    const localKrs = window.SSOSync.getAllKRS();
+                    localKrs.forEach(k => {
+                        const sid = k.siswaId || k.id.replace('krs_', '');
+                        if (sid === guruUid) return;
+                        const existing = students.find(s => s.id === sid || s.uid === sid);
+                        if (existing) {
+                            existing.statusKRS = k.status || existing.statusKRS || 'Menunggu Validasi';
+                            if (k.nama) existing.nama = k.nama;
+                            if (k.citaCita) existing.citaCita = k.citaCita;
+                            if (k.jenjang) existing.jenjang = k.jenjang;
+                            if (k.kelas) existing.kelas = k.kelas;
+                        } else if (k.nama && k.nama !== teacherName) {
+                            students.push({
+                                id: sid,
+                                uid: sid,
+                                nama: k.nama || 'Siswa Flexa',
+                                nis: k.nis || k.nisn || '260010',
+                                nisn: k.nisn || k.nis || '260010',
+                                jenjang: k.jenjang || 'SD',
+                                kelas: k.kelas || 1,
+                                citaCita: k.citaCita || 'Belum Memilih',
+                                programStudiTarget: k.programStudiTarget || (k.citaCita ? `S1 ${k.citaCita} UNIPDU` : 'Belum Memilih Prodi'),
+                                statusKRS: k.status || 'Menunggu Validasi',
+                                statusCheckpoint: 'Belum Mulai',
+                                progres: '0%',
+                                progresNum: 0
+                            });
+                        }
+                    });
+                }
+
+                if (window.firebaseDb) {
+                    try {
+                        const snap = await window.firebaseDb.collection('users').get();
+                        snap.docs.forEach(d => {
+                            const data = d.data();
+                            const r = (data.role || '').toLowerCase();
+                            
+                            // SKIP: the guru's own document
+                            if (d.id === guruUid) return;
+                            
+                            // SKIP: explicitly non-student roles
+                            if (r === 'guru' || r === 'orangtua' || r === 'orang_tua' || r === 'admin') return;
+                            if (data.nip || data.bidang) return;
+                            
+                            // INCLUDE: explicit siswa role, OR no role but has student-specific fields
+                            if (r === 'siswa' || (!r && (data.jenjang || data.citaCita || data.statusKRS || data.nis || data.nisn))) {
+                                const existing = students.find(s => s.id === d.id || s.uid === d.id);
+                                if (!existing) {
+                                    students.push(Object.assign({ id: d.id, uid: d.id }, data));
+                                } else {
+                                    Object.assign(existing, data);
+                                }
+                            }
+                        });
                     } catch(e) {
                         console.warn('[DashboardGuru] Firestore read users warning:', e);
                     }
+
+                    // Ambil juga seluruh data dari koleksi pengajuanKRS
+                    try {
+                        const krsSnap = await window.firebaseDb.collection('pengajuanKRS').get();
+                        krsSnap.docs.forEach(d => {
+                            const k = d.data();
+                            const sid = k.siswaId || d.id.replace('krs_', '');
+                            if (sid === guruUid) return;
+                            const existing = students.find(s => s.id === sid || s.uid === sid);
+                            if (existing) {
+                                existing.statusKRS = k.status || existing.statusKRS || 'Menunggu Validasi';
+                                if (k.nama) existing.nama = k.nama;
+                                if (k.citaCita) existing.citaCita = k.citaCita;
+                                if (k.jenjang) existing.jenjang = k.jenjang;
+                                if (k.kelas) existing.kelas = k.kelas;
+                            } else if (k.nama && k.nama !== teacherName) {
+                                students.push({
+                                    id: sid,
+                                    uid: sid,
+                                    nama: k.nama || 'Siswa Flexa',
+                                    nis: k.nis || k.nisn || '260010',
+                                    nisn: k.nisn || k.nis || '260010',
+                                    jenjang: k.jenjang || 'SD',
+                                    kelas: k.kelas || 1,
+                                    citaCita: k.citaCita || 'Belum Memilih',
+                                    programStudiTarget: k.programStudiTarget || (k.citaCita ? `S1 ${k.citaCita} UNIPDU` : 'Belum Memilih Prodi'),
+                                    statusKRS: k.status || 'Menunggu Validasi',
+                                    statusCheckpoint: 'Belum Mulai',
+                                    progres: '0%',
+                                    progresNum: 0
+                                });
+                            }
+                        });
+                    } catch(e) {
+                        console.warn('[DashboardGuru] Firestore read pengajuanKRS warning:', e);
+                    }
                 }
 
-                // 2. Gabungkan / lengkapi dengan 9 Master Siswa Resmi jika belum lengkap di Firestore
-                const masterList = window.FLEXA_STUDENTS_DATA || [];
-                masterList.forEach(m => {
-                    const exists = students.find(s => (s.nis && s.nis === m.nis) || (s.email && s.email.toLowerCase() === m.email.toLowerCase()));
-                    if (!exists) {
-                        students.push(Object.assign({ id: `siswa-${m.nis}`, uid: `siswa-${m.nis}` }, m));
-                    }
-                });
+                // Jika list masih kosong, cek dedicated siswa KRS storage
+                if (students.length === 0) {
+                    try {
+                        const pendingList = JSON.parse(localStorage.getItem('flexa_siswa_krs_pending') || '[]');
+                        pendingList.forEach(s => {
+                            if (s && s.nama && s.role !== 'Guru' && s.role !== 'OrangTua') {
+                                students.push(Object.assign({}, s, {
+                                    statusCheckpoint: s.statusCheckpoint || 'Belum Mulai',
+                                    progres: s.progres || '0%',
+                                    progresNum: s.progresNum || 0
+                                }));
+                            }
+                        });
+                    } catch(e) {}
+                }
 
-                // Format fields on student list
+                // Format data siswa murni
                 currentSiswaList = students.map(s => {
                     const jenjang = (s.jenjang || 'SMA').toUpperCase();
-                    const kelas = s.kelas || (jenjang === 'SD' ? 2 : (jenjang === 'SMP' ? 7 : 10));
+                    const kelas = s.kelas || (jenjang === 'SD' ? 1 : (jenjang === 'SMP' ? 7 : 10));
                     const citaCita = s.citaCita || 'Belum Memilih';
-                    const nis = s.nis || s.nisn || '260001';
+                    const nis = s.nis || s.nisn || '-';
+                    const prog = s.progresNum !== undefined ? s.progresNum : (s.roadmapProgress || 0);
                     return Object.assign({}, s, {
                         nis: nis,
                         nisn: nis,
                         jenjang: jenjang,
                         kelas: kelas,
                         citaCita: citaCita,
-                        programStudiTarget: s.programStudiTarget || `S1 ${citaCita} UNIPDU`,
-                        statusKRS: s.statusKRS || 'Disetujui',
-                        statusCheckpoint: s.statusCheckpoint || 'Selesai',
-                        progres: s.progres || `${s.roadmapProgress || 88}%`,
-                        progresNum: s.progresNum || s.roadmapProgress || 88
+                        programStudiTarget: s.programStudiTarget || (citaCita !== 'Belum Memilih' ? `S1 ${citaCita} UNIPDU` : 'Belum Memilih Prodi'),
+                        statusKRS: s.statusKRS || 'Belum Mengisi',
+                        statusCheckpoint: s.statusCheckpoint || 'Belum Mulai',
+                        progres: s.progres || `${prog}%`,
+                        progresNum: prog
                     });
                 });
 
-                // Sort by NIS (260001 to 260009)
-                currentSiswaList.sort((a, b) => (a.nis || '').localeCompare(b.nis || ''));
+                // Sort by Nama
+                currentSiswaList.sort((a, b) => (a.nama || '').localeCompare(b.nama || ''));
 
                 // 2. Compute 100% Dynamic Metrics
                 updateMetricCards();
@@ -422,12 +520,30 @@
                 // 4. Render Konsultasi Terkini
                 renderKonsultasi();
 
+                // Pasang Real-Time Listener
+                setupGuruLiveListener();
+
             } catch (err) {
                 console.error('[Dashboard Guru] Error loading dashboard:', err);
                 currentSiswaList = [];
                 updateMetricCards();
                 filterTabelSiswa();
             }
+        }
+
+        let guruListenerInitialized = false;
+        function setupGuruLiveListener() {
+            if (guruListenerInitialized || !window.firebaseDb) return;
+            guruListenerInitialized = true;
+
+            try {
+                window.firebaseDb.collection('pengajuanKRS').onSnapshot(() => {
+                    const user = window.currentFirebaseUser || (function() {
+                        try { return JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch(e) { return {}; }
+                    })();
+                    muatDataDashboardGuru(user);
+                }, err => console.warn('KRS live listener error:', err));
+            } catch(e) {}
         }
 
         function updateMetricCards() {
@@ -590,24 +706,36 @@
                 const progresText = (s.progresNum !== undefined ? s.progresNum : (s.progres ? parseInt(s.progres, 10) : 0)) + '%';
                 
                 let statusBadge = '';
-                if (s.statusKRS === 'Menunggu Validasi') {
+                if (s.statusKRS === 'Menunggu Validasi' || s.statusKRS === 'Menunggu Persetujuan') {
                     statusBadge = `<span class="px-2 py-0.5 bg-amber-100 text-amber-800 rounded text-[10px] font-bold border border-amber-300 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[12px]">pending</span> Validasi KRS</span>`;
                 } else if (s.statusKRS === 'Disetujui' || s.statusKRS === 'Aktif') {
-                    statusBadge = `<span class="px-2 py-0.5 bg-green-100 text-green-800 rounded text-[10px] font-bold border border-green-200 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[12px]">check_circle</span> Aktif</span>`;
+                    statusBadge = `<span class="px-2 py-0.5 bg-green-100 text-green-800 rounded text-[10px] font-bold border border-green-200 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[12px]">check_circle</span> Disetujui</span>`;
+                } else if (s.statusKRS === 'Ditolak') {
+                    statusBadge = `<span class="px-2 py-0.5 bg-red-100 text-red-800 rounded text-[10px] font-bold border border-red-200 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[12px]">cancel</span> Ditolak</span>`;
                 } else {
                     statusBadge = `<span class="px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px] font-medium border border-gray-200 flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[12px]">edit_note</span> Belum Mengisi</span>`;
                 }
 
                 const highlightClass = s.isSelf ? 'bg-role-teacher/5 font-medium border-l-4 border-l-role-teacher' : '';
 
+                const studentInitials = (s.nama || 'S').split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                const avatarHtml = (s.fotoUrl && s.fotoUrl.trim() !== '')
+                    ? `<img src="${s.fotoUrl}" alt="${s.nama}" class="w-8 h-8 rounded-full object-cover border border-primary/20 shrink-0" />`
+                    : `<span class="w-8 h-8 rounded-full bg-role-teacher/10 text-role-teacher flex items-center justify-center font-mono font-bold text-xs shrink-0 border border-role-teacher/20">${studentInitials}</span>`;
+
                 return `
                     <tr class="${highlightClass} hover:bg-primary/5 transition-colors">
                         <td class="py-3 px-4">
-                            <div class="font-bold text-primary flex items-center gap-1.5">
-                                ${s.nama || 'Siswa Flexa'}
-                                ${s.isSelf ? '<span class="text-[9px] px-1.5 py-0.2 bg-role-teacher text-white rounded font-mono font-normal">Akun Aktif</span>' : ''}
+                            <div class="flex items-center gap-2.5">
+                                ${avatarHtml}
+                                <div>
+                                    <div class="font-bold text-primary flex items-center gap-1.5 leading-tight">
+                                        ${s.nama || 'Siswa Flexa'}
+                                        ${s.isSelf ? '<span class="text-[9px] px-1.5 py-0.2 bg-role-teacher text-white rounded font-mono font-normal">Akun Aktif</span>' : ''}
+                                    </div>
+                                    <div class="text-[10px] text-on-surface-variant font-mono mt-0.5">NIS: <strong class="text-primary">${nis}</strong> · Progres: <strong class="text-primary">${progresText}</strong></div>
+                                </div>
                             </div>
-                            <div class="text-[10px] text-on-surface-variant font-mono">NIS: <strong class="text-primary">${nis}</strong> · Progres: <strong class="text-primary">${progresText}</strong></div>
                         </td>
                         <td class="py-3 px-4">
                             <span class="px-2 py-0.5 ${jenjangColor} rounded font-semibold text-[10px]">${jenjang} Kelas ${kelas}</span>
@@ -620,7 +748,7 @@
                             ${statusBadge}
                         </td>
                         <td class="py-3 px-4 text-center">
-                            <a href="/?page=15_tinjauan-guru" class="px-3 py-1 bg-role-teacher hover:bg-role-teacher-dark text-white rounded text-[10px] font-bold transition-all shadow-sm inline-flex items-center gap-1">
+                            <a href="/?page=15_tinjauan-guru&siswaId=${encodeURIComponent(s.id || s.uid || s.nis || s.nisn || '')}" onclick="try{localStorage.setItem('activeReviewSiswaId', '${s.id || s.uid || s.nis || s.nisn || ''}');}catch(e){}" class="px-3 py-1 bg-role-teacher hover:bg-role-teacher-dark text-white rounded text-[10px] font-bold transition-all shadow-sm inline-flex items-center gap-1">
                                 <span class="material-symbols-outlined text-[12px]">fact_check</span> Tinjau
                             </a>
                         </td>
@@ -648,7 +776,8 @@
             }
 
             const activeStudents = currentSiswaList.filter(s => s.statusKRS === 'Menunggu Validasi' || (s.progresNum && s.progresNum > 0)).slice(0, 3);
-            const guruNama = (localStorage.getItem('guruNama') || 'Ibu Sari').split(' ').slice(0, 2).join(' ');
+            const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            const guruNama = (u.nama || localStorage.getItem('guruNama') || 'Bpk/Ibu Guru');
 
             container.innerHTML = activeStudents.map((item, idx) => `
                 <div class="p-3 bg-white border border-primary/15 rounded text-xs space-y-1 hover:border-role-teacher transition-colors">

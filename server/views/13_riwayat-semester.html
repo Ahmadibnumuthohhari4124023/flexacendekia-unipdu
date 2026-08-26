@@ -1311,11 +1311,11 @@ document.getElementById('export-btn')?.addEventListener('click', () => {
             } else {
                 // Fallback generator directly in view
                 const defaultGrades = [
-                    { kode: `${userJenjang}-LIT-01`, namaMapel: 'Bahasa Indonesia & Literasi', namaGuru: 'Ibu Nur Aini, S.Pd', skor: 94, nilaiHuruf: 'A', bobotSKS: 4, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' },
-                    { kode: `${userJenjang}-MAT-01`, namaMapel: 'Matematika & Logika Analitik', namaGuru: 'Bpk. Hendro Utomo, S.Pd', skor: 91, nilaiHuruf: 'A', bobotSKS: 4, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' },
+                    { kode: `${userJenjang}-LIT-01`, namaMapel: 'Bahasa Indonesia & Literasi', namaGuru: 'Guru Pengampu Bahasa', skor: 94, nilaiHuruf: 'A', bobotSKS: 4, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' },
+                    { kode: `${userJenjang}-MAT-01`, namaMapel: 'Matematika & Logika Analitik', namaGuru: 'Guru Pengampu Matematika', skor: 91, nilaiHuruf: 'A', bobotSKS: 4, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' },
                     { kode: `${userJenjang}-SENI-01`, namaMapel: `Seni Budaya & Minat Peminatan`, namaGuru: 'Dosen Pengampu UNIPDU', skor: 96, nilaiHuruf: 'A', bobotSKS: 3, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' },
-                    { kode: `${userJenjang}-PANC-01`, namaMapel: 'Pendidikan Pancasila & Karakter', namaGuru: 'Ibu Siti Rahma, M.Pd', skor: 93, nilaiHuruf: 'A', bobotSKS: 2, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' },
-                    { kode: `${userJenjang}-SAINS-01`, namaMapel: 'Sains & Eksplorasi Lingkungan', namaGuru: 'Bpk. Danang Prasetyo, S.Pd', skor: 92, nilaiHuruf: 'A', bobotSKS: 3, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' },
+                    { kode: `${userJenjang}-PANC-01`, namaMapel: 'Pendidikan Pancasila & Karakter', namaGuru: 'Guru Pengampu PKn', skor: 93, nilaiHuruf: 'A', bobotSKS: 2, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' },
+                    { kode: `${userJenjang}-SAINS-01`, namaMapel: 'Sains & Eksplorasi Lingkungan', namaGuru: 'Guru Pengampu Sains', skor: 92, nilaiHuruf: 'A', bobotSKS: 3, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' },
                     { kode: `${userJenjang}-P5-01`, namaMapel: 'Proyek Profil Pelajar Pancasila (P5)', namaGuru: 'Tim Fasilitator P5', skor: 95, nilaiHuruf: 'A', bobotSKS: 2, semester: `Semester 1 (Ganjil ${currentYear}/${currentYear+1})`, status: 'Lulus' }
                 ];
                 renderUIFromData(defaultGrades);

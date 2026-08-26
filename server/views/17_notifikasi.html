@@ -612,6 +612,16 @@
                 iconBg = isUnread ? 'bg-secondary text-white' : 'bg-secondary-container text-on-secondary-container';
                 borderClass = isUnread ? 'bg-secondary-container/10 border-l-4 border-l-secondary' : 'bg-white hover:bg-surface-container-low';
                 badgeTag = '<span class="text-[10px] font-mono uppercase bg-secondary/10 text-secondary font-bold px-2 py-0.5 rounded mr-2">Rencana Studi</span>';
+            } else if (n.tipe === 'krs_disetujui' || n.tipe === 'krs_anak_disetujui') {
+                iconName = 'verified';
+                iconBg = isUnread ? 'bg-emerald-600 text-white' : 'bg-emerald-100 text-emerald-800';
+                borderClass = isUnread ? 'bg-emerald-50 border-l-4 border-l-emerald-600' : 'bg-white hover:bg-surface-container-low';
+                badgeTag = '<span class="text-[10px] font-mono uppercase bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded mr-2">KRS Disetujui</span>';
+            } else if (n.tipe === 'krs_ditolak' || n.tipe === 'krs_anak_ditolak') {
+                iconName = 'report';
+                iconBg = isUnread ? 'bg-red-600 text-white' : 'bg-red-100 text-red-800';
+                borderClass = isUnread ? 'bg-red-50 border-l-4 border-l-red-600' : 'bg-white hover:bg-surface-container-low';
+                badgeTag = '<span class="text-[10px] font-mono uppercase bg-red-100 text-red-800 font-bold px-2 py-0.5 rounded mr-2">KRS Perlu Revisi</span>';
             } else if (n.tipe === 'sistem') {
                 iconName = 'settings_suggest';
                 badgeTag = '<span class="text-[10px] font-mono uppercase bg-surface-container text-on-surface-variant font-bold px-2 py-0.5 rounded mr-2">Sistem</span>';

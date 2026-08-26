@@ -824,7 +824,7 @@
                                             extraFields = {
                                                 nip: '198704122015042001',
                                                 institusi: 'Homeschooling Flexa Cendekia x UNIPDU',
-                                                bidang: 'Tutor & Dosen Pembimbing UNIPDU'
+                                                bidang: 'Pembimbing Akademik Flexa Cendekia'
                                             };
                                         } else if (normRole === 'OrangTua') {
                                             defaultName = (auth.currentUser?.displayName || 'Wali Siswa');
@@ -1091,7 +1091,10 @@
 
                         try {
                             localStorage.setItem('currentUser', JSON.stringify(userPayload));
-                            if (window.SSOSync) window.SSOSync.init();
+                            if (window.SSOSync) {
+                                window.SSOSync.init();
+                                window.SSOSync.saveUser(userPayload);
+                            }
                         } catch(e) {}
 
                         // Non-blocking firestore save
