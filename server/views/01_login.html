@@ -670,20 +670,34 @@
                 } else if (actualRole === 'OrangTua') {
                     window.location.href = '/?page=16_dashboard-ortu';
                 } else {
-                    // Check if student already has career or diagnostic
-                    if (userData.hasilDiagnostik || userData.citaCita || userData.roadmapBelajar) {
+                    // Check if student already has career or completed diagnostic
+                    const hasLocalDiagnosis = localStorage.getItem('hasCompletedDiagnosis') === 'true' || 
+                                              localStorage.getItem('aiDiagnosisResult') || 
+                                              localStorage.getItem('flexa_diagnosis_' + uid) ||
+                                              localStorage.getItem('selectedCareer');
+
+                    if (userData.sudahTesDiagnostik || userData.hasilDiagnostik || userData.citaCita || userData.roadmapBelajar || hasLocalDiagnosis) {
                         window.location.href = '/?page=08_dashboard-siswa';
                         return;
                     }
 
-                    db.collection('hasilDiagnostik').doc(uid).get().then(function(diagDoc) {
-                        if (diagDoc && diagDoc.exists) {
+                    // Check Firestore collections
+                    Promise.all([
+                        db.collection('hasilDiagnostik').doc(uid).get().catch(() => null),
+                        db.collection('jawabanDiagnostik').doc(uid).get().catch(() => null),
+                        db.collection('roadmapBelajar').doc(uid).get().catch(() => null)
+                    ]).then(function(docs) {
+                        const diagDoc = docs[0];
+                        const jawabDoc = docs[1];
+                        const roadmapDoc = docs[2];
+
+                        if ((diagDoc && diagDoc.exists) || (jawabDoc && jawabDoc.exists) || (roadmapDoc && roadmapDoc.exists)) {
                             window.location.href = '/?page=08_dashboard-siswa';
                         } else {
                             window.location.href = '/?page=02_intro-diagnosis';
                         }
                     }).catch(function() {
-                        window.location.href = '/?page=02_intro-diagnosis';
+                        window.location.href = hasLocalDiagnosis ? '/?page=08_dashboard-siswa' : '/?page=02_intro-diagnosis';
                     });
                 }
             }).catch(function(err) {
@@ -712,7 +726,11 @@
                 } else if (fallbackRole === 'OrangTua') {
                     window.location.href = '/?page=16_dashboard-ortu';
                 } else {
-                    window.location.href = '/?page=02_intro-diagnosis';
+                    const hasLocalDiagnosis = localStorage.getItem('hasCompletedDiagnosis') === 'true' || 
+                                              localStorage.getItem('aiDiagnosisResult') || 
+                                              localStorage.getItem('flexa_diagnosis_' + uid) ||
+                                              localStorage.getItem('selectedCareer');
+                    window.location.href = hasLocalDiagnosis ? '/?page=08_dashboard-siswa' : '/?page=02_intro-diagnosis';
                 }
             });
         }

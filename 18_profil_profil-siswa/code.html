@@ -1055,8 +1055,22 @@
             }
 
             // Linking Codes (Kode Tautan, NISN, PIN)
-            const kodeTautan = user.kodeTautan || `FLX-${(user.nama || 'SISWA').split(' ')[0].toUpperCase()}-${(user.nisn || '8821').slice(-4)}`;
+            const cleanFirstName = (nama.split(' ')[0] || 'SISWA').toUpperCase().replace(/[^A-Z0-9]/g, '');
+            const cleanNisnEnd = (nisn ? String(nisn).slice(-4) : '8821');
+            const kodeTautan = user.kodeTautan || `FLX-${cleanFirstName}-${cleanNisnEnd}`;
             const pinTautan = user.pinTautan || '1234';
+
+            // Sync kodeTautan & pinTautan into user object and Firestore
+            user.kodeTautan = kodeTautan;
+            user.pinTautan = pinTautan;
+            if (user.uid && window.firebaseDb) {
+                window.firebaseDb.collection('users').doc(user.uid).set({
+                    kodeTautan: kodeTautan,
+                    pinTautan: pinTautan,
+                    nisn: nisn
+                }, { merge: true }).catch(() => {});
+            }
+
             const displayKodeEl = document.getElementById('display-kode-tautan');
             if (displayKodeEl) displayKodeEl.textContent = kodeTautan;
             const displayNisnEl = document.getElementById('display-nisn-tautan');

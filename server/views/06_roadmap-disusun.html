@@ -226,6 +226,22 @@
                     if (data && data.years) {
                         localStorage.setItem('roadmapData', JSON.stringify(data));
                         localStorage.setItem('selectedCareer', selectedCareer);
+                        
+                        const uid = (window.currentFirebaseUser && window.currentFirebaseUser.uid) || (window.firebaseAuth?.currentUser?.uid);
+                        if (window.firebaseDb && uid) {
+                            window.firebaseDb.collection('roadmapBelajar').doc(uid).set(Object.assign({}, data, {
+                                siswaId: uid,
+                                citaCita: selectedCareer,
+                                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                            }), { merge: true }).catch(() => {});
+
+                            window.firebaseDb.collection('users').doc(uid).set({
+                                citaCita: selectedCareer,
+                                roadmapBelajar: data,
+                                sudahRoadmap: true,
+                                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                            }, { merge: true }).catch(() => {});
+                        }
                     }
                 }
             } catch (err) {

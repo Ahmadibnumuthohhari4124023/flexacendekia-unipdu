@@ -390,7 +390,50 @@
             } catch(signErr) {}
         }
 
-        // 4. Redirect ke login dengan status reset=true
-        window.location.replace('/?page=01_login&reset=true');
+    // =============================================
+    // 5. SMART DIAGNOSIS STATUS & SIDEBAR ROUTING
+    // =============================================
+    window.flexaHasCompletedDiagnosis = function() {
+        var u = window.currentFirebaseUser;
+        if (!u) {
+            try {
+                u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            } catch(e) { u = {}; }
+        }
+        if (u.sudahTesDiagnostik || u.hasilDiagnostik || u.citaCita || u.roadmapBelajar) {
+            return true;
+        }
+        if (localStorage.getItem('hasCompletedDiagnosis') === 'true' || localStorage.getItem('aiDiagnosisResult') || localStorage.getItem('selectedCareer')) {
+            return true;
+        }
+        if (u.uid && localStorage.getItem('flexa_diagnosis_' + u.uid)) {
+            return true;
+        }
+        return false;
     };
+
+    window.flexaGetDiagnosisUrl = function() {
+        return window.flexaHasCompletedDiagnosis() ? '/?page=04_hasil-diagnosis' : '/?page=02_intro-diagnosis';
+    };
+
+    // Auto-update all sidebar and link hrefs pointing to 02_intro-diagnosis
+    window.flexaSyncDiagnosisLinks = function() {
+        if (!window.flexaHasCompletedDiagnosis()) return;
+        document.querySelectorAll('a[href*="02_intro-diagnosis"]').forEach(function(link) {
+            link.href = '/?page=04_hasil-diagnosis';
+            var spans = link.querySelectorAll('span');
+            spans.forEach(function(sp) {
+                if (!sp.classList.contains('material-symbols-outlined') && sp.textContent.trim().toLowerCase().includes('tes diagnostik')) {
+                    sp.textContent = 'Hasil Diagnostik';
+                }
+            });
+        });
+    };
+
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(window.flexaSyncDiagnosisLinks, 100);
+    });
+    window.addEventListener('auth-ready', function() {
+        setTimeout(window.flexaSyncDiagnosisLinks, 100);
+    });
 })();

@@ -368,16 +368,41 @@
     }
     
     async function finish() {
+        const uid = window._authUid || (window.currentFirebaseUser && window.currentFirebaseUser.uid) || (window.firebaseAuth?.currentUser?.uid);
         localStorage.setItem('diagnosisAnswers', JSON.stringify(answers));
-        if (window.firebaseDb && window._authUid) {
+        localStorage.setItem('userJenjang', 'SMA');
+        localStorage.setItem('hasCompletedDiagnosis', 'true');
+        if (uid) {
+            localStorage.setItem('flexa_answers_' + uid, JSON.stringify(answers));
+        }
+        try {
+            const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+            u.jenjang = u.jenjang || 'SMA';
+            u.sudahTesDiagnostik = true;
+            localStorage.setItem('currentUser', JSON.stringify(u));
+            if (uid) {
+                localStorage.setItem('flexa_user_' + uid, JSON.stringify(u));
+            }
+        } catch(e) {}
+
+        const db = window.firebaseDb;
+        if (db && uid) {
             try {
-                const savePromise = window.firebaseDb.collection('jawabanDiagnostik').doc(window._authUid).set({
-                    siswaId: window._authUid,
+                const savePromise1 = db.collection('jawabanDiagnostik').doc(uid).set({
+                    siswaId: uid,
                     jawaban: answers,
-                    updatedAt: new Date().toISOString()
-                });
-                const timeoutPromise = new Promise(resolve => setTimeout(resolve, 600));
-                await Promise.race([savePromise, timeoutPromise]);
+                    jenjang: 'SMA',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+                const savePromise2 = db.collection('users').doc(uid).set({
+                    sudahTesDiagnostik: true,
+                    jenjang: 'SMA',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+
+                const timeoutPromise = new Promise(resolve => setTimeout(resolve, 800));
+                await Promise.race([Promise.all([savePromise1, savePromise2]), timeoutPromise]);
             } catch(e) {
                 console.warn('Failed to save to Firestore (continuing):', e);
             }

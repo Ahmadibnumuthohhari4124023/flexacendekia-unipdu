@@ -950,17 +950,19 @@
         });
 
         function renderDataSiswa(user) {
+            if (!user) return;
             const nama = user.nama || localStorage.getItem('userNama') || 'Siswa Flexa';
-            const nisn = user.nis || user.nisn || (user.uid ? user.uid.substring(0, 6) : '260001');
-            const email = user.email || 'siswa@flexa.cendekia.id';
+            const nisn = user.nisn || user.nis || (user.uid ? user.uid.substring(0, 6) : '4124023');
+            const email = user.email || (window.firebaseAuth && window.firebaseAuth.currentUser && window.firebaseAuth.currentUser.email) || localStorage.getItem('userEmail') || 'siswa@flexa.cendekia.id';
             const jenjang = (user.jenjang || localStorage.getItem('userJenjang') || 'SMA').toUpperCase();
             const kelas = user.kelas || localStorage.getItem('userKelas') || (jenjang === 'SD' ? '1' : (jenjang === 'SMP' ? '7' : '10'));
             const institusi = user.institusi || 'Flexa Cendekia x UNIPDU Jombang';
             const citaCita = user.citaCita || localStorage.getItem('selectedCareer') || 'Arsitek & Perancang Kota';
-            const telepon = user.telepon || '0812-3456-7890';
-            const namaOrtu = user.namaOrtu || 'Wali Siswa';
-            const teleponOrtu = user.teleponOrtu || '0813-9876-5432';
+            const telepon = user.telepon || user.noHp || '0895428460058';
+            const namaOrtu = user.namaOrtu || 'Ibnu';
+            const teleponOrtu = user.teleponOrtu || user.noHpOrtu || '0082918273';
             const fotoUrl = user.fotoUrl || user.avatar || localStorage.getItem('userAvatar') || '';
+            const cLower = (citaCita || '').toLowerCase();
 
             // Topbar & Dropdown
             const initials = nama.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'FC';
@@ -986,7 +988,7 @@
             if (sidebarKurikulum) sidebarKurikulum.textContent = `Kurikulum Merdeka (${jenjang})`;
 
             // Sidebar Guru Pembimbing
-            let advisorName = u.guruWaliNama || localStorage.getItem('guruWaliNama') || 'Belum Ada Pembimbing';
+            let advisorName = user.guruWaliNama || localStorage.getItem('guruWaliNama') || 'Tutor Pembimbing Akademik';
             const sidebarGuru = document.getElementById('sidebar-guru-nama');
             if (sidebarGuru) sidebarGuru.textContent = advisorName;
 
@@ -1031,7 +1033,7 @@
             const gelarEl = document.getElementById('karir-gelar-target');
             const heroGelarEl = document.getElementById('hero-target-gelar');
             const ortuNamaEl = document.getElementById('hero-ortu-nama');
-            if (ortuNamaEl) ortuNamaEl.textContent = namaOrtu ? `Terhubung (${namaOrtu})` : 'Terhubung';
+            if (ortuNamaEl) ortuNamaEl.textContent = (namaOrtu && namaOrtu !== 'Wali Siswa') ? `Terhubung (${namaOrtu})` : 'Terhubung';
 
             if (prodiEl) prodiEl.textContent = targetProdi;
             if (gelarEl) gelarEl.textContent = targetGelar;
@@ -1043,8 +1045,22 @@
             }
 
             // Linking Codes (Kode Tautan, NISN, PIN)
-            const kodeTautan = user.kodeTautan || `FLX-${(user.nama || 'SISWA').split(' ')[0].toUpperCase()}-${(user.nisn || '8821').slice(-4)}`;
+            const cleanFirstName = (nama.split(' ')[0] || 'SISWA').toUpperCase().replace(/[^A-Z0-9]/g, '');
+            const cleanNisnEnd = (nisn ? String(nisn).slice(-4) : '8821');
+            const kodeTautan = user.kodeTautan || `FLX-${cleanFirstName}-${cleanNisnEnd}`;
             const pinTautan = user.pinTautan || '1234';
+
+            // Sync kodeTautan & pinTautan into user object and Firestore
+            user.kodeTautan = kodeTautan;
+            user.pinTautan = pinTautan;
+            if (user.uid && window.firebaseDb) {
+                window.firebaseDb.collection('users').doc(user.uid).set({
+                    kodeTautan: kodeTautan,
+                    pinTautan: pinTautan,
+                    nisn: nisn
+                }, { merge: true }).catch(() => {});
+            }
+
             const displayKodeEl = document.getElementById('display-kode-tautan');
             if (displayKodeEl) displayKodeEl.textContent = kodeTautan;
             const displayNisnEl = document.getElementById('display-nisn-tautan');
@@ -1074,7 +1090,6 @@
                 perbaruiPilihanKelas(kelas);
             }
 
-            // Target Akademik
             if (user.targetAkademik) {
                 const ta = user.targetAkademik;
                 if (ta.nama && document.getElementById('target-judul')) document.getElementById('target-judul').textContent = ta.nama;

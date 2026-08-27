@@ -248,126 +248,205 @@
                     <!-- Decorative Ledger Lines Header -->
                     <div class="absolute top-0 left-0 w-full h-2 bg-secondary opacity-20"></div>
                     <div class="max-w-2xl mx-auto text-center space-y-8">
-                        <!-- Hero Section -->
-                        <header class="space-y-4">
-                            <h1 class="font-display-lg text-display-lg text-primary leading-tight">Mulai Petualangan
-                                Belajarmu</h1>
-                            <p class="font-body-md text-body-md text-on-surface-variant max-w-lg mx-auto">
-                                Selamat datang di langkah pertama menuju pembelajaran yang dipersonalisasi. Tes
-                                diagnostik ini dirancang untuk memahami potensi unikmu secara menyeluruh.
-                            </p>
-                        </header>
-                        <!-- Content Grid (Asymmetric Bento Style) -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mt-12">
-                            <!-- Duration & Prep Card -->
-                            <div
-                                class="hairline-border p-6 bg-white/50 space-y-4 rounded-sm flex flex-col justify-between">
-                                <div class="flex items-center gap-3">
-                                    <span class="material-symbols-outlined text-secondary"
-                                        data-icon="timer">timer</span>
-                                    <span
-                                        class="font-stats-sm text-stats-sm uppercase tracking-widest text-on-surface-variant">Estimasi
-                                        Waktu</span>
+                        <!-- STATE 1: ALREADY COMPLETED DIAGNOSTIC (Shown when student has already taken the test) -->
+                        <div id="completed-diagnostic-container" class="hidden space-y-8 animate-fadeIn">
+                            <header class="space-y-3">
+                                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-emerald-700/10 border border-emerald-700/30 rounded-full text-emerald-800 font-label-caps text-xs font-bold uppercase tracking-wider mb-2">
+                                    <span class="material-symbols-outlined text-[18px]">verified</span>
+                                    <span>Tes Diagnostik Selesai &amp; Data Tersimpan</span>
                                 </div>
-                                <div>
-                                    <p class="font-headline-md text-headline-md text-primary">20 - 40 Menit</p>
-                                    <p class="font-body-sm text-body-sm text-on-surface-variant mt-1 italic">Pastikan
-                                        kamu berada di tempat yang tenang dan nyaman untuk hasil terbaik.</p>
-                                </div>
-                            </div>
-                            <!-- Measurement Pillars -->
-                            <div class="hairline-border p-6 bg-white/50 rounded-sm">
-                                <div class="flex items-center gap-3 mb-4">
-                                    <span class="material-symbols-outlined text-secondary"
-                                        data-icon="analytics">analytics</span>
-                                    <span
-                                        class="font-stats-sm text-stats-sm uppercase tracking-widest text-on-surface-variant">Apa
-                                        yang diukur?</span>
-                                </div>
-                                <ul class="space-y-3">
-                                    <li class="flex items-center gap-3 group">
-                                        <div
-                                            class="w-8 h-8 rounded-full border border-secondary/20 flex items-center justify-center bg-secondary/5 group-hover:bg-secondary/10 transition-colors">
-                                            <span class="material-symbols-outlined text-[18px] text-secondary"
-                                                data-icon="favorite">favorite</span>
-                                        </div>
-                                        <span class="font-body-sm text-body-sm text-primary font-medium">Minat &amp;
-                                            Ketertarikan</span>
-                                    </li>
-                                    <li class="flex items-center gap-3 group">
-                                        <div
-                                            class="w-8 h-8 rounded-full border border-secondary/20 flex items-center justify-center bg-secondary/5 group-hover:bg-secondary/10 transition-colors">
-                                            <span class="material-symbols-outlined text-[18px] text-secondary"
-                                                data-icon="psychology">psychology</span>
-                                        </div>
-                                        <span class="font-body-sm text-body-sm text-primary font-medium">Bakat
-                                            Alami</span>
-                                    </li>
-                                    <li class="flex items-center gap-3 group">
-                                        <div
-                                            class="w-8 h-8 rounded-full border border-secondary/20 flex items-center justify-center bg-secondary/5 group-hover:bg-secondary/10 transition-colors">
-                                            <span class="material-symbols-outlined text-[18px] text-secondary"
-                                                data-icon="auto_stories">auto_stories</span>
-                                        </div>
-                                        <span class="font-body-sm text-body-sm text-primary font-medium">Gaya Belajar
-                                            Visual/Auditori</span>
-                                    </li>
-                                    <li class="flex items-center gap-3 group">
-                                        <div
-                                            class="w-8 h-8 rounded-full border border-secondary/20 flex items-center justify-center bg-secondary/5 group-hover:bg-secondary/10 transition-colors">
-                                            <span class="material-symbols-outlined text-[18px] text-secondary"
-                                                data-icon="school">school</span>
-                                        </div>
-                                        <span class="font-body-sm text-body-sm text-primary font-medium">Kompetensi
-                                            Dasar Akademik</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- Instruction Section -->
-                        <div
-                            class="hairline-border p-8 bg-academic-cream/30 text-left rounded-sm relative overflow-hidden">
-                            <div class="absolute right-0 top-0 opacity-5 pointer-events-none">
-                                <span class="material-symbols-outlined text-[120px]"
-                                    data-icon="edit_note">edit_note</span>
-                            </div>
-                            <h3
-                                class="font-label-caps text-label-caps mb-4 text-primary border-b border-primary/10 pb-2 inline-block">
-                                Instruksi Singkat</h3>
-                            <div class="space-y-3 font-body-sm text-body-sm text-on-surface-variant ledger-line">
-                                <p>1. Jawablah setiap pertanyaan dengan jujur sesuai dengan perasaanmu saat ini.</p>
-                                <p>2. Tidak ada jawaban benar atau salah dalam bagian minat dan gaya belajar.</p>
-                                <p>3. Untuk bagian kompetensi dasar, cobalah sebisamu tanpa bantuan pihak luar.</p>
-                                <p>4. Hasil akan langsung diproses menjadi roadmap belajar pribadimu.</p>
-                            </div>
-                        </div>
-                        <!-- CTA Section -->
-                        <div class="pt-8 flex flex-col items-center gap-6">
-                            <button id="btn-start-test"
-                                class="bg-academic-accent hover:opacity-90 active:scale-95 text-white font-bold py-4 px-12 rounded-sm shadow-lg transition-all duration-200 flex items-center gap-4 group cursor-pointer">
-                                <span class="font-label-caps text-label-caps tracking-widest" id="btn-start-test-text">Mulai Tes Sekarang</span>
-                                <span class="material-symbols-outlined transition-transform group-hover:translate-x-1"
-                                    data-icon="arrow_forward">arrow_forward</span>
-                            </button>
+                                <h1 class="font-display-lg text-3xl md:text-4xl text-primary leading-tight font-bold">
+                                    Hasil Diagnostik Anda Telah Tersedia
+                                </h1>
+                                <p class="font-body-md text-sm md:text-base text-on-surface-variant max-w-lg mx-auto">
+                                    Anda telah menyelesaikan tes diagnostik. Seluruh hasil analisis potensi minat, gaya belajar, dan rekomendasi kurikulum telah tersimpan secara permanen.
+                                </p>
+                            </header>
 
-                            <!-- Existing Student Status Badge (Hidden if not set) -->
-                            <div id="student-level-status" class="hidden flex items-center gap-2 px-4 py-2 bg-secondary/10 border border-secondary/20 rounded-full text-xs font-body-sm text-primary">
-                                <span class="material-symbols-outlined text-[16px] text-secondary">verified</span>
-                                <span>Terdaftar: <strong id="student-level-label" class="text-secondary font-bold">-</strong></span>
-                                <button type="button" id="btn-change-level" class="ml-2 underline text-primary/70 hover:text-secondary font-bold transition-colors">
-                                    Ubah Jenjang/Kelas
+                            <!-- Summary Card -->
+                            <div class="hairline-border p-6 md:p-8 bg-white/70 rounded-sm text-left shadow-sm space-y-6">
+                                <div class="flex items-center justify-between border-b border-primary/10 pb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center text-secondary border border-secondary/20">
+                                            <span class="material-symbols-outlined text-[22px]">psychology</span>
+                                        </div>
+                                        <div>
+                                            <h4 class="font-bold text-primary text-sm md:text-base" id="completed-student-name">Siswa Flexa</h4>
+                                            <p class="text-xs text-on-surface-variant" id="completed-jenjang-kelas">Jenjang Terdaftar</p>
+                                        </div>
+                                    </div>
+                                    <span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 text-[11px] font-mono font-bold rounded">
+                                        TERVERIFIKASI
+                                    </span>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                                    <div class="p-3.5 bg-surface-container-low border border-primary/10 rounded">
+                                        <span class="text-[11px] font-label-caps text-on-surface-variant uppercase">Pilar Minat</span>
+                                        <p class="font-bold text-primary text-sm mt-0.5" id="completed-minat-val">Investigatif / Artistik</p>
+                                    </div>
+                                    <div class="p-3.5 bg-surface-container-low border border-primary/10 rounded">
+                                        <span class="text-[11px] font-label-caps text-on-surface-variant uppercase">Gaya Belajar</span>
+                                        <p class="font-bold text-primary text-sm mt-0.5" id="completed-vak-val">Visual Dominan</p>
+                                    </div>
+                                    <div class="p-3.5 bg-surface-container-low border border-primary/10 rounded">
+                                        <span class="text-[11px] font-label-caps text-on-surface-variant uppercase">Target Karier</span>
+                                        <p class="font-bold text-secondary text-sm mt-0.5" id="completed-career-val">Tersedia</p>
+                                    </div>
+                                </div>
+
+                                <div class="p-4 bg-secondary/5 border-l-4 border-secondary text-xs text-on-surface-variant leading-relaxed">
+                                    <strong class="text-primary font-bold">Informasi:</strong> Siswa tidak perlu mengulang tes diagnostik ini. Anda dapat langsung meninjau hasil evaluasi lengkap atau melanjutkan penyusunan roadmap belajar 6 tahun di dashboard.
+                                </div>
+                            </div>
+
+                            <!-- CTA Buttons for Completed State -->
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                                <a href="/?page=04_hasil-diagnosis"
+                                    class="w-full sm:w-auto bg-academic-accent hover:opacity-90 active:scale-95 text-white font-bold py-3.5 px-8 rounded-sm shadow-md transition-all flex items-center justify-center gap-3 no-underline font-label-caps tracking-wider text-xs">
+                                    <span>Lihat Hasil Diagnostik Lengkap</span>
+                                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+                                </a>
+                                <a href="/?page=08_dashboard-siswa"
+                                    class="w-full sm:w-auto border border-primary text-primary hover:bg-primary/5 active:scale-95 font-bold py-3.5 px-8 rounded-sm transition-all flex items-center justify-center gap-2 no-underline font-label-caps tracking-wider text-xs">
+                                    <span class="material-symbols-outlined text-[18px]">dashboard</span>
+                                    <span>Buka Dashboard Siswa</span>
+                                </a>
+                            </div>
+
+                            <!-- Retake Option Button -->
+                            <div class="pt-4 border-t border-primary/10">
+                                <button type="button" onclick="openRetakeConfirmModal()"
+                                    class="text-xs text-on-surface-variant hover:text-secondary underline transition-colors cursor-pointer inline-flex items-center gap-1.5 font-medium">
+                                    <span class="material-symbols-outlined text-[16px]">replay</span>
+                                    <span>Ingin Mengisi Ulang Tes Diagnostik? (Opsional)</span>
                                 </button>
                             </div>
+                        </div>
 
-                            <div class="flex items-center gap-2">
-                                <div class="flex -space-x-2">
-                                    <div class="w-8 h-8 rounded-full border-2 border-academic-ivory bg-primary text-white font-bold text-xs flex items-center justify-center shadow-sm">AF</div>
-                                    <div class="w-8 h-8 rounded-full border-2 border-academic-ivory bg-secondary text-white font-bold text-xs flex items-center justify-center shadow-sm">SR</div>
-                                    <div class="w-8 h-8 rounded-full border-2 border-academic-ivory bg-emerald-700 text-white font-bold text-xs flex items-center justify-center shadow-sm">MD</div>
+                        <!-- STATE 2: INITIAL TEST START (Shown for new students or when deliberately retaking) -->
+                        <div id="initial-test-container" class="space-y-8">
+                            <!-- Hero Section -->
+                            <header class="space-y-4">
+                                <h1 class="font-display-lg text-display-lg text-primary leading-tight">Mulai Petualangan
+                                    Belajarmu</h1>
+                                <p class="font-body-md text-body-md text-on-surface-variant max-w-lg mx-auto">
+                                    Selamat datang di langkah pertama menuju pembelajaran yang dipersonalisasi. Tes
+                                    diagnostik ini dirancang untuk memahami potensi unikmu secara menyeluruh.
+                                </p>
+                            </header>
+                            <!-- Content Grid (Asymmetric Bento Style) -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mt-12">
+                                <!-- Duration & Prep Card -->
+                                <div
+                                    class="hairline-border p-6 bg-white/50 space-y-4 rounded-sm flex flex-col justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <span class="material-symbols-outlined text-secondary"
+                                            data-icon="timer">timer</span>
+                                        <span
+                                            class="font-stats-sm text-stats-sm uppercase tracking-widest text-on-surface-variant">Estimasi
+                                            Waktu</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-headline-md text-headline-md text-primary">20 - 40 Menit</p>
+                                        <p class="font-body-sm text-body-sm text-on-surface-variant mt-1 italic">Pastikan
+                                            kamu berada di tempat yang tenang dan nyaman untuk hasil terbaik.</p>
+                                    </div>
                                 </div>
-                                <span id="student-count"
-                                    class="font-stats-sm text-stats-sm text-on-surface-variant opacity-75">+1.2k Siswa
-                                    Telah Menyelesaikan</span>
+                                <!-- Measurement Pillars -->
+                                <div class="hairline-border p-6 bg-white/50 rounded-sm">
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <span class="material-symbols-outlined text-secondary"
+                                            data-icon="analytics">analytics</span>
+                                        <span
+                                            class="font-stats-sm text-stats-sm uppercase tracking-widest text-on-surface-variant">Apa
+                                            yang diukur?</span>
+                                    </div>
+                                    <ul class="space-y-3">
+                                        <li class="flex items-center gap-3 group">
+                                            <div
+                                                class="w-8 h-8 rounded-full border border-secondary/20 flex items-center justify-center bg-secondary/5 group-hover:bg-secondary/10 transition-colors">
+                                                <span class="material-symbols-outlined text-[18px] text-secondary"
+                                                    data-icon="favorite">favorite</span>
+                                            </div>
+                                            <span class="font-body-sm text-body-sm text-primary font-medium">Minat &amp;
+                                                Ketertarikan</span>
+                                        </li>
+                                        <li class="flex items-center gap-3 group">
+                                            <div
+                                                class="w-8 h-8 rounded-full border border-secondary/20 flex items-center justify-center bg-secondary/5 group-hover:bg-secondary/10 transition-colors">
+                                                <span class="material-symbols-outlined text-[18px] text-secondary"
+                                                    data-icon="psychology">psychology</span>
+                                            </div>
+                                            <span class="font-body-sm text-body-sm text-primary font-medium">Bakat
+                                                Alami</span>
+                                        </li>
+                                        <li class="flex items-center gap-3 group">
+                                            <div
+                                                class="w-8 h-8 rounded-full border border-secondary/20 flex items-center justify-center bg-secondary/5 group-hover:bg-secondary/10 transition-colors">
+                                                <span class="material-symbols-outlined text-[18px] text-secondary"
+                                                    data-icon="auto_stories">auto_stories</span>
+                                            </div>
+                                            <span class="font-body-sm text-body-sm text-primary font-medium">Gaya Belajar
+                                                Visual/Auditori</span>
+                                        </li>
+                                        <li class="flex items-center gap-3 group">
+                                            <div
+                                                class="w-8 h-8 rounded-full border border-secondary/20 flex items-center justify-center bg-secondary/5 group-hover:bg-secondary/10 transition-colors">
+                                                <span class="material-symbols-outlined text-[18px] text-secondary"
+                                                    data-icon="school">school</span>
+                                            </div>
+                                            <span class="font-body-sm text-body-sm text-primary font-medium">Kompetensi
+                                                Dasar Akademik</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Instruction Section -->
+                            <div
+                                class="hairline-border p-8 bg-academic-cream/30 text-left rounded-sm relative overflow-hidden">
+                                <div class="absolute right-0 top-0 opacity-5 pointer-events-none">
+                                    <span class="material-symbols-outlined text-[120px]"
+                                        data-icon="edit_note">edit_note</span>
+                                </div>
+                                <h3
+                                    class="font-label-caps text-label-caps mb-4 text-primary border-b border-primary/10 pb-2 inline-block">
+                                    Instruksi Singkat</h3>
+                                <div class="space-y-3 font-body-sm text-body-sm text-on-surface-variant ledger-line">
+                                    <p>1. Jawablah setiap pertanyaan dengan jujur sesuai dengan perasaanmu saat ini.</p>
+                                    <p>2. Tidak ada jawaban benar atau salah dalam bagian minat dan gaya belajar.</p>
+                                    <p>3. Untuk bagian kompetensi dasar, cobalah sebisamu tanpa bantuan pihak luar.</p>
+                                    <p>4. Hasil akan langsung diproses menjadi roadmap belajar pribadimu.</p>
+                                </div>
+                            </div>
+                            <!-- CTA Section -->
+                            <div class="pt-8 flex flex-col items-center gap-6">
+                                <button id="btn-start-test"
+                                    class="bg-academic-accent hover:opacity-90 active:scale-95 text-white font-bold py-4 px-12 rounded-sm shadow-lg transition-all duration-200 flex items-center gap-4 group cursor-pointer">
+                                    <span class="font-label-caps text-label-caps tracking-widest" id="btn-start-test-text">Mulai Tes Sekarang</span>
+                                    <span class="material-symbols-outlined transition-transform group-hover:translate-x-1"
+                                        data-icon="arrow_forward">arrow_forward</span>
+                                </button>
+
+                                <!-- Existing Student Status Badge (Hidden if not set) -->
+                                <div id="student-level-status" class="hidden flex items-center gap-2 px-4 py-2 bg-secondary/10 border border-secondary/20 rounded-full text-xs font-body-sm text-primary">
+                                    <span class="material-symbols-outlined text-[16px] text-secondary">verified</span>
+                                    <span>Terdaftar: <strong id="student-level-label" class="text-secondary font-bold">-</strong></span>
+                                    <button type="button" id="btn-change-level" class="ml-2 underline text-primary/70 hover:text-secondary font-bold transition-colors">
+                                        Ubah Jenjang/Kelas
+                                    </button>
+                                </div>
+
+                                <div class="flex items-center gap-2">
+                                    <div class="flex -space-x-2">
+                                        <div class="w-8 h-8 rounded-full border-2 border-academic-ivory bg-primary text-white font-bold text-xs flex items-center justify-center shadow-sm">AF</div>
+                                        <div class="w-8 h-8 rounded-full border-2 border-academic-ivory bg-secondary text-white font-bold text-xs flex items-center justify-center shadow-sm">SR</div>
+                                        <div class="w-8 h-8 rounded-full border-2 border-academic-ivory bg-emerald-700 text-white font-bold text-xs flex items-center justify-center shadow-sm">MD</div>
+                                    </div>
+                                    <span id="student-count"
+                                        class="font-stats-sm text-stats-sm text-on-surface-variant opacity-75">+1.2k Siswa
+                                        Telah Menyelesaikan</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -376,6 +455,27 @@
                         <div class="h-[1px] w-8 bg-primary"></div>
                         <span class="font-stats-sm text-stats-sm">SECTION 01: DIAGNOSTIC</span>
                         <div class="h-[1px] w-8 bg-primary"></div>
+                    </div>
+
+                    <!-- Retake Confirmation Modal -->
+                    <div id="retake-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-primary/50 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+                        <div class="bg-white p-6 md:p-8 rounded-sm hard-shadow max-w-md w-full relative transform scale-95 transition-transform duration-300 shadow-2xl hairline-border" id="retake-modal-content">
+                            <div class="w-12 h-12 rounded-full bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-800 mx-auto mb-4">
+                                <span class="material-symbols-outlined text-2xl">replay</span>
+                            </div>
+                            <h3 class="font-display-lg text-xl font-bold text-primary text-center mb-2">Ulangi Tes Diagnostik?</h3>
+                            <p class="font-body-md text-xs text-on-surface-variant text-center leading-relaxed mb-6">
+                                Anda sudah memiliki data hasil tes diagnostik yang tersimpan. Jika Anda memilih mengulang tes, jawaban baru akan menggantikan hasil tes sebelumnya.
+                            </p>
+                            <div class="flex items-center justify-center gap-3">
+                                <button type="button" onclick="closeRetakeConfirmModal()" class="px-5 py-2.5 text-xs font-label-caps text-primary border border-primary/20 hover:bg-surface-container rounded-sm transition-colors cursor-pointer">
+                                    Batal
+                                </button>
+                                <button type="button" onclick="confirmRetakeTest()" class="px-6 py-2.5 text-xs font-label-caps font-bold bg-academic-accent text-white rounded-sm hover:opacity-90 active:scale-95 transition-all cursor-pointer">
+                                    Ya, Mulai Tes Ulang
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Level & Class Selection Modal (Two-step flow) -->
@@ -749,54 +849,177 @@
                 closeBtn.addEventListener('click', closeLevelModal);
             }
 
-            // Dynamic student count
-            const baseCount = 1200;
-            const now = new Date();
-            const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
-            const dynamicCount = baseCount + (dayOfYear * 5);
-            const displayCount = '+' + (dynamicCount / 1000).toFixed(1) + 'k';
-            const countEl = document.getElementById('student-count');
-            if (countEl) {
-                countEl.textContent = displayCount + ' Siswa Telah Menyelesaikan';
-            }
-        });
-    </script>
+        // Dynamic student count
+        const baseCount = 1200;
+        const now = new Date();
+        const dayOfYear = Math.floor((now - new Date(now.getFullYear(), 0, 0)) / 1000 / 60 / 60 / 24);
+        const dynamicCount = baseCount + (dayOfYear * 5);
+        const displayCount = '+' + (dynamicCount / 1000).toFixed(1) + 'k';
+        const countEl = document.getElementById('student-count');
+        if (countEl) {
+            countEl.textContent = displayCount + ' Siswa Telah Menyelesaikan';
+        }
 
-    <!-- Firebase SDK & Auth Listener for Smart Level State -->
-    <script>
-        window.addEventListener('auth-ready', function(e) {
-            const user = e.detail;
-            if (user) {
-                if (user.nama) {
-                    document.querySelectorAll('.user-display-name').forEach(el => {
-                        el.textContent = user.nama;
-                    });
+        // Retake Modal Handlers
+        window.openRetakeConfirmModal = function() {
+            const modal = document.getElementById('retake-modal');
+            const content = document.getElementById('retake-modal-content');
+            if (!modal || !content) return;
+            modal.classList.remove('hidden');
+            void modal.offsetWidth;
+            modal.classList.remove('opacity-0');
+            content.classList.remove('scale-95');
+        };
+
+        window.closeRetakeConfirmModal = function() {
+            const modal = document.getElementById('retake-modal');
+            const content = document.getElementById('retake-modal-content');
+            if (!modal || !content) return;
+            modal.classList.add('opacity-0');
+            content.classList.add('scale-95');
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        };
+
+        window.confirmRetakeTest = function() {
+            window.closeRetakeConfirmModal();
+            const completedContainer = document.getElementById('completed-diagnostic-container');
+            const initialContainer = document.getElementById('initial-test-container');
+            if (completedContainer) completedContainer.classList.add('hidden');
+            if (initialContainer) initialContainer.classList.remove('hidden');
+            openLevelModal(1);
+        };
+
+        // Smart diagnosis completed detection & rendering
+        window.checkAndRenderDiagnosisStatus = function(user) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const isExplicitRetake = urlParams.get('retake') === 'true' || urlParams.get('force') === 'true';
+
+            const u = user || window.currentFirebaseUser || (function() {
+                try { return JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch(e) { return {}; }
+            })();
+
+            const uid = u.uid || (window.firebaseAuth?.currentUser?.uid);
+            let hasCompleted = false;
+            let diagnosisData = null;
+
+            // 1. Check user object
+            if (u.sudahTesDiagnostik || u.hasilDiagnostik || u.citaCita || u.roadmapBelajar) {
+                hasCompleted = true;
+                if (u.hasilDiagnostik) diagnosisData = u.hasilDiagnostik;
+            }
+
+            // 2. Check local storage
+            if (!diagnosisData) {
+                try {
+                    const localDiag = localStorage.getItem('aiDiagnosisResult') || (uid ? localStorage.getItem('flexa_diagnosis_' + uid) : null);
+                    if (localDiag) {
+                        diagnosisData = JSON.parse(localDiag);
+                        hasCompleted = true;
+                    }
+                } catch(e) {}
+            }
+
+            if (localStorage.getItem('hasCompletedDiagnosis') === 'true' || localStorage.getItem('selectedCareer')) {
+                hasCompleted = true;
+            }
+
+            const completedContainer = document.getElementById('completed-diagnostic-container');
+            const initialContainer = document.getElementById('initial-test-container');
+
+            if (hasCompleted && !isExplicitRetake) {
+                if (completedContainer) completedContainer.classList.remove('hidden');
+                if (initialContainer) initialContainer.classList.add('hidden');
+
+                // Populate completed container details
+                const nama = u.nama || localStorage.getItem('userNama') || 'Siswa Flexa';
+                const jenjang = (u.jenjang || localStorage.getItem('userJenjang') || 'SD').toUpperCase();
+                const kelas = u.kelas || localStorage.getItem('userKelas') || (jenjang === 'SD' ? '1' : (jenjang === 'SMP' ? '7' : '10'));
+                const career = u.citaCita || localStorage.getItem('selectedCareer') || 'Tersedia';
+
+                const nameEl = document.getElementById('completed-student-name');
+                const jkEl = document.getElementById('completed-jenjang-kelas');
+                const careerEl = document.getElementById('completed-career-val');
+                const minatEl = document.getElementById('completed-minat-val');
+                const vakEl = document.getElementById('completed-vak-val');
+
+                if (nameEl) nameEl.textContent = nama;
+                if (jkEl) jkEl.textContent = `Jenjang ${jenjang} • Kelas ${kelas}`;
+                if (careerEl) careerEl.textContent = career;
+
+                if (diagnosisData) {
+                    if (diagnosisData.riasec) {
+                        const topRiasec = Object.entries(diagnosisData.riasec).sort((a,b) => b[1] - a[1]);
+                        if (topRiasec.length > 0 && minatEl) {
+                            minatEl.textContent = topRiasec.slice(0, 2).map(r => r[0]).join(' / ');
+                        }
+                    }
+                    if (diagnosisData.gayaBelajar) {
+                        const topVak = Object.entries(diagnosisData.gayaBelajar).sort((a,b) => b[1] - a[1]);
+                        if (topVak.length > 0 && vakEl) {
+                            vakEl.textContent = `${topVak[0][0]} (${topVak[0][1]}%)`;
+                        }
+                    }
+                }
+            } else {
+                if (completedContainer) completedContainer.classList.add('hidden');
+                if (initialContainer) initialContainer.classList.remove('hidden');
+            }
+        };
+
+        // Run instantly on DOMContentLoaded
+        window.checkAndRenderDiagnosisStatus();
+    });
+</script>
+
+<!-- Firebase SDK & Auth Listener for Smart Level State -->
+<script>
+    window.addEventListener('auth-ready', function(e) {
+        const user = e.detail;
+        if (user) {
+            if (user.nama) {
+                document.querySelectorAll('.user-display-name').forEach(el => {
+                    el.textContent = user.nama;
+                });
+            }
+
+            // Check existing level and class
+            if (user.jenjang && user.kelas) {
+                existingUserJenjang = user.jenjang;
+                existingUserKelas = user.kelas;
+                currentChosenJenjang = user.jenjang;
+                currentChosenKelas = user.kelas;
+
+                // Show existing level badge
+                const statusBadge = document.getElementById('student-level-status');
+                const statusLabel = document.getElementById('student-level-label');
+                const ctaText = document.getElementById('btn-start-test-text');
+
+                if (statusBadge && statusLabel) {
+                    statusBadge.classList.remove('hidden');
+                    statusLabel.textContent = `${user.jenjang} Kelas ${user.kelas}`;
                 }
 
-                // Check existing level and class
-                if (user.jenjang && user.kelas) {
-                    existingUserJenjang = user.jenjang;
-                    existingUserKelas = user.kelas;
-                    currentChosenJenjang = user.jenjang;
-                    currentChosenKelas = user.kelas;
-
-                    // Show existing level badge
-                    const statusBadge = document.getElementById('student-level-status');
-                    const statusLabel = document.getElementById('student-level-label');
-                    const ctaText = document.getElementById('btn-start-test-text');
-
-                    if (statusBadge && statusLabel) {
-                        statusBadge.classList.remove('hidden');
-                        statusLabel.textContent = `${user.jenjang} Kelas ${user.kelas}`;
-                    }
-
-                    if (ctaText) {
-                        ctaText.textContent = `Lanjut Tes (${user.jenjang} Kelas ${user.kelas})`;
-                    }
+                if (ctaText) {
+                    ctaText.textContent = `Lanjut Tes (${user.jenjang} Kelas ${user.kelas})`;
                 }
             }
-        });
-    </script>
+
+            // Also check Firestore if diagnosis exists
+            if (window.firebaseDb && user.uid) {
+                window.firebaseDb.collection('hasilDiagnostik').doc(user.uid).get().then(function(doc) {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        user.hasilDiagnostik = data;
+                        user.sudahTesDiagnostik = true;
+                        window.checkAndRenderDiagnosisStatus(user);
+                    }
+                }).catch(function() {});
+            }
+
+            window.checkAndRenderDiagnosisStatus(user);
+        }
+    });
+</script>
 
 <script>
 (function(){

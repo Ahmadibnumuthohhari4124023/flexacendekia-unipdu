@@ -597,7 +597,20 @@
             const nama = user.nama || localStorage.getItem('userNama') || 'Siswa Homeschooling';
             const jenjang = (user.jenjang || localStorage.getItem('userJenjang') || 'SMA').toUpperCase();
             const kelas = parseInt(user.kelas || localStorage.getItem('userKelas'), 10) || (jenjang === 'SD' ? 1 : (jenjang === 'SMP' ? 7 : 10));
-            const careerTitle = user.citaCita || localStorage.getItem('selectedCareer') || 'Arsitek';
+            
+            // Resolve citaCita from all sources (priority: user profile > localStorage diagnosis > selectedCareer)
+            const careerTitle = user.citaCita 
+                || user.minatUtama
+                || (() => { try { const d = JSON.parse(localStorage.getItem('aiDiagnosisResult') || '{}'); return d.rekomendasiKarier || d.careerRecommendation || d.minatUtama; } catch(e) { return null; } })()
+                || localStorage.getItem('selectedCareer') 
+                || localStorage.getItem('userCitaCita')
+                || 'Software Engineer';
+
+            // Sync back so all pages use the same value
+            try {
+                localStorage.setItem('selectedCareer', careerTitle);
+                localStorage.setItem('userCitaCita', careerTitle);
+            } catch(e) {}
 
             // Ambil status KRS terkini (prioritas: SSOSync > memori user aktif > localStorage)
             let statusKRS = user.statusKRS || localStorage.getItem('statusKRS') || 'Belum Mengisi';

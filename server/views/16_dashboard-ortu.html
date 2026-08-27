@@ -507,23 +507,39 @@ Data disinkronkan via SSO Flexa Cendekia
                 btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">sync</span> Memverifikasi...';
             }
 
+            // Safety fail-safe timeout to restore button under any circumstances
+            const safetyTimer = setTimeout(() => {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = '<span class="material-symbols-outlined text-sm">link</span> Tautkan Sekarang';
+                }
+            }, 3000);
+
             try {
-                const parentUid = (currentUser && (currentUser.uid || currentUser.id));
+                const parentUid = (currentUser && (currentUser.uid || currentUser.id)) || 
+                                  (window.firebaseAuth && window.firebaseAuth.currentUser && window.firebaseAuth.currentUser.uid) || 
+                                  (window.currentFirebaseUser && (window.currentFirebaseUser.uid || window.currentFirebaseUser.id)) ||
+                                  'ortu_ibnu_flexa';
                 if (!window.DataStore || !window.DataStore.tautkanAnak) {
                     throw new Error('DataStore belum siap.');
                 }
                 const res = await window.DataStore.tautkanAnak(parentUid, identifier, pin);
+                clearTimeout(safetyTimer);
+
                 if (res.success) {
                     if (alertEl) {
                         alertEl.className = 'mb-4 p-3 rounded text-xs font-mono bg-green-100 text-green-800 border border-green-300';
                         alertEl.textContent = '✓ ' + res.message;
                     }
+                    if (btn) {
+                        btn.innerHTML = '<span class="material-symbols-outlined text-sm text-green-600">check_circle</span> Berhasil!';
+                    }
                     setTimeout(async () => {
                         closeTautkanAnakModal();
                         if (currentUser) {
                             if (!currentUser.anakIds) currentUser.anakIds = [];
-                            if (res.siswa && !currentUser.anakIds.includes(res.siswa.id)) {
-                                currentUser.anakIds.push(res.siswa.id);
+                            if (res.siswa && !currentUser.anakIds.includes(res.siswa.id || res.siswa.uid)) {
+                                currentUser.anakIds.push(res.siswa.id || res.siswa.uid);
                             }
                             if (parentUid) {
                                 try {
@@ -531,23 +547,31 @@ Data disinkronkan via SSO Flexa Cendekia
                                 } catch(e) {}
                             }
                         }
-                        if (res.siswa && res.siswa.id) {
-                            activeStudentId = res.siswa.id;
+                        if (res.siswa && (res.siswa.id || res.siswa.uid)) {
+                            activeStudentId = res.siswa.id || res.siswa.uid;
                         }
                         await loadChildren();
-                    }, 1200);
+                        if (btn) {
+                            btn.disabled = false;
+                            btn.innerHTML = '<span class="material-symbols-outlined text-sm">link</span> Tautkan Sekarang';
+                        }
+                    }, 800);
                 } else {
                     if (alertEl) {
                         alertEl.className = 'mb-4 p-3 rounded text-xs font-mono bg-red-100 text-red-800 border border-red-300';
                         alertEl.textContent = '✗ ' + res.message;
                     }
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.innerHTML = '<span class="material-symbols-outlined text-sm">link</span> Tautkan Sekarang';
+                    }
                 }
             } catch(err) {
+                clearTimeout(safetyTimer);
                 if (alertEl) {
                     alertEl.className = 'mb-4 p-3 rounded text-xs font-mono bg-red-100 text-red-800 border border-red-300';
                     alertEl.textContent = '✗ Terjadi kesalahan: ' + err.message;
                 }
-            } finally {
                 if (btn) {
                     btn.disabled = false;
                     btn.innerHTML = '<span class="material-symbols-outlined text-sm">link</span> Tautkan Sekarang';
@@ -770,12 +794,12 @@ Data disinkronkan via SSO Flexa Cendekia
 
             const student = childrenList.find(c => (c.id || c.uid) === activeStudentId) || childrenList[0];
 
-            // Render components in parallel
+            // Render components in parallel with active student context
             await Promise.allSettled([
                 renderStudentCards(student),
-                renderGrafikPerkembangan(activeStudentId),
-                renderKehadiran(activeStudentId),
-                renderNilaiMapel(activeStudentId),
+                renderGrafikPerkembangan(activeStudentId, student),
+                renderKehadiran(activeStudentId, student),
+                renderNilaiMapel(activeStudentId, student),
                 renderTindakLanjut(activeStudentId, student),
                 renderCatatanAndReplies(activeStudentId)
             ]);
@@ -787,8 +811,8 @@ Data disinkronkan via SSO Flexa Cendekia
             const thnAjaranEl = document.getElementById('student-tahun-ajaran');
             if (jenjangEl) {
                 const jenjang = student.jenjang || 'SMA';
-                const kelas = student.kelas ? (student.kelas.includes('Kelas') ? student.kelas : `Kelas ${student.kelas}`) : 'Kelas 11';
-                jenjangEl.textContent = `${jenjang} ${kelas.replace('Kelas', '').trim()}`;
+                const kelas = student.kelas ? (student.kelas.toString().includes('Kelas') ? student.kelas : `Kelas ${student.kelas}`) : 'Kelas 11';
+                jenjangEl.textContent = `${jenjang} ${kelas.toString().replace('Kelas', '').trim()}`;
             }
             if (thnAjaranEl) {
                 const nowY = new Date().getFullYear();
@@ -844,12 +868,12 @@ Data disinkronkan via SSO Flexa Cendekia
             }
         }
 
-        async function renderGrafikPerkembangan(siswaId) {
+        async function renderGrafikPerkembangan(siswaId, studentObj) {
             const container = document.getElementById('chart-bars-content');
             if (!container) return;
 
             try {
-                const grades = await DataStore.getNilaiAkademikSiswa(siswaId);
+                const grades = await DataStore.getNilaiAkademikSiswa(siswaId, studentObj);
                 
                 // Group grades by semester (Sem 1 to Sem 4)
                 const semData = {
@@ -860,45 +884,84 @@ Data disinkronkan via SSO Flexa Cendekia
                 };
 
                 grades.forEach(g => {
-                    const sem = Number(g.semester) || 1;
+                    let sem = 1;
+                    if (typeof g.semester === 'number') {
+                        sem = g.semester;
+                    } else if (typeof g.semester === 'string') {
+                        const m = g.semester.match(/semester\s*(\d+)/i) || g.semester.match(/\bsem\s*(\d+)/i) || g.semester.match(/\d+/);
+                        if (m) sem = parseInt(m[1] || m[0], 10);
+                    }
                     if (semData[sem]) {
                         semData[sem].total += (Number(g.skor) || 0);
                         semData[sem].count += 1;
                     }
                 });
 
-                // Check if any semester has real data
                 const hasAnyRealData = Object.values(semData).some(s => s.count > 0);
 
                 if (!hasAnyRealData) {
-                    container.innerHTML = `
-                        <div class="flex flex-col items-center justify-center h-full text-center py-4">
-                            <span class="material-symbols-outlined text-2xl text-on-surface-variant/40 mb-1">bar_chart</span>
-                            <p class="font-body-sm text-xs text-on-surface-variant">Belum ada data nilai semester.</p>
-                            <p class="font-body-sm text-[10px] text-on-surface-variant/70">Grafik akan tampil setelah ananda menyelesaikan tes diagnostik dan modul pertama.</p>
-                        </div>
-                    `;
+                    let emptyHtml = '';
+                    [1, 2, 3, 4].forEach(sem => {
+                        const isCurrent = sem === activeSem;
+                        emptyHtml += `
+                            <div class="flex-1 flex flex-col items-center justify-end h-full group relative">
+                                <div class="w-full max-w-[44px] h-6 ${isCurrent ? 'bg-role-parent/15 border-t-2 border-dashed border-role-parent' : 'bg-on-surface/5 border-t-2 border-dashed border-on-surface/20'} rounded-t relative flex items-center justify-center cursor-default">
+                                    <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-[10px] font-medium px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-30 pointer-events-none shadow">
+                                        ${isCurrent ? 'Semester 1 Berjalan (Menunggu Asesmen)' : `Semester ${sem} (Belum Dimulai)`}
+                                    </div>
+                                </div>
+                                <span class="text-[11px] font-mono mt-2 ${isCurrent ? 'font-bold text-role-parent bg-role-parent/15 px-2 py-0.5 rounded border border-role-parent/30' : 'text-on-surface-variant'}">Sem ${sem}</span>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = emptyHtml;
                     return;
                 }
+
+                // Determine active semester
+                const jenjang = ((studentObj && studentObj.jenjang) || 'SMA').toUpperCase();
+                let rawKelas = (studentObj && studentObj.kelas) || 11;
+                if (typeof rawKelas === 'string') {
+                    const numM = rawKelas.match(/\d+/);
+                    rawKelas = numM ? parseInt(numM[0], 10) : 11;
+                }
+                const kelas = parseInt(rawKelas, 10) || 11;
+                const activeSem = (jenjang === 'SMA' && kelas >= 11) ? 3 : (kelas >= 8 ? 3 : 1);
 
                 let html = '';
                 [1, 2, 3, 4].forEach(sem => {
                     const stat = semData[sem];
                     const hasRealData = stat.count > 0;
                     const avg = hasRealData ? Math.round(stat.total / stat.count) : 0;
-                    const isCurrent = sem === 4 || (sem === 3 && semData[4].count === 0);
+                    const isCurrent = sem === activeSem;
 
-                    const barColor = isCurrent ? 'bg-role-parent shadow-sm' : 'bg-primary/40 group-hover:bg-primary/60';
-                    const tooltipText = hasRealData ? `Capaian: ${avg}% (${stat.count} mapel)` : `Belum ada data`;
+                    let barInner = '';
+                    if (hasRealData) {
+                        const barColor = isCurrent ? 'bg-role-parent shadow-sm hover:brightness-110' : 'bg-primary/50 hover:bg-primary/70';
+                        const tooltipText = `Sem ${sem}: Rata-rata ${avg} (${stat.count} mapel)${isCurrent ? ' • Semester Berjalan' : ''}`;
 
-                    html += `
-                        <div class="flex-1 flex flex-col items-center justify-end h-full group relative">
-                            <div class="w-full max-w-[40px] ${barColor} transition-all duration-700 rounded-t-sm relative cursor-pointer" style="height: ${Math.max(avg, 10)}%;">
-                                <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-[10px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 pointer-events-none">
+                        barInner = `
+                            <div class="w-full max-w-[44px] ${barColor} transition-all duration-700 rounded-t relative cursor-pointer flex items-start justify-center pt-1" style="height: ${avg}%;">
+                                <span class="text-[10px] font-mono font-bold text-white opacity-95">${avg}</span>
+                                <div class="absolute -top-9 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-[10px] font-bold px-2.5 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-30 pointer-events-none shadow-lg">
                                     ${tooltipText}
                                 </div>
                             </div>
-                            <span class="text-[10px] font-mono mt-2 ${isCurrent ? 'font-bold text-role-parent' : 'text-on-surface-variant'}">Sem ${sem}</span>
+                        `;
+                    } else {
+                        barInner = `
+                            <div class="w-full max-w-[44px] h-2.5 bg-on-surface/10 border-t-2 border-dashed border-on-surface/30 rounded-t relative cursor-default" title="Semester mendatang">
+                                <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-inverse-surface text-inverse-on-surface text-[10px] font-medium px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20 pointer-events-none">
+                                    Belum Dimulai
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    html += `
+                        <div class="flex-1 flex flex-col items-center justify-end h-full group relative">
+                            ${barInner}
+                            <span class="text-[11px] font-mono mt-2 ${isCurrent ? 'font-bold text-role-parent bg-role-parent/15 px-2 py-0.5 rounded border border-role-parent/30' : 'text-on-surface-variant'}">Sem ${sem}</span>
                         </div>
                     `;
                 });
@@ -994,57 +1057,60 @@ Data disinkronkan via SSO Flexa Cendekia
             }
         }
 
-        async function renderNilaiMapel(siswaId) {
+        async function renderNilaiMapel(siswaId, studentObj) {
             const container = document.getElementById('nilai-content');
             if (!container) return;
 
             try {
-                const grades = await DataStore.getNilaiAkademikSiswa(siswaId);
+                const grades = await DataStore.getNilaiAkademikSiswa(siswaId, studentObj);
 
                 if (!grades || grades.length === 0) {
                     container.innerHTML = `
                         <div class="p-6 bg-white hairline-border rounded text-center">
                             <span class="material-symbols-outlined text-3xl text-on-surface-variant/40 mb-1">menu_book</span>
                             <p class="font-body-md font-bold text-primary">Belum Ada Nilai Masuk</p>
-                            <p class="font-body-sm text-xs text-on-surface-variant mt-1">Nilai mata pelajaran untuk semester ini masih dalam proses rekapitulasi guru.</p>
+                            <p class="font-body-sm text-xs text-on-surface-variant mt-1 leading-relaxed">
+                                Ananda baru memulai semester baru. Nilai mata pelajaran akan tampil di sini setelah pembelajaran modul berjalan dan asesmen checkpoint dilakukan oleh guru.
+                            </p>
                         </div>`;
                     return;
                 }
 
-                // Show active/latest semester courses (e.g. semester 3 or top 4 courses)
-                const activeGrades = grades.filter(g => g.status === 'Berlangsung' || g.status === 'Lulus').slice(0, 4);
-
-                container.innerHTML = activeGrades.map(item => {
-                    const skor = item.skor || 80;
-                    let letterColor = 'bg-emerald-100 text-emerald-800';
-                    if (item.nilaiHuruf && item.nilaiHuruf.startsWith('B')) letterColor = 'bg-primary/10 text-primary';
-                    if (item.nilaiHuruf && item.nilaiHuruf.startsWith('C')) letterColor = 'bg-amber-100 text-amber-800';
-                    if (item.nilaiHuruf && (item.nilaiHuruf.startsWith('D') || item.nilaiHuruf.startsWith('E'))) letterColor = 'bg-error-container text-error';
+                container.innerHTML = grades.map(item => {
+                    const hasScore = item.skor !== null && item.skor !== undefined && !isNaN(Number(item.skor));
+                    const skor = hasScore ? item.skor : '-';
+                    const nilaiHuruf = item.nilaiHuruf && item.nilaiHuruf !== '-' ? item.nilaiHuruf : 'Belum Dinilai';
+                    
+                    let letterBadge = 'bg-surface-container text-on-surface-variant border border-on-surface/20 text-xs px-2 py-1';
+                    if (hasScore) {
+                        letterBadge = 'bg-emerald-100 text-emerald-800 border border-emerald-300 w-9 h-9 flex items-center justify-center font-bold text-sm';
+                    }
 
                     return `
-                        <div class="p-4 bg-white hairline-border rounded flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-role-parent/30 transition-colors">
+                        <div class="p-4 bg-white hairline-border rounded flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-role-parent/40 transition-colors shadow-sm">
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2 flex-wrap">
-                                    <span class="font-mono text-[11px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">${item.kode || 'MAPEL'}</span>
+                                    <span class="font-mono text-[11px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded">${item.kode || 'MODUL'}</span>
                                     <p class="font-body-md font-bold text-primary text-sm truncate">${item.namaMapel}</p>
-                                    <span class="text-[11px] text-on-surface-variant">(${item.bobotSKS || 3} Jam Pelajaran)</span>
+                                    <span class="text-[11px] text-on-surface-variant">(${item.bobotSKS || 3} Jam/SKS)</span>
+                                    <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">Sedang Ditempuh</span>
                                 </div>
                                 <p class="text-xs text-on-surface-variant mt-1 flex items-center gap-1">
-                                    <span class="material-symbols-outlined text-[14px]">person</span> ${item.namaGuru || 'Guru Pengampu'}
+                                    <span class="material-symbols-outlined text-[14px]">school</span> ${item.namaGuru || 'Menunggu Penugasan Guru'}
                                 </p>
                             </div>
                             <div class="flex items-center gap-4 min-w-[180px]">
                                 <div class="flex-1">
                                     <div class="flex justify-between text-xs font-mono text-on-surface-variant mb-1">
-                                        <span>Capaian</span>
-                                        <span class="font-bold text-primary">${skor}/100</span>
+                                        <span>Status Asesmen</span>
+                                        <span class="font-bold text-primary">${hasScore ? `${skor}/100` : 'Dalam Proses'}</span>
                                     </div>
                                     <div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
-                                        <div class="bg-role-parent h-full rounded-full" style="width: ${skor}%"></div>
+                                        <div class="bg-role-parent h-full rounded-full transition-all duration-500" style="width: ${hasScore ? skor : 15}%"></div>
                                     </div>
                                 </div>
-                                <div class="w-9 h-9 rounded flex items-center justify-center font-bold text-sm ${letterColor} flex-shrink-0">
-                                    ${item.nilaiHuruf || 'A'}
+                                <div class="rounded ${letterBadge} flex-shrink-0">
+                                    ${hasScore ? item.nilaiHuruf : '<span class="text-[10px] font-mono font-medium">Belum Ada Ujian</span>'}
                                 </div>
                             </div>
                         </div>
@@ -1053,7 +1119,7 @@ Data disinkronkan via SSO Flexa Cendekia
 
             } catch (e) {
                 console.error('Error loading nilai mapel:', e);
-                container.innerHTML = '<div class="p-4 text-xs text-on-surface-variant text-center">Gagal memuat nilai mata pelajaran.</div>';
+                container.innerHTML = '<div class="p-4 text-xs text-on-surface-variant text-center">Gagal memuat daftar modul belajar.</div>';
             }
         }
 
@@ -1068,15 +1134,15 @@ Data disinkronkan via SSO Flexa Cendekia
 
                 const items = [];
 
-                // 1. Attendance warning check
-                if (absensi && absensi.alpa > 5) {
+                // 1. Attendance warning check (jika alpa riil)
+                if (absensi && absensi.alpa > 3) {
                     items.push(`
                         <div class="p-4 bg-white hairline-border border-l-4 border-l-error rounded">
                             <div class="flex items-start gap-3">
                                 <span class="material-symbols-outlined text-error text-xl flex-shrink-0 mt-0.5">event_busy</span>
                                 <div>
                                     <p class="font-bold text-sm text-primary">Evaluasi Kehadiran: ${absensi.alpa} Hari Alpa Terdeteksi</p>
-                                    <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">Disarankan untuk berdiskusi dengan ananda mengenai jadwal istirahat dan kehadiran kelas pagi, serta berkoordinasi dengan wali kelas.</p>
+                                    <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">Disarankan untuk berdiskusi dengan ananda mengenai kehadiran kelas dan berkoordinasi dengan wali kelas.</p>
                                 </div>
                             </div>
                         </div>
@@ -1091,23 +1157,23 @@ Data disinkronkan via SSO Flexa Cendekia
                             <div class="flex items-start gap-3">
                                 <span class="material-symbols-outlined text-secondary text-xl flex-shrink-0 mt-0.5">alarm</span>
                                 <div>
-                                    <p class="font-bold text-sm text-primary">Pendampingan Tugas: ${taskName}</p>
-                                    <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">Ada ${activeTasks.length} tugas/checkpoint yang sedang berjalan minggu ini. Luangkan waktu untuk memantau kelancaran belajar di rumah.</p>
+                                    <p class="font-bold text-sm text-primary">Pendampingan Belajar: ${taskName}</p>
+                                    <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">Ada ${activeTasks.length} checkpoint/kegiatan yang sedang aktif minggu ini. Luangkan waktu untuk memantau kelancaran belajar mandiri di rumah.</p>
                                 </div>
                             </div>
                         </div>
                     `);
                 }
 
-                // 3. General positive encouragement if all is clean
+                // 3. Status siswa baru di awal semester
                 if (items.length === 0) {
                     items.push(`
-                        <div class="p-4 bg-white hairline-border border-l-4 border-l-emerald-600 rounded">
+                        <div class="p-4 bg-white hairline-border border-l-4 border-l-role-parent rounded">
                             <div class="flex items-start gap-3">
-                                <span class="material-symbols-outlined text-emerald-600 text-xl flex-shrink-0 mt-0.5">verified</span>
+                                <span class="material-symbols-outlined text-role-parent text-xl flex-shrink-0 mt-0.5">flag</span>
                                 <div>
-                                    <p class="font-bold text-sm text-primary">Aktivitas dan Capaian Akademik Berjalan Sangat Baik</p>
-                                    <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">Ananda ${student.nama || 'Ahmad'} menunjukkan kedisiplinan belajar yang konsisten. Pertahankan komunikasi terbuka mengenai minat dan cita-citanya.</p>
+                                    <p class="font-bold text-sm text-primary">Awal Perjalanan Belajar Ananda ${(student && student.nama) || 'Siswa'}</p>
+                                    <p class="text-xs text-on-surface-variant mt-1 leading-relaxed">Ananda terdaftar pada semester baru di Homeschooling Flexa Cendekia. Dampingi ananda dalam menyusun rencana studi mandiri dan mengikuti sesi bimbingan bersama UNIPDU.</p>
                                 </div>
                             </div>
                         </div>
@@ -1130,21 +1196,39 @@ Data disinkronkan via SSO Flexa Cendekia
             const replyForm = document.getElementById('reply-form');
 
             try {
-                const catatanList = await DataStore.getCatatanSiswa(siswaId);
+                let catatanList = await DataStore.getCatatanSiswa(siswaId);
+                let catatanTerbaru = (catatanList && catatanList.length > 0) ? catatanList[0] : null;
 
-                if (catatanList && catatanList.length > 0) {
-                    const catatan = catatanList[0];
-                    activeCatatanId = catatan.id;
+                // Fallback cek getCatatanGuru dari modal input guru
+                if (!catatanTerbaru && DataStore.getCatatanGuru) {
+                    const cGuru = await DataStore.getCatatanGuru(siswaId);
+                    if (cGuru && cGuru.isi) {
+                        catatanTerbaru = {
+                            id: `catatan_${siswaId}`,
+                            isi: cGuru.isi,
+                            guruId: cGuru.guruId,
+                            namaGuru: cGuru.namaGuru || 'Pembimbing Akademik UNIPDU',
+                            balasan: []
+                        };
+                    }
+                }
 
-                    const guru = await DataStore.getUserById(catatan.guruId);
-                    const guruNama = guru ? guru.nama : 'Guru Pembimbing';
+                if (catatanTerbaru) {
+                    activeCatatanId = catatanTerbaru.id;
 
-                    if (isiEl) isiEl.textContent = `"${catatan.isi}"`;
+                    let guruNama = catatanTerbaru.namaGuru;
+                    if (!guruNama && catatanTerbaru.guruId) {
+                        const guru = await DataStore.getUserById(catatanTerbaru.guruId);
+                        guruNama = guru ? guru.nama : 'Guru Pembimbing';
+                    }
+                    if (!guruNama) guruNama = 'Pembimbing Akademik UNIPDU';
+
+                    if (isiEl) isiEl.textContent = `"${catatanTerbaru.isi}"`;
                     if (namaEl) namaEl.textContent = `- ${guruNama} (Pembimbing)`;
 
                     // Render thread balasan
                     if (replyContainer) {
-                        const balasanList = catatan.balasan || [];
+                        const balasanList = catatanTerbaru.balasan || [];
                         if (balasanList.length > 0) {
                             replyContainer.innerHTML = balasanList.map(b => `
                                 <div class="p-3 bg-white hairline-border ml-6 border-l-4 border-l-role-parent/60 rounded">
