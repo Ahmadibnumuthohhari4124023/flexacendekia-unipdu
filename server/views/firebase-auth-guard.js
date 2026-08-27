@@ -81,19 +81,31 @@
     }
 
     // =============================================
-    // 1. FAST HYDRATION FROM LOCAL STORAGE CACHE
+    // 1. FAST HYDRATION FROM LOCAL STORAGE CACHE (per-UID)
     // =============================================
     var cachedUser = null;
+    var _fastHydrationDone = false;
     try {
+        // Pertama, coba baca dari key global untuk mendapat UID terakhir
         var rawCache = localStorage.getItem('currentUser');
         if (rawCache) {
-            cachedUser = JSON.parse(rawCache);
-            if (cachedUser && cachedUser.uid) {
-                window.currentFirebaseUser = cachedUser;
-                showPageContent();
-                window.getCurrentUserProfile = function() { return window.currentFirebaseUser; };
-                window.dispatchEvent(new CustomEvent('auth-ready', { detail: window.currentFirebaseUser }));
+            var globalCache = JSON.parse(rawCache);
+            if (globalCache && globalCache.uid) {
+                // Baca dari cache per-UID yang lebih akurat
+                var perUidRaw = localStorage.getItem('flexa_user_' + globalCache.uid);
+                if (perUidRaw) {
+                    cachedUser = JSON.parse(perUidRaw);
+                } else {
+                    cachedUser = globalCache;
+                }
             }
+        }
+        if (cachedUser && cachedUser.uid) {
+            window.currentFirebaseUser = cachedUser;
+            _fastHydrationDone = true;
+            showPageContent();
+            window.getCurrentUserProfile = function() { return window.currentFirebaseUser; };
+            window.dispatchEvent(new CustomEvent('auth-ready', { detail: window.currentFirebaseUser }));
         }
     } catch(e) {}
 
@@ -140,20 +152,33 @@
                         return;
                     }
 
+                    // Baca cache per-UID untuk user yang benar-benar aktif di Firebase Auth
+                    var uidCache = null;
+                    try {
+                        var uidRaw = localStorage.getItem('flexa_user_' + user.uid);
+                        if (uidRaw) uidCache = JSON.parse(uidRaw);
+                    } catch(e) {}
+
                     // Ambil profil terbaru dari Firestore
                     window.firebaseDb.collection('users').doc(user.uid).get()
                         .then(function(doc) {
-                            var data = doc.exists ? doc.data() : (cachedUser || {});
-                            var role = normalizeRole(data.role || (cachedUser ? cachedUser.role : 'Siswa'));
+                            // Prioritas: Firestore > cache per-UID > cache global
+                            var data = doc.exists ? doc.data() : (uidCache || cachedUser || {});
+                            var baseCache = uidCache || cachedUser || {};
+                            var role = normalizeRole(data.role || baseCache.role || 'Siswa');
                             
-                            window.currentFirebaseUser = Object.assign({}, cachedUser || {}, data, {
+                            window.currentFirebaseUser = Object.assign({}, baseCache, data, {
                                 uid: user.uid,
                                 email: user.email,
                                 role: role
                             });
 
                             try {
-                                localStorage.setItem('currentUser', JSON.stringify(window.currentFirebaseUser));
+                                var userJson = JSON.stringify(window.currentFirebaseUser);
+                                // Simpan ke cache per-UID (isolasi per akun)
+                                localStorage.setItem('flexa_user_' + user.uid, userJson);
+                                // Simpan juga ke key global (backward-compat)
+                                localStorage.setItem('currentUser', userJson);
                             } catch(e) {}
 
                             var allowed = checkRoleAccess(role);
@@ -164,6 +189,7 @@
 
                             showPageContent();
                             window.getCurrentUserProfile = function() { return window.currentFirebaseUser; };
+                            // Dispatch ulang auth-ready dengan data yang sudah terverifikasi
                             window.dispatchEvent(new CustomEvent('auth-ready', { detail: window.currentFirebaseUser }));
 
                             // Token Refresh Timer (30 Menit)
@@ -210,8 +236,8 @@
     // 3. GLOBAL PROFILE & AVATAR DOM SYNCHRONIZER
     // =============================================
     window.flexaSyncProfileElements = function(user) {
-        if (!user) return;
-        var nama = user.nama || localStorage.getItem('userNama') || 'Siswa Flexa';
+        var defaultName = user.role === 'Guru' ? 'Tutor & Pendidik' : (user.role === 'OrangTua' ? 'Wali Siswa' : 'Siswa Flexa');
+        var nama = user.nama || (user.email ? user.email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : defaultName);
         var initials = nama.split(' ').filter(Boolean).map(function(n){ return n[0]; }).slice(0, 2).join('').toUpperCase() || 'FC';
         var fotoUrl = user.fotoUrl || user.avatar || localStorage.getItem('userAvatar') || '';
         var jenjang = (user.jenjang || localStorage.getItem('userJenjang') || 'SMA').toUpperCase();
@@ -291,6 +317,11 @@
     // =============================================
     window.flexaLogout = function() {
         try {
+            // Hapus cache per-UID untuk user aktif
+            var cu = window.currentFirebaseUser || {};
+            if (cu.uid) {
+                localStorage.removeItem('flexa_user_' + cu.uid);
+            }
             localStorage.removeItem('currentUser');
             localStorage.removeItem('selectedCareer');
             localStorage.removeItem('userAvatar');
@@ -309,7 +340,7 @@
 
     window.flexaResetAllData = async function() {
         try {
-            // 1. Bersihkan seluruh penyimpanan lokal
+            // 1. Bersihkan seluruh penyimpanan lokal (termasuk semua flexa_user_* keys)
             localStorage.clear();
             sessionStorage.clear();
         } catch(e) {

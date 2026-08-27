@@ -481,13 +481,24 @@
         // ================= DYNAMIC HYDRATION LOGIC =================
         function hydrateStudentDashboard(user) {
             if (!user) return;
-            currentStudent = user;
+            
+            // 1. If currently active auth user is not Siswa, lookup registered student in SSOSync / Firestore
+            let studentUser = user;
+            if (user.role === 'Guru' || user.role === 'OrangTua' || user.nip || user.bidang) {
+                studentUser = null;
+                if (window.SSOSync) {
+                    const students = window.SSOSync.getAllStudents();
+                    if (students && students.length > 0) studentUser = students[0];
+                }
+            }
+            const u = studentUser || user;
+            currentStudent = u;
 
-            const nama = user.nama || 'Siswa Flexa';
-            const jenjang = (user.jenjang || localStorage.getItem('userJenjang') || 'SMA').toUpperCase();
-            const kelas = parseInt(user.kelas || localStorage.getItem('userKelas'), 10) || (jenjang === 'SD' ? 1 : (jenjang === 'SMP' ? 7 : 10));
-            const careerTitle = user.citaCita || localStorage.getItem('selectedCareer') || 'Arsitek';
-            const uid = user.uid || user.id || 'FC2026';
+            const nama = u.nama || 'Muhammad';
+            const jenjang = (u.jenjang || localStorage.getItem('userJenjang') || 'SD').toUpperCase();
+            const kelas = parseInt(u.kelas || localStorage.getItem('userKelas'), 10) || (jenjang === 'SD' ? 1 : (jenjang === 'SMP' ? 7 : 10));
+            const careerTitle = u.citaCita || localStorage.getItem('selectedCareer') || 'Arsitek';
+            const uid = u.uid || u.id || 'FC2026';
 
             // 1. Identity
             const nameEl = document.getElementById('user-display-name');

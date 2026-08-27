@@ -160,10 +160,16 @@ const DataStore = {
                 if (!snap.empty) {
                     siswaDoc = snap.docs[0];
                 } else {
-                    // 3. Cek direct doc ID
-                    const docCheck = await db.collection('users').doc(cleanId).get();
-                    if (docCheck.exists && docCheck.data().role === 'Siswa') {
-                        siswaDoc = docCheck;
+                    // 3. Cek NIS
+                    snap = await db.collection('users').where('nis', '==', cleanId).get();
+                    if (!snap.empty) {
+                        siswaDoc = snap.docs[0];
+                    } else {
+                        // 4. Cek direct doc ID
+                        const docCheck = await db.collection('users').doc(cleanId).get();
+                        if (docCheck.exists && (docCheck.data().role === 'Siswa' || !docCheck.data().role)) {
+                            siswaDoc = docCheck;
+                        }
                     }
                 }
             }

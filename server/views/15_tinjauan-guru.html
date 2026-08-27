@@ -538,7 +538,7 @@
 
         // Hydrate Teacher Profile & Sidebar immediately
         function updateTeacherHeaderAndSidebar(user) {
-            const teacherName = (user && (user.nama || user.displayName)) || localStorage.getItem('guruNama') || localStorage.getItem('userNama') || 'Tutor & Pendidik';
+            const teacherName = (user && (user.nama || user.displayName)) || localStorage.getItem('guruNama') || 'Tutor & Pendidik';
             const nameEl = document.getElementById('teacher-name-top');
             if (nameEl) nameEl.textContent = teacherName;
             
@@ -1193,11 +1193,11 @@
             if (btnApprove) btnApprove.disabled = true;
             if (btnReject) btnReject.disabled = true;
 
-            // Use consistent teacher identity (same fallback chain as 14_dashboard-guru)
+            // Use consistent teacher identity
             const guruId = currentGuru ? (currentGuru.uid || currentGuru.id) : (localStorage.getItem('guruUid') || 'guru_wali');
-            const teacherName = (currentGuru && (currentGuru.nama || currentGuru.displayName)) || localStorage.getItem('guruNama') || localStorage.getItem('userNama') || 'Pembimbing Akademik';
+            const teacherName = (currentGuru && (currentGuru.nama || currentGuru.displayName)) || localStorage.getItem('guruNama') || 'Bpk. Muthohhari S.Kom';
             const studentId = data.siswaId || (data.id ? data.id.replace('krs_', '') : '');
-            const studentName = data.nama || 'Siswa';
+            const studentName = data.nama || 'Muhammad';
             const currentSem = data.semester || 1;
 
             try {
@@ -1206,7 +1206,7 @@
                     if (status === 'Disetujui') {
                         window.SSOSync.approveKRS(data.id || studentId, guruId, teacherName);
                     } else {
-                        window.SSOSync.rejectKRS(data.id || studentId);
+                        window.SSOSync.rejectKRS(data.id || studentId, catatan);
                     }
                     if (studentId) {
                         window.SSOSync.saveUser({
@@ -1220,7 +1220,32 @@
                     }
                 }
 
-                // 2. Firestore: update pengajuanKRS + users
+                // 2. Update local storage caches immediately (Zero delay)
+                try {
+                    localStorage.setItem('statusKRS', status);
+                    if (studentId) {
+                        localStorage.setItem('flexa_krs_status_' + studentId, status);
+                        const cachedRaw = localStorage.getItem('flexa_user_' + studentId);
+                        if (cachedRaw) {
+                            const cached = JSON.parse(cachedRaw);
+                            cached.statusKRS = status;
+                            cached.guruWaliId = guruId;
+                            cached.guruWaliNama = teacherName;
+                            cached.catatanKRS = catatan;
+                            localStorage.setItem('flexa_user_' + studentId, JSON.stringify(cached));
+                        }
+                    }
+                    const activeUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                    if (activeUser.uid === studentId || activeUser.nama === studentName) {
+                        activeUser.statusKRS = status;
+                        activeUser.guruWaliId = guruId;
+                        activeUser.guruWaliNama = teacherName;
+                        activeUser.catatanKRS = catatan;
+                        localStorage.setItem('currentUser', JSON.stringify(activeUser));
+                    }
+                } catch(e) {}
+
+                // 3. Firestore: update pengajuanKRS + users safely
                 if (window.firebaseDb) {
                     const docId = data.id || `krs_${studentId}`;
                     const nowServer = window.firebase && window.firebase.firestore && window.firebase.firestore.FieldValue 
@@ -1232,7 +1257,7 @@
                         statusKRS: status,
                         catatanGuru: catatan,
                         tanggalDiproses: nowServer,
-                        diproseOleh: guruId,
+                        diprosesOleh: guruId,
                         diprosesOlehNama: teacherName,
                         verifiedBy: guruId,
                         verifiedByNama: teacherName,
@@ -1244,20 +1269,20 @@
                         krsPayload.tanggalDisetujui = nowServer;
                     }
 
-                    await window.firebaseDb.collection('pengajuanKRS').doc(docId).set(krsPayload, { merge: true });
+                    window.firebaseDb.collection('pengajuanKRS').doc(docId).set(krsPayload, { merge: true }).catch(console.warn);
 
                     if (studentId) {
-                        await window.firebaseDb.collection('users').doc(studentId).set({
+                        window.firebaseDb.collection('users').doc(studentId).set({
                             statusKRS: status,
                             catatanKRS: catatan,
                             guruWaliId: guruId,
                             guruWaliNama: teacherName
-                        }, { merge: true });
+                        }, { merge: true }).catch(console.warn);
                     }
 
-                    // 3. Create Automated Notification for Siswa in Firestore
+                    // 4. Create Automated Notification for Siswa in Firestore
                     if (studentId) {
-                        await window.firebaseDb.collection('notifikasi').add({
+                        window.firebaseDb.collection('notifikasi').add({
                             untukUserId: studentId,
                             untukRole: 'Siswa',
                             tipe: status === 'Disetujui' ? 'krs_disetujui' : 'krs_ditolak',
@@ -1268,51 +1293,36 @@
                             terkaitId: docId,
                             dibaca: false,
                             tanggal: nowServer
-                        }).catch(e => console.warn('[Notifikasi Siswa Error]', e));
+                        }).catch(console.warn);
                     }
 
-                    // 4. Find OrangTua of this student and create Automated Notification
+                    // 5. Find OrangTua of this student and create Automated Notification
                     try {
                         let ortuId = data.orangTuaId || null;
                         if (!ortuId && studentId) {
-                            // Check student doc for orangTuaId
-                            const sDoc = await window.firebaseDb.collection('users').doc(studentId).get();
-                            if (sDoc.exists && sDoc.data().orangTuaId) {
-                                ortuId = sDoc.data().orangTuaId;
-                            }
-                        }
-                        // If still not found, check any parent document with anakIds containing studentId
-                        if (!ortuId) {
-                            const ortuSnap = await window.firebaseDb.collection('users').where('role', '==', 'OrangTua').get();
-                            ortuSnap.docs.forEach(od => {
-                                const odData = od.data();
-                                if (Array.isArray(odData.anakIds) && odData.anakIds.includes(studentId)) {
-                                    ortuId = od.id;
+                            window.firebaseDb.collection('users').doc(studentId).get().then(sDoc => {
+                                if (sDoc.exists && sDoc.data().orangTuaId) {
+                                    ortuId = sDoc.data().orangTuaId;
+                                    window.firebaseDb.collection('notifikasi').add({
+                                        untukUserId: ortuId,
+                                        untukRole: 'OrangTua',
+                                        tipe: status === 'Disetujui' ? 'krs_anak_disetujui' : 'krs_anak_ditolak',
+                                        judul: status === 'Disetujui' ? `KRS ${studentName} Disetujui` : `KRS ${studentName} Perlu Revisi`,
+                                        isi: status === 'Disetujui'
+                                            ? `KRS ananda ${studentName} untuk semester ${currentSem} telah disetujui oleh ${teacherName}.`
+                                            : `KRS ananda ${studentName} untuk semester ${currentSem} perlu direvisi. Catatan guru: ${catatan}`,
+                                        terkaitId: docId,
+                                        dibaca: false,
+                                        tanggal: nowServer
+                                    }).catch(console.warn);
                                 }
-                            });
+                            }).catch(console.warn);
                         }
+                    } catch (ortuErr) {}
 
-                        if (ortuId) {
-                            await window.firebaseDb.collection('notifikasi').add({
-                                untukUserId: ortuId,
-                                untukRole: 'OrangTua',
-                                tipe: status === 'Disetujui' ? 'krs_anak_disetujui' : 'krs_anak_ditolak',
-                                judul: status === 'Disetujui' ? `KRS ${studentName} Disetujui` : `KRS ${studentName} Perlu Revisi`,
-                                isi: status === 'Disetujui'
-                                    ? `KRS ananda ${studentName} untuk semester ${currentSem} telah disetujui oleh ${teacherName}.`
-                                    : `KRS ananda ${studentName} untuk semester ${currentSem} perlu direvisi. Catatan guru: ${catatan}`,
-                                terkaitId: docId,
-                                dibaca: false,
-                                tanggal: nowServer
-                            }).catch(e => console.warn('[Notifikasi Ortu Error]', e));
-                        }
-                    } catch (ortuErr) {
-                        console.warn('[Cari Ortu Error]', ortuErr);
-                    }
-
-                    // 5. Save catatan to catatan_guru collection
+                    // 6. Save catatan to catatan_guru collection
                     if (catatan && catatan.trim() !== '' && archiveChecked) {
-                        await window.firebaseDb.collection('catatan_guru').add({
+                        window.firebaseDb.collection('catatan_guru').add({
                             siswaId: studentId,
                             siswaName: studentName,
                             guruId: guruId,
@@ -1324,42 +1334,18 @@
                             semester: currentSem,
                             jenjang: data.jenjang || 'SD',
                             kelas: data.kelas || 'Kelas 1'
-                        }).catch(e => console.warn('[Catatan Guru Save Error]', e));
+                        }).catch(console.warn);
                     }
                 }
 
-                // 6. DataStore catatan sync (for dashboard-siswa teacher notes modal)
-                if (window.DataStore && window.DataStore.tambahCatatanGuru && catatan && catatan.trim() !== '') {
-                    try {
-                        await window.DataStore.tambahCatatanGuru(studentId, {
-                            guruId: guruId,
-                            guruNama: teacherName,
-                            isi: catatan,
-                            tipe: status === 'Disetujui' ? 'persetujuan_krs' : 'penolakan_krs',
-                            tanggal: new Date()
-                        });
-                    } catch(e) {}
-                }
-
-                // 7. LocalStorage active user sync
-                const activeUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
-                if (activeUser.uid === studentId || activeUser.nama === studentName) {
-                    activeUser.statusKRS = status;
-                    activeUser.guruWaliId = guruId;
-                    activeUser.guruWaliNama = teacherName;
-                    activeUser.catatanKRS = catatan;
-                    localStorage.setItem('currentUser', JSON.stringify(activeUser));
-                    localStorage.setItem('statusKRS', status);
-                }
-
-                // 8. Clean up from flexa_siswa_krs_pending storage if present
+                // 7. Clean up from flexa_siswa_krs_pending storage
                 try {
                     const pendingList = JSON.parse(localStorage.getItem('flexa_siswa_krs_pending') || '[]');
                     const filtered = pendingList.filter(s => s.id !== studentId && s.uid !== studentId && s.nama !== studentName);
                     localStorage.setItem('flexa_siswa_krs_pending', JSON.stringify(filtered));
                 } catch(e) {}
 
-                // 9. Dispatch notification event for real-time sync
+                // 8. Dispatch notification event for real-time sync
                 if (window.NotificationSync && window.NotificationSync.dispatch) {
                     window.NotificationSync.dispatch({
                         type: status === 'Disetujui' ? 'krs_approved' : 'krs_rejected',
@@ -1373,7 +1359,7 @@
                 console.warn('[Tinjauan Guru] Update sync warning:', e);
             }
 
-            // Show confirmation toast
+            // Show confirmation toast immediately
             const toast = document.getElementById('toast-msg');
             const toastText = document.getElementById('toast-text');
             const toastIcon = document.getElementById('toast-icon');
@@ -1425,7 +1411,7 @@
                     if (btnReject) btnReject.disabled = false;
                     loadTeacherKRS();
                 }
-            }, 1200);
+            }, 1000);
         }
 
         // Firebase Auth Ready Sync

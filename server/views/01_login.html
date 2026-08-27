@@ -655,7 +655,11 @@
                         email: auth.currentUser?.email || userData.email,
                         role: actualRole
                     });
-                    localStorage.setItem('currentUser', JSON.stringify(userCache));
+                    const userJson = JSON.stringify(userCache);
+                    // Simpan ke cache per-UID (isolasi per akun)
+                    localStorage.setItem('flexa_user_' + uid, userJson);
+                    // Simpan juga ke key global (backward-compat)
+                    localStorage.setItem('currentUser', userJson);
                     if (window.SSOSync) {
                         window.SSOSync.init();
                     }
@@ -696,7 +700,11 @@
                         nama: auth.currentUser?.displayName || fallbackDefaultName,
                         role: fallbackRole
                     };
-                    localStorage.setItem('currentUser', JSON.stringify(userCache));
+                    const userJson = JSON.stringify(userCache);
+                    // Simpan ke cache per-UID (isolasi per akun)
+                    localStorage.setItem('flexa_user_' + uid, userJson);
+                    // Simpan juga ke key global (backward-compat)
+                    localStorage.setItem('currentUser', userJson);
                 } catch(e) {}
 
                 if (fallbackRole === 'Guru') {
@@ -1090,7 +1098,11 @@
                         };
 
                         try {
-                            localStorage.setItem('currentUser', JSON.stringify(userPayload));
+                            const userJson = JSON.stringify(userPayload);
+                            // Simpan ke cache per-UID (isolasi per akun)
+                            localStorage.setItem('flexa_user_' + uid, userJson);
+                            // Simpan juga ke key global (backward-compat)
+                            localStorage.setItem('currentUser', userJson);
                             if (window.SSOSync) {
                                 window.SSOSync.init();
                                 window.SSOSync.saveUser(userPayload);

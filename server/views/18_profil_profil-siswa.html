@@ -1147,6 +1147,10 @@
                     const cached = JSON.parse(localStorage.getItem('currentUser') || '{}');
                     Object.assign(cached, updatePayload);
                     localStorage.setItem('currentUser', JSON.stringify(cached));
+                    if (currentStudentData && (currentStudentData.uid || currentStudentData.id)) {
+                        const uid = currentStudentData.uid || currentStudentData.id;
+                        localStorage.setItem('flexa_user_' + uid, JSON.stringify(cached));
+                    }
                     localStorage.setItem('userNama', nama);
                     localStorage.setItem('userJenjang', jenjang);
                     localStorage.setItem('userKelas', kelas);

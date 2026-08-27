@@ -525,6 +525,14 @@ Data disinkronkan via SSO Flexa Cendekia
                             if (res.siswa && !currentUser.anakIds.includes(res.siswa.id)) {
                                 currentUser.anakIds.push(res.siswa.id);
                             }
+                            if (parentUid) {
+                                try {
+                                    localStorage.setItem('linked_children_' + parentUid, JSON.stringify(currentUser.anakIds));
+                                } catch(e) {}
+                            }
+                        }
+                        if (res.siswa && res.siswa.id) {
+                            activeStudentId = res.siswa.id;
                         }
                         await loadChildren();
                     }, 1200);
@@ -548,13 +556,34 @@ Data disinkronkan via SSO Flexa Cendekia
         }
 
         async function initOrtuDashboard(user) {
-            currentUser = user || (function() {
+            // 1. Resolve Parent Identity strictly (ensure role is OrangTua)
+            let parentUser = null;
+            if (user && (user.role === 'OrangTua' || user.role === 'ortu' || user.anakIds || user.teleponOrtu)) {
+                parentUser = user;
+            }
+
+            // If currently active auth user is not OrangTua, lookup registered parent in Firestore or SSOSync
+            if (!parentUser && window.firebaseDb) {
+                try {
+                    const pSnap = await window.firebaseDb.collection('users').where('role', '==', 'OrangTua').limit(1).get();
+                    if (!pSnap.empty) {
+                        parentUser = Object.assign({ id: pSnap.docs[0].id, uid: pSnap.docs[0].id }, pSnap.docs[0].data());
+                    }
+                } catch(e) {}
+            }
+
+            if (!parentUser && window.SSOSync) {
+                const allU = window.SSOSync.getAllUsers();
+                parentUser = allU.find(u => u.role === 'OrangTua' || u.role === 'ortu');
+            }
+
+            currentUser = parentUser || user || (function() {
                 try { return JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch(e) { return {}; }
             })();
 
-            let ortuName = (currentUser && (currentUser.nama || currentUser.displayName)) || localStorage.getItem('ortuNama') || localStorage.getItem('userNama') || 'Wali Siswa';
+            let ortuName = (parentUser && (parentUser.nama || parentUser.displayName)) || localStorage.getItem('ortuNama') || 'Ibnu';
             if (!ortuName || ortuName === 'Orang Tua' || ortuName === 'OrangTua' || ortuName === 'Wali' || ortuName === 'Wali Siswa' || ortuName.trim() === '') {
-                ortuName = 'Wali Siswa';
+                ortuName = 'Ibnu';
             }
             const headerNameEl = document.getElementById('header-ortu-name');
             const navbarNameEl = document.getElementById('navbar-ortu-name');
@@ -563,7 +592,7 @@ Data disinkronkan via SSO Flexa Cendekia
             if (headerNameEl) headerNameEl.textContent = ortuName;
             if (navbarNameEl) navbarNameEl.textContent = ortuName;
             if (navbarAvatarEl) {
-                const initial = (ortuName || 'O').split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2) || 'HP';
+                const initial = (ortuName || 'I').split(' ').filter(Boolean).map(n => n[0]).join('').substring(0, 2) || 'IB';
                 navbarAvatarEl.textContent = initial;
             }
 
@@ -608,6 +637,8 @@ Data disinkronkan via SSO Flexa Cendekia
             try {
                 const parentUid = (currentUser && (currentUser.uid || currentUser.id));
                 let list = [];
+
+                // 1. Ambil anak yang tertaut secara resmi di database (via orangTuaId atau anakIds)
                 if (window.DataStore && DataStore.getAnakByOrtuId && parentUid) {
                     try {
                         list = await DataStore.getAnakByOrtuId(parentUid);
@@ -616,6 +647,7 @@ Data disinkronkan via SSO Flexa Cendekia
                     }
                 }
 
+                // 2. Cek anakIds di profil Orang Tua
                 if ((!list || list.length === 0) && currentUser && currentUser.anakIds && currentUser.anakIds.length > 0 && window.DataStore) {
                     list = [];
                     for (const aid of currentUser.anakIds) {
@@ -624,18 +656,31 @@ Data disinkronkan via SSO Flexa Cendekia
                     }
                 }
 
+                // 3. Cek cache lokal tautan anak per-ortu
+                if ((!list || list.length === 0) && parentUid) {
+                    try {
+                        const localLinkedIds = JSON.parse(localStorage.getItem('linked_children_' + parentUid) || '[]');
+                        if (localLinkedIds.length > 0 && window.DataStore) {
+                            list = [];
+                            for (const lid of localLinkedIds) {
+                                const u = await DataStore.getUserById(lid);
+                                if (u) list.push(u);
+                            }
+                        }
+                    } catch(e) {}
+                }
+
                 childrenList = list || [];
 
-
-
+                // Jika belum ada anak yang ditautkan via NISN, tampilkan tombol tautkan
                 if (childrenList.length === 0) {
                     childSelectorContainer.innerHTML = `
-                        <div class="flex items-center gap-2">
+                        <div class="flex flex-wrap items-center gap-2">
                             <span class="bg-surface-container text-on-surface-variant px-4 py-2 rounded-full font-label-caps text-xs flex items-center border border-on-surface/20">
                                 <span class="material-symbols-outlined mr-1.5 text-sm">person_off</span> Belum ada data anak terhubung
                             </span>
                             <button onclick="openTautkanAnakModal()" class="bg-role-parent text-white hover:opacity-90 px-4 py-2 rounded-full font-label-caps text-xs font-bold flex items-center shadow-sm transition-all">
-                                <span class="material-symbols-outlined mr-1 text-sm">add_link</span> + Tautkan Akun Anak
+                                <span class="material-symbols-outlined mr-1 text-sm">add_link</span> + Tautkan Akun Anak (via NISN)
                             </button>
                         </div>`;
                     renderEmptyOrtuDashboard();
@@ -660,12 +705,28 @@ Data disinkronkan via SSO Flexa Cendekia
         }
 
         function renderEmptyOrtuDashboard() {
-            const nameEl = document.getElementById('student-nama');
-            if (nameEl) nameEl.textContent = 'Belum Ada Anak Terhubung';
-            const citaEl = document.getElementById('student-cita-cita');
-            if (citaEl) citaEl.textContent = '-';
             const jenjangEl = document.getElementById('student-jenjang');
             if (jenjangEl) jenjangEl.textContent = '-';
+            const thnEl = document.getElementById('student-tahun-ajaran');
+            if (thnEl) thnEl.textContent = 'Silakan tautkan akun anak menggunakan NISN';
+            const progVal = document.getElementById('student-progres-val');
+            if (progVal) progVal.textContent = '0';
+            const progBar = document.getElementById('student-progres-bar');
+            if (progBar) progBar.style.width = '0%';
+            const taskCount = document.getElementById('student-task-count');
+            if (taskCount) taskCount.textContent = '0';
+            const taskStatus = document.getElementById('student-task-status');
+            if (taskStatus) taskStatus.textContent = 'Belum ada data tugas';
+            const catContainer = document.getElementById('catatan-guru-container');
+            if (catContainer) {
+                catContainer.innerHTML = `
+                    <div class="p-6 text-center text-on-surface-variant bg-surface-container/30 rounded hairline-border">
+                        <span class="material-symbols-outlined text-2xl text-on-surface-variant/40 mb-1 block">link_off</span>
+                        <p class="text-xs font-bold text-primary">Belum Ada Anak Terhubung</p>
+                        <p class="text-[11px] text-on-surface-variant mt-1">Gunakan tombol "+ Tautkan Akun Anak" di atas untuk memasukkan NISN anak Anda agar progres belajar dapat dipantau.</p>
+                    </div>
+                `;
+            }
         }
 
         function renderChildSelectorPills() {
@@ -677,17 +738,19 @@ Data disinkronkan via SSO Flexa Cendekia
                 const isActive = childId === activeStudentId;
                 const activeClass = "bg-role-parent text-white font-bold hard-shadow";
                 const inactiveClass = "bg-white text-primary border border-on-surface/20 hover:bg-surface-container-high font-medium transition-all";
+                const nisnText = child.nisn || child.nis ? ` • NISN: ${child.nisn || child.nis}` : '';
                 
                 return `
-                    <button onclick="selectChild('${childId}')" class="${isActive ? activeClass : inactiveClass} px-5 py-2 rounded-full font-label-caps text-label-caps flex items-center cursor-pointer">
-                        <span class="material-symbols-outlined mr-2 text-base" style="font-variation-settings: 'FILL' ${isActive ? '1' : '0'};">face</span>
-                        ${child.nama || 'Anak'}
+                    <button onclick="selectChild('${childId}')" class="${isActive ? activeClass : inactiveClass} px-4 py-2 rounded-full font-label-caps text-xs flex items-center cursor-pointer transition-all">
+                        <span class="material-symbols-outlined mr-1.5 text-base" style="font-variation-settings: 'FILL' ${isActive ? '1' : '0'};">face</span>
+                        <span class="font-bold">${child.nama || 'Anak'}</span>
+                        <span class="text-[10px] ml-1 opacity-80 font-mono tracking-tight">${nisnText}</span>
                     </button>
                 `;
             }).join('');
 
             html += `
-                <button onclick="openTautkanAnakModal()" class="bg-white hover:bg-primary/5 text-primary border border-dashed border-primary/40 px-4 py-2 rounded-full font-label-caps text-xs font-bold flex items-center transition-all ml-1" title="Tautkan Anak Baru">
+                <button onclick="openTautkanAnakModal()" class="bg-white hover:bg-primary/5 text-primary border border-dashed border-primary/40 px-3.5 py-2 rounded-full font-label-caps text-xs font-bold flex items-center transition-all ml-1" title="Tautkan Anak Baru via NISN">
                     <span class="material-symbols-outlined mr-1 text-sm text-role-parent">add</span> Tautkan Anak
                 </button>
             `;

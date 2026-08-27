@@ -52,24 +52,162 @@ const SSOSync = {
     localStorage.setItem('guruNoteReplies', JSON.stringify(replies));
   },
 
+  // --- Multi-Account Registry (Persistent Local Hybrid Store) ---
+  saveUser: function(user) {
+    if (!user || !user.nama) return;
+    const users = this.getAllUsers();
+    const id = user.uid || user.id || user.nisn || user.nis || user.email || 'user_' + Date.now();
+    const idx = users.findIndex(u => (u.uid && u.uid === id) || (u.id && u.id === id) || (u.email && u.email.toLowerCase() === (user.email||'').toLowerCase()) || (u.nama && u.nama.toLowerCase() === user.nama.toLowerCase()));
+    const updated = Object.assign({}, idx !== -1 ? users[idx] : {}, user, { id: id, uid: id });
+    if (idx !== -1) {
+      users[idx] = updated;
+    } else {
+      users.push(updated);
+    }
+    localStorage.setItem('flexa_all_registered_users', JSON.stringify(users));
+    window.dispatchEvent(new CustomEvent('flexa-users-updated', { detail: users }));
+    return updated;
+  },
+
+  getAllUsers: function() {
+    try {
+      return JSON.parse(localStorage.getItem('flexa_all_registered_users') || '[]');
+    } catch(e) {
+      return [];
+    }
+  },
+
+  getAllStudents: function() {
+    const users = this.getAllUsers();
+    return users.filter(u => {
+      if (!u) return false;
+      const r = (u.role || '').toLowerCase();
+      if (r === 'guru' || r === 'orangtua' || r === 'orang_tua' || r === 'admin') return false;
+      if (u.nip || u.bidang) return false; // Guru specific properties
+      return r === 'siswa' || (!r && (u.jenjang || u.citaCita || u.statusKRS || u.nis || u.nisn));
+    });
+  },
+
+  saveKRS: function(krs) {
+    if (!krs) return;
+    const list = this.getAllKRS();
+    const id = krs.id || `krs_${krs.siswaId || Date.now()}`;
+    const idx = list.findIndex(k => k.id === id || (k.siswaId && k.siswaId === krs.siswaId));
+    const updated = Object.assign({}, idx !== -1 ? list[idx] : {}, krs, { id: id });
+    if (idx !== -1) {
+      list[idx] = updated;
+    } else {
+      list.push(updated);
+    }
+    localStorage.setItem('flexa_all_krs_submissions', JSON.stringify(list));
+    window.dispatchEvent(new CustomEvent('flexa-krs-updated', { detail: list }));
+
+    // Auto-update student user statusKRS in user registry
+    if (krs.siswaId || krs.nama) {
+      this.saveUser({
+        uid: krs.siswaId,
+        id: krs.siswaId,
+        nama: krs.nama,
+        jenjang: krs.jenjang,
+        kelas: krs.kelas,
+        citaCita: krs.citaCita,
+        statusKRS: krs.status || 'Menunggu Validasi',
+        role: 'Siswa'
+      });
+    }
+    return updated;
+  },
+
+  getAllKRS: function() {
+    try {
+      return JSON.parse(localStorage.getItem('flexa_all_krs_submissions') || '[]');
+    } catch(e) {
+      return [];
+    }
+  },
+
+  approveKRS: function(krsId, guruId, guruNama) {
+    const list = this.getAllKRS();
+    const item = list.find(k => k.id === krsId || k.siswaId === krsId || (k.id && k.id.replace('krs_', '') === krsId));
+    if (item) {
+      item.status = 'Disetujui';
+      item.statusKRS = 'Disetujui';
+      item.verifiedBy = guruId;
+      item.guruNama = guruNama;
+      item.verifiedAt = new Date().toISOString();
+      localStorage.setItem('flexa_all_krs_submissions', JSON.stringify(list));
+      window.dispatchEvent(new CustomEvent('flexa-krs-updated', { detail: list }));
+    }
+
+    const sid = (item && item.siswaId) || (krsId ? krsId.replace('krs_', '') : '');
+    if (sid) {
+      this.saveUser({
+        uid: sid,
+        id: sid,
+        statusKRS: 'Disetujui',
+        guruWaliId: guruId,
+        guruWaliNama: guruNama
+      });
+      try {
+        const cachedRaw = localStorage.getItem('flexa_user_' + sid);
+        if (cachedRaw) {
+          const cached = JSON.parse(cachedRaw);
+          cached.statusKRS = 'Disetujui';
+          cached.guruWaliId = guruId;
+          cached.guruWaliNama = guruNama;
+          localStorage.setItem('flexa_user_' + sid, JSON.stringify(cached));
+        }
+      } catch(e) {}
+    }
+
+    // Also update legacy krsPending if any
+    let pending = this.getKRSPending();
+    pending = pending.filter(k => k.id !== krsId && k.siswaId !== krsId);
+    localStorage.setItem('krsPending', JSON.stringify(pending));
+  },
+
+  rejectKRS: function(krsId, customCatatan) {
+    const list = this.getAllKRS();
+    const item = list.find(k => k.id === krsId || k.siswaId === krsId || (k.id && k.id.replace('krs_', '') === krsId));
+    if (item) {
+      item.status = 'Ditolak';
+      item.statusKRS = 'Ditolak';
+      item.catatanGuru = customCatatan || 'Perlu perbaikan modul.';
+      localStorage.setItem('flexa_all_krs_submissions', JSON.stringify(list));
+      window.dispatchEvent(new CustomEvent('flexa-krs-updated', { detail: list }));
+    }
+
+    const sid = (item && item.siswaId) || (krsId ? krsId.replace('krs_', '') : '');
+    if (sid) {
+      this.saveUser({
+        uid: sid,
+        id: sid,
+        statusKRS: 'Ditolak',
+        catatanKRS: customCatatan || 'Perlu perbaikan modul.'
+      });
+      try {
+        const cachedRaw = localStorage.getItem('flexa_user_' + sid);
+        if (cachedRaw) {
+          const cached = JSON.parse(cachedRaw);
+          cached.statusKRS = 'Ditolak';
+          cached.catatanKRS = customCatatan || 'Perlu perbaikan modul.';
+          localStorage.setItem('flexa_user_' + sid, JSON.stringify(cached));
+        }
+      } catch(e) {}
+    }
+
+    let pending = this.getKRSPending();
+    pending = pending.filter(k => k.id !== krsId && k.siswaId !== krsId);
+    localStorage.setItem('krsPending', JSON.stringify(pending));
+  },
+
   // Helpers
-  getSiswaList: function() { return JSON.parse(localStorage.getItem('siswaList')) || []; },
-  getSiswaById: function(id) { return this.getSiswaList().find(s => s.id === id); },
+  getSiswaList: function() { return this.getAllStudents(); },
+  getSiswaById: function(id) { return this.getAllStudents().find(s => s.id === id || s.uid === id); },
   getGuru: function() { return JSON.parse(localStorage.getItem('guru')); },
   getOrtu: function() { return JSON.parse(localStorage.getItem('ortu')); },
   
-  getKRSPending: function() { return JSON.parse(localStorage.getItem('krsPending')) || []; },
-  approveKRS: function(id) {
-    let pending = this.getKRSPending();
-    pending = pending.filter(k => k.id !== id);
-    localStorage.setItem('krsPending', JSON.stringify(pending));
-  },
-  rejectKRS: function(id) {
-    let pending = this.getKRSPending();
-    let krs = pending.find(k => k.id === id);
-    if(krs) krs.status = 'Ditolak';
-    localStorage.setItem('krsPending', JSON.stringify(pending));
-  },
+  getKRSPending: function() { return JSON.parse(localStorage.getItem('krsPending') || '[]'); },
 
   getAspirasiPending: function() { return JSON.parse(localStorage.getItem('aspirasiPending')) || []; },
   approveAspirasi: function(id) {
