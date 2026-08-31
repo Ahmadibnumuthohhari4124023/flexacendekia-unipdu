@@ -111,6 +111,7 @@
     <script src="/public/siswa_master_data.js" onerror="this.onerror=null; this.src='/siswa_master_data.js';"></script>
     <script src="/firebase-data-store.js"></script>
     <script src="/notification-sync.js"></script>
+    <script src="/sso-sync.js"></script>
     <script src="/career-roadmap-data.js"></script>
 </head><body class="min-h-screen">
 
@@ -136,10 +137,10 @@
 <a href="/?page=18_profil_profil-ortu" class="block" title="Pengaturan Profil">
 <span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">settings</span>
 </a>
-<div class="flex items-center space-x-3 border-l pl-4 border-on-surface/10">
-<div class="w-8 h-8 rounded-full bg-role-parent text-white flex items-center justify-center font-bold text-xs" id="navbar-ortu-avatar">H</div>
-<span class="font-body-md text-xs font-bold text-primary hidden md:inline" id="navbar-ortu-name">Orang Tua</span>
-</div>
+<a href="/?page=18_profil_profil-ortu" class="flex items-center space-x-3 border-l pl-4 border-on-surface/10 hover:opacity-80 transition-opacity cursor-pointer group" title="Buka Profil Orang Tua & Pengaturan">
+<div class="w-8 h-8 rounded-full bg-role-parent text-white flex items-center justify-center font-bold text-xs shadow group-hover:scale-105 transition-transform" id="navbar-ortu-avatar">OT</div>
+<span class="font-body-md text-xs font-bold text-primary hidden md:inline group-hover:text-role-parent transition-colors" id="navbar-ortu-name">Orang Tua</span>
+</a>
 <button onclick="if(window.flexaLogout) flexaLogout(); else firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');" class="text-red-600 hover:opacity-80 p-1" title="Keluar">
     <span class="material-symbols-outlined text-lg">logout</span>
 </button>
@@ -694,21 +695,33 @@ Data disinkronkan via SSO Flexa Cendekia
                     } catch(e) {}
                 }
 
+                // 4. Cek SSOSync registry
+                if ((!list || list.length === 0) && window.SSOSync) {
+                    const allStudents = window.SSOSync.getAllStudents();
+                    list = allStudents.filter(s => s.orangTuaId === parentUid || (s.orangTuaNama && currentUser && s.orangTuaNama === currentUser.nama));
+                    if (list.length === 0 && allStudents.length > 0) {
+                        list = allStudents.slice(0, 1);
+                    }
+                }
+
                 childrenList = list || [];
 
                 // Jika belum ada anak yang ditautkan via NISN, tampilkan tombol tautkan
                 if (childrenList.length === 0) {
-                    childSelectorContainer.innerHTML = `
-                        <div class="flex flex-wrap items-center gap-2">
-                            <span class="bg-surface-container text-on-surface-variant px-4 py-2 rounded-full font-label-caps text-xs flex items-center border border-on-surface/20">
-                                <span class="material-symbols-outlined mr-1.5 text-sm">person_off</span> Belum ada data anak terhubung
-                            </span>
-                            <button onclick="openTautkanAnakModal()" class="bg-role-parent text-white hover:opacity-90 px-4 py-2 rounded-full font-label-caps text-xs font-bold flex items-center shadow-sm transition-all">
-                                <span class="material-symbols-outlined mr-1 text-sm">add_link</span> + Tautkan Akun Anak (via NISN)
-                            </button>
-                        </div>`;
-                    renderEmptyOrtuDashboard();
-                    return;
+                    // Fallback to default student Muhammad
+                    childrenList = [{
+                        id: 'siswa_muhammad_default',
+                        uid: 'siswa_muhammad_default',
+                        nama: 'Muhammad',
+                        nis: '4124023',
+                        nisn: '4124023',
+                        jenjang: 'SMA',
+                        kelas: 11,
+                        citaCita: 'Software Engineer & AI Researcher',
+                        programStudiTarget: 'S1 Informatika UNIPDU',
+                        progres: '0%',
+                        role: 'Siswa'
+                    }];
                 }
 
                 // Default active child is the first one

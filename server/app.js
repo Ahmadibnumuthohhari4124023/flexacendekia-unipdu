@@ -72,4 +72,9 @@ async function startServer() {
   });
 }
 
-startServer();
+// Jalankan server jika dijalankan langsung (lokal / container)
+if (require.main === module || !process.env.VERCEL) {
+  startServer();
+}
+
+module.exports = app;

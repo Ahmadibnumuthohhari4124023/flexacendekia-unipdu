@@ -302,8 +302,10 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="/firebase-config.js"></script>
     <script src="/firebase-auth-guard.js"></script>
+    <script src="/public/siswa_master_data.js" onerror="this.onerror=null; this.src='/siswa_master_data.js';"></script>
     <script src="/firebase-data-store.js"></script>
     <script src="/notification-sync.js"></script>
+    <script src="/sso-sync.js"></script>
     <script src="/career-roadmap-data.js"></script>
 </head>
 
@@ -1327,11 +1329,11 @@ document.getElementById('export-btn')?.addEventListener('click', () => {
         if (!user.citaCita && localStorage.getItem('selectedCareer')) user.citaCita = localStorage.getItem('selectedCareer');
 
         // Clean sensible defaults from active session or master data
-        if (!user.nama) user.nama = 'Siswa Flexa';
+        if (!user.nama) user.nama = 'Muhammad';
         if (!user.jenjang) user.jenjang = 'SMA';
-        if (!user.kelas) user.kelas = 10;
-        if (!user.nisn) user.nisn = user.nis || '-';
-        if (!user.citaCita) user.citaCita = 'Belum Memilih';
+        if (!user.kelas) user.kelas = 11;
+        if (!user.nisn) user.nisn = user.nis || '4124023';
+        if (!user.citaCita) user.citaCita = 'Software Engineer & AI Researcher';
         return user;
     }
 

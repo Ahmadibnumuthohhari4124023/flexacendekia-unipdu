@@ -106,6 +106,12 @@
             showPageContent();
             window.getCurrentUserProfile = function() { return window.currentFirebaseUser; };
             window.dispatchEvent(new CustomEvent('auth-ready', { detail: window.currentFirebaseUser }));
+            
+            document.addEventListener('DOMContentLoaded', function() {
+                if (window.currentFirebaseUser) {
+                    window.dispatchEvent(new CustomEvent('auth-ready', { detail: window.currentFirebaseUser }));
+                }
+            });
         }
     } catch(e) {}
 

@@ -78,10 +78,11 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="/firebase-config.js"></script>
     <script src="/firebase-auth-guard.js"></script>
+    <script src="/public/siswa_master_data.js" onerror="this.onerror=null; this.src='/siswa_master_data.js';"></script>
     <script src="/firebase-data-store.js"></script>
     <script src="/notification-sync.js"></script>
+    <script src="/sso-sync.js"></script>
     <script src="/career-roadmap-data.js"></script>
-    <script src="/public/siswa_master_data.js" onerror="this.onerror=null; this.src='/siswa_master_data.js';"></script>
 </head>
 
 <body class="bg-[#EAEDE2] text-on-surface font-body-md min-h-screen flex flex-col">
@@ -116,17 +117,16 @@
                 <span id="notif-badge" class="hidden absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
             </a>
 
-            <div class="flex items-center gap-2 pl-2 border-l border-primary/10">
+            <a href="/?page=18_profil_profil-guru" class="flex items-center gap-2 pl-2 border-l border-primary/10 hover:opacity-80 transition-opacity cursor-pointer group" title="Buka Profil Guru & Pengaturan">
                 <div id="teacher-avatar"
-                    class="w-9 h-9 rounded-full bg-role-teacher text-white flex items-center justify-center font-bold text-xs shadow">
-                    GR
+                    class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs shadow group-hover:scale-105 transition-transform">
+                    M
                 </div>
                 <div class="hidden sm:block text-left">
-                    <p id="teacher-name-top" class="font-sans text-xs font-bold text-primary leading-none">Tutor & Pendidik
-                    </p>
+                    <p id="teacher-name-top" class="font-sans text-xs font-bold text-primary leading-none group-hover:text-secondary transition-colors">Muthohhari</p>
                     <p class="font-mono text-[10px] text-role-teacher mt-0.5">Pembimbing Akademik Flexa Cendekia</p>
                 </div>
-            </div>
+            </a>
 
             <!-- Logout Button -->
             <button
@@ -220,7 +220,7 @@
                                 </div>
                                 <h2 class="font-headline-md text-xl md:text-2xl font-bold text-primary mt-1"
                                     id="krs-title">
-                                    Persetujuan KRS Semester 3
+                                    Persetujuan KRS Semester 1
                                 </h2>
                                 <p class="font-sans text-xs text-on-surface-variant" id="krs-student-subtitle">
                                     Siswa: <strong class="text-primary font-bold"
@@ -256,7 +256,7 @@
                                     </div>
                                     <span id="prev-sem-badge"
                                         class="font-mono text-[10px] text-primary bg-primary/5 px-2 py-0.5 border border-primary/10">Semester
-                                        2</span>
+                                        Awal</span>
                                 </div>
                                 <div class="space-y-2" id="prev-modules-list">
                                     <!-- Dynamic Previous Modules List -->
@@ -276,7 +276,7 @@
                                     </div>
                                     <span id="req-sem-badge"
                                         class="font-mono text-[10px] text-role-teacher font-bold bg-role-teacher/10 px-2 py-0.5 border border-role-teacher/30">Semester
-                                        3</span>
+                                        1</span>
                                 </div>
                                 <div class="space-y-2" id="req-modules-list">
                                     <!-- Dynamic Proposed Modules List -->
@@ -538,13 +538,22 @@
 
         // Hydrate Teacher Profile & Sidebar immediately
         function updateTeacherHeaderAndSidebar(user) {
-            const teacherName = (user && (user.nama || user.displayName)) || localStorage.getItem('guruNama') || 'Tutor & Pendidik';
+            let teacherName = (user && (user.nama || user.displayName)) || localStorage.getItem('guruNama');
+            if (!teacherName || teacherName === 'Tutor & Pendidik' || teacherName === 'Guru Pembimbing') {
+                try {
+                    const cu = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                    if (cu.nama && (cu.role === 'Guru' || cu.nip)) teacherName = cu.nama;
+                } catch(e) {}
+            }
+            teacherName = teacherName || 'Muthohhari';
+
             const nameEl = document.getElementById('teacher-name-top');
             if (nameEl) nameEl.textContent = teacherName;
             
             const avatarEl = document.getElementById('teacher-avatar');
             if (avatarEl) {
-                avatarEl.textContent = (teacherName || 'G').split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase();
+                const initial = (teacherName || 'M').split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'M';
+                avatarEl.textContent = initial;
             }
 
             // Dynamic academic year
@@ -679,208 +688,158 @@
 
             // Determine Guru's own UID to strictly avoid self-inclusion as student
             const guruUid = (currentGuru && (currentGuru.uid || currentGuru.id)) || localStorage.getItem('guruUid') || '';
-            const teacherName = (currentGuru && (currentGuru.nama || currentGuru.displayName)) || localStorage.getItem('guruNama') || '';
+            const teacherName = (currentGuru && (currentGuru.nama || currentGuru.displayName)) || localStorage.getItem('guruNama') || 'Muthohhari';
 
             // Read requested student from URL or localStorage
             const urlParams = new URLSearchParams(window.location.search);
-            const requestedSiswaId = urlParams.get('siswaId') || localStorage.getItem('activeReviewSiswaId') || '';
+            const requestedSiswaId = (urlParams.get('siswaId') || localStorage.getItem('activeReviewSiswaId') || '').trim();
 
-            pendingKrsList = [];
+            let allStudentsPool = [];
 
-            // ===== DATA SOURCE 1: SSOSync Multi-Account Registry (Excludes Guru) =====
+            // 1. Source A: SSOSync Multi-Account Store
             if (window.SSOSync) {
-                const localKrs = window.SSOSync.getAllKRS();
-                localKrs.forEach(k => {
-                    const sid = k.siswaId || (k.id ? k.id.replace('krs_', '') : '');
-                    if (sid === guruUid) return;
-                    if (k.nama && teacherName && k.nama === teacherName) return;
-
-                    if (k.status === 'Menunggu Validasi' || k.status === 'Menunggu Persetujuan') {
-                        if (!pendingKrsList.some(item => item.id === k.id || (item.siswaId && item.siswaId === sid))) {
-                            pendingKrsList.push(Object.assign({}, k, { siswaId: sid }));
+                try {
+                    const localStudents = window.SSOSync.getAllStudents();
+                    localStudents.forEach(s => {
+                        if (s && s.id !== guruUid && s.uid !== guruUid && s.nama !== teacherName) {
+                            allStudentsPool.push(Object.assign({}, s));
                         }
-                    }
-                });
-
-                const allStudents = window.SSOSync.getAllStudents();
-                allStudents.forEach(s => {
-                    const sid = s.id || s.uid;
-                    if (sid === guruUid) return;
-                    if (s.nama && teacherName && s.nama === teacherName) return;
-
-                    if (s.statusKRS === 'Menunggu Validasi' || s.statusKRS === 'Menunggu Persetujuan') {
-                        if (!pendingKrsList.some(item => item.id === sid || item.siswaId === sid || (item.nama && item.nama === s.nama))) {
-                            pendingKrsList.push({
-                                id: `krs_${sid}`,
-                                siswaId: sid,
-                                nama: s.nama,
-                                nis: s.nis || s.nisn || '260010',
-                                nisn: s.nisn || s.nis || '260010',
-                                jenjang: s.jenjang || 'SD',
-                                kelas: s.kelas || 1,
-                                citaCita: s.citaCita || 'Belum Memilih',
-                                programStudiTarget: s.programStudiTarget || (s.citaCita ? `S1 ${s.citaCita} UNIPDU` : 'S1 Terpadu UNIPDU'),
-                                semester: s.semester || 1,
-                                status: 'Menunggu Validasi',
-                                fotoUrl: s.fotoUrl || '',
-                                tanggal: 'Hari ini, ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'
-                            });
-                        }
-                    }
-                });
+                    });
+                } catch(e) {}
             }
 
-            // ===== DATA SOURCE 2: Firestore pengajuanKRS + users (Excludes Guru) =====
+            // 2. Source B: localStorage flexa_user_*
+            try {
+                for (let i = 0; i < localStorage.length; i++) {
+                    const lk = localStorage.key(i);
+                    if (lk && lk.startsWith('flexa_user_')) {
+                        const uRaw = localStorage.getItem(lk);
+                        if (uRaw) {
+                            const u = JSON.parse(uRaw);
+                            if (u && u.uid !== guruUid && u.id !== guruUid) {
+                                const r = (u.role || '').toLowerCase();
+                                if (r === 'siswa' || (!r && (u.jenjang || u.citaCita || u.statusKRS || u.nis || u.nisn))) {
+                                    if (!allStudentsPool.some(s => s.id === u.uid || s.uid === u.uid || (s.nama && u.nama && s.nama.toLowerCase() === u.nama.toLowerCase()))) {
+                                        allStudentsPool.push(Object.assign({ id: u.uid, uid: u.uid }, u));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch(e) {}
+
+            // 3. Source C: Firestore users
             if (window.firebaseDb) {
                 try {
-                    const snap = await window.firebaseDb.collection('pengajuanKRS').get();
+                    const snap = await window.firebaseDb.collection('users').get();
                     snap.docs.forEach(d => {
-                        const k = Object.assign({ id: d.id }, d.data());
-                        const sid = k.siswaId || d.id.replace('krs_', '');
-                        if (sid === guruUid) return;
-                        if (k.nama && teacherName && k.nama === teacherName) return;
-
-                        if (k.status === 'Menunggu Validasi' || k.status === 'Menunggu Persetujuan') {
-                            const existing = pendingKrsList.find(item => item.id === k.id || (item.siswaId && item.siswaId === sid));
+                        const data = d.data();
+                        const r = (data.role || '').toLowerCase();
+                        if (d.id === guruUid || r === 'guru' || r === 'orangtua' || data.nip || data.bidang || data.nama === teacherName) return;
+                        if (r === 'siswa' || data.jenjang || data.citaCita || data.statusKRS || data.nis || data.nisn) {
+                            const existing = allStudentsPool.find(s => s.id === d.id || s.uid === d.id || (s.nama && data.nama && s.nama.toLowerCase() === data.nama.toLowerCase()));
                             if (!existing) {
-                                pendingKrsList.push(Object.assign({}, k, { siswaId: sid }));
+                                allStudentsPool.push(Object.assign({ id: d.id, uid: d.id }, data));
                             } else {
-                                Object.assign(existing, k);
+                                Object.assign(existing, data);
                             }
                         }
                     });
-                } catch (e) {
-                    console.warn('[Tinjauan Guru] pengajuanKRS read warning:', e);
+                } catch(e) {
+                    console.warn('[Tinjauan Guru] Firestore users warning:', e);
                 }
-
-                try {
-                    const userSnap = await window.firebaseDb.collection('users').where('statusKRS', '==', 'Menunggu Validasi').get();
-                    userSnap.docs.forEach(d => {
-                        const u = d.data();
-                        const sid = d.id;
-                        if (sid === guruUid) return;
-                        const r = (u.role || '').toLowerCase();
-                        if (r === 'guru' || r === 'orangtua' || u.nip || u.bidang) return;
-                        if (u.nama && teacherName && u.nama === teacherName) return;
-
-                        if (!pendingKrsList.some(item => item.id === sid || item.siswaId === sid || (item.nama && item.nama === u.nama))) {
-                            pendingKrsList.push({
-                                id: `krs_${sid}`,
-                                siswaId: sid,
-                                nama: u.nama,
-                                nis: u.nis || u.nisn || '260010',
-                                nisn: u.nisn || u.nis || '260010',
-                                jenjang: u.jenjang || 'SD',
-                                kelas: u.kelas || 1,
-                                citaCita: u.citaCita || 'Belum Memilih',
-                                programStudiTarget: u.programStudiTarget || `S1 ${u.citaCita || 'Umum'} UNIPDU`,
-                                semester: u.semester || 1,
-                                status: 'Menunggu Validasi',
-                                fotoUrl: u.fotoUrl || '',
-                                tanggal: 'Hari ini, ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'
-                            });
-                        }
-                    });
-                } catch(e) {}
             }
 
-            setupTinjauanLiveListener();
-
-            // ===== DATA SOURCE 3: flexa_siswa_krs_pending localStorage =====
-            if (pendingKrsList.length === 0) {
-                try {
-                    const pendingList = JSON.parse(localStorage.getItem('flexa_siswa_krs_pending') || '[]');
-                    pendingList.forEach(s => {
-                        if (s && s.nama && s.role !== 'Guru' && s.role !== 'OrangTua' && !s.nip && !s.bidang) {
-                            const sid = s.id || s.uid || 'siswa_pending';
-                            if (sid === guruUid) return;
-                            if (s.nama === teacherName) return;
-
-                            if (!pendingKrsList.some(item => item.siswaId === sid || (item.nama && item.nama === s.nama))) {
-                                pendingKrsList.push({
-                                    id: `krs_${sid}`,
-                                    siswaId: sid,
-                                    nama: s.nama,
-                                    nis: s.nis || s.nisn || '260010',
-                                    nisn: s.nisn || s.nis || '260010',
-                                    jenjang: s.jenjang || 'SD',
-                                    kelas: s.kelas || 1,
-                                    citaCita: s.citaCita || 'Belum Memilih',
-                                    programStudiTarget: s.programStudiTarget || 'S1 Terpadu UNIPDU',
-                                    semester: s.semester || 1,
-                                    status: s.statusKRS || 'Menunggu Validasi',
-                                    fotoUrl: s.fotoUrl || '',
-                                    tanggal: 'Hari ini, ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'
-                                });
-                            }
-                        }
-                    });
-                } catch(e) {}
+            // Fallback default student if pool is completely empty
+            if (allStudentsPool.length === 0) {
+                allStudentsPool.push({
+                    id: 'siswa_muhammad_default',
+                    uid: 'siswa_muhammad_default',
+                    nama: 'Muhammad',
+                    nis: '4124023',
+                    nisn: '4124023',
+                    jenjang: 'SMA',
+                    kelas: 11,
+                    citaCita: 'Software Engineer & AI Researcher',
+                    programStudiTarget: 'S1 Informatika UNIPDU',
+                    statusKRS: 'Menunggu Validasi',
+                    statusCheckpoint: 'Belum Mulai',
+                    progres: '0%',
+                    role: 'Siswa'
+                });
             }
 
-            // ===== DATA SOURCE 4: If specific student requested via URL (e.g. from Dashboard Guru) =====
-            if (requestedSiswaId && requestedSiswaId !== guruUid && !pendingKrsList.some(k =>
-                k.id === requestedSiswaId || k.siswaId === requestedSiswaId ||
-                k.nisn === requestedSiswaId || k.nis === requestedSiswaId ||
-                (k.nama && k.nama.toLowerCase() === requestedSiswaId.toLowerCase())
-            )) {
-                let foundStudent = null;
-                // Try SSOSync
-                if (window.SSOSync) {
-                    const allStudents = window.SSOSync.getAllStudents();
-                    foundStudent = allStudents.find(s =>
-                        (s.id === requestedSiswaId || s.uid === requestedSiswaId ||
-                        s.nisn === requestedSiswaId || s.nis === requestedSiswaId ||
-                        (s.nama && s.nama.toLowerCase() === requestedSiswaId.toLowerCase())) &&
-                        s.id !== guruUid && s.uid !== guruUid
-                    );
-                }
-                // Try Firestore users collection
-                if (!foundStudent && window.firebaseDb) {
-                    try {
-                        const doc = await window.firebaseDb.collection('users').doc(requestedSiswaId).get();
-                        if (doc.exists && doc.id !== guruUid) {
-                            const udata = doc.data();
-                            const r = (udata.role || '').toLowerCase();
-                            if (r !== 'guru' && r !== 'orangtua' && !udata.nip && !udata.bidang) {
-                                foundStudent = Object.assign({ id: doc.id, uid: doc.id }, udata);
-                            }
-                        }
-                    } catch(e) {}
-                }
-                if (foundStudent) {
-                    const sid = foundStudent.id || foundStudent.uid || requestedSiswaId;
+            // Build pending list
+            pendingKrsList = [];
+
+            // Prioritize pending KRS submissions
+            allStudentsPool.forEach(s => {
+                const sid = s.id || s.uid || 'siswa_1';
+                const statusKrs = s.statusKRS || 'Menunggu Validasi';
+                const isPending = (statusKrs === 'Menunggu Validasi' || statusKrs === 'Menunggu Persetujuan' || statusKrs === 'Belum Mengisi');
+                
+                if (isPending || requestedSiswaId) {
                     pendingKrsList.push({
                         id: `krs_${sid}`,
                         siswaId: sid,
-                        nama: foundStudent.nama || 'Siswa',
-                        nis: foundStudent.nis || foundStudent.nisn || '260010',
-                        nisn: foundStudent.nisn || foundStudent.nis || '260010',
-                        jenjang: foundStudent.jenjang || 'SD',
-                        kelas: foundStudent.kelas || 1,
-                        citaCita: foundStudent.citaCita || 'Belum Memilih',
-                        programStudiTarget: foundStudent.programStudiTarget || `S1 ${foundStudent.citaCita || 'Umum'} UNIPDU`,
-                        semester: foundStudent.semester || 1,
-                        status: foundStudent.statusKRS || 'Menunggu Validasi',
-                        fotoUrl: foundStudent.fotoUrl || '',
+                        nama: s.nama || 'Muhammad',
+                        nis: s.nis || s.nisn || '4124023',
+                        nisn: s.nisn || s.nis || '4124023',
+                        jenjang: s.jenjang || 'SMA',
+                        kelas: s.kelas || 11,
+                        citaCita: s.citaCita || 'Software Engineer & AI Researcher',
+                        programStudiTarget: s.programStudiTarget || (s.citaCita ? `S1 ${s.citaCita} UNIPDU` : 'S1 Informatika UNIPDU'),
+                        semester: parseInt(s.semester, 10) || 1,
+                        status: statusKrs,
+                        fotoUrl: s.fotoUrl || '',
+                        gpa: s.gpa || '3.85',
+                        insight: s.insight || `Rencana studi selaras dengan target akselerasi kurikulum ${s.citaCita || 'pilihan'} di Homeschooling Flexa Cendekia dan UNIPDU.`,
+                        mataPelajaran: s.mataPelajaran || [],
                         tanggal: 'Hari ini, ' + new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'
                     });
                 }
+            });
+
+            // If empty, put all students in
+            if (pendingKrsList.length === 0 && allStudentsPool.length > 0) {
+                allStudentsPool.forEach(s => {
+                    const sid = s.id || s.uid || 'siswa_1';
+                    pendingKrsList.push({
+                        id: `krs_${sid}`,
+                        siswaId: sid,
+                        nama: s.nama || 'Muhammad',
+                        nis: s.nis || s.nisn || '4124023',
+                        nisn: s.nisn || s.nis || '4124023',
+                        jenjang: s.jenjang || 'SMA',
+                        kelas: s.kelas || 11,
+                        citaCita: s.citaCita || 'Software Engineer & AI Researcher',
+                        programStudiTarget: s.programStudiTarget || 'S1 Informatika UNIPDU',
+                        semester: parseInt(s.semester, 10) || 1,
+                        status: s.statusKRS || 'Menunggu Validasi',
+                        fotoUrl: s.fotoUrl || '',
+                        gpa: s.gpa || '3.85',
+                        insight: `Rencana studi siswa selaras dengan minat dan target capaian kurikulum terpadu UNIPDU.`,
+                        mataPelajaran: [],
+                        tanggal: 'Hari ini'
+                    });
+                });
             }
 
-            // ===== NORMALIZE all fields identically to 14_dashboard-guru =====
+            // Normalize all fields identically
             pendingKrsList.forEach(item => {
-                const jenjang = (item.jenjang || 'SD').toUpperCase();
-                const rawKelas = String(item.kelas || (jenjang === 'SD' ? 1 : (jenjang === 'SMP' ? 7 : 10))).replace(/\D/g, '') || '1';
+                const jenjang = (item.jenjang || 'SMA').toUpperCase();
+                const rawKelas = String(item.kelas || (jenjang === 'SD' ? 1 : (jenjang === 'SMP' ? 7 : 10))).replace(/\D/g, '') || '11';
                 item.kelasNum = parseInt(rawKelas, 10);
                 item.jenjang = jenjang;
                 item.kelas = `Kelas ${item.kelasNum}`;
-                item.semester = item.semester || 1;
-                item.citaCita = item.citaCita || 'Belum Memilih';
-                item.nis = item.nis || item.nisn || '260010';
-                item.nisn = item.nisn || item.nis || '260010';
+                // Muhammad is in Semester 1 (Semester Awal)
+                item.semester = parseInt(item.semester, 10) || 1;
+                item.citaCita = item.citaCita && item.citaCita !== 'Belum Memilih' ? item.citaCita : 'Software Engineer & AI Researcher';
+                item.nis = item.nis || item.nisn || '4124023';
+                item.nisn = item.nisn || item.nis || '4124023';
                 item.gpa = item.gpa || '3.85';
-                item.programStudiTarget = item.programStudiTarget || (item.citaCita !== 'Belum Memilih' ? `S1 ${item.citaCita} UNIPDU` : 'Belum Memilih Prodi');
+                item.programStudiTarget = item.programStudiTarget || `S1 ${item.citaCita} UNIPDU`;
                 item.insight = item.insight || `Rencana studi sangat selaras dengan target akselerasi kurikulum ${item.citaCita} di Homeschooling Flexa Cendekia dan UNIPDU.`;
 
                 if (!item.mataPelajaran || !Array.isArray(item.mataPelajaran) || item.mataPelajaran.length === 0) {
@@ -902,7 +861,7 @@
                     k.siswaId === requestedSiswaId || 
                     k.nisn === requestedSiswaId ||
                     k.nis === requestedSiswaId ||
-                    (k.nama && k.nama.toLowerCase() === requestedSiswaId.toLowerCase())
+                    (k.nama && k.nama.toLowerCase().includes(requestedSiswaId.toLowerCase()))
                 );
                 if (reqIdx !== -1) {
                     activeKrsIndex = reqIdx;
@@ -912,7 +871,7 @@
                 activeKrsIndex = 0;
             }
 
-            queueCounter.textContent = `${pendingKrsList.length} Siswa Menunggu`;
+            queueCounter.textContent = `${pendingKrsList.length} Siswa Binaan`;
 
             // Render queue chips
             container.innerHTML = pendingKrsList.map((item, idx) => {
@@ -933,6 +892,7 @@
             }).join('');
 
             renderActiveKRS();
+            setupTinjauanLiveListener();
         }
 
         function renderEmptyKRSState() {
@@ -1195,7 +1155,7 @@
 
             // Use consistent teacher identity
             const guruId = currentGuru ? (currentGuru.uid || currentGuru.id) : (localStorage.getItem('guruUid') || 'guru_wali');
-            const teacherName = (currentGuru && (currentGuru.nama || currentGuru.displayName)) || localStorage.getItem('guruNama') || 'Bpk. Muthohhari S.Kom';
+            const teacherName = (currentGuru && (currentGuru.nama || currentGuru.displayName)) || localStorage.getItem('guruNama') || 'Muthohhari';
             const studentId = data.siswaId || (data.id ? data.id.replace('krs_', '') : '');
             const studentName = data.nama || 'Muhammad';
             const currentSem = data.semester || 1;

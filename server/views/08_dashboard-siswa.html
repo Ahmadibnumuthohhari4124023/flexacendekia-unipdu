@@ -88,8 +88,10 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="/firebase-config.js"></script>
     <script src="/firebase-auth-guard.js"></script>
+    <script src="/public/siswa_master_data.js" onerror="this.onerror=null; this.src='/siswa_master_data.js';"></script>
     <script src="/firebase-data-store.js"></script>
     <script src="/notification-sync.js"></script>
+    <script src="/sso-sync.js"></script>
     <script src="/career-roadmap-data.js"></script>
 </head>
 
@@ -683,7 +685,7 @@
                         }
                     }
 
-                    // Jika belum tertaut langsung, cek apakah ada akun guru terdaftar di database
+                    // Jika belum tertaut langsung, cek apakah ada akun guru terdaftar di database atau SSOSync
                     if (!guruData) {
                         const guruSnap = await window.firebaseDb.collection('users').where('role', '==', 'Guru').limit(1).get();
                         if (!guruSnap.empty) {
@@ -691,13 +693,25 @@
                         }
                     }
 
+                    if (!guruData && window.SSOSync) {
+                        const allUsers = window.SSOSync.getAllUsers();
+                        guruData = allUsers.find(u => u.role === 'Guru' || u.nip || u.bidang);
+                    }
+
+                    if (!guruData && localStorage.getItem('guruNama')) {
+                        guruData = {
+                            nama: localStorage.getItem('guruNama'),
+                            bidang: localStorage.getItem('guruBidang') || 'Pembimbing Akademik Flexa Cendekia'
+                        };
+                    }
+
                     // Jika ditemukan akun Guru Asli yang terdaftar
                     if (guruData) {
-                        if (advisorNameEl) advisorNameEl.textContent = guruData.nama || 'Guru Pembimbing';
-                        if (advisorSpecEl) advisorSpecEl.textContent = guruData.bidang || 'Wali Kelas & Guru Pembimbing';
+                        if (advisorNameEl) advisorNameEl.textContent = guruData.nama || 'Muthohhari';
+                        if (advisorSpecEl) advisorSpecEl.textContent = guruData.bidang || 'Pembimbing Akademik Flexa Cendekia';
                         if (advisorDescEl) advisorDescEl.textContent = 'Konsultasikan pemilihan KRS, persiapan checkpoint mingguan, atau arahan portofolio langsung dengan pembimbing Anda.';
                         if (advisorAvatarEl) {
-                            const initials = (guruData.nama || 'GP').split(' ').map(w => w[0]).slice(0, 2).join('').toUpperCase();
+                            const initials = (guruData.nama || 'Muthohhari').split(' ').filter(Boolean).map(w => w[0]).slice(0, 2).join('').toUpperCase() || 'M';
                             advisorAvatarEl.textContent = initials;
                             advisorAvatarEl.className = 'w-12 h-12 rounded-full bg-role-teacher text-white flex items-center justify-center font-bold text-sm shadow';
                         }

@@ -128,8 +128,10 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="/firebase-config.js"></script>
     <script src="/firebase-auth-guard.js"></script>
+    <script src="/public/siswa_master_data.js" onerror="this.onerror=null; this.src='/siswa_master_data.js';"></script>
     <script src="/firebase-data-store.js"></script>
     <script src="/notification-sync.js"></script>
+    <script src="/sso-sync.js"></script>
     <script src="/career-roadmap-data.js"></script>
 </head>
 <body class="bg-[#EAEDE2] min-h-screen font-body-md text-on-surface selection:bg-secondary-container">
@@ -744,10 +746,14 @@
             window._authUid = authUid;
 
             if (user) {
-                if (user.nama) {
-                    document.querySelectorAll('.user-display-name').forEach(el => el.textContent = user.nama);
+                const studentName = user.nama || localStorage.getItem('userNama') || 'Muhammad';
+                document.querySelectorAll('.user-display-name').forEach(el => el.textContent = studentName);
+                const av = document.getElementById('top-user-avatar');
+                if (av) {
+                    const init = studentName.split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'M';
+                    av.textContent = init;
                 }
-                currentCareer = user.citaCita || localStorage.getItem('selectedCareer') || 'Arsitek';
+                currentCareer = user.citaCita || localStorage.getItem('selectedCareer') || localStorage.getItem('userCitaCita') || 'Software Engineer & AI Researcher';
                 const careerNameEl = document.getElementById('career-name-display');
                 if (careerNameEl) careerNameEl.textContent = currentCareer;
 

@@ -38,6 +38,47 @@ const DataStore = {
         return null;
     },
 
+    async getAllStudents() {
+        const students = [];
+        const db = this._ensureDb();
+        if (db) {
+            try {
+                const snap = await db.collection('users').where('role', '==', 'Siswa').get();
+                if (!snap.empty) {
+                    snap.docs.forEach(d => {
+                        const data = d.data();
+                        students.push(Object.assign({ id: d.id, uid: d.id }, data));
+                    });
+                }
+            } catch(e) {
+                console.warn('[DataStore] Firestore getAllStudents warning:', e);
+            }
+        }
+        if (window.SSOSync && window.SSOSync.getAllStudents) {
+            const ssoStudents = window.SSOSync.getAllStudents();
+            ssoStudents.forEach(s => {
+                if (!students.some(existing => existing.id === s.id || existing.uid === s.id || (existing.nama && s.nama && existing.nama.toLowerCase() === s.nama.toLowerCase()))) {
+                    students.push(s);
+                }
+            });
+        }
+        try {
+            for (let i = 0; i < localStorage.length; i++) {
+                const k = localStorage.key(i);
+                if (k && k.startsWith('flexa_user_')) {
+                    const u = JSON.parse(localStorage.getItem(k) || '{}');
+                    if (u && (u.role === 'Siswa' || (!u.role && (u.jenjang || u.citaCita)))) {
+                        const uid = u.uid || u.id;
+                        if (!students.some(existing => existing.id === uid || existing.uid === uid || (existing.nama && u.nama && existing.nama.toLowerCase() === u.nama.toLowerCase()))) {
+                            students.push(Object.assign({ id: uid, uid: uid }, u));
+                        }
+                    }
+                }
+            }
+        } catch(e) {}
+        return students;
+    },
+
     async getUserById(id) {
         if (!id) return null;
         const db = this._ensureDb();

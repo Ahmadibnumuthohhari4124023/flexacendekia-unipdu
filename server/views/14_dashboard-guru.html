@@ -91,10 +91,11 @@
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
     <script src="/firebase-config.js"></script>
     <script src="/firebase-auth-guard.js"></script>
+    <script src="/public/siswa_master_data.js" onerror="this.onerror=null; this.src='/siswa_master_data.js';"></script>
     <script src="/firebase-data-store.js"></script>
     <script src="/notification-sync.js"></script>
+    <script src="/sso-sync.js"></script>
     <script src="/career-roadmap-data.js"></script>
-    <script src="/public/siswa_master_data.js" onerror="this.onerror=null; this.src='/siswa_master_data.js';"></script>
 </head>
 
 <body class="min-h-screen flex flex-col justify-between">
@@ -124,17 +125,25 @@
             </div>
 
             <div class="flex items-center gap-3">
-                <a href="/?page=17_notifikasi" class="p-2 rounded-full hover:bg-primary/5 transition-all"
+                <a href="/?page=17_notifikasi" class="p-2 rounded-full hover:bg-primary/5 transition-all text-primary"
                     title="Notifikasi">
-                    <span class="material-symbols-outlined text-primary">notifications</span>
+                    <span class="material-symbols-outlined">notifications</span>
                 </a>
-                <a href="/?page=18_profil_profil-guru" class="p-2 rounded-full hover:bg-primary/5 transition-all"
-                    title="Profil Guru">
-                    <span class="material-symbols-outlined text-primary">account_circle</span>
+                
+                <a href="/?page=18_profil_profil-guru" class="flex items-center gap-2 pl-2 border-l border-primary/10 hover:opacity-80 transition-opacity cursor-pointer group" title="Buka Profil Guru & Pengaturan">
+                    <div id="teacher-avatar-top"
+                        class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs shadow group-hover:scale-105 transition-transform">
+                        M
+                    </div>
+                    <div class="hidden sm:block text-left">
+                        <p id="teacher-name-top" class="font-sans text-xs font-bold text-primary leading-none group-hover:text-secondary transition-colors">Muthohhari</p>
+                        <p class="font-mono text-[10px] text-role-teacher mt-0.5">Pembimbing Akademik</p>
+                    </div>
                 </a>
+
                 <button
                     onclick="if(window.flexaLogout) flexaLogout(); else firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');"
-                    class="text-red-600 hover:opacity-80 p-2" title="Keluar">
+                    class="text-red-600 hover:bg-red-50 p-2 rounded-full transition-colors ml-1" title="Keluar">
                     <span class="material-symbols-outlined text-lg">logout</span>
                 </button>
             </div>
@@ -415,15 +424,22 @@
                     teacherUser = allU.find(u => u.role === 'Guru' || u.nip || u.bidang);
                 }
 
-                let teacherName = (teacherUser && (teacherUser.nama || teacherUser.displayName)) || localStorage.getItem('guruNama') || 'Bpk. Muthohhari S.Kom';
+                let teacherName = (teacherUser && (teacherUser.nama || teacherUser.displayName)) || localStorage.getItem('guruNama') || 'Muthohhari';
                 if (!teacherName || teacherName === 'Guru' || teacherName === 'Guru Pembimbing' || teacherName === 'Tutor' || teacherName.trim() === '') {
-                    teacherName = 'Bpk. Muthohhari S.Kom';
+                    teacherName = 'Muthohhari';
                 }
                 const teacherNip = (teacherUser && teacherUser.nip) || localStorage.getItem('guruNip') || '198704122015042001';
                 const nameEl = document.getElementById('guru-name');
                 if (nameEl) nameEl.textContent = teacherName;
                 const nipEl = document.getElementById('guru-nip');
                 if (nipEl) nipEl.textContent = teacherNip;
+
+                const topNameEl = document.getElementById('teacher-name-top');
+                if (topNameEl) topNameEl.textContent = teacherName;
+                const topAvatarEl = document.getElementById('teacher-avatar-top');
+                if (topAvatarEl) {
+                    topAvatarEl.textContent = (teacherName || 'M').split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'M';
+                }
 
                 // 2. Ambil Siswa Bimbingan dari Multi-Layer Stores (SSOSync, flexa_user_*, Firestore, KRS)
                 let students = [];

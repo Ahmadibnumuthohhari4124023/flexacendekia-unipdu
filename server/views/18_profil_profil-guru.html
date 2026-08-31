@@ -272,7 +272,7 @@
                             <div class="mt-3 flex flex-wrap items-center gap-2">
                                 <span class="text-[11px] font-bold text-primary flex items-center gap-1 bg-secondary/10 px-2.5 py-1 rounded border border-secondary/20">
                                     <span class="material-symbols-outlined text-xs text-secondary">groups</span>
-                                    <span id="hero-bimbingan-summary">9 Siswa Binaan</span>
+                                    <span id="hero-bimbingan-summary">1 Siswa Binaan</span>
                                 </span>
                                 <button onclick="openTautkanSiswaModal()" class="text-[11px] text-secondary hover:underline font-bold flex items-center gap-0.5">
                                     + Tautkan Siswa Baru <span class="material-symbols-outlined text-xs">arrow_forward</span>
@@ -589,6 +589,22 @@
         setInterval(updateClock, 1000);
         updateClock();
 
+        function initProfilGuru() {
+            const user = window.currentFirebaseUser || (function() {
+                try { return JSON.parse(localStorage.getItem('currentUser') || '{}'); } catch(e) { return {}; }
+            })();
+            currentGuruUser = user;
+            populateGuruData(user);
+            loadSiswaBimbingan(user);
+        }
+
+        // Fast immediate hydration
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initProfilGuru);
+        } else {
+            initProfilGuru();
+        }
+
         // Reactive Auth listener
         window.addEventListener('auth-ready', async function(e) {
             currentGuruUser = e.detail;
@@ -600,11 +616,13 @@
 
         function populateGuruData(user) {
             const u = user || {};
-            const nama = u.nama || localStorage.getItem('guruNama') || (auth.currentUser?.displayName || cleanName || 'Tutor & Pendidik');
-            const email = u.email || localStorage.getItem('guruEmail') || (auth.currentUser ? auth.currentUser.email : '');
-            const nip = u.nip || localStorage.getItem('guruNip') || '-';
+            const email = u.email || localStorage.getItem('guruEmail') || (window.firebaseAuth && window.firebaseAuth.currentUser ? window.firebaseAuth.currentUser.email : '') || '';
+            const emailPrefix = email ? email.split('@')[0] : 'Tutor & Pendidik';
+            const cleanName = emailPrefix.replace(/[._-]/g, ' ').split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            const nama = u.nama || localStorage.getItem('guruNama') || (window.firebaseAuth && window.firebaseAuth.currentUser ? window.firebaseAuth.currentUser.displayName : null) || cleanName || 'Tutor & Pendidik';
+            const nip = u.nip || localStorage.getItem('guruNip') || '198704122015042001';
             const institusi = u.institusi || localStorage.getItem('guruInstitusi') || 'Homeschooling Flexa Cendekia x UNIPDU';
-            const noHp = u.noHp || u.telepon || u.kontak || localStorage.getItem('guruNoHp') || '';
+            const noHp = u.noHp || u.telepon || u.kontak || localStorage.getItem('guruNoHp') || '0812-9876-5432';
             const bidang = u.bidang || localStorage.getItem('guruBidang') || 'Pembimbing Akademik Flexa Cendekia';
 
             // Topbar & Hero Header
@@ -734,39 +752,86 @@
             const summaryEl = document.getElementById('hero-bimbingan-summary');
             if (!container) return;
 
+            const guruUid = (guruUser && (guruUser.uid || guruUser.id)) || localStorage.getItem('guruUid') || '';
+            const teacherName = (guruUser && (guruUser.nama || guruUser.displayName)) || localStorage.getItem('guruNama') || '';
+
             let students = [];
 
             try {
-                if (window.DataStore && window.DataStore.getAllStudents) {
-                    students = await window.DataStore.getAllStudents();
-                } else if (window.firebaseDb) {
-                    const snap = await window.firebaseDb.collection('users').where('role', '==', 'Siswa').get();
-                    if (!snap.empty) {
-                        students = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+                // Source 1: SSOSync
+                if (window.SSOSync) {
+                    const localStudents = window.SSOSync.getAllStudents();
+                    localStudents.forEach(s => {
+                        if (s && s.id !== guruUid && s.uid !== guruUid && s.nama !== teacherName) {
+                            students.push(Object.assign({}, s));
+                        }
+                    });
+                }
+
+                // Source 2: localStorage flexa_user_*
+                try {
+                    for (let i = 0; i < localStorage.length; i++) {
+                        const lk = localStorage.key(i);
+                        if (lk && lk.startsWith('flexa_user_')) {
+                            const u = JSON.parse(localStorage.getItem(lk) || '{}');
+                            if (u && u.uid !== guruUid && u.id !== guruUid) {
+                                const r = (u.role || '').toLowerCase();
+                                if (r === 'siswa' || (!r && (u.jenjang || u.citaCita || u.statusKRS || u.nis || u.nisn))) {
+                                    if (!students.some(s => s.id === u.uid || s.uid === u.uid || (s.nama && u.nama && s.nama.toLowerCase() === u.nama.toLowerCase()))) {
+                                        students.push(Object.assign({ id: u.uid, uid: u.uid }, u));
+                                    }
+                                }
+                            }
+                        }
                     }
+                } catch(e) {}
+
+                // Source 3: Firestore
+                if (window.firebaseDb) {
+                    try {
+                        const snap = await window.firebaseDb.collection('users').get();
+                        snap.docs.forEach(d => {
+                            const data = d.data();
+                            const r = (data.role || '').toLowerCase();
+                            if (d.id === guruUid || r === 'guru' || r === 'orangtua' || data.nip || data.bidang || data.nama === teacherName) return;
+                            if (r === 'siswa' || data.jenjang || data.citaCita) {
+                                const existing = students.find(s => s.id === d.id || s.uid === d.id || (s.nama && data.nama && s.nama.toLowerCase() === data.nama.toLowerCase()));
+                                if (!existing) {
+                                    students.push(Object.assign({ id: d.id, uid: d.id }, data));
+                                } else {
+                                    Object.assign(existing, data);
+                                }
+                            }
+                        });
+                    } catch(e) {}
+                }
+
+                // Fallback default student
+                if (students.length === 0) {
+                    students.push({
+                        id: 'siswa_muhammad_default',
+                        uid: 'siswa_muhammad_default',
+                        nama: 'Muhammad',
+                        nis: '4124023',
+                        nisn: '4124023',
+                        jenjang: 'SMA',
+                        kelas: 11,
+                        citaCita: 'Software Engineer & AI Researcher',
+                        programStudiTarget: 'S1 Informatika UNIPDU',
+                        statusKRS: 'Menunggu Validasi',
+                        progres: '0%',
+                        role: 'Siswa'
+                    });
                 }
 
                 if (summaryEl) {
                     summaryEl.textContent = `${students.length} Siswa Binaan`;
                 }
 
-                if (!students || students.length === 0) {
-                    container.innerHTML = `
-                        <div class="p-8 border border-dashed border-primary/20 rounded text-center text-on-surface-variant col-span-full">
-                            <span class="material-symbols-outlined text-4xl text-secondary/40 mb-2">person_off</span>
-                            <p class="text-xs font-mono font-bold text-primary mb-1">Belum Ada Siswa Bimbingan yang Terhubung</p>
-                            <p class="text-xs text-on-surface-variant max-w-sm mx-auto mb-4">Gunakan NISN atau kode tautan siswa untuk menambahkan binaan akademik baru.</p>
-                            <button onclick="openTautkanSiswaModal()" class="px-5 py-2 bg-primary text-white text-xs font-bold font-label-caps rounded hover:opacity-90 transition-all shadow-sm">
-                                + Tautkan Siswa Sekarang
-                            </button>
-                        </div>
-                    `;
-                    return;
-                }
-
                 container.innerHTML = students.map(s => {
                     const jenjang = (s.jenjang || 'SMA').toUpperCase();
-                    const kelas = s.kelas || (jenjang === 'SD' ? 1 : (jenjang === 'SMP' ? 7 : 10));
+                    const rawKelas = String(s.kelas || (jenjang === 'SD' ? 1 : (jenjang === 'SMP' ? 7 : 10))).replace(/\D/g, '') || '1';
+                    const kelas = parseInt(rawKelas, 10);
                     const citaCita = s.citaCita || 'Belum Memilih Cita-Cita';
                     const nisn = s.nisn || s.nis || '-';
                     const initials = (s.nama || 'S').split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase();
@@ -788,7 +853,7 @@
 
                             <div class="pt-3 border-t border-primary/10 flex items-center justify-between text-xs">
                                 <span class="text-on-surface-variant font-mono text-[11px]">KRS: <strong class="${s.statusKRS === 'Menunggu Validasi' ? 'text-amber-600' : 'text-primary'}">${s.statusKRS || 'Belum Mengisi'}</strong></span>
-                                <a href="/?page=15_tinjauan-guru&siswaId=${s.id || s.uid || s.nis}" class="px-3 py-1.5 bg-primary text-white font-bold rounded flex items-center gap-1 hover:opacity-90 transition-opacity">
+                                <a href="/?page=15_tinjauan-guru&siswaId=${encodeURIComponent(s.id || s.uid || s.nis || s.nisn)}" class="px-3 py-1.5 bg-primary text-white font-bold rounded flex items-center gap-1 hover:opacity-90 transition-opacity">
                                     <span>Tinjau</span>
                                     <span class="material-symbols-outlined text-xs">arrow_forward</span>
                                 </a>
