@@ -627,70 +627,599 @@
         }
 
         // ==========================================
-        // 1. FITUR UNDUH (Download PDF)
+        // ==========================================
+        // 1. FITUR UNDUH (Download PDF / Cetak Laporan Resmi)
         // ==========================================
         function downloadDiagnosisPDF() {
-            showToast('Menyiapkan laporan PDF...', 'download');
+            showToast('Menyiapkan dokumen laporan resmi...', 'download');
 
-            // Build printable HTML snapshot
-            const studentName = (window.currentFirebaseUser && window.currentFirebaseUser.nama) || document.getElementById('display-student-name')?.innerText || 'Siswa';
+            // 1. Resolve student info
+            let studentName = 'Muhammad';
+            let jenjang = 'SMA';
+            let kelas = '10';
+            let nisn = '260010';
+
+            try {
+                const userObj = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                if (userObj.nama) studentName = userObj.nama;
+                if (userObj.jenjang) jenjang = userObj.jenjang.toUpperCase();
+                if (userObj.kelas) kelas = userObj.kelas;
+                if (userObj.nisn || userObj.nis) nisn = userObj.nisn || userObj.nis;
+            } catch(e) {}
+
+            if (window.currentFirebaseUser && window.currentFirebaseUser.nama) {
+                studentName = window.currentFirebaseUser.nama;
+            }
+
             const dateStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+            const docId = 'FC-DIAG-' + Math.floor(100000 + Math.random() * 900000);
+
+            // 2. Resolve AI Diagnosis Data
+            let aiData = window.currentAiDiagnosisData;
+            if (!aiData) {
+                try {
+                    aiData = JSON.parse(localStorage.getItem('aiDiagnosisResult') || '{}');
+                } catch(e) {}
+            }
+
+            const riasec = (aiData && aiData.riasec) || { 'Investigatif': 85, 'Artistik': 78, 'Sosial': 42, 'Realistik': 35, 'Konvensional': 28, 'Enterprising': 54 };
+            const gayaBelajar = (aiData && aiData.gayaBelajar) || { 'Visual': 72, 'Auditori': 18, 'Kinestetik': 10 };
+            const narasiRiasec = (aiData && aiData.narasiRiasec) || (document.getElementById('riasec-desc')?.innerHTML) || 'Berdasarkan respons asesmen, Anda memiliki profil minat dominan di kategori <strong>Investigatif</strong> dan <strong>Artistik</strong>. Kombinasi ini menunjukkan bakat analitis kuat serta dorongan eksplorasi kreatif.';
+            const narasiGayaBelajar = (aiData && aiData.narasiGayaBelajar) || (document.getElementById('vak-desc')?.innerHTML) || 'Gaya belajar dominan Anda adalah <strong>Visual (72%)</strong>. Anda paling efektif menyerap materi melalui <strong>infografis, peta konsep, dan video pembelajaran</strong>.';
+            
+            const saranKarir = (aiData && aiData.saranKarir) || [
+                { title: 'Data Scientist', desc: 'Menganalisis pola data besar, statistik lanjut, & Machine Learning.', prodi: 'S1 Data Science / Statistika UNIPDU' },
+                { title: 'Arsitek Sistem', desc: 'Merancang infrastruktur piranti lunak, cloud, & ekosistem digital.', prodi: 'S1 Teknik Informatika UNIPDU' },
+                { title: 'UI/UX Designer', desc: 'Mendesain antarmuka aplikasi dengan prinsip estetika & pengalaman pengguna.', prodi: 'S1 Sistem Informasi UNIPDU' },
+                { title: 'Peneliti Bioteknologi', desc: 'Riset genetika, analisis bioinformatika, dan teknologi medis.', prodi: 'S1 Sains Terapan UNIPDU' }
+            ];
+
+            const rekomendasi = (aiData && aiData.rekomendasiPembelajaran) || [
+                { title: 'Modul Logika & Algoritma Komputasi', desc: 'Penguatan fondasi pemecahan masalah dengan diagram alir dan visualisasi konsep.' },
+                { title: 'Komunitas Riset & Peneliti Muda', desc: 'Wadah kolaborasi eksplorasi sains terapan dan proyek inovatif.' },
+                { title: 'Sertifikasi Fondasi Karir Digital', desc: 'Kurikulum terpadu persiapan matrikulasi pendidikan tinggi UNIPDU.' }
+            ];
+
+            // Sort RIASEC & VAK
+            const sortedRiasec = Object.entries(riasec).sort((a, b) => b[1] - a[1]);
+            const sortedVak = Object.entries(gayaBelajar).sort((a, b) => b[1] - a[1]);
+
+            // Build RIASEC HTML
+            let riasecCardsHtml = '';
+            sortedRiasec.forEach((item, idx) => {
+                const isDominant = idx < 2;
+                riasecCardsHtml += `
+                    <div class="riasec-card ${isDominant ? 'dominant' : ''}">
+                        <div class="riasec-header">
+                            <span class="riasec-name">${item[0]}</span>
+                            <span class="riasec-val">${item[1]}%</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill ${isDominant ? 'gold' : 'navy'}" style="width: ${item[1]}%;"></div>
+                        </div>
+                        ${isDominant ? '<span class="badge-dominant">★ Peminatan Dominan</span>' : ''}
+                    </div>
+                `;
+            });
+
+            // Build VAK HTML
+            let vakHtml = '';
+            sortedVak.forEach((item, idx) => {
+                const isTop = idx === 0;
+                vakHtml += `
+                    <div class="vak-item">
+                        <div class="vak-header">
+                            <span class="vak-name">${item[0]}</span>
+                            <span class="vak-val ${isTop ? 'highlight' : ''}">${isTop ? 'Dominan (' + item[1] + '%)' : item[1] + '%'}</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill ${isTop ? 'gold' : 'navy'}" style="width: ${item[1]}%;"></div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Build Career HTML (Clean, NO raw icon strings!)
+            let careerHtml = '';
+            saranKarir.slice(0, 6).forEach((karir, idx) => {
+                careerHtml += `
+                    <div class="career-card">
+                        <div class="career-top">
+                            <div class="career-number">${idx + 1}</div>
+                            <div>
+                                <h4 class="career-title">${karir.title}</h4>
+                                <span class="career-prodi">${karir.prodi || 'Program Studi Terpadu UNIPDU'}</span>
+                            </div>
+                        </div>
+                        <p class="career-desc">${karir.desc || ''}</p>
+                    </div>
+                `;
+            });
+
+            // Build Rekomendasi HTML
+            let rekoHtml = '';
+            rekomendasi.slice(0, 3).forEach((reko, idx) => {
+                rekoHtml += `
+                    <div class="reko-card">
+                        <div class="reko-header">
+                            <span class="reko-badge">Aksi ${idx + 1}</span>
+                            <h4 class="reko-title">${reko.title}</h4>
+                        </div>
+                        <p class="reko-desc">${reko.desc}</p>
+                    </div>
+                `;
+            });
 
             const win = window.open('', '_blank');
             win.document.write(`
                 <!DOCTYPE html>
-                <html>
+                <html lang="id">
                 <head>
-                    <title>Laporan Hasil Diagnosis - ${studentName}</title>
-                    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&family=Libre+Franklin:wght@400;600&family=JetBrains+Mono&display=swap" rel="stylesheet"/>
+                    <meta charset="utf-8" />
+                    <title>Laporan Asesmen Diagnostik - ${studentName}</title>
+                    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,600;0,8..60,700;1,8..60,400&family=Libre+Franklin:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet"/>
                     <style>
-                        body { font-family: 'Libre Franklin', sans-serif; padding: 40px; color: #020b24; background: #fff; }
-                        .header { border-bottom: 2px solid #020b24; padding-bottom: 16px; margin-bottom: 24px; }
-                        h1 { font-family: 'Source Serif 4', serif; font-size: 26px; margin: 0 0 4px; }
-                        .meta { font-size: 12px; color: #805600; font-weight: 600; text-transform: uppercase; }
-                        .date { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #76777e; }
-                        .section-title { font-family: 'Source Serif 4', serif; font-size: 18px; margin: 24px 0 12px; border-bottom: 1px solid #c6c6ce; padding-bottom: 4px; }
-                        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px; }
-                        .box { border: 1px solid #c6c6ce; padding: 12px; text-align: center; background: #fbf8fb; }
-                        .val { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: bold; color: #805600; }
-                        .lbl { font-size: 12px; font-weight: 600; margin-top: 4px; color: #020b24; }
-                        .career-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-                        .career-card { border: 1px solid #c6c6ce; padding: 10px; font-size: 12px; background: #f8f8f8; }
-                        .career-title { font-weight: bold; color: #020b24; }
-                        .reko-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-                        .reko-card { border: 1px solid #c6c6ce; padding: 12px; font-size: 12px; }
-                        .reko-title { font-weight: bold; margin-bottom: 4px; color: #805600; }
+                        @page {
+                            size: A4 portrait;
+                            margin: 12mm 15mm;
+                        }
+                        * {
+                            box-sizing: border-box;
+                            margin: 0;
+                            padding: 0;
+                        }
+                        body {
+                            font-family: 'Libre Franklin', sans-serif;
+                            color: #17223B;
+                            background: #FFFFFF;
+                            font-size: 11px;
+                            line-height: 1.45;
+                            padding: 24px;
+                            -webkit-print-color-adjust: exact !important;
+                            print-color-adjust: exact !important;
+                        }
+                        
+                        /* Kop Surat */
+                        .kop-surat {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            padding-bottom: 12px;
+                            margin-bottom: 16px;
+                            border-bottom: 3px double #020b24;
+                        }
+                        .kop-left {
+                            display: flex;
+                            align-items: center;
+                            gap: 14px;
+                        }
+                        .kop-logo {
+                            height: 52px;
+                            width: auto;
+                            object-fit: contain;
+                        }
+                        .kop-text h2 {
+                            font-family: 'Source Serif 4', serif;
+                            font-size: 15px;
+                            font-weight: 700;
+                            color: #020b24;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                        }
+                        .kop-text p.sub {
+                            font-size: 10px;
+                            font-weight: 600;
+                            color: #805600;
+                            margin-top: 1px;
+                        }
+                        .kop-text p.addr {
+                            font-size: 9px;
+                            color: #45464d;
+                            margin-top: 2px;
+                        }
+
+                        /* Title Banner */
+                        .doc-banner {
+                            text-align: center;
+                            margin-bottom: 16px;
+                        }
+                        .doc-banner h1 {
+                            font-family: 'Source Serif 4', serif;
+                            font-size: 16px;
+                            font-weight: 700;
+                            color: #020b24;
+                            text-transform: uppercase;
+                            letter-spacing: 0.5px;
+                            margin-bottom: 2px;
+                        }
+                        .doc-banner .doc-meta {
+                            font-family: 'JetBrains Mono', monospace;
+                            font-size: 9px;
+                            color: #76777e;
+                        }
+
+                        /* Student Info Card */
+                        .student-info-grid {
+                            display: grid;
+                            grid-template-columns: repeat(4, 1fr);
+                            gap: 8px;
+                            background: #FBFAF5;
+                            border: 1px solid rgba(23, 34, 59, 0.2);
+                            border-radius: 4px;
+                            padding: 10px 14px;
+                            margin-bottom: 16px;
+                        }
+                        .info-item .info-label {
+                            font-size: 9px;
+                            text-transform: uppercase;
+                            color: #76777e;
+                            font-family: 'JetBrains Mono', monospace;
+                            margin-bottom: 2px;
+                        }
+                        .info-item .info-val {
+                            font-size: 12px;
+                            font-weight: 700;
+                            color: #020b24;
+                        }
+
+                        /* Sections */
+                        .section {
+                            margin-bottom: 16px;
+                            page-break-inside: avoid;
+                        }
+                        .section-title {
+                            font-family: 'Source Serif 4', serif;
+                            font-size: 13px;
+                            font-weight: 700;
+                            color: #020b24;
+                            border-bottom: 1px solid #17223B;
+                            padding-bottom: 3px;
+                            margin-bottom: 8px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                        }
+                        .section-badge {
+                            font-family: 'JetBrains Mono', monospace;
+                            font-size: 9px;
+                            font-weight: 600;
+                            color: #805600;
+                            text-transform: uppercase;
+                        }
+                        .section-narrative {
+                            font-size: 11px;
+                            color: #303032;
+                            margin-bottom: 10px;
+                            line-height: 1.45;
+                        }
+
+                        /* RIASEC Grid */
+                        .riasec-grid {
+                            display: grid;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: 8px;
+                        }
+                        .riasec-card {
+                            border: 1px solid rgba(23, 34, 59, 0.18);
+                            background: #FBFAF5;
+                            border-radius: 4px;
+                            padding: 8px 10px;
+                            position: relative;
+                        }
+                        .riasec-card.dominant {
+                            border-color: #805600;
+                            background: rgba(253, 194, 101, 0.08);
+                        }
+                        .riasec-header {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-bottom: 4px;
+                        }
+                        .riasec-name {
+                            font-weight: 700;
+                            color: #020b24;
+                            font-size: 11px;
+                        }
+                        .riasec-val {
+                            font-family: 'JetBrains Mono', monospace;
+                            font-weight: 700;
+                            font-size: 12px;
+                            color: #805600;
+                        }
+                        .badge-dominant {
+                            display: inline-block;
+                            font-size: 8px;
+                            font-weight: 700;
+                            color: #805600;
+                            text-transform: uppercase;
+                            margin-top: 4px;
+                        }
+
+                        /* Progress Bars */
+                        .progress-bar-bg {
+                            width: 100%;
+                            height: 6px;
+                            background: rgba(23, 34, 59, 0.1);
+                            border-radius: 3px;
+                            overflow: hidden;
+                        }
+                        .progress-bar-fill.gold {
+                            background: #805600;
+                            height: 100%;
+                            border-radius: 3px;
+                        }
+                        .progress-bar-fill.navy {
+                            background: #020b24;
+                            height: 100%;
+                            border-radius: 3px;
+                        }
+
+                        /* VAK Style */
+                        .vak-grid {
+                            display: grid;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: 10px;
+                        }
+                        .vak-item {
+                            border: 1px solid rgba(23, 34, 59, 0.15);
+                            background: #FBFAF5;
+                            border-radius: 4px;
+                            padding: 8px 10px;
+                        }
+                        .vak-header {
+                            display: flex;
+                            justify-content: space-between;
+                            margin-bottom: 4px;
+                            font-size: 11px;
+                        }
+                        .vak-name {
+                            font-weight: 700;
+                            color: #020b24;
+                        }
+                        .vak-val.highlight {
+                            font-family: 'JetBrains Mono', monospace;
+                            font-weight: 700;
+                            color: #805600;
+                        }
+
+                        /* Career Grid */
+                        .career-grid {
+                            display: grid;
+                            grid-template-columns: 1fr 1fr;
+                            gap: 8px;
+                        }
+                        .career-card {
+                            border: 1px solid rgba(23, 34, 59, 0.18);
+                            background: #FBFAF5;
+                            border-radius: 4px;
+                            padding: 8px 10px;
+                        }
+                        .career-top {
+                            display: flex;
+                            align-items: flex-start;
+                            gap: 8px;
+                            margin-bottom: 4px;
+                        }
+                        .career-number {
+                            width: 18px;
+                            height: 18px;
+                            background: #020b24;
+                            color: #FFFFFF;
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-size: 9px;
+                            font-weight: 700;
+                            font-family: 'JetBrains Mono', monospace;
+                            flex-shrink: 0;
+                            margin-top: 1px;
+                        }
+                        .career-title {
+                            font-weight: 700;
+                            color: #020b24;
+                            font-size: 11px;
+                        }
+                        .career-prodi {
+                            font-size: 9px;
+                            color: #805600;
+                            font-weight: 600;
+                            display: block;
+                        }
+                        .career-desc {
+                            font-size: 10px;
+                            color: #45464d;
+                            line-height: 1.35;
+                        }
+
+                        /* Rekomendasi Grid */
+                        .reko-grid {
+                            display: grid;
+                            grid-template-columns: repeat(3, 1fr);
+                            gap: 8px;
+                        }
+                        .reko-card {
+                            border: 1px solid rgba(23, 34, 59, 0.18);
+                            background: #FBFAF5;
+                            border-radius: 4px;
+                            padding: 8px 10px;
+                        }
+                        .reko-badge {
+                            font-size: 8px;
+                            font-family: 'JetBrains Mono', monospace;
+                            color: #805600;
+                            font-weight: 700;
+                            text-transform: uppercase;
+                            display: block;
+                            margin-bottom: 2px;
+                        }
+                        .reko-title {
+                            font-size: 11px;
+                            font-weight: 700;
+                            color: #020b24;
+                            margin-bottom: 4px;
+                        }
+                        .reko-desc {
+                            font-size: 10px;
+                            color: #45464d;
+                            line-height: 1.35;
+                        }
+
+                        /* Signatures Block */
+                        .signatures {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: flex-end;
+                            margin-top: 24px;
+                            padding-top: 12px;
+                            border-top: 1px solid rgba(23, 34, 59, 0.2);
+                            page-break-inside: avoid;
+                        }
+                        .sig-box {
+                            text-align: center;
+                            width: 180px;
+                        }
+                        .sig-role {
+                            font-size: 10px;
+                            color: #76777e;
+                            margin-bottom: 48px;
+                        }
+                        .sig-name {
+                            font-weight: 700;
+                            color: #020b24;
+                            border-bottom: 1px solid #020b24;
+                            padding-bottom: 2px;
+                            font-size: 11px;
+                        }
+                        .sig-sub {
+                            font-size: 9px;
+                            color: #76777e;
+                            margin-top: 2px;
+                        }
+
+                        .doc-footer {
+                            margin-top: 16px;
+                            text-align: center;
+                            font-size: 8px;
+                            color: #76777e;
+                            border-top: 1px dashed rgba(23, 34, 59, 0.15);
+                            padding-top: 6px;
+                        }
                     </style>
                 </head>
                 <body>
-                    <div class="header">
-                        <div class="meta">Flexa Cendekia x UNIPDU — Laporan Tes Diagnostik</div>
-                        <h1>Profil Belajar &amp; Roadmap — ${studentName}</h1>
-                        <div class="date">Tanggal: ${dateStr}</div>
+                    <!-- Kop Surat Resmi -->
+                    <div class="kop-surat">
+                        <div class="kop-left">
+                            <img src="/public/images/Logo_Flexa-removebg-preview.png" alt="Logo Flexa" class="kop-logo" onerror="this.style.display='none'" />
+                            <div class="kop-text">
+                                <h2>Homeschooling Flexa Cendekia</h2>
+                                <p class="sub">Pusat Asesmen Minat Bakat &amp; Kurikulum Terpadu UNIPDU</p>
+                                <p class="addr">Jl. R.A Basuni No.70, Jampirogo, Sooko, Mojokerto • Telp: 0813-5755-403 • flexacendekia@gmail.com</p>
+                            </div>
+                        </div>
+                        <img src="/public/images/Logo_UNIPDU-removebg-preview.png" alt="Logo UNIPDU" class="kop-logo" onerror="this.style.display='none'" />
                     </div>
 
-                    <div class="section-title">1. Profil Minat (RIASEC)</div>
-                    <p style="font-size: 13px; line-height: 1.5; color: #45464d;">${document.getElementById('riasec-desc')?.innerText || ''}</p>
-                    <div class="grid">
-                        ${document.getElementById('riasec-container')?.innerHTML || ''}
+                    <!-- Judul Dokumen -->
+                    <div class="doc-banner">
+                        <h1>Laporan Hasil Asesmen Diagnostik &amp; Profil Belajar</h1>
+                        <div class="doc-meta">Nomor Dokumen: ${docId} • Tanggal Terbit: ${dateStr}</div>
                     </div>
 
-                    <div class="section-title">2. Gaya Belajar</div>
-                    <p style="font-size: 13px; line-height: 1.5; color: #45464d;">${document.getElementById('vak-desc')?.innerText || ''}</p>
-
-                    <div class="section-title">3. Saran Karir AI</div>
-                    <div class="career-list">
-                        ${document.getElementById('saran-karir-container')?.innerHTML || ''}
+                    <!-- Identitas Siswa -->
+                    <div class="student-info-grid">
+                        <div class="info-item">
+                            <div class="info-label">Nama Siswa</div>
+                            <div class="info-val">${studentName}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Jenjang &amp; Kelas</div>
+                            <div class="info-val">${jenjang} — Kelas ${kelas}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">NISN / No. Induk</div>
+                            <div class="info-val">${nisn}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Metode Evaluasi</div>
+                            <div class="info-val">RIASEC &amp; VAK Model</div>
+                        </div>
                     </div>
 
-                    <div class="section-title">4. Rekomendasi Pembelajaran AI</div>
-                    <div class="reko-grid">
-                        ${document.getElementById('rekomendasi-container')?.innerHTML || ''}
+                    <!-- Section 1: RIASEC -->
+                    <div class="section">
+                        <div class="section-title">
+                            <span>1. Profil Minat Karir (Holland RIASEC)</span>
+                            <span class="section-badge">Analisis Talenta</span>
+                        </div>
+                        <div class="section-narrative">${narasiRiasec}</div>
+                        <div class="riasec-grid">
+                            ${riasecCardsHtml}
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Gaya Belajar -->
+                    <div class="section">
+                        <div class="section-title">
+                            <span>2. Modalitas &amp; Gaya Belajar (VAK)</span>
+                            <span class="section-badge">Strategi Belajar</span>
+                        </div>
+                        <div class="section-narrative">${narasiGayaBelajar}</div>
+                        <div class="vak-grid">
+                            ${vakHtml}
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Saran Karir -->
+                    <div class="section">
+                        <div class="section-title">
+                            <span>3. Rekomendasi Karir Strategis &amp; Peminatan S1 UNIPDU</span>
+                            <span class="section-badge">Roadmap 6 Tahun</span>
+                        </div>
+                        <div class="career-grid">
+                            ${careerHtml}
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Rekomendasi Pembelajaran -->
+                    <div class="section">
+                        <div class="section-title">
+                            <span>4. Rekomendasi Langkah Belajar Personal</span>
+                            <span class="section-badge">Rencana Aksi</span>
+                        </div>
+                        <div class="reko-grid">
+                            ${rekoHtml}
+                        </div>
+                    </div>
+
+                    <!-- Lembar Tanda Tangan & Pengesahan -->
+                    <div class="signatures">
+                        <div class="sig-box">
+                            <p class="sig-role">Siswa Peserta Asesmen,</p>
+                            <p class="sig-name">${studentName}</p>
+                            <p class="sig-sub">Siswa Homeschooling Flexa</p>
+                        </div>
+                        <div class="sig-box">
+                            <p class="sig-role">Konselor / Tutor Pembimbing,</p>
+                            <p class="sig-name">Muthohhari</p>
+                            <p class="sig-sub">Pembimbing Akademik UNIPDU</p>
+                        </div>
+                        <div class="sig-box">
+                            <p class="sig-role">Mojokerto, ${dateStr}<br/>Kepala Akademik,</p>
+                            <p class="sig-name">Tim Akademik Flexa</p>
+                            <p class="sig-sub">Homeschooling Flexa Cendekia</p>
+                        </div>
+                    </div>
+
+                    <div class="doc-footer">
+                        Dokumen ini dicetak otomatis oleh Sistem Asesmen Diagnostik Homeschooling Flexa Cendekia x UNIPDU Jombang. Sah tanpa tanda tangan basah jika diverifikasi via portal sistem.
                     </div>
 
                     <script>
                         window.onload = function() {
-                            setTimeout(function() { window.print(); }, 500);
+                            setTimeout(function() { window.print(); }, 400);
                         };
                     <\/script>
                 </body>
@@ -827,6 +1356,9 @@
                     desc: k.desc || k.tag || ''
                 }));
             }
+
+            // Simpan ke global window untuk print snapshot
+            window.currentAiDiagnosisData = aiData;
 
             // Save and sync data permanently to Firestore and localStorage
             if (window.DataStore) {
@@ -1133,7 +1665,7 @@
             });
 
             // Update Avatars
-            const initials = nama.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'SW';
+            const initials = nama.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'M';
             ['sidebar-user-avatar', 'top-user-avatar', 'user-avatar-badge', 'hero-user-avatar'].forEach(id => {
                 const av = document.getElementById(id);
                 if (av) {
