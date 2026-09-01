@@ -9,3 +9,4 @@ fix-ortu.js
 fix.js
 server/test_roadmap.js
 _legacy_backup/
+.vercel

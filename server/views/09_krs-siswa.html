@@ -81,6 +81,70 @@
         tr:nth-child(even) {
             background-color: rgba(128, 86, 0, 0.02);
         }
+
+        /* Mode Cetak Resmi Dokumen Akademik */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 1.2cm 1.5cm 1.5cm 1.5cm;
+            }
+            body {
+                background: #FFFFFF !important;
+                background-color: #FFFFFF !important;
+                color: #17223B !important;
+                font-size: 11px !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            nav, footer, .no-print, .lg\:col-span-4, #krs-toast, #krs-action-buttons, button {
+                display: none !important;
+            }
+            .lg\:col-span-8 {
+                width: 100% !important;
+                max-width: 100% !important;
+                flex: 0 0 100% !important;
+            }
+            .grid {
+                display: block !important;
+            }
+            main {
+                padding: 0 !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+            }
+            header {
+                padding-bottom: 8px !important;
+                margin-bottom: 12px !important;
+            }
+            .ledger-card {
+                background-color: #FFFFFF !important;
+                border: 1px solid #17223B !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+                margin-bottom: 14px !important;
+            }
+            .print-kop-surat {
+                display: flex !important;
+            }
+            .print-signatures {
+                display: flex !important;
+            }
+            table {
+                width: 100% !important;
+            }
+            th, td {
+                padding: 6px 8px !important;
+            }
+        }
+        .print-kop-surat {
+            display: none;
+        }
+        .print-signatures {
+            display: none;
+        }
     </style>
 
     <!-- Firebase SDK (compat) & Auth Layer -->
@@ -130,7 +194,7 @@
                 <a href="/?page=18_profil_profil-siswa" id="top-user-avatar"
                     class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-mono text-xs font-bold border border-primary/30 hover:ring-2 hover:ring-secondary/50 transition-all overflow-hidden"
                     title="Profil Siswa">
-                    SW
+                    M
                 </a>
                 <button
                     onclick="if(window.flexaLogout) flexaLogout(); else firebase.auth().signOut().then(()=>window.location.href='/?page=01_login');"
@@ -142,6 +206,19 @@
 
     <!-- Main Workspace -->
     <main class="flex-1 max-w-[1400px] w-full mx-auto px-4 md:px-8 py-6 space-y-6">
+
+        <!-- Kop Surat Resmi Cetak KRS (Hanya Muncul Saat Cetak / Print) -->
+        <div class="print-kop-surat items-center justify-between pb-4 mb-4 border-b-2 border-primary">
+            <div class="flex items-center gap-4">
+                <img src="/public/images/Logo_Flexa-removebg-preview.png" alt="Logo Flexa" class="h-14 w-auto object-contain" />
+                <div>
+                    <h2 class="font-headline-md text-base font-bold text-primary tracking-wide uppercase">Homeschooling Flexa Cendekia</h2>
+                    <p class="text-[11px] text-on-surface-variant font-medium">Bekerjasama dengan Universitas Pesantren Tinggi Darul Ulum (UNIPDU) Jombang</p>
+                    <p class="text-[10px] text-on-surface-variant/80">Jl. R.A Basuni No.70, Jampirogo, Sooko, Mojokerto • Telp: 0813-5755-403 • flexacendekia@gmail.com</p>
+                </div>
+            </div>
+            <img src="/public/images/Logo_UNIPDU-removebg-preview.png" alt="Logo UNIPDU" class="h-14 w-auto object-contain" />
+        </div>
 
         <!-- Header Title Banner -->
         <header class="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2 border-b border-primary/10">
@@ -233,6 +310,20 @@
                         </table>
                     </div>
                 </section>
+
+                <!-- Kolom Tanda Tangan Validasi Resmi (Muncul Saat Cetak Dokumen) -->
+                <div class="print-signatures justify-between items-end pt-6 mt-4 border-t border-primary/20 text-xs">
+                    <div class="text-center w-48">
+                        <p class="text-[11px] text-on-surface-variant mb-14">Siswa Yang Mengajukan,</p>
+                        <p class="font-bold text-primary border-b border-primary pb-1" id="print-signature-student">Muhammad</p>
+                        <p class="text-[10px] text-on-surface-variant mt-0.5">Siswa Flexa Cendekia</p>
+                    </div>
+                    <div class="text-center w-56">
+                        <p class="text-[11px] text-on-surface-variant mb-14">Mojokerto, <span id="print-signature-date">-</span><br />Guru Pembimbing Akademik,</p>
+                        <p class="font-bold text-primary border-b border-primary pb-1" id="print-signature-advisor">Muthohhari</p>
+                        <p class="text-[10px] text-on-surface-variant mt-0.5">Pembimbing Akademik UNIPDU</p>
+                    </div>
+                </div>
             </div>
 
             <!-- Right Column: Quick Action & Summary -->
@@ -685,6 +776,24 @@
             const nameEl = document.getElementById('display-student-name');
             if (nameEl) nameEl.textContent = nama;
 
+            // Inisial Avatar Navbar & Foto
+            const initials = (nama || 'Muhammad').split(' ').filter(Boolean).map(n => n[0]).join('').slice(0, 2).toUpperCase() || 'M';
+            const topAvatar = document.getElementById('top-user-avatar');
+            if (topAvatar) {
+                const fotoUrl = user.fotoUrl || user.avatar || localStorage.getItem('userAvatar') || '';
+                if (fotoUrl) {
+                    topAvatar.innerHTML = `<img src="${fotoUrl}" alt="${nama}" class="w-full h-full object-cover rounded-full" />`;
+                } else {
+                    topAvatar.textContent = initials;
+                }
+            }
+
+            // Kolom Tanda Tangan Cetak
+            const sigStudent = document.getElementById('print-signature-student');
+            if (sigStudent) sigStudent.textContent = nama;
+            const sigDate = document.getElementById('print-signature-date');
+            if (sigDate) sigDate.textContent = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
             const jkEl = document.getElementById('krs-jenjang-kelas');
             if (jkEl) jkEl.textContent = `${jenjang} — Kelas ${kelas}`;
 
@@ -707,6 +816,8 @@
                                 if (gDoc.exists && gDoc.data().nama) {
                                     const pEl = document.getElementById('krs-pembimbing');
                                     if (pEl) pEl.textContent = gDoc.data().nama + ' (Guru Pembimbing)';
+                                    const sigAdv = document.getElementById('print-signature-advisor');
+                                    if (sigAdv) sigAdv.textContent = gDoc.data().nama;
                                 }
                             });
                         }
@@ -715,6 +826,8 @@
             } catch (err) { }
             const pembimbingEl = document.getElementById('krs-pembimbing');
             if (pembimbingEl) pembimbingEl.textContent = advisorName;
+            const sigAdvisor = document.getElementById('print-signature-advisor');
+            if (sigAdvisor) sigAdvisor.textContent = advisorName.replace(' (Guru Pembimbing)', '');
 
             // 3. Status Badge Banner
             const badgeEl = document.getElementById('krs-status-badge');
