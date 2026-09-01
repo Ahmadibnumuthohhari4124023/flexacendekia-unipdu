@@ -136,17 +136,57 @@
             opacity: 0.6;
         }
 
+        /* Mode Cetak Resmi Roadmap 6 Tahun A4 */
         @media print {
-            header, aside, footer, .no-print {
-                display: none !important;
+            @page {
+                size: A4 portrait;
+                margin: 8mm 12mm 8mm 12mm;
             }
-            body {
-                background: white !important;
-                color: black !important;
+            html, body {
+                background: #FFFFFF !important;
+                background-color: #FFFFFF !important;
+                color: #17223B !important;
+                font-size: 10px !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                height: auto !important;
+                min-height: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            header, aside, footer, #career-modal, .no-print, button, #sync-calendar-btn, #download-pdf-btn, #print-roadmap-btn, #filter-jenjang-wrap, #search-roadmap-input, #realtime-clock {
+                display: none !important;
             }
             main {
                 padding: 0 !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
             }
+            .ledger-card, .hard-shadow {
+                background-color: #FFFFFF !important;
+                border: 1px solid #17223B !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+                margin-bottom: 8px !important;
+            }
+            .print-kop-surat {
+                display: flex !important;
+                padding-bottom: 4px !important;
+                margin-bottom: 6px !important;
+            }
+            .print-signatures {
+                display: flex !important;
+                margin-top: 10px !important;
+                padding-top: 6px !important;
+                page-break-inside: avoid;
+            }
+        }
+        .print-kop-surat {
+            display: none;
+        }
+        .print-signatures {
+            display: none;
         }
     </style>
 
@@ -266,6 +306,19 @@
         <main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop">
             <div class="max-w-container-max mx-auto space-y-8">
                 
+                <!-- Kop Surat Resmi Cetak Roadmap (Hanya Muncul Saat Print) -->
+                <div class="print-kop-surat items-center justify-between pb-3 mb-2 border-b-2 border-primary">
+                    <div class="flex items-center gap-4">
+                        <img src="/public/images/Logo_Flexa-removebg-preview.png" alt="Logo Flexa" class="h-12 w-auto object-contain" />
+                        <div>
+                            <h2 class="font-display-lg text-base font-bold text-primary tracking-wide uppercase">Homeschooling Flexa Cendekia</h2>
+                            <p class="text-[10px] text-on-surface-variant font-medium">Bekerjasama dengan Universitas Pesantren Tinggi Darul Ulum (UNIPDU) Jombang</p>
+                            <p class="text-[9px] text-on-surface-variant/80">Jl. R.A Basuni No.70, Jampirogo, Sooko, Mojokerto • Telp: 0813-5755-403 • flexacendekia@gmail.com</p>
+                        </div>
+                    </div>
+                    <img src="/public/images/Logo_UNIPDU-removebg-preview.png" alt="Logo UNIPDU" class="h-12 w-auto object-contain" />
+                </div>
+
                 <!-- Header & Stats Banner -->
                 <div class="bg-ledger-ivory border border-primary/20 p-6 md:p-8 hard-shadow relative">
                     <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
@@ -604,6 +657,20 @@
                             <span class="material-symbols-outlined text-sm">calendar_month</span>
                             Sinkronkan dengan Kalender (.ics)
                         </button>
+                    </div>
+                </div>
+
+                <!-- Kolom Tanda Tangan Validasi Roadmap (Muncul Saat Cetak) -->
+                <div class="print-signatures justify-between items-end pt-4 mt-2 border-t border-primary/20 text-xs">
+                    <div class="text-center w-48">
+                        <p class="text-[10px] text-on-surface-variant mb-8">Siswa Pemilik Roadmap,</p>
+                        <p class="font-bold text-primary border-b border-primary pb-1 text-xs" id="roadmap-print-student">Muhammad</p>
+                        <p class="text-[9px] text-on-surface-variant mt-0.5">Siswa Flexa Cendekia</p>
+                    </div>
+                    <div class="text-center w-56">
+                        <p class="text-[10px] text-on-surface-variant mb-8">Mojokerto, <span id="roadmap-print-date">-</span><br />Konselor Akademik / Guru Wali,</p>
+                        <p class="font-bold text-primary border-b border-primary pb-1 text-xs">Muthohhari, M.Pd.</p>
+                        <p class="text-[9px] text-on-surface-variant mt-0.5">Direktorat Akademik UNIPDU</p>
                     </div>
                 </div>
 
@@ -1095,26 +1162,13 @@
 
         // Counselor Advisor Finder
         function getAdvisorInfo(careerTitle) {
-            const c = (careerTitle || '').toLowerCase();
-            if (c.includes('aktor') || c.includes('seni') || c.includes('musik') || c.includes('desain') || c.includes('tari') || c.includes('foto') || c.includes('animas')) {
-                return { name: 'Bpk. Danang Prasetyo, S.Sn (UNIPDU)', role: 'Dosen Pembimbing Seni & Industri Kreatif' };
-            }
-            if (c.includes('dokter') || c.includes('rawat') || c.includes('apotek') || c.includes('bidan') || c.includes('gizi') || c.includes('medis')) {
-                return { name: 'dr. Hendra Wicaksono, Sp.A (UNIPDU)', role: 'Dosen Pembimbing Medis & Biomedika' };
-            }
-            if (c.includes('polisi') || c.includes('tentara') || c.includes('hukum') || c.includes('hakim') || c.includes('pengacara') || c.includes('diplomat')) {
-                return { name: 'Bpk. Surya Dinata, S.H., M.H. (UNIPDU)', role: 'Konselor Hukum & Kebijakan Publik' };
-            }
-            if (c.includes('program') || c.includes('data') || c.includes('komputer') || c.includes('sistem') || c.includes('teknolog')) {
-                return { name: 'Dosen Pembimbing Program Studi UNIPDU', role: 'Dosen Pembimbing Informatika & Sains Data' };
-            }
-            if (c.includes('bisnis') || c.includes('akuntan') || c.includes('marketing') || c.includes('wirausaha') || c.includes('keuangan')) {
-                return { name: 'Ibu Rina Kartika, S.E., M.M. (UNIPDU)', role: 'Konselor Bisnis & Manajemen Finansial' };
-            }
-            if (c.includes('guru') || c.includes('dosen') || c.includes('didik') || c.includes('sekolah')) {
-                return { name: 'Bpk. Drs. H. Mulyadi, M.Pd (UNIPDU)', role: 'Konselor Pedagogi & Manajemen Pendidikan' };
-            }
-            return { name: 'Konselor Akademik & Portofolio UNIPDU', role: 'Konselor Akademik & Portofolio' };
+            try {
+                const u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                if (u.guruWaliNama) {
+                    return { name: u.guruWaliNama, role: 'Guru Pembimbing Terdaftar' };
+                }
+            } catch(e) {}
+            return { name: 'Menunggu Penugasan Guru', role: 'Konselor & Pembimbing Akademik' };
         }
 
         // Higher Ed Degree Naming
@@ -1916,9 +1970,12 @@
         const fotoUrl = user.fotoUrl || user.avatar || localStorage.getItem('userAvatar') || '';
 
         // Update all display names
-        document.querySelectorAll('.user-display-name, #user-name-display, #sidebar-user-name, #top-user-name').forEach(el => {
+        document.querySelectorAll('.user-display-name, #user-name-display, #sidebar-user-name, #top-user-name, #roadmap-print-student').forEach(el => {
             if (el) el.textContent = nama;
         });
+
+        const rDate = document.getElementById('roadmap-print-date');
+        if (rDate) rDate.textContent = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 
         // Update jenjang & kelas displays
         document.querySelectorAll('.user-jenjang-display, #sidebar-user-jenjang').forEach(el => {
@@ -1926,7 +1983,7 @@
         });
 
         // Update Avatars
-        const initials = nama.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'SW';
+        const initials = nama.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase() || 'M';
         ['sidebar-user-avatar', 'top-user-avatar', 'user-avatar-badge', 'hero-user-avatar'].forEach(id => {
             const av = document.getElementById(id);
             if (av) {

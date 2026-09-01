@@ -278,20 +278,77 @@
             border: 1px solid rgba(185, 134, 47, 0.4)
         }
 
+        /* Mode Cetak Resmi Transkrip Akademik A4 */
         @media print {
-            .no-print {
-                display: none !important
+            @page {
+                size: A4 portrait;
+                margin: 8mm 12mm 8mm 12mm;
             }
-
-            body {
-                background: white
+            html, body {
+                background: #FFFFFF !important;
+                background-color: #FFFFFF !important;
+                color: #17223B !important;
+                font-size: 10px !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                height: auto !important;
+                min-height: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
             }
-
-            .ledger-card,
-            .ledger-shadow {
-                box-shadow: none;
-                border: 1px solid #ccc
+            .no-print, aside, header, footer, #bottom-nav, #export-btn, button, .quick-actions, #mini-chart-bars, #hero-module-categories, #gpa-chart-section {
+                display: none !important;
             }
+            main {
+                padding: 0 !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+                width: 100% !important;
+                margin-left: 0 !important;
+            }
+            .max-w-6xl {
+                max-width: 100% !important;
+            }
+            .ledger-card {
+                background-color: #FFFFFF !important;
+                border: 1px solid #17223B !important;
+                box-shadow: none !important;
+                page-break-inside: avoid;
+                margin-bottom: 8px !important;
+                padding: 8px 12px !important;
+            }
+            .print-kop-surat {
+                display: flex !important;
+                padding-bottom: 4px !important;
+                margin-bottom: 6px !important;
+            }
+            .print-signatures {
+                display: flex !important;
+                margin-top: 10px !important;
+                padding-top: 6px !important;
+                page-break-inside: avoid;
+            }
+            table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+            }
+            th, td {
+                padding: 4px 6px !important;
+                font-size: 9.5px !important;
+            }
+            th {
+                background-color: #f5f5f5 !important;
+                color: #000 !important;
+            }
+            .tab-panel {
+                display: block !important;
+            }
+        }
+        .print-kop-surat {
+            display: none;
+        }
+        .print-signatures {
+            display: none;
         }
     </style>
 
@@ -397,6 +454,19 @@
     <!-- PAGE CONTENT -->
     <main class="flex-1 p-4 md:p-8 overflow-y-auto pb-20 md:pb-8">
         <div class="max-w-6xl mx-auto space-y-8">
+
+            <!-- Kop Surat Resmi Cetak Transkrip Akademik (Hanya Muncul Saat Print) -->
+            <div class="print-kop-surat items-center justify-between pb-3 mb-2 border-b-2 border-primary">
+                <div class="flex items-center gap-4">
+                    <img src="/public/images/Logo_Flexa-removebg-preview.png" alt="Logo Flexa" class="h-12 w-auto object-contain" />
+                    <div>
+                        <h2 class="font-serif text-base font-bold text-primary tracking-wide uppercase">Homeschooling Flexa Cendekia</h2>
+                        <p class="text-[10px] text-on-surface-variant font-medium">Bekerjasama dengan Universitas Pesantren Tinggi Darul Ulum (UNIPDU) Jombang</p>
+                        <p class="text-[9px] text-on-surface-variant/80">Jl. R.A Basuni No.70, Jampirogo, Sooko, Mojokerto • Telp: 0813-5755-403 • flexacendekia@gmail.com</p>
+                    </div>
+                </div>
+                <img src="/public/images/Logo_UNIPDU-removebg-preview.png" alt="Logo UNIPDU" class="h-12 w-auto object-contain" />
+            </div>
 
             <!-- HERO STATS ROW -->
             <section class="grid grid-cols-2 lg:grid-cols-4 gap-4 animate-entry delay-1">
@@ -505,6 +575,20 @@
                 <div id="semester-panels-container">
                     <div class="p-8 text-center text-on-surface-variant font-mono text-sm">
                         Memuat data nilai...
+                    </div>
+                </div>
+
+                <!-- Kolom Tanda Tangan Validasi Transkrip (Muncul Saat Cetak) -->
+                <div class="print-signatures justify-between items-end pt-4 mt-2 border-t border-primary/20 text-xs">
+                    <div class="text-center w-48">
+                        <p class="text-[10px] text-on-surface-variant mb-8">Siswa Yang Bersangkutan,</p>
+                        <p class="font-bold text-primary border-b border-primary pb-1 text-xs user-display-name">Muhammad</p>
+                        <p class="text-[9px] text-on-surface-variant mt-0.5">Siswa Flexa Cendekia</p>
+                    </div>
+                    <div class="text-center w-56">
+                        <p class="text-[10px] text-on-surface-variant mb-8">Mojokerto, <span class="transcript-print-date">-</span><br />Guru Pembimbing / Dewan Akademik,</p>
+                        <p class="font-bold text-primary border-b border-primary pb-1 text-xs">Muthohhari, M.Pd.</p>
+                        <p class="text-[9px] text-on-surface-variant mt-0.5">Direktorat Akademik UNIPDU</p>
                     </div>
                 </div>
             </section>
@@ -748,10 +832,11 @@
 function updateClock(){
     const now=new Date();
     const days=['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-    const months=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+    const months=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
     const h=String(now.getHours()).padStart(2,'0'),m=String(now.getMinutes()).padStart(2,'0'),s=String(now.getSeconds()).padStart(2,'0');
     const el=document.getElementById('top-clock');
-    if(el)el.textContent=days[now.getDay()]+', '+now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear()+' \u2022 '+h+':'+m+':'+s;
+    if(el)el.textContent=days[now.getDay()]+', '+now.getDate()+' '+months[now.getMonth()].slice(0,3)+' '+now.getFullYear()+' \u2022 '+h+':'+m+':'+s;
+    document.querySelectorAll('.transcript-print-date').forEach(p => p.textContent = now.getDate() + ' ' + months[now.getMonth()] + ' ' + now.getFullYear());
 }
 updateClock();setInterval(updateClock,1000);
 

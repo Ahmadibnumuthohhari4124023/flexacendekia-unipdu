@@ -82,23 +82,25 @@
             background-color: rgba(128, 86, 0, 0.02);
         }
 
-        /* Mode Cetak Resmi Dokumen Akademik */
+        /* Mode Cetak Resmi Dokumen Akademik A4 Presisi */
         @media print {
             @page {
                 size: A4 portrait;
-                margin: 1.2cm 1.5cm 1.5cm 1.5cm;
+                margin: 8mm 12mm 8mm 12mm;
             }
-            body {
+            html, body {
                 background: #FFFFFF !important;
                 background-color: #FFFFFF !important;
                 color: #17223B !important;
-                font-size: 11px !important;
+                font-size: 10px !important;
                 padding: 0 !important;
                 margin: 0 !important;
+                height: auto !important;
+                min-height: 0 !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
             }
-            nav, footer, .no-print, .lg\:col-span-4, #krs-toast, #krs-action-buttons, button {
+            nav, footer, .no-print, .lg\:col-span-4, #krs-toast, #krs-action-buttons, button, #krs-guidance-text {
                 display: none !important;
             }
             .lg\:col-span-8 {
@@ -116,27 +118,41 @@
                 width: 100% !important;
             }
             header {
-                padding-bottom: 8px !important;
-                margin-bottom: 12px !important;
+                padding-bottom: 4px !important;
+                margin-bottom: 6px !important;
+            }
+            header h1 {
+                font-size: 16px !important;
+                margin-bottom: 2px !important;
             }
             .ledger-card {
                 background-color: #FFFFFF !important;
                 border: 1px solid #17223B !important;
                 box-shadow: none !important;
                 page-break-inside: avoid;
-                margin-bottom: 14px !important;
+                margin-bottom: 6px !important;
+                padding: 8px 12px !important;
             }
             .print-kop-surat {
                 display: flex !important;
+                padding-bottom: 4px !important;
+                margin-bottom: 6px !important;
             }
             .print-signatures {
                 display: flex !important;
+                margin-top: 8px !important;
+                padding-top: 6px !important;
+                page-break-inside: avoid;
             }
             table {
                 width: 100% !important;
             }
             th, td {
-                padding: 6px 8px !important;
+                padding: 3px 6px !important;
+                font-size: 9.5px !important;
+            }
+            th {
+                background-color: #f5f5f5 !important;
             }
         }
         .print-kop-surat {
@@ -312,16 +328,16 @@
                 </section>
 
                 <!-- Kolom Tanda Tangan Validasi Resmi (Muncul Saat Cetak Dokumen) -->
-                <div class="print-signatures justify-between items-end pt-6 mt-4 border-t border-primary/20 text-xs">
+                <div class="print-signatures justify-between items-end pt-4 mt-2 border-t border-primary/20 text-xs">
                     <div class="text-center w-48">
-                        <p class="text-[11px] text-on-surface-variant mb-14">Siswa Yang Mengajukan,</p>
-                        <p class="font-bold text-primary border-b border-primary pb-1" id="print-signature-student">Muhammad</p>
-                        <p class="text-[10px] text-on-surface-variant mt-0.5">Siswa Flexa Cendekia</p>
+                        <p class="text-[10px] text-on-surface-variant mb-8">Siswa Yang Mengajukan,</p>
+                        <p class="font-bold text-primary border-b border-primary pb-1 text-xs" id="print-signature-student">Muhammad</p>
+                        <p class="text-[9px] text-on-surface-variant mt-0.5">Siswa Flexa Cendekia</p>
                     </div>
                     <div class="text-center w-56">
-                        <p class="text-[11px] text-on-surface-variant mb-14">Mojokerto, <span id="print-signature-date">-</span><br />Guru Pembimbing Akademik,</p>
-                        <p class="font-bold text-primary border-b border-primary pb-1" id="print-signature-advisor">Muthohhari</p>
-                        <p class="text-[10px] text-on-surface-variant mt-0.5">Pembimbing Akademik UNIPDU</p>
+                        <p class="text-[10px] text-on-surface-variant mb-8">Mojokerto, <span id="print-signature-date">-</span><br />Guru Pembimbing Akademik,</p>
+                        <p class="font-bold text-primary border-b border-primary pb-1 text-xs" id="print-signature-advisor">Muthohhari</p>
+                        <p class="text-[9px] text-on-surface-variant mt-0.5">Pembimbing Akademik UNIPDU</p>
                     </div>
                 </div>
             </div>
