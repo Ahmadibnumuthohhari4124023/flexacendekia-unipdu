@@ -10,7 +10,7 @@
  * 6. Clean Reset Engine: Menyediakan fungsi global window.flexaResetAllData() untuk mereset seluruh data simulasi ke titik 0.
  */
 
-(function() {
+(function () {
     'use strict';
 
     var _authResolved = false;
@@ -104,16 +104,16 @@
             window.currentFirebaseUser = cachedUser;
             _fastHydrationDone = true;
             showPageContent();
-            window.getCurrentUserProfile = function() { return window.currentFirebaseUser; };
+            window.getCurrentUserProfile = function () { return window.currentFirebaseUser; };
             window.dispatchEvent(new CustomEvent('auth-ready', { detail: window.currentFirebaseUser }));
-            
-            document.addEventListener('DOMContentLoaded', function() {
+
+            document.addEventListener('DOMContentLoaded', function () {
                 if (window.currentFirebaseUser) {
                     window.dispatchEvent(new CustomEvent('auth-ready', { detail: window.currentFirebaseUser }));
                 }
             });
         }
-    } catch(e) {}
+    } catch (e) { }
 
     // =============================================
     // 2. PARALLEL SECURE AUTH VERIFICATION
@@ -127,16 +127,16 @@
         }
 
         window.firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-            .then(function() {
-                var authCheckPromise = new Promise(function(resolve) {
-                    var unsubscribe = firebaseAuth.onAuthStateChanged(function(user) {
+            .then(function () {
+                var authCheckPromise = new Promise(function (resolve) {
+                    var unsubscribe = firebaseAuth.onAuthStateChanged(function (user) {
                         if (user) {
                             unsubscribe();
                             resolve(user);
                         }
                     });
 
-                    setTimeout(function() {
+                    setTimeout(function () {
                         var currentUser = window.firebaseAuth.currentUser;
                         if (currentUser) {
                             resolve(currentUser);
@@ -146,7 +146,7 @@
                     }, RECOVERY_WAIT);
                 });
 
-                authCheckPromise.then(function(user) {
+                authCheckPromise.then(function (user) {
                     if (_authResolved) return;
                     _authResolved = true;
 
@@ -163,16 +163,16 @@
                     try {
                         var uidRaw = localStorage.getItem('flexa_user_' + user.uid);
                         if (uidRaw) uidCache = JSON.parse(uidRaw);
-                    } catch(e) {}
+                    } catch (e) { }
 
                     // Ambil profil terbaru dari Firestore
                     window.firebaseDb.collection('users').doc(user.uid).get()
-                        .then(function(doc) {
+                        .then(function (doc) {
                             // Prioritas: Firestore > cache per-UID > cache global
                             var data = doc.exists ? doc.data() : (uidCache || cachedUser || {});
                             var baseCache = uidCache || cachedUser || {};
                             var role = normalizeRole(data.role || baseCache.role || 'Siswa');
-                            
+
                             window.currentFirebaseUser = Object.assign({}, baseCache, data, {
                                 uid: user.uid,
                                 email: user.email,
@@ -185,7 +185,7 @@
                                 localStorage.setItem('flexa_user_' + user.uid, userJson);
                                 // Simpan juga ke key global (backward-compat)
                                 localStorage.setItem('currentUser', userJson);
-                            } catch(e) {}
+                            } catch (e) { }
 
                             var allowed = checkRoleAccess(role);
                             if (!allowed) {
@@ -194,25 +194,25 @@
                             }
 
                             showPageContent();
-                            window.getCurrentUserProfile = function() { return window.currentFirebaseUser; };
+                            window.getCurrentUserProfile = function () { return window.currentFirebaseUser; };
                             // Dispatch ulang auth-ready dengan data yang sudah terverifikasi
                             window.dispatchEvent(new CustomEvent('auth-ready', { detail: window.currentFirebaseUser }));
 
                             // Token Refresh Timer (30 Menit)
-                            setInterval(function() {
+                            setInterval(function () {
                                 var u = window.firebaseAuth.currentUser;
                                 if (u) {
-                                    u.getIdToken(true).catch(function() {});
+                                    u.getIdToken(true).catch(function () { });
                                 }
                             }, 30 * 60 * 1000);
                         })
-                        .catch(function(err) {
+                        .catch(function (err) {
                             console.warn('[AuthGuard] Firestore sync warning:', err);
                             showPageContent();
                         });
                 });
             })
-            .catch(function() {
+            .catch(function () {
                 if (!cachedUser) {
                     safeRedirectToLogin();
                 } else {
@@ -227,7 +227,7 @@
         window.addEventListener('firebase-ready', onFirebaseReady);
     }
 
-    setTimeout(function() {
+    setTimeout(function () {
         if (!_authResolved) {
             _authResolved = true;
             if (!cachedUser && !window.firebaseAuth?.currentUser) {
@@ -241,10 +241,10 @@
     // =============================================
     // 3. GLOBAL PROFILE & AVATAR DOM SYNCHRONIZER
     // =============================================
-    window.flexaSyncProfileElements = function(user) {
+    window.flexaSyncProfileElements = function (user) {
         var defaultName = user.role === 'Guru' ? 'Tutor & Pendidik' : (user.role === 'OrangTua' ? 'Wali Siswa' : 'Siswa Flexa');
         var nama = user.nama || (user.email ? user.email.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : defaultName);
-        var initials = nama.split(' ').filter(Boolean).map(function(n){ return n[0]; }).slice(0, 2).join('').toUpperCase() || 'FC';
+        var initials = nama.split(' ').filter(Boolean).map(function (n) { return n[0]; }).slice(0, 2).join('').toUpperCase() || 'FC';
         var fotoUrl = user.fotoUrl || user.avatar || localStorage.getItem('userAvatar') || '';
         var jenjang = (user.jenjang || localStorage.getItem('userJenjang') || 'SMA').toUpperCase();
         var kelas = user.kelas || localStorage.getItem('userKelas') || (jenjang === 'SD' ? '1' : (jenjang === 'SMP' ? '7' : '10'));
@@ -252,12 +252,12 @@
 
         // Update all text names
         var nameSelectors = [
-            '#user-display-name', '#display-student-name', '#sidebar-student-name', 
-            '#top-user-name', '#menu-user-name', '#hero-nama', '.user-display-name', 
+            '#user-display-name', '#display-student-name', '#sidebar-student-name',
+            '#top-user-name', '#menu-user-name', '#hero-nama', '.user-display-name',
             '.user-nama', '#profile-user-name', '#navbar-user-name'
         ];
-        nameSelectors.forEach(function(sel) {
-            document.querySelectorAll(sel).forEach(function(el) {
+        nameSelectors.forEach(function (sel) {
+            document.querySelectorAll(sel).forEach(function (el) {
                 if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                     if (!el.value) el.value = nama;
                 } else if (sel === '#top-user-name') {
@@ -270,11 +270,11 @@
 
         // Update all avatars (Hero, Topbar, Sidebar, Dropdown)
         var avatarIds = [
-            'top-user-avatar', 'hero-user-avatar', 'user-avatar-large', 
+            'top-user-avatar', 'hero-user-avatar', 'user-avatar-large',
             'user-avatar-small', 'user-initials', 'top-avatar', 'sidebar-avatar',
             'navbar-avatar'
         ];
-        avatarIds.forEach(function(id) {
+        avatarIds.forEach(function (id) {
             var el = document.getElementById(id);
             if (el) {
                 if (fotoUrl) {
@@ -293,26 +293,26 @@
         }
 
         // Update level and career text
-        document.querySelectorAll('#user-jenjang, .user-jenjang-kelas, #hero-jenjang-kelas, #krs-jenjang-kelas').forEach(function(el) {
+        document.querySelectorAll('#user-jenjang, .user-jenjang-kelas, #hero-jenjang-kelas, #krs-jenjang-kelas').forEach(function (el) {
             el.textContent = jenjang + ' — Kelas ' + kelas;
         });
 
-        document.querySelectorAll('#user-citacita, .user-cita-cita, #hero-cita-cita, #krs-cita-cita').forEach(function(el) {
+        document.querySelectorAll('#user-citacita, .user-cita-cita, #hero-cita-cita, #krs-cita-cita').forEach(function (el) {
             el.textContent = career;
         });
     };
 
     // Auto-sync on DOMContentLoaded & auth-ready
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         try {
             var u = JSON.parse(localStorage.getItem('currentUser') || '{}');
             if (u && (u.nama || u.email || localStorage.getItem('userNama'))) {
                 window.flexaSyncProfileElements(u);
             }
-        } catch(e) {}
+        } catch (e) { }
     });
 
-    window.addEventListener('auth-ready', function(e) {
+    window.addEventListener('auth-ready', function (e) {
         if (e.detail) {
             window.flexaSyncProfileElements(e.detail);
         }
@@ -321,7 +321,7 @@
     // =============================================
     // 4. GLOBAL LOGOUT & COMPLETE RESET UTILITIES
     // =============================================
-    window.flexaLogout = function() {
+    window.flexaLogout = function () {
         try {
             // Hapus cache per-UID untuk user aktif
             var cu = window.currentFirebaseUser || {};
@@ -331,12 +331,12 @@
             localStorage.removeItem('currentUser');
             localStorage.removeItem('selectedCareer');
             localStorage.removeItem('userAvatar');
-        } catch(e) {}
-        
+        } catch (e) { }
+
         if (window.firebaseAuth) {
-            firebaseAuth.signOut().then(function() {
+            firebaseAuth.signOut().then(function () {
                 window.location.replace(getLoginUrl());
-            }).catch(function() {
+            }).catch(function () {
                 window.location.replace(getLoginUrl());
             });
         } else {
@@ -344,12 +344,12 @@
         }
     };
 
-    window.flexaResetAllData = async function() {
+    window.flexaResetAllData = async function () {
         try {
             // 1. Bersihkan seluruh penyimpanan lokal (termasuk semua flexa_user_* keys)
             localStorage.clear();
             sessionStorage.clear();
-        } catch(e) {
+        } catch (e) {
             console.warn('[Reset] Local storage clear error:', e);
         }
 
@@ -371,75 +371,75 @@
                     'notifikasi',
                     'targetHarian'
                 ];
-                
+
                 // Jalankan penghapusan paralel dengan timeout protection
                 await Promise.race([
-                    Promise.all(collections.map(col => db.collection(col).doc(uid).delete().catch(() => {}))),
+                    Promise.all(collections.map(col => db.collection(col).doc(uid).delete().catch(() => { }))),
                     new Promise(resolve => setTimeout(resolve, 2000))
                 ]);
-            } catch(dbErr) {
+            } catch (dbErr) {
                 console.warn('[Reset] Firestore cleanup error:', dbErr);
             }
 
             // 3. Coba hapus akun dari Firebase Auth
             try {
                 await user.delete();
-            } catch(authErr) {
+            } catch (authErr) {
                 console.warn('[Reset] User delete error (falling back to signOut):', authErr);
                 try {
                     await window.firebaseAuth.signOut();
-                } catch(signErr) {}
+                } catch (signErr) { }
             }
         } else if (window.firebaseAuth) {
             try {
                 await window.firebaseAuth.signOut();
-            } catch(signErr) {}
+            } catch (signErr) { }
         }
 
-    // =============================================
-    // 5. SMART DIAGNOSIS STATUS & SIDEBAR ROUTING
-    // =============================================
-    window.flexaHasCompletedDiagnosis = function() {
-        var u = window.currentFirebaseUser;
-        if (!u) {
-            try {
-                u = JSON.parse(localStorage.getItem('currentUser') || '{}');
-            } catch(e) { u = {}; }
-        }
-        if (u.sudahTesDiagnostik || u.hasilDiagnostik || u.citaCita || u.roadmapBelajar) {
-            return true;
-        }
-        if (localStorage.getItem('hasCompletedDiagnosis') === 'true' || localStorage.getItem('aiDiagnosisResult') || localStorage.getItem('selectedCareer')) {
-            return true;
-        }
-        if (u.uid && localStorage.getItem('flexa_diagnosis_' + u.uid)) {
-            return true;
-        }
-        return false;
-    };
+        // =============================================
+        // 5. SMART DIAGNOSIS STATUS & SIDEBAR ROUTING
+        // =============================================
+        window.flexaHasCompletedDiagnosis = function () {
+            var u = window.currentFirebaseUser;
+            if (!u) {
+                try {
+                    u = JSON.parse(localStorage.getItem('currentUser') || '{}');
+                } catch (e) { u = {}; }
+            }
+            if (u.sudahTesDiagnostik || u.hasilDiagnostik || u.citaCita || u.roadmapBelajar) {
+                return true;
+            }
+            if (localStorage.getItem('hasCompletedDiagnosis') === 'true' || localStorage.getItem('aiDiagnosisResult') || localStorage.getItem('selectedCareer')) {
+                return true;
+            }
+            if (u.uid && localStorage.getItem('flexa_diagnosis_' + u.uid)) {
+                return true;
+            }
+            return false;
+        };
 
-    window.flexaGetDiagnosisUrl = function() {
-        return window.flexaHasCompletedDiagnosis() ? '/?page=04_hasil-diagnosis' : '/?page=02_intro-diagnosis';
-    };
+        window.flexaGetDiagnosisUrl = function () {
+            return window.flexaHasCompletedDiagnosis() ? '/?page=04_hasil-diagnosis' : '/?page=02_intro-diagnosis';
+        };
 
-    // Auto-update all sidebar and link hrefs pointing to 02_intro-diagnosis
-    window.flexaSyncDiagnosisLinks = function() {
-        if (!window.flexaHasCompletedDiagnosis()) return;
-        document.querySelectorAll('a[href*="02_intro-diagnosis"]').forEach(function(link) {
-            link.href = '/?page=04_hasil-diagnosis';
-            var spans = link.querySelectorAll('span');
-            spans.forEach(function(sp) {
-                if (!sp.classList.contains('material-symbols-outlined') && sp.textContent.trim().toLowerCase().includes('tes diagnostik')) {
-                    sp.textContent = 'Hasil Diagnostik';
-                }
+        // Auto-update all sidebar and link hrefs pointing to 02_intro-diagnosis
+        window.flexaSyncDiagnosisLinks = function () {
+            if (!window.flexaHasCompletedDiagnosis()) return;
+            document.querySelectorAll('a[href*="02_intro-diagnosis"]').forEach(function (link) {
+                link.href = '/?page=04_hasil-diagnosis';
+                var spans = link.querySelectorAll('span');
+                spans.forEach(function (sp) {
+                    if (!sp.classList.contains('material-symbols-outlined') && sp.textContent.trim().toLowerCase().includes('tes diagnostik')) {
+                        sp.textContent = 'Hasil Diagnostik';
+                    }
+                });
             });
-        });
-    };
+        };
 
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(window.flexaSyncDiagnosisLinks, 100);
-    });
-    window.addEventListener('auth-ready', function() {
-        setTimeout(window.flexaSyncDiagnosisLinks, 100);
-    });
-})();
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(window.flexaSyncDiagnosisLinks, 100);
+        });
+        window.addEventListener('auth-ready', function () {
+            setTimeout(window.flexaSyncDiagnosisLinks, 100);
+        });
+    }) ();
